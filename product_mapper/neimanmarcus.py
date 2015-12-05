@@ -16,6 +16,7 @@ import requests
 import time
 
 from htmlmetadata import HTMLMetadata
+from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
@@ -165,7 +166,7 @@ class ProductsNeimanMarcus(object):
         products = []
 
         sp = SchemaOrg.get_schema_product(html)
-        og = ProductsNeimanMarcus.do_og(html)
+        og = OG.get_og(html)
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
@@ -246,42 +247,6 @@ class ProductsNeimanMarcus(object):
 
         return ProductMapResult(page=page,
                                 products=realproducts)
-
-    @staticmethod
-    def do_og(html):
-        ogp = opengraph.OpenGraph(html=html)
-        d = dict(ogp)
-        return d
-
-    @staticmethod
-    def do_html_metadata(soup):
-        title = soup.find('title')
-        if title:
-            title = title.text
-        keywords = soup.find('meta', {'name': 'keywords'})
-        if keywords:
-            keywords = dict(keywords.attrs).get('content')
-        description = soup.find('meta', {'name': 'description'})
-        if description:
-            description = dict(description.attrs).get('content')
-        attrs = {
-            'title': title,
-            'keywords': keywords,
-            'description': description
-        }
-        return attrs
-
-    @staticmethod
-    def do_nm_utag(soup):
-        utag_text = [s.text for s in soup.findAll('script')
-                        if 'utag_data' in s.text]
-        if utag_text:
-            m = re.search('({.*})', utag_text[0])
-            if m:
-                objstr = m.groups(0)[0]
-                j = json.loads(objstr)
-                return j
-        return {}
 
 
 if __name__ == '__main__':
