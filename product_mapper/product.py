@@ -43,7 +43,7 @@ class Product(object):
     def __init__(self,
                  merchant_slug=None, url_canonical=None, merchant_sku=None,
                  merchant_product_obj=None,
-                 gtin8=None, gtin12=None, gtin13=None, gtin14=None, mpn=None,
+                 upc=None, gtin8=None, gtin12=None, gtin13=None, gtin14=None, mpn=None,
                  price=None, sale_price=None, currency=None,
                  brand=None, category=None, bread_crumb=None,
                  in_stock=None, stock_level=None,
@@ -58,6 +58,7 @@ class Product(object):
         assert isinstance(url_canonical,    basestring)
         assert isinstance(merchant_sku,     basestring)
         assert merchant_product_obj is not None
+        assert isinstance(upc,              (type(None), basestring))
         assert isinstance(gtin8,            (type(None), basestring))
         assert isinstance(gtin12,           (type(None), basestring))
         assert isinstance(gtin13,           (type(None), basestring))
@@ -92,6 +93,7 @@ class Product(object):
         self.url_canonical = url_canonical
         self.url_host = URL(url_canonical).host
         self.merchant_sku = merchant_sku
+        self.upc = upc
         self.gtin8 = gtin8
         self.gtin12 = gtin12
         self.gtin13 = gtin13
@@ -196,6 +198,7 @@ class Product(object):
     url_canonical.....%s
     url_host..........%s
     merchant_sku......%s
+    upc...............%s
     gtin8.............%s
     gtin12............%s
     gtin13............%s
@@ -227,6 +230,7 @@ class Product(object):
        self.url_canonical,
        self.url_host,
        self.merchant_sku,
+       self.upc,
        self.gtin8,
        self.gtin12,
        self.gtin13,
@@ -263,6 +267,7 @@ set
     merchant_slug = %s,
     url_host = %s,
     merchant_sku = %s,
+    upc = %s,
     gtin8 = %s,
     gtin12 = %s,
     gtin13 = %s,
@@ -293,6 +298,7 @@ where
 ''',  (self.merchant_slug,
        self.url_host,
        self.merchant_sku,
+       self.upc,
        self.gtin8,
        self.gtin12,
        self.gtin13,
@@ -329,6 +335,7 @@ insert into url_product (
     url_host,
     url_canonical,
     merchant_sku,
+    upc,
     gtin8,
     gtin12,
     gtin13,
@@ -391,6 +398,7 @@ insert into url_product (
        self.url_host,
        self.url_canonical,
        self.merchant_sku,
+       self.upc,
        self.gtin8,
        self.gtin12,
        self.gtin13,

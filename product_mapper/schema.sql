@@ -49,5 +49,7 @@ create table url_product (
     img_urls            text[]
 );
 
+alter table url_product add column upc varchar(16);
+
 commit;
 
