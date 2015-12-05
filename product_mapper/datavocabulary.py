@@ -16,15 +16,15 @@ class DataVocabulary(object):
     @staticmethod
     def get_schema_product(html):
         items = microdata.get_items(html)
-        print items
+        #print items
         product_uri = microdata.URI('http://data-vocabulary.org/Product')
         products = [i for i in items
                         if product_uri in i.itemtype]
-        print products
+        #print products
 
         prods = [dict(product.json_dict()['properties'])
                     for product in products]
-        pprint(prods)
+        #pprint(prods)
         return prods
 
 

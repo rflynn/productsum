@@ -1,16 +1,20 @@
 # ex: set ts=4 et:
+# -*- coding: utf-8 -*-
 
-from BeautifulSoup import BeautifulSoup
-import execjs # json not good enough here...
+from bs4 import BeautifulSoup
+import execjs
 import gzip
 import json
 from pprint import pprint
 import re
+import time
+import traceback
 
 from datavocabulary import DataVocabulary
 from htmlmetadata import HTMLMetadata
 from og import OG
-from util import nth, xstrip
+from product import Product, ProductMapResultPage, ProductMapResult
+from util import nth, xstrip, normstring, dehtmlify
 
 
 def script_dataDictionary(soup):
@@ -81,46 +85,6 @@ def script_gaProduct(soup):
             }
     return data
 
-def html_price_ugh(soup):
-    '''
-    <div class="pdp-list-price">
-        $346.50
-    </div>
-    '''
-    data = {}
-    div = soup.find('div', {'class': 'pdp-list-price'})
-    if div:
-        m = re.search('\$([0-9,]+(?:\.\d+)?)', div.text, re.DOTALL)
-        if m:
-            data = {
-                'price': m.groups(0)[0],
-                'currency': 'USD'
-            }
-    return data
-
-def html_features_ugh(soup):
-    '''
-    <span class="pdpBulletContainer">
-        <span class="pdpBulletHeaderText">
-                color:
-        </span>
-        <span class="pdpBulletContentsText">
-                Brown
-        </span>
-    </span>
-    <span class="pdpBulletContainer">
-        <span class="pdpBulletContentsText">
-                Calfskin leather upper
-        </span>
-    </span>
-    '''
-    data = {
-    }
-    bulcon = soup.findAll('span', {'class': 'pdpBulletContainer'})
-    if bulcon:
-        data['features'] = [node.text for node in bulcon]
-    return data
-
 
 def custom_skus_ugh(soup):
     '''
@@ -147,84 +111,211 @@ def custom_skus_ugh(soup):
             }  for p in prices]
     return skus
 
+
+def custom_breadcrumb_ugh(soup):
+    '''
+    <div class="pdpBreadCrumbsContainer">
+        <a href="/" class="taxonomyLink">Home</a>
+        <span class="taxonomySeperator">/</span>
+
+        <a href="/designer-mens" class="taxonomyLink">Men</a>
+        <span class="taxonomySeperator">/</span>
+
+        <a href="/mens/designer-shoes" class="taxonomyLink">Shoes</a>
+        <span class="taxonomySeperator">/</span>
+    '''
+    br = soup.findAll('a', class_='taxonomyLink')
+    if br:
+        try:
+            return [b.text for b in br if b and b.text]
+        except:
+            traceback.print_exc()
+    return None
+
+
+def bluefly_custom(soup):
+    '''
+    <div class="pdp-list-price">
+        $346.50
+    </div>
+    '''
+    data = {}
+    div = soup.find('div', {'class': 'pdp-list-price'})
+    if div:
+        m = re.search('\$([0-9,]+(?:\.\d+)?)', div.text, re.DOTALL)
+        if m:
+            data = {
+                'price': m.groups(0)[0],
+                'currency': 'USD'
+            }
+    '''
+    <span class="pdpBulletContainer">
+        <span class="pdpBulletHeaderText">
+                color:
+        </span>
+        <span class="pdpBulletContentsText">
+                Brown
+        </span>
+    </span>
+    <span class="pdpBulletContainer">
+        <span class="pdpBulletContentsText">
+                Calfskin leather upper
+        </span>
+    </span>
+    '''
+    bulcon = soup.findAll('span', {'class': 'pdpBulletContainer'})
+    if bulcon:
+        data['features'] = [node.text for node in bulcon]
+
+    '''
+    <meta itemprop="category" content='Shoes'>
+    '''
+    tag = soup.find('meta', itemprop='category')
+    if tag:
+        data['category'] = tag.get('content')
+
+    '''
+    <div class="skuPriceInfo" id="891954528692">
+    '''
+    tag = soup.find('div', class_='skuPriceInfo')
+    if tag:
+        data['sku'] = tag.get('id')
+
+    data['skus'] = custom_skus_ugh(soup)
+
+    data['breadcrumb'] = custom_breadcrumb_ugh(soup)
+
+    return data
+
+
 class ProductBluefly(object):
-    def __init__(self, id=None, name=None, descr=None, features=None,
-                 url=None, img_url=None,
+    def __init__(self, id=None, url=None,
+                 in_stock=None,
                  brand=None, brand_type=None, 
-                 category=None, category_id=None,
+                 category=None, category_id=None, bread_crumb=None,
                  price=None, currency=None,
+                 name=None, title=None, descr=None,
                  color=None, variant=None,
-                 sizes=None, availability=None, skus=None):
+                 img_url=None,
+                 features=None, size=None, available_sizes=None,
+                 skus=None):
 
         assert isinstance(id, (type(None), basestring))
-        assert isinstance(name, (type(None), basestring))
-        assert isinstance(descr, (type(None), basestring))
-        assert isinstance(features, (type(None), list))
         assert isinstance(url, (type(None), basestring))
+        assert isinstance(in_stock, (type(None), bool))
+        assert isinstance(brand, (type(None), basestring))
+        assert isinstance(brand_type, (type(None), basestring))
+        assert isinstance(category, (type(None), basestring))
+        assert isinstance(category_id, (type(None), basestring))
+        assert isinstance(bread_crumb, (type(None), list))
+        assert isinstance(name, (type(None), basestring))
+        assert isinstance(title, (type(None), basestring))
+        assert isinstance(descr, (type(None), basestring))
         assert isinstance(img_url, (type(None), basestring))
-        assert isinstance(sizes, (type(None), list))
-        assert isinstance(availability, (type(None), bool))
+        assert isinstance(features, (type(None), list))
+        assert isinstance(size, (type(None), list))
+        assert isinstance(available_sizes, (type(None), list))
         assert isinstance(skus, (type(None), list))
 
         self.id = id
-        self.name = name
-        self.descr = descr
-        self.features = features
         self.url = url
+        self.in_stock = in_stock
         self.img_url = img_url
         self.brand = brand
         self.brand_type = brand_type
+        self.bread_crumb = bread_crumb
         self.category = category
         self.category_id = category_id
         self.price = price
         self.currency = currency
+        self.name = normstring(name)
+        self.title = title
+        self.descr = descr
+        self.features = features
         self.color = color
         self.variant = variant
-        self.sizes = sizes
-        self.availability = availability
+        self.size = size
+        self.available_sizes = available_sizes
         self.skus = skus
 
+        if self.features:
+            self.features = [normstring(f) for f in self.features]
+
     def __repr__(self):
-        return '''ProductBluefly:
-    id...........%s
-    name.........%s
-    descr........%s
-    url..........%s
-    img_url......%s
-    brand........%s
-    brand_type...%s
-    category.....%s
-    category_id..%s
-    price........%s
-    currency.....%s
-    color........%s
-    variant......%s
-    features.....%s
-    sizes........%s
-    availability.%s
-    skus.........%s
-''' % (self.id,
-       self.name,
-       self.descr,
+        return ('''ProductBluefly(
+    id...............%s
+    url..............%s
+    in_stock.........%s
+    brand............%s
+    brand_type.......%s
+    category.........%s
+    category_id......%s
+    price............%s
+    currency.........%s
+    name.............%s
+    title............%s
+    descr............%s
+    color............%s
+    variant..........%s
+    features.........%s
+    size.............%s
+    available_sizes..%s
+    skus.............%s
+    img_url..........%s
+)''' % (self.id,
        self.url,
-       self.img_url,
+       self.in_stock,
        self.brand,
        self.brand_type,
        self.category,
        self.category_id,
        self.price,
        self.currency,
+       self.name,
+       self.title,
+       self.descr,
        self.color,
        self.variant,
        self.features,
-       self.sizes,
-       self.availability,
-       self.skus)
+       self.size,
+       self.available_sizes,
+       self.skus,
+       self.img_url)).encode('utf8')
+
+    def to_product(self):
+
+        return Product(
+            merchant_slug='bluefly',
+            url_canonical=self.url,
+            merchant_sku=str(self.id),
+            name=self.name,
+            title=self.title,
+            descr=self.descr,
+            in_stock=self.in_stock,
+            stock_level=None,
+            merchant_product_obj=self,
+            price=self.price,
+            sale_price=None,
+            currency=self.currency,
+            category=self.category,
+            brand=self.brand,
+            bread_crumb=self.bread_crumb,
+            features=self.features,
+            color=self.color,
+            available_colors=None,
+            size=self.size,
+            available_sizes=self.available_sizes,
+            img_urls=[self.img_url] if self.img_url else None
+        )
+
 
 class ProductsBluefly(object):
 
     @staticmethod
     def from_html(url, html):
+
+        starttime = time.time()
+
         soup = BeautifulSoup(html)
 
         meta = HTMLMetadata.do_html_metadata(soup)
@@ -232,70 +323,91 @@ class ProductsBluefly(object):
         dv = DataVocabulary.get_schema_product(html)
         dd = script_dataDictionary(soup)
         gaprod = script_gaProduct(soup)
-        htmlprice = html_price_ugh(soup)
-        htmlfeatures = html_features_ugh(soup)
-        skus = custom_skus_ugh(soup)
+        custom = bluefly_custom(soup)
 
-        pprint(dv)
-        pprint(dd)
-        pprint(gaprod)
-        pprint(og)
-        pprint(meta)
-        pprint(htmlprice)
-        pprint(htmlfeatures)
-        pprint(skus)
-        #pprint(soup.findAll(lambda tag: any(k for k, v in tag.attrs if k.startswith('data-'))))
+        # TODO: mult-product support? haven't seen it yet...
+        dv = dv[0] if dv else {}
+
+        signals = {
+            'meta':   meta,
+            'og':     og,
+            'dv':     dv,
+            'dd':     dd,
+            'gaprod': gaprod,
+            'custom': custom,
+        }
+        #pprint(signals)
 
         products = []
 
         if (og.get('type') == 'product'
-            or dd.get('product_id')
-            or gaprod.get('product_id')):
-
-            # TODO: mult-product support? haven't seen it yet...
-            dv = dv[0] if dv else {}
+            or dd.get('productId')
+            or gaprod.get('id')):
 
             p = ProductBluefly(
                 id=(dd.get('product_id')
                     or gaprod.get('product_id')
+                    or custom.get('sku')
                     or None),
-                name=(og.get('name')
-                        or meta.get('description')
-                        or meta.get('title') or None),
-                descr=(og.get('description')
-                        or meta.get('description')
-                        or meta.get('title') or None),
-                features=htmlfeatures.get('features') or None,
-                url=og.get('url') or url,
-                img_url=og.get('image'),
+                url=og.get('url') or url or None,
+                in_stock=any(s.get('availability')
+                                for s in custom['skus'])
+                                    if custom['skus'] else None,
+                bread_crumb=custom.get('breadcrumb') or None,
+                category=(nth(dv.get('category'), 0)
+                            or gaprod.get('category')
+                            or custom.get('category') or None),
+                category_id=dd.get('categoryId') or None,
                 brand=(xstrip(nth(dv.get(u'brand'), 0))
                         or dd.get('brand')
-                        or graprod.get('brand')
+                        or gaprod.get('brand')
                         or None),
                 brand_type=dd.get('brand_type') or None,
-                category=nth(dv.get('category'), 0) or None,
-                category_id=dd.get('category_id') or None,
-                price=htmlprice.get('price') or None,
-                currency=htmlprice.get('currency') or None,
+                price=custom.get('price') or None,
+                currency=custom.get('currency') or None,
+                name=(og.get('name')
+                        or dd.get('pageName')
+                        or nth(dv.get('name'), 0)
+                        or meta.get('title')
+                        or meta.get('description') or None),
+                title=(og.get('title')
+                        or meta.get('title') or None),
+                descr=(og.get('description')
+                        or meta.get('description') or None),
+                features=dd.get('features') or custom.get('features') or None,
                 color=dd.get('color') or None,
                 variant=gaprod.get('variant') or None,
-                sizes=[s.get('size') for s in skus] if skus else None,
-                availability=any(s.get('availability')
-                                for s in skus) if skus else None,
-                skus=skus
+                size=None,
+                available_sizes=[s.get('size')
+                                    for s in custom['skus']]
+                                        if custom['skus'] else None,
+                skus=custom['skus'],
+                img_url=og.get('image') or None
             )
             products.append(p)
-        return products
+
+        realproducts = [p.to_product() for p in products]
+
+        page = ProductMapResultPage(
+                 merchant_slug='bluefly',
+                 url=url,
+                 size=len(html),
+                 proctime = time.time() - starttime,
+                 signals=signals)
+
+        return ProductMapResult(page=page,
+                                products=realproducts)
     
 
 
 if __name__ == '__main__':
-    import sys
-    testfile = 'www.bluefly.com-a-testoni-brown-leather-chelsea-boots-p-357144202-detail.fly.gz'
-    filepath = sys.argv[1] if len(sys.argv) > 1 else testfile
-    products = []
+
+    url = 'http://www.bluefly.com/a-testoni-brown-leather-chelsea-boots/p/357144202/detail.fly'
+    filepath = 'www.bluefly.com-a-testoni-brown-leather-chelsea-boots-p-357144202-detail.fly.gz'
+
     with gzip.open(filepath) as f:
         html = f.read()
-    products = ProductsBluefly.from_html('http://bluefly.example/', html)
-    pprint(products)
 
+    products = ProductsBluefly.from_html(url, html)
+
+    print products
