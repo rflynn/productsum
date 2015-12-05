@@ -1,0 +1,53 @@
+
+
+http://www.saksfifthavenue.com/
+
+is blocked from all AWS ip ranges
+works from DigitalOcean (yay!)
+
+
+HTTP/1.1 301 Moved Permanently
+Server: AkamaiGHost
+Content-Length: 0
+Location: http://www.saksfifthavenue.com/Entry.jsp
+Date: Sun, 29 Nov 2015 21:56:02 GMT
+Connection: keep-alive
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+
+blocked from
+    403 ap-northeast-1  Tokyo           52.192.131.47
+    403 ap-southeast-1  Singapore       54.169.114.145
+    403 ap-southeast-2b Sydney          52.64.141.8
+    403 eu-central-1    Frankfurt       52.28.49.86
+    403 eu-west-1       Ireland         54.x.x.x?
+    403 sa-east-1       Sao Paulo       54.94.146.223
+    403 us-east-1x      N.Virginia      54.x.x.x
+    403 us-west-1       N.California    54.x.x.x
+    403 us-west-2       Oregon          ...
+
+https://ip-ranges.amazonaws.com/ip-ranges.json
+
+```
+ubuntu@ip-172-31-24-232:~$ curl -A 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36' -L -D - 'http://www.saksfifthavenue.com/'
+HTTP/1.1 403 Forbidden
+Server: AkamaiGHost
+Mime-Version: 1.0
+Content-Type: text/html
+Content-Length: 273
+Expires: Sun, 29 Nov 2015 21:33:07 GMT
+Date: Sun, 29 Nov 2015 21:33:07 GMT
+Connection: close
+
+<HTML><HEAD>
+<TITLE>Access Denied</TITLE>
+</HEAD><BODY>
+<H1>Access Denied</H1>
+
+You don't have permission to access "http&#58;&#47;&#47;www&#46;saksfifthavenue&#46;com&#47;" on this server.<P>
+Reference&#32;&#35;18&#46;de5e0e17&#46;1448832787&#46;56731882
+</BODY>
+</HTML>
+```
+

@@ -1,0 +1,82 @@
+
+Squid3
+
+    sudo apt-get update
+    sudo apt-get install -y squid3
+
+    sudo vim /etc/squid3/squid.conf
+
+        # default port
+        http_port 3128
+
+        # whitelist client IPs
+        acl localnet src 104.0.0.0/8
+        acl localnet src 54.0.0.0/8
+        http_access allow localnet
+
+        # transparent, non-caching server
+        via off
+        forwarded_for delete
+        cache deny all
+
+    sudo restart squid3
+
+    # open squid port to outside
+    sudo ufw allow 3128 
+
+
+it's fast!
+
+$ time http_proxy=http://127.0.0.1:3128/ curl -D - http://www.google.com/ > /dev/null
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  154k    0  154k    0     0  2353k      0 --:--:-- --:--:-- --:--:-- 2409k
+
+real    0m0.079s
+user    0m0.007s
+sys 0m0.006s
+
+time http_proxy=http://127.0.0.1:3128/ curl -D - -A "" http://127.0.0.1:3456/
+time http_proxy=http://104.131.215.237:3128/ curl -D - -A "" http://104.131.215.237:3456/
+
+
+
+
+Tinyproxy: TOO SLOW!
+
+$ time curl -D - http://www.google.com/ > /dev/null
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  154k    0  154k    0     0  1361k      0 --:--:-- --:--:-- --:--:-- 1377k
+
+real    0m0.129s
+user    0m0.008s
+sys 0m0.010s
+
+$ time http_proxy=http://127.0.0.1:8888/ curl -D - http://www.google.com/ > /dev/null
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  154k    0  154k    0     0  25313      0 --:--:--  0:00:06 --:--:-- 39142
+
+real    0m6.252s
+user    0m0.007s
+sys 0m0.012s
+
+
+sudo apt-get update -y
+sudo apt-get install -y tinyproxy
+
+sudo vim /etc/tinyproxy.conf
+
+Allow 54.0.0.0/8
+Port 8888
+
+Timeout 60
+#ViaProxyName "tinyproxy"
+DisableViaHeader Yes
+
+sudo /etc/init.d/tinyproxy restart
+
+sudo /sbin/iptables -I INPUT -p tcp --dport 8888 -m state --state NEW,ESTABLISHED -j ACCEPT
+sudo /sbin/iptables -I OUTPUT -p tcp --sport 8888 -m state --state ESTABLISHED -j ACCEPT
+

@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "spider_frontend/spider_dynamo.py", line 233, in <module>
+
+  File "spider_frontend/spider_dynamo.py", line 219, in run
+    def run(url):
+  File "spider_frontend/spider_dynamo.py", line 207, in traverse
+    while urls:
+  File "spider_frontend/spider_dynamo.py", line 181, in get_links
+    print 'get_links %s' % url
+  File "/Users/rf/src/productsum/spider_backend/db_dynamo.py", line 127, in get_url
+    item = cu.get_item()
+  File "/Users/rf/src/productsum/spider_backend/db_dynamo.py", line 69, in _get_url_uncached
+    resp = client.get_item(TableName='link', Key={'url':{'S': url}})
+  File "/usr/local/lib/python2.7/site-packages/botocore/client.py", line 310, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+  File "/usr/local/lib/python2.7/site-packages/botocore/client.py", line 384, in _make_api_call
+    operation_model, request_dict)
+  File "/usr/local/lib/python2.7/site-packages/botocore/endpoint.py", line 112, in make_request
+    return self._send_request(request_dict, operation_model)
+  File "/usr/local/lib/python2.7/site-packages/botocore/endpoint.py", line 141, in _send_request
+    success_response, exception):
+  File "/usr/local/lib/python2.7/site-packages/botocore/endpoint.py", line 214, in _needs_retry
+    caught_exception=caught_exception)
+  File "/usr/local/lib/python2.7/site-packages/botocore/hooks.py", line 226, in emit
+    return self._emit(event_name, kwargs)
+  File "/usr/local/lib/python2.7/site-packages/botocore/hooks.py", line 209, in _emit
+    response = handler(**kwargs)
+  File "/usr/local/lib/python2.7/site-packages/botocore/retryhandler.py", line 183, in __call__
+    if self._checker(attempts, response, caught_exception):
+  File "/usr/local/lib/python2.7/site-packages/botocore/retryhandler.py", line 250, in __call__
+    caught_exception)
+  File "/usr/local/lib/python2.7/site-packages/botocore/retryhandler.py", line 265, in _should_retry
+    return self._checker(attempt_number, response, caught_exception)
+  File "/usr/local/lib/python2.7/site-packages/botocore/retryhandler.py", line 313, in __call__
+    caught_exception)
+  File "/usr/local/lib/python2.7/site-packages/botocore/retryhandler.py", line 222, in __call__
+    return self._check_caught_exception(attempt_number, caught_exception)
+  File "/usr/local/lib/python2.7/site-packages/botocore/retryhandler.py", line 355, in _check_caught_exception
+    raise caught_exception
+OpenSSL.SSL.SysCallError: (54, 'Connection reset by peer')
