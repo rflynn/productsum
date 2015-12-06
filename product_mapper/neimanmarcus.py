@@ -31,7 +31,7 @@ class ProductNeimanMarcus(object):
                  name=None, title=None, descr=None, features=None,
                  price=None, currency=None,
                  img_url=None,
-                 bread_crumb=[],
+                 bread_crumb=None,
                  cmos_catalog_id=None,
                  cmos_item=None,
                  cmos_sku=None,
@@ -49,7 +49,7 @@ class ProductNeimanMarcus(object):
         assert price is None or isinstance(price, basestring)
         assert currency is None or isinstance(currency, basestring)
         assert img_url is None or isinstance(img_url, basestring)
-        assert isinstance(bread_crumb, list)
+        assert bread_crumb is None or isinstance(bread_crumb, list)
         assert cmos_catalog_id is None or isinstance(cmos_catalog_id, basestring)
         assert cmos_item is None or isinstance(cmos_item, basestring)
         assert cmos_sku is None or isinstance(cmos_sku, basestring)
@@ -174,7 +174,7 @@ class ProductsNeimanMarcus(object):
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
-        custom = ProductsNeimanMarcus.get_custom(soup)
+        custom = ProductsNeimanMarcus.get_custom(soup, og)
 
         sp = sp[0] if sp else {}
 
@@ -213,7 +213,7 @@ class ProductsNeimanMarcus(object):
                         price=nth(utag.get('product_price'), i) or None,
                         currency=utag.get('order_currency_code') or None,
                         img_url=og.get('image') or None,
-                        bread_crumb=utag.get('bread_crumb') or [],
+                        bread_crumb=utag.get('bread_crumb') or None,
                         cmos_catalog_id=nth(utag.get('product_cmos_catalog_id'), i) or None,
                         cmos_item=nth(utag.get('product_cmos_item'), i) or None,
                         cmos_sku=nth(utag.get('product_cmos_sku'), i) or None,
@@ -225,7 +225,7 @@ class ProductsNeimanMarcus(object):
                     prodid=nth(utag.get('product_id'), 0),
                     canonical_url=custom.get('url_canonical') or url,
                     stocklevel=nth(utag.get('stock_level'), 0),
-                    instock=xboolstr(nth(utag.get('product_available'), i)),
+                    instock=xboolstr(nth(utag.get('product_available'), 0)),
                     brand=nth(sp.get(u'brand'), 0) or custom.get('brand') or None,
                     name=name,
                     title=og.get('title') or meta.get('title') or None,
@@ -234,7 +234,7 @@ class ProductsNeimanMarcus(object):
                     price=nth(utag.get('product_price'), 0),
                     currency=utag.get('order_currency_code') or None,
                     img_url=og.get('image') or None,
-                    bread_crumb=utag.get('bread_crumb') or [],
+                    bread_crumb=utag.get('bread_crumb') or None,
                     cmos_catalog_id=nth(utag.get('product_cmos_catalog_id'), 0),
                     cmos_item=nth(utag.get('product_cmos_item'), 0),
                     cmos_sku=nth(utag.get('product_cmos_sku'), 0),
@@ -256,8 +256,9 @@ class ProductsNeimanMarcus(object):
 
 
     @staticmethod
-    def get_custom(soup):
+    def get_custom(soup, og):
         # url
+        url_canonical = None
         tag = soup.find('link', rel='canonical', href=True)
         if tag:
             url_canonical = tag.get('href')
@@ -265,8 +266,6 @@ class ProductsNeimanMarcus(object):
             url_canonical = og.get('url')
             if url_canonical and url_canonical.endswith('?ecid=NMSocialFacebookLike'):
                 url_canonical = url_canonical[:-len('?ecid=NMSocialFacebookLike')]
-        if not url_canonical:
-            url_canonical = url
         # brand
         brand = None
         tag = soup.find('span', {'class':'prodDesignerName'})
