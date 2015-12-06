@@ -1,4 +1,5 @@
 # ex: set ts=4 et:
+# -*- coding: utf-8 -*-
 
 '''
 map a document archived from neimanmarcus.com to zero or more products
@@ -20,7 +21,7 @@ from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
-from util import nth, normstring, xboolstr, maybe_join
+from util import nth, normstring, xboolstr, maybe_join, dehtmlify
 
 
 class ProductNeimanMarcus(object):
@@ -170,40 +171,40 @@ class ProductsNeimanMarcus(object):
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
+        custom = ProductsNeimanMarcus.get_custom(soup)
+
+        sp = sp[0] if sp else {}
 
         signals = {
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
             'meta': meta,
+            'custom': custom,
         }
         #pprint(signals)
 
         # is there one or more product on the page?
         if (sp
+            or utag.get(u'product_id')
             or og.get('type') == u'product'
             or utag.get(u'page_type') == u'Product Detail'):
             # ok, there's 1+ product. extract them...
-            if sp:
-                sp = sp[0]
 
-            name = None
-            if sp and sp.get('name'):
-                name = sp.get('name')[0]
-            else:
-                name = (og.get('title') or
-                        meta.get('title') or
-                        utag.get(u'product_name')[0] or None)
+            name = (nth(sp.get('name'), 0)
+                or nth(utag.get(u'product_name'), 0)
+                or og.get('title')
+                or meta.get('title') or None)
 
             if utag and utag.get(u'product_id'):
                 for i in xrange(len(utag.get(u'product_id'))):
                     p = ProductNeimanMarcus(
                         prodid=nth(utag.get('product_id'), i),
-                        canonical_url=url,
+                        canonical_url=custom.get('url_canonical') or url,
                         stocklevel=nth(utag.get('stock_level'), i) or None,
                         instock=xboolstr(nth(utag.get('product_available'), i)),
-                        brand=nth(sp.get(u'brand'), i) or None,
+                        brand=nth(sp.get(u'brand'), i) or custom.get('brand') or None,
                         name=nth(utag.get(u'product_name'), i) or name,
-                        title=meta.get('title'),
+                        title=og.get('title') or meta.get('title') or None,
                         descr=maybe_join(' ', sp.get('description')) or None,
                         price=nth(utag.get('product_price'), i) or None,
                         currency=utag.get('order_currency_code') or None,
@@ -218,12 +219,12 @@ class ProductsNeimanMarcus(object):
             else:
                 p = ProductNeimanMarcus(
                     prodid=nth(utag.get('product_id'), 0),
-                    canonical_url=url,
+                    canonical_url=custom.get('url_canonical') or url,
                     stocklevel=nth(utag.get('stock_level'), 0),
                     instock=xboolstr(nth(utag.get('product_available'), i)),
-                    brand=nth(sp.get(u'brand'), 0),
+                    brand=nth(sp.get(u'brand'), 0) or custom.get('brand') or None,
                     name=name,
-                    title=meta.get('title'),
+                    title=og.get('title') or meta.get('title') or None,
                     descr=maybe_join(' ', sp.get('description')) or None,
                     price=nth(utag.get('product_price'), 0),
                     currency=utag.get('order_currency_code') or None,
@@ -249,6 +250,30 @@ class ProductsNeimanMarcus(object):
                                 products=realproducts)
 
 
+    @staticmethod
+    def get_custom(soup):
+        # url
+        tag = soup.find('link', rel='canonical', href=True)
+        if tag:
+            url_canonical = tag.get('href')
+        if not url_canonical:
+            url_canonical = og.get('url')
+            if url_canonical and url_canonical.endswith('?ecid=NMSocialFacebookLike'):
+                url_canonical = url_canonical[:-len('?ecid=NMSocialFacebookLike')]
+        if not url_canonical:
+            url_canonical = url
+        # brand
+        brand = None
+        tag = soup.find('span', {'class':'prodDesignerName'})
+        if tag:
+            brand = normstring(dehtmlify(tag.text))
+        data = {
+            'brand': brand,
+            'url_canonical': url_canonical,
+        }
+        return data
+
+
 if __name__ == '__main__':
 
     filepath = 'www.neimanmarcus.com-Eileen-Fisher-Linen-Jersey-Box-Top-Stretch-Boyfriend-Jeans-Petite--prod177290080--p.prod.gz'
@@ -257,7 +282,8 @@ if __name__ == '__main__':
 
     url = 'http://neimanmarcus.example/'
 
-    products = []
+    # doesn't populate url_product...
+    filepath = 'www.neimanmarcus.com-Sklo-Sway-Long-Bowl-Accents-prod185550170_cat40520739__-p.prod-icid--searchType-EndecaDrivenCat.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
