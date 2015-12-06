@@ -122,6 +122,7 @@ class Product(object):
         self.img_url = img_url if img_url else img_urls[0] if img_urls else None
         self.img_urls = img_urls
 
+        self.fixup_upc()
         self.fixup_prices_and_currency()
 
         # verify errors fixed up
@@ -133,6 +134,46 @@ class Product(object):
             assert '<strong>' not in self.name
             assert '&amp;' not in self.name
 
+    def fixup_upc(self):
+        # upc is intended to allow product mappers to specify a vague-ish UPC
+        # value without really error-checking or understanding all formats in all mappers
+        # here we map this value to the appropriate specific GTIN
+        if self.upc:
+            if not re.match('^[0-9]{8,14}$', self.upc):
+                print "upc doesn't match known pattern..."
+            else:
+                l = len(self.upc)
+                if l == 8 and not self.gtin8:
+                    self.gtin8 = self.upc
+                elif l == 12 and not self.gtin12:
+                    self.gtin12 = self.upc
+                elif l == 13 and not self.gtin13:
+                    self.gtin13 = self.upc
+                elif l == 14 and not self.gtin14:
+                    self.gtin14 = self.upc
+        # map GTINs up...
+        # ref: http://www.gtin.info/
+        if self.gtin13:
+            if not re.match('^[0-9]{13}$', self.gtin13):
+                print u"gtin13 '%s' does not match numeric pattern..." % (self.gtin13,)
+            else:
+                if not self.gtin14:
+                    self.gtin14 = '0' + self.gtin13
+        elif self.gtin12:
+            if not re.match('^[0-9]{12}$', self.gtin12):
+                print u"gtin12 '%s' does not match numeric pattern..." % (self.gtin12,)
+            else:
+                if not self.gtin13 and not self.gtin14:
+                    self.gtin13 = '0' + self.gtin12
+                    self.gtin14 = '00' + self.gtin12
+        elif self.gtin8:
+            if not re.match('^[0-9]{8}$', self.gtin8):
+                print u"gtin8 '%s' does not match numeric pattern..." % (self.gtin8,)
+            else:
+                if not self.gtin12 and not self.gtin13 and not self.gtin14:
+                    self.gtin12 = '000000' + self.gtin8
+                    self.gtin13 = '0000000' + self.gtin8
+                    self.gtin14 = '00000000' + self.gtin8
 
     def fixup_prices_and_currency(self):
         cur, pmin, pmax = Product.parse_price(self.price_str)
@@ -194,38 +235,38 @@ class Product(object):
 
     def __repr__(self):
         return ('''Product(
-    merchant_slug.....%s
-    url_canonical.....%s
-    url_host..........%s
-    merchant_sku......%s
-    upc...............%s
-    gtin8.............%s
-    gtin12............%s
-    gtin13............%s
-    gtin14............%s
-    mpn...............%s
-    price_str.........%s
-    price_min.........%s
-    price_max.........%s
-    sale_price_str....%s
-    sale_price_min....%s
-    sale_price_max....%s
-    currency..........%s
-    brand.............%s
-    category..........%s
-    bread_crumb.......%s
-    in_stock..........%s
-    stock_level.......%s
-    name..............%s
-    title.............%s
-    descr.............%s
-    features..........%s
-    color.............%s
-    available_colors..%s
-    size..............%s
-    available_sizes...%s
-    img_url...........%s
-    img_urls..........%s
+    merchant_slug..... %s
+    url_canonical..... %s
+    url_host.......... %s
+    merchant_sku...... %s
+    upc............... %s
+    gtin8............. %s
+    gtin12............ %s
+    gtin13............ %s
+    gtin14............ %s
+    mpn............... %s
+    price_str......... %s
+    price_min......... %s
+    price_max......... %s
+    sale_price_str.... %s
+    sale_price_min.... %s
+    sale_price_max.... %s
+    currency.......... %s
+    brand............. %s
+    category.......... %s
+    bread_crumb....... %s
+    in_stock.......... %s
+    stock_level....... %s
+    name.............. %s
+    title............. %s
+    descr............. %s
+    features.......... %s
+    color............. %s
+    available_colors.. %s
+    size.............. %s
+    available_sizes... %s
+    img_url........... %s
+    img_urls.......... %s
 )''' % (self.merchant_slug,
        self.url_canonical,
        self.url_host,

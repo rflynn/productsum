@@ -28,7 +28,7 @@ from macys import ProductsMacys
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
-
+from saks import ProductsSaks
 
 '''
 
@@ -89,6 +89,7 @@ Host2Map = {
     'www1.macys.com':       ProductsMacys,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
+    'www.saksfifthavenue.com': ProductsSaks,
 }
 
 '''
