@@ -1,4 +1,5 @@
 # ex: set ts=4 et:
+# -*- coding: utf-8 -*-
 
 from BeautifulSoup import BeautifulSoup
 import gzip

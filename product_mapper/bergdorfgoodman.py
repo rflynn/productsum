@@ -1,4 +1,5 @@
 # ex: set ts=4 et:
+# -*- coding: utf-8 -*-
 
 '''
 map a document archived from neimanmarcus.com to zero or more products
