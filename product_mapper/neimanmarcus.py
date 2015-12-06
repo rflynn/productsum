@@ -28,7 +28,7 @@ class ProductNeimanMarcus(object):
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, instock=None,
                  brand=None,
-                 name=None, descr=None, title=None,
+                 name=None, title=None, descr=None, features=None,
                  price=None, currency=None,
                  img_url=None,
                  bread_crumb=[],
@@ -45,6 +45,7 @@ class ProductNeimanMarcus(object):
         assert name is None or isinstance(name, basestring)
         assert title is None or isinstance(title, basestring)
         assert descr is None or isinstance(descr, basestring)
+        assert features is None or isinstance(features, list)
         assert price is None or isinstance(price, basestring)
         assert currency is None or isinstance(currency, basestring)
         assert img_url is None or isinstance(img_url, basestring)
@@ -62,6 +63,7 @@ class ProductNeimanMarcus(object):
         self.name = normstring(name)
         self.title = normstring(title)
         self.descr = descr
+        self.features = features
         self.price = price
         self.currency = currency
         self.img_url = img_url
@@ -104,6 +106,7 @@ class ProductNeimanMarcus(object):
     brand............%s
     name.............%s
     descr............%s
+    features.........%s
     price............%s
     currency.........%s
     img_url..........%s
@@ -115,7 +118,7 @@ class ProductNeimanMarcus(object):
 )''' % (self.prodid, self.canonical_url,
        self.instock, self.stocklevel,
        self.brand,
-       self.name, self.descr,
+       self.name, self.descr, self.features,
        self.price, self.currency,
        self.img_url,
        self.bread_crumb,
@@ -146,7 +149,7 @@ class ProductNeimanMarcus(object):
             name=self.name,
             title=self.title,
             descr=self.descr,
-            features=None,
+            features=self.features,
             color=None,
             available_colors=None,
             size=None,
@@ -206,6 +209,7 @@ class ProductsNeimanMarcus(object):
                         name=nth(utag.get(u'product_name'), i) or name,
                         title=og.get('title') or meta.get('title') or None,
                         descr=maybe_join(' ', sp.get('description')) or None,
+                        features=custom.get('features') or None,
                         price=nth(utag.get('product_price'), i) or None,
                         currency=utag.get('order_currency_code') or None,
                         img_url=og.get('image') or None,
@@ -226,6 +230,7 @@ class ProductsNeimanMarcus(object):
                     name=name,
                     title=og.get('title') or meta.get('title') or None,
                     descr=maybe_join(' ', sp.get('description')) or None,
+                    features=custom.get('features') or None,
                     price=nth(utag.get('product_price'), 0),
                     currency=utag.get('order_currency_code') or None,
                     img_url=og.get('image') or None,
@@ -267,8 +272,14 @@ class ProductsNeimanMarcus(object):
         tag = soup.find('span', {'class':'prodDesignerName'})
         if tag:
             brand = normstring(dehtmlify(tag.text))
+        # features
+        features = None
+        tag = soup.find('div', itemprop='description')
+        if tag:
+            features = [t.text for t in tag.findAll('li') or []]
         data = {
             'brand': brand,
+            'features': features,
             'url_canonical': url_canonical,
         }
         return data
