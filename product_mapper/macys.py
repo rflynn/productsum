@@ -1,5 +1,7 @@
 # ex: set ts=4 et:
 
+# TODO: speed this up. this mapper is just too darn slow
+
 '''
 map a document archived from macys.com to zero or more products
 '''
@@ -385,7 +387,7 @@ MACYS.pdp.upcmap["2544700"] = [{ "upcID": 35024398, "color": "Black Antique Nick
         '''
 <meta itemprop="breadcrumb" content="Handbags & Accessories - COACH - Coach Handbags" />
         '''
-        tag = soup.find('meta', {'itemprop': 'breadcrumb'})
+        tag = soup.find('meta', itemprop='breadcrumb')
         if tag:
             content = tag.get('content')
             if content:
@@ -396,14 +398,14 @@ MACYS.pdp.upcmap["2544700"] = [{ "upcID": 35024398, "color": "Black Antique Nick
         '''
 <meta itemprop="image" content="http://slimages.macysassets.com/is/image/MCY/products/7/optimized/3180187_fpx.tif?wid=59&hei=72&fit=fit,1&$filtersm$" />
         '''
-        tag = soup.find('meta', {'itemprop': 'image'})
+        tag = soup.find('meta', itemprop='image')
         if tag:
             data['image'] = tag.get('content')
 
         '''
 <meta itemprop="productID" content="2544700"/>
         '''
-        tag = soup.find('meta', {'itemprop': 'productID'})
+        tag = soup.find('meta', itemprop='productID')
         if tag:
             data['productid'] = tag.get('content')
 
@@ -425,9 +427,9 @@ MACYS.pdp.upcmap["2544700"] = [{ "upcID": 35024398, "color": "Black Antique Nick
 <li class="productID">Web ID: 2544700</li>
 </ul>
         '''
-        container = soup.find('div', {'id': 'prdDesc'})
+        container = soup.find('div', id='prdDesc')
         if container:
-            tag = container.find('div', {'itemprop': 'description'})
+            tag = container.find('div', itemprop='description')
             data['description'] = tag.text
 
         tags = soup.select('#prdDesc > ul > li')

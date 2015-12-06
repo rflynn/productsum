@@ -1,10 +1,10 @@
 # ex: set ts=4 et:
 
 '''
-map a document archived from neimanmarcus.com to zero or more products
+map a document archived from farfetch.com to zero or more products
 '''
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import base64
 import gzip
 import json

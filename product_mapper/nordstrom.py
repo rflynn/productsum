@@ -1,7 +1,7 @@
 # ex: set ts=4 et:
 # -*- coding: utf-8 -*-
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import gzip
 import json
 from pprint import pprint

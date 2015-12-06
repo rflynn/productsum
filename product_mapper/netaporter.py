@@ -5,7 +5,7 @@
 map a document archived from neimanmarcus.com to zero or more products
 '''
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import base64
 import gzip
 import json
@@ -200,7 +200,7 @@ class ProductsNetaPorter(object):
         mi = soup.find('meta', itemprop=True)
         data = {}
         if mi:
-            d = {m.attrMap.get('itemprop'): m.attrMap.get('content')
+            d = {m.get('itemprop'): m.get('content')
                     for m in soup.findAll('meta', itemprop=True)}
             data = {
                 'bread_crumb': re.split('\s+/\s+', d['category']) if 'category' in d else None,
