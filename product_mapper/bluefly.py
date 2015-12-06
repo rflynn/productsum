@@ -103,7 +103,7 @@ def custom_skus_ugh(soup):
     ]
     sizelist = soup.find('div', {'class': 'pdpSizeListContainer'})
     if sizelist:
-        prices = sizelist.findAll(lambda tag: tag.name == 'span' and 'pdpSizeTile' in tag.get('class'))
+        prices = sizelist.findAll(name='span', class_=lambda txt: 'pdpSizeTile' in txt)
         skus = [
             {'sku': p.get('data-skuid'),
              'size': p.text.strip() if p.text else None,
@@ -163,7 +163,7 @@ def bluefly_custom(soup):
         </span>
     </span>
     '''
-    bulcon = soup.findAll('span', {'class': 'pdpBulletContainer'})
+    bulcon = soup.findAll('span', class_='pdpBulletContainer')
     if bulcon:
         data['features'] = [node.text for node in bulcon]
 
