@@ -18,14 +18,17 @@ client = boto3.client('dynamodb')
 def utcnow():
     return long(datetime.utcnow().strftime('%s'))
 
+# gotta support brand pages e.g. http://www.gilt.com/brands
+MAXLINKS = 10000
+
 def link_update_results(url, httpcode, olen, clen,
                         sha256, canonical_url, mimetype, links):
     now = str(utcnow())
     if links:
         # in practice the most i've seen legitimately on e.g. a list of all brands/designers
-        if len(links) > 1200:
-            print 'trimming links from len %s to 1200 items...' % (len(links),)
-            links = links[:1200]
+        if len(links) > MAXLINKS:
+            print 'trimming links from len %s to %s items...' % (len(links), MAXLINKS)
+            links = links[:MAXLINKS]
     if links:
         print 'links is ~%s bytes stringified...' % len(json.dumps(links))
         print 'links is ~%s bytes compressed...' % len(zlib.compress(json.dumps(links)))
