@@ -34,14 +34,13 @@ class ProductDermstore(object):
         assert canonical_url is None or isinstance(canonical_url, basestring)
         assert stocklevel is None or isinstance(stocklevel, basestring)
         assert instock is None or isinstance(instock, bool)
+        assert bread_crumb is None or isinstance(bread_crumb, list)
         assert brand is None or isinstance(brand, basestring)
+        assert price is None or isinstance(price, basestring)
+        assert currency is None or isinstance(currency, basestring)
         assert name is None or isinstance(name, basestring)
         assert title is None or isinstance(title, basestring)
         assert descr is None or isinstance(descr, basestring)
-        assert features is None or isinstance(features, list)
-        assert price is None or isinstance(price, basestring)
-        assert currency is None or isinstance(currency, basestring)
-        assert bread_crumb is None or isinstance(bread_crumb, list)
         assert features is None or isinstance(features, list)
         assert size is None or isinstance(size, basestring)
         assert img_url is None or isinstance(img_url, basestring)
@@ -285,7 +284,7 @@ dataLayer.push({
         tag = soup.find('div', class_='panel-body')
         if tag:
             descr = xstrip(normstring(tag.text))
-        if descr.endswith('Read More >'):
+        if descr and descr.endswith('Read More >'):
             descr = descr[:-11]
 
         # brand
