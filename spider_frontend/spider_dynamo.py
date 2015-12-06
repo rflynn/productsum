@@ -23,7 +23,6 @@ _Seeds = {
     'http://us.topshop.com/en',
     'http://www.barneys.com/',
     'http://www.bergdorfgoodman.com/',
-    'http://www.bloomingdales.com/',
     'http://www.bluefly.com/',
     'http://www.brownsfashion.com/',
     'http://www.chanel.com/en_US/',
