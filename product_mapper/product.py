@@ -302,7 +302,8 @@ class Product(object):
        self.img_urls)).encode('utf8')
 
     def _psql_update(self, cursor):
-        cursor.execute('''
+        try:
+            cursor.execute('''
 update url_product
 set
     updated = now(),
@@ -367,9 +368,13 @@ where
        self.img_url,
        self.img_urls,
        self.url_canonical))
+        except:
+            print self
+            raise
 
     def _psql_insert(self, cursor):
-        cursor.execute('''
+        try:
+            cursor.execute('''
 insert into url_product (
     created,
     updated,
@@ -467,6 +472,9 @@ insert into url_product (
        self.available_sizes,
        self.img_url,
        self.img_urls))
+        except:
+            print self
+            raise
 
     def save(self, conn, commit=True):
         with conn.cursor() as cursor:
