@@ -282,24 +282,14 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
         if tag:
             # description containing list of features...
             descr = xstrip(unicode(tag))
-            #print 'descr:'
-            #print descr
+            #print 'descr:', descr
             if descr:
-                tag = BeautifulSoup(descr)
-                li = tag.findAll('li')
-                if li:
-                    features = [xstrip(normstring(dehtmlify(f.text))) for f in li if f]
-                    for x in li:
-                        x.extract() # strip from description...
-                        #print 'descr:'
-                        #pprint(tag.body.contents)
-                        #pprint([(x.name, x) for x in tag.body.contents])
-                        for t in tag.findAll(lambda tag: tag.name == 'ul'):
-                            t.extract()
-                        #print 'extracted:'
-                        #pprint(tag)
-                        descr = xstrip(normstring(tag.get_text()))
-            
+                ul = tag.find('ul')
+                features = [xstrip(normstring(dehtmlify(f.text)))
+                                for f in tag.findAll('li') if f]
+                ul.replace_with('') # remove list...
+                descr = xstrip(normstring(tag.get_text()))
+
         img_urls = None
         price = None
         skus = None
@@ -372,13 +362,37 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
             except Exception as e:
                 traceback.print_exc()
 
+        brand = None
+        name = None
+        '''
+        <h2 class="detial">JIMMY CHOO&nbsp;56mm Cat Eye Sunglasses</h2>
+        '''
+        # NOTE: this is dodgy as fuck, but it's the best we've got...
+        tag = soup.find('h2', {'class': 'detial'})
+        #print 'h2:', tag
+        if tag:
+            try:
+                # oh dear...
+                # interesting story: l&t encode the string with a literal '&nbsp;' in there
+                # ...and it works with BeautifulSoup v3
+                # ...but bs4 decodes the '&nbsp;' automatically...
+                # so we have to use something else...
+                # generate u'JIMMY CHOO\xa0Blah blah'
+                txt = repr(unicode(list(tag.stripped_strings)[0]))[2:-1]
+                if txt and txt.count(u'\\xa0'):
+                    x, y = txt.split(u'\\xa0')
+                    brand = xstrip(x) if x else None
+                    name = xstrip(y) if y else None
+            except:
+                traceback.print_exc()
+
         data = {
             'url_canonical': url_canonical,
             'product_id': hidden.get('productId') or product_id or None,
             #'product_code': obj.get('product_code'),
             'descr': descr,
             'features': features,
-            'brand': None, # TODO: dammit...
+            'brand': brand,
             #'brandid': obj.get('brandid'),
             #'brandcatid': obj.get('brandcatid'),
             #'breadcrumb': re.split('\s+>\s+', obj.get('pageName') or '') or None,
@@ -386,7 +400,7 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
             'stock_level_min': stock_level_min,
             'stock_level_max': stock_level_max,
             'stock_level_total': stock_level_total,
-            'name': hidden.get('name') or None,
+            'name': hidden.get('name') or name or None,
             #'pagetype': obj.get('pagetype'),
             'price': price,
             #'sale_price': dehtmlify(obj['price'].get('sale_price')) if 'price' in obj else None,
@@ -408,10 +422,16 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
 if __name__ == '__main__':
 
     url = 'http://www.lordandtaylor.com/webapp/wcs/stores/servlet/en/lord-and-taylor/this-is-not-a-bra-strapless-underwire'
+
     # test no-op
     filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
+
     # test 1 product
+    # NOTE: this one has no clear brand, except as a prefix...
     filepath = 'test/www.lordandtaylor.com-webapp-wcs-stores-servlet-en-lord-and-taylor-this-is-not-a-bra-strapless-underwire.gz'
+
+    # try brand on another type of product?
+    filepath = 'test/www.lordandtaylor.com-webapp-wcs-stores-servlet-en-lord-and-taylor-56mm-cat-eye-sunglasses-0237-danas--1.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
