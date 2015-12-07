@@ -251,7 +251,7 @@ class ProductsBergdorfGoodman(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
-                    merchant_slug='nordstrom',
+                    merchant_slug='bergdorfgoodman',
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
