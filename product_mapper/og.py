@@ -12,6 +12,10 @@ class OG(object):
     # TODO: refactor out
     @staticmethod
     def get_og(html):
-        ogp = opengraph.OpenGraph(html=html)
-        d = dict(ogp)
+        d = {}
+        try:
+            ogp = opengraph.OpenGraph(html=html)
+            d = dict(ogp)
+        except Exception as e:
+            print e
         return d
