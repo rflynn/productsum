@@ -24,6 +24,7 @@ from spider_backend import s3wrap
 from bluefly import ProductsBluefly
 from dermstore import ProductsDermstore
 from farfetch import ProductsFarfetch
+from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
