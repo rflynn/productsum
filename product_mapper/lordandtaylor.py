@@ -254,8 +254,8 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
                             for c in re.findall(r'<!--([^!:]+:[^!]+)-->', html)]
                                 if k and len(k) <= 32 and v and len(v) < 100} # avoid garbage
 
-        print 'comments:'
-        pprint(comments)
+        #print 'comments:'
+        #pprint(comments)
 
         '''
         <!-- ProductDisplay productId: 1495444 -->
@@ -323,7 +323,7 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
         if tag:
             try:
                 obj = execjs.eval(tag.get_text())
-                pprint(obj)
+                #pprint(obj)
                 ei = obj
 
                 # we expect obj to be [{...},...] representing skus
@@ -417,5 +417,4 @@ if __name__ == '__main__':
         html = f.read()
 
     products = ProductsLordandTaylor.from_html(url, html)
-
     print products

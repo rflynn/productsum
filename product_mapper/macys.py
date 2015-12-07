@@ -218,7 +218,7 @@ class ProductsMacys(object):
             'pdp': pdp,
             'upcmap': upcmap,
         }
-        pprint(signals)
+        #pprint(signals)
 
         # is there one or more product on the page?
         if (sp

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from dermstore.com to zero or more products
+map a document archived from saks.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -234,11 +234,11 @@ class ProductsSaks(object):
                 try:
                     objstr = m.group(0)
                     obj = execjs.eval(objstr)
-                    pprint(obj)
+                    #pprint(obj)
                     body = obj['response']['body']['main_products']
                     prodlen = len(body)
                     obj = body[0]
-                    pprint(body)
+                    #pprint(body)
 
                     # description containing list of features...
                     descr = xstrip(obj.get('description'))
@@ -306,5 +306,4 @@ if __name__ == '__main__':
         html = f.read()
 
     products = ProductsSaks.from_html(url, html)
-
     print products
