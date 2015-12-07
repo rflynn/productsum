@@ -271,21 +271,42 @@ class ProductsSaks(object):
                     sizes = obj['sizes'].get('sizes') if 'sizes' in obj else None
                     if sizes is not None and not isinstance(sizes, list):
                         sizes = None
-                    if not all(isinstance(s, basestring) for s in sizes):
+                    if sizes and not all(isinstance(s, basestring) for s in sizes):
                         if all(isinstance(s, dict) for s in sizes):
                             '''
 [{u'size_id': 0, u'is_sold_out_waitlistable': False, u'value': u'35 (5)'}, {u'size_id': 1, u'is_sold_out_waitlistable': False, u'value': u'36 (6)'}, {u'size_id': 4, u'is_sold_out_waitlistable': True, u'value': u'39 (9)'}, {u'size_id': 5, u'is_sold_out_waitlistable': True, u'value': u'40 (10)'}, {u'size_id': 6, u'is_sold_out_waitlistable': False, u'value': u'41 (11)'}]
                             '''
                             # ref: http://www.saksfifthavenue.com/Jewelry-and-Accessories/Jewelry/Rings/shop/_/N-52flr4/Ne-6lvnb5?FOLDER%3C%3Efolder_id=2534374306418144&Nao=120
                             if all(s.get('size_id') is not None and s.get('value') for s in sizes):
-                                sizes = [s.get('value') for s in sizes if s.get('value')]
+                                sizes = [normstring(s.get('value')) for s in sizes]
                             else:
                                 sizes = None
                         else:
                             sizes = None
                     if sizes and not all(isinstance(s, basestring) for s in sizes):
                         sizes = None
-                    
+
+obj['colors'].get('colors') if 'colors' in obj else None,
+
+                    colors = obj['colors'].get('colors') if 'colors' in obj else None
+                    if colors is not None and not isinstance(colors, list):
+                        colors = None
+                    if colors and not all(isinstance(c, basestring) for c in colors):
+                        if all(isinstance(s, dict) for c in colors):
+                            '''
+[{u'colorized_image_url': u'saks/0400087614067', u'is_sold_out_waitlistable': False, u'label': u'PINK', u'value': u'', u'color_id': 0, u'is_value_an_image': False}]
+                            '''
+                            # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446857648
+                            if all(s.get('label') for c in colors):
+                                colors = [normstring(s.get('label')) for s in colors]
+                            else:
+                                colors = None
+                        else:
+                            colors = None
+                    if colors and not all(isinstance(s, basestring) for c in colors):
+                        colors = None
+
+
                     mlrs = {
                         'url_canonical': url_canonical,
                         'product_id': obj.get('product_id'),
@@ -293,7 +314,7 @@ class ProductsSaks(object):
                         'descr': descr,
                         'descr_short': obj.get('short_description'),
                         'features': features,
-                        'colors': obj['colors'].get('colors') if 'colors' in obj else None,
+                        'colors': colors,
                         'brand': obj['brand_name'].get('label') if 'brand_name' in obj else None,
                         #'brandid': obj.get('brandid'),
                         #'brandcatid': obj.get('brandcatid'),
