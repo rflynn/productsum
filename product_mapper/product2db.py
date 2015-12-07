@@ -184,7 +184,7 @@ try:
             sha256 = bytearray(sha256.value) # extract raw binary
             url = link['url']
             sent += 1
-            print sent, url
+            print sent, url.encode('utf8')
             q1.put((url, host, sha256))
             if sent - recv >= POOLSIZE * 2:
                 # input queue full enough, process output.
