@@ -8,6 +8,7 @@ class HTMLMetadata(object):
     @staticmethod
     def do_html_metadata(soup):
         html = soup.find('html')
+        lang = None
         if html:
             lang = html.get('lang') or html.get('xml:lang')
         charset = soup.find('meta', charset=True)
