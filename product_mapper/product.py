@@ -434,6 +434,7 @@ insert into url_product (
     %s,
     %s,
     %s,
+    %s,
     %s
 )
 ''',  (self.merchant_slug,
