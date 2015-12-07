@@ -14,57 +14,60 @@ from spider_frontend import ua
 
 
 _Seeds = {
-    #'http://www.abercrombie.com/shop/us',
-    'http://couture.zappos.com/',
-    'http://shop.mango.com/US',
-    'http://shop.nordstrom.com/',
-    'http://us.christianlouboutin.com/us_en/',
-    'http://us.louisvuitton.com/eng-us/homepage',
-    'http://us.topshop.com/en',
-    'http://www.barneys.com/',
-    'http://www.bergdorfgoodman.com/',
-    'http://www.bluefly.com/',
-    'http://www.brownsfashion.com/',
-    'http://www.chanel.com/en_US/',
-    'http://www.cusp.com/',
-    'http://www.dermstore.com/',
-    'http://www.dsw.com/',
-    'http://www.farfetch.com/',
-    'http://www.footcandyshoes.com/',
-    'http://www.fwrd.com/',
-    'http://www.gilt.com/',
-    'http://www.gojane.com/',
-    'http://www.harrods.com/',
-    'http://www.josephstores.com/',
-    'http://www.lordandtaylor.com/',
-    'http://www.luisaviaroma.com/',
-    'http://madisonlosangeles.com/',
-    'http://www.matchesfashion.com/us/',
-    'http://www.michaelkors.com/',
-    'http://www.mytheresa.com/',
-    'http://www.nastygal.com/',
-    'http://www.neimanmarcus.com/',
-    'http://www.net-a-porter.com/',
-    'http://www.revolveclothing.com/',
-    'http://www.saksfifthavenue.com/',
-    'http://www.sephora.com/',
-    'http://www.stuartweitzman.com/',
-    'http://www.stylebop.com/',
-    'http://www.toryburch.com/',
-    'http://www.thecorner.com/us',
-    'http://www.violetgrey.com/',
-    'http://www.yoox.com/us/women',
-    'http://www.zappos.com/',
-    'http://www1.bloomingdales.com/',
-    'http://www1.macys.com/',
-    'https://us.burberry.com/',
-    'https://www.italist.com/en',
-    'https://www.modaoperandi.com/',
-    'https://www.shopbop.com/',
-    'https://www.ssense.com/',
-    'https://www.theoutnet.com/en-US/',
-    'https://www.tradesy.com/',
-    'https://www.victoriassecret.com/',
+    #'http://www.abercrombie.com/shop/us': {'ok':{'/shop/us/'}},
+    'http://couture.zappos.com/': {},
+    'http://shop.mango.com/US': {'ok':{'/US/'}},
+    'http://shop.nordstrom.com/': {},
+    'http://us.christianlouboutin.com/us_en/': {'ok':{'/us_en/'}},
+    'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
+    'http://us.topshop.com/en': {'ok':{'/en/'}},
+    'http://www.barneys.com/': {},
+    'http://www.bergdorfgoodman.com/': {},
+    'http://www.bluefly.com/': {},
+    'http://www.brownsfashion.com/': {},
+    'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
+    'http://www.cusp.com/': {},
+    'http://www.dermstore.com/': {},
+    'http://www.dsw.com/': {},
+    'http://www.farfetch.com/': {},
+    'http://www.footcandyshoes.com/': {},
+    'http://www.fwrd.com/': {},
+    'http://www.gilt.com/': {},
+    'http://www.gojane.com/': {},
+    'http://www.harrods.com/': {},
+    'http://www.jcpenney.com/': {},
+    'http://www.josephstores.com/': {},
+    'http://www.lordandtaylor.com/': {},
+    'http://www.luisaviaroma.com/': {},
+    'http://madisonlosangeles.com/': {},
+    'http://www.matchesfashion.com/us/': {'ok':{'/us/'}},
+    'http://www.michaelkors.com/': {},
+    'http://www.mytheresa.com/': {},
+    'http://www.nastygal.com/': {},
+    'http://www.neimanmarcus.com/': {},
+    'http://www.net-a-porter.com/': {},
+    'http://www.revolveclothing.com/': {},
+    'http://www.saksfifthavenue.com/': {},
+    'http://www.selfridges.com/US/en/': {'ok':{'/US/en/'}},
+    'http://www.sephora.com/': {},
+    'http://www.shoescribe.com/us/women': {'ok':{'/us/'}},
+    'http://www.stuartweitzman.com/': {},
+    'http://www.stylebop.com/': {'skip':{'/de/','/fr/','/jp/'}},
+    'http://www.toryburch.com/': {},
+    'http://www.thecorner.com/us': {'ok':{'/us/'}},
+    'http://www.violetgrey.com/': {},
+    'http://www.yoox.com/us/women': {'ok':{'/us/'}},
+    'http://www.zappos.com/': {},
+    'http://www1.bloomingdales.com/': {},
+    'http://www1.macys.com/': {},
+    'https://us.burberry.com/': {},
+    'https://www.italist.com/en': {'ok':{'/en/'}},
+    'https://www.modaoperandi.com/': {},
+    'https://www.shopbop.com/': {},
+    'https://www.ssense.com/': {'skip':{'/fr/'}},
+    'https://www.theoutnet.com/en-US/': {'ok':{'/en-US/'}},
+    'https://www.tradesy.com/': {},
+    'https://www.victoriassecret.com/': {},
 }
 
 
@@ -83,6 +86,10 @@ def parse_canonical_url(body, url):
                     # god fucking dammit sephora
                     if 'www.sephora.com$/' in canonical_url:
                         canonical_url = canonical_url.replace('$/', '/')
+        if not canonical_url:
+            tag = soup.find('meta', itemprop='url', content=True)
+            if tag:
+                canonical_url = tag.get('content')
         if canonical_url:
             canonical_url = urljoin(url, canonical_url)
     except Exception as e:
@@ -219,7 +226,7 @@ def should_fetch_again(item):
             item.get('updated'), now - item.get('updated') if item.get('updated') else None,
             item.get('code'))
     # last fetch succeeded, but it's getting stale
-    is_stale = age > 14 * days
+    is_stale = age > 28 * days
     if is_stale:
         print 'is_stale now=%s updated=%s (%s) code=%s' % (
             now,
@@ -263,25 +270,50 @@ def get_links(url, referer=None):
             links.extend(map(python_sucks, item['links']))
     return links
 
-def ok_to_spider(url):
+
+def prefix_matches(path, prefix):
     return (
-        'revolveclothing.com/r/ajax/crawlerDiscovery.jsp' not in url
+        path.startswith(prefix)
+        or prefix[-1] == '/' and path == prefix[:-1] # "/en/" ~= "/en"
     )
+
+def ok_to_spider(url, fqdn, settings):
+    u = URL(url)
+    if u.host.lower() != fqdn:
+        # stay on the same fqdn
+        return False
+    if settings:
+        # enforce path prefix whitelist/blacklist
+        if 'skip' in settings:
+            if any(prefix_matches(u.path, s) for s in settings['skip']):
+                print 'skip', url, settings['skip']
+                return False
+        if 'ok' in settings:
+            if not any(prefix_matches(u.path, s) for s in settings['ok']):
+                print 'not ok', url, settings['ok']
+                return False
+    # o_O
+    if 'revolveclothing.com/r/ajax/crawlerDiscovery.jsp' in url:
+        return False
+    return True
+
 
 def traverse(url, fqdn): # breadth-first traversal
     # python's unicode support is horrible
     # best spider url to test this with is yoox; they have a bunch of crazy unicode urls
-    urls = [python_sucks(url)]
+    settings = _Seeds[url]
+    # fetch seed url w/o checking whitelist/blacklist
+    urls = get_links(python_sucks(url), referer=url)
     while urls:
         next_url = urls.pop(0)
-        if ok_to_spider(url):
+        if ok_to_spider(next_url, fqdn, settings):
             links = get_links(next_url, referer=url)
             #random.shuffle(links)
             while links:
                 assert links[0] is not None
                 assert isinstance(links[0], unicode)
                 l = links.pop(0)
-                if l != next_url and URL(l).host.lower() == fqdn and l not in urls and ok_to_spider(l):
+                if l != next_url and l not in urls and ok_to_spider(l, fqdn, settings):
                     # stay in the same fdqn...
                     get_links(l, referer=next_url) # ignore results...
                     urls.append(l)
@@ -293,7 +325,7 @@ def run(url):
     try:
         while keepgoing:
             if not url:
-                url = random.choice(list(_Seeds))
+                url = random.choice(_Seeds.keys())
             fqdn = URL(url).host.lower()
             traverse(url, fqdn)
             sleep(30)
