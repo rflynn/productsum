@@ -169,7 +169,7 @@ class ProductsRevolveClothing(object):
             'wa':   wa,
             'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         products = []
 

@@ -327,5 +327,4 @@ if __name__ == '__main__':
         html = f.read()
 
     result = ProductsNordstrom.from_html(url, html)
-    pprint(result)
-
+    print result
