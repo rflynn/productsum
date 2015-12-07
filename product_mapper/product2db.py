@@ -165,6 +165,17 @@ def handle_responses(q2, min_handle=0):
         pass
     return recv
 
+
+starttime = time.time()
+
+def show_progress(sent, recv):
+    now = time.time()
+    elapsed = now - starttime
+    recvrate = recv / max(1.0, elapsed)
+    print 'progress: %.1f sec, %d sent, %d recv (%.1f/sec)' % (
+        elapsed, sent, recv, recvrate)
+
+
 man = multiprocessing.Manager()
 q1 = man.Queue()
 q2 = man.Queue()
@@ -200,12 +211,16 @@ try:
                 # input queue full enough, process output.
                 # throttles input rate
                 recv += handle_responses(q2, min_handle=1)
+            if sent % 1000 == 0:
+                show_progress(sent, recv)
     handle_responses(q2, sent - recv)
 except KeyboardInterrupt:
     try:
         pool.terminate()
     except:
         pass
+
+show_progress(sent, recv)
 
 print 'done'
 
