@@ -40,6 +40,11 @@ def xboolstr(x):
         return True
     return None
 
+def xint(x):
+    if x is None:
+        return None
+    return int(x)
+
 def balanced(s, updown=None):
     updown = updown or (lambda c: 1 if c == '{' else -1 if c == '}' else 0)
     pos = [(i, updown(c)) for i, c in enumerate(s) if updown(c) != 0]

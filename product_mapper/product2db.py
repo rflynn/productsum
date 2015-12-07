@@ -31,6 +31,7 @@ from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
 from saks import ProductsSaks
+from yoox import ProductsYoox
 
 '''
 
@@ -85,13 +86,16 @@ def decompress_body(body):
 
 Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
+    'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www.bluefly.com':      ProductsBluefly,
     'www.dermstore.com':    ProductsDermstore,
     'www.farfetch.com':     ProductsFarfetch,
+    'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
     'www.saksfifthavenue.com': ProductsSaks,
+    'www.yoox.com':         ProductsYoox,
 }
 
 '''
