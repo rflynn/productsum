@@ -40,7 +40,7 @@ _Seeds = {
     'http://www.lordandtaylor.com/': {},
     'http://www.luisaviaroma.com/': {},
     'http://madisonlosangeles.com/': {},
-    'http://www.matchesfashion.com/us/': {'ok':{'/us/'}},
+    'http://www.matchesfashion.com/': {},
     'http://www.michaelkors.com/': {},
     'http://www.mytheresa.com/': {},
     'http://www.nastygal.com/': {},
