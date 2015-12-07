@@ -290,18 +290,18 @@ class ProductsSaks(object):
                     if colors is not None and not isinstance(colors, list):
                         colors = None
                     if colors and not all(isinstance(c, basestring) for c in colors):
-                        if all(isinstance(s, dict) for c in colors):
+                        if all(isinstance(c, dict) for c in colors):
                             '''
 [{u'colorized_image_url': u'saks/0400087614067', u'is_sold_out_waitlistable': False, u'label': u'PINK', u'value': u'', u'color_id': 0, u'is_value_an_image': False}]
                             '''
                             # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446857648
-                            if all(s.get('label') for c in colors):
-                                colors = [normstring(s.get('label')) for s in colors]
+                            if all(c.get('label') for c in colors):
+                                colors = [normstring(c.get('label')) for c in colors]
                             else:
                                 colors = None
                         else:
                             colors = None
-                    if colors and not all(isinstance(s, basestring) for c in colors):
+                    if colors and not all(isinstance(c, basestring) for c in colors):
                         colors = None
 
 
