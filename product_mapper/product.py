@@ -128,6 +128,12 @@ class Product(object):
         self.fixup_prices_and_currency()
         self.fixup_img_urls()
 
+        if self.brand and self.name:
+            if self.name.lower().startswith(self.brand.lower()):
+                if not self.title:
+                    self.title = self.name
+                self.name = self.name[len(self.brand):].lstrip()
+
         # verify errors fixed up
         if self.name is not None:
             self.name = normstring(dehtmlify(self.name))

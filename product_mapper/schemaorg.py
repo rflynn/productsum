@@ -19,12 +19,11 @@ class SchemaOrg(object):
 
     @staticmethod
     def get_schema_product(html):
-        items = microdata.get_items(html)
-        #print items
+        items = microdata.get_items(html) or []
         p1 = microdata.URI(u'http://schema.org/Product')
         p2 = microdata.URI(u'http://schema.org/IndividualProduct')
         products = [i for i in items
-                        if p1 in i.itemtype or p2 in i.itemtype]
+                        if p1 in (i.itemtype or []) or p2 in (i.itemtype or [])]
         '''
         for p in products:
             print p.itemtype

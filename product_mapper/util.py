@@ -1,9 +1,17 @@
 # ex: set ts=4:
 # -*- coding: utf-8 -*-
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 import re
 
+
+def flatten(l):
+    return [item for sublist in l for item in sublist]
+
+assert flatten([]) == []
+assert flatten([[]]) == []
+assert flatten([[1,2]]) == [1,2]
+assert flatten([[1],[2]]) == [1,2]
 
 def nth(maybelist, index, val=None):
     try:
@@ -19,7 +27,7 @@ def normstring(s):
 
 def dehtmlify(s):
     if not s: return s
-    soup = BeautifulSoup(s, convertEntities=BeautifulSoup.HTML_ENTITIES)
+    soup = BeautifulSoup(s)
     return u''.join(t.text if hasattr(t, 'text') else t
                 for t in soup.contents)
 

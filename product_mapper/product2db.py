@@ -30,6 +30,7 @@ from macys import ProductsMacys
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
+from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
 from yoox import ProductsYoox
 
@@ -94,6 +95,7 @@ Host2Map = {
     'www1.macys.com':       ProductsMacys,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
+    'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
     'www.yoox.com':         ProductsYoox,
 }

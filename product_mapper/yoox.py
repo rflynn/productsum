@@ -17,8 +17,7 @@ from htmlmetadata import HTMLMetadata
 from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
-from tealium import Tealium
-from util import nth, normstring, xint, xboolstr, maybe_join, dehtmlify
+from util import nth, normstring, xint, maybe_join, dehtmlify
 
 
 class ProductYoox(object):
@@ -283,10 +282,6 @@ class ProductsYoox(object):
 
         # features
         features = None
-        tag = soup.find(id='collapseGlance')
-        if tag:
-            features = [normstring(t.text.replace('\n',' '))
-                            for t in tag.findAll(class_='prd') or []]
 
         bread_crumb = None
         tag = soup.find('div', id='breadcrumbs')
