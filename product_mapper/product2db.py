@@ -139,6 +139,7 @@ def handle_responses(q2, min_handle=0):
         except: # argh Queue is stupid with its Empty exception...
             return None
 
+    starttime = time.time()
     recv = 0
     #print 'min_handle:', min_handle
     try:
@@ -148,8 +149,12 @@ def handle_responses(q2, min_handle=0):
                 recv += 1
                 assert isinstance(results, ProductMapResult)
                 results.save()
-            if results is None and recv < min_handle:
-                time.sleep(0.1) # avoid too-hot a loop
+            elif results is None:
+                if recv == 0 and time.time() - starttime > 30:
+                    # try to avoid hanging forever, which seems to happen...
+                    break
+                if recv < min_handle:
+                    time.sleep(0.1) # avoid too-hot a loop
             results = _get_nowait(q2)
     except KeyboardInterrupt:
         pass
