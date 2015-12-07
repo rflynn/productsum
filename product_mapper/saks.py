@@ -266,6 +266,21 @@ class ProductsSaks(object):
                     if 'clarity_event_tags' in obj:
                         if 'product_name_event' in obj['clarity_event_tags']:
                             name = obj['clarity_event_tags']['product_name_event'].get('value')
+
+
+                    sizes = obj['sizes'].get('sizes') if 'sizes' in obj else None
+                    if sizes is not None and not isinstance(sizes, list):
+                        sizes = None
+                    if not all(isinstance(s, basestring) for s in sizes):
+                        if all(isinstance(s, dict) for s in sizes):
+                            '''
+[{u'size_id': 0, u'is_sold_out_waitlistable': False, u'value': u'35 (5)'}, {u'size_id': 1, u'is_sold_out_waitlistable': False, u'value': u'36 (6)'}, {u'size_id': 4, u'is_sold_out_waitlistable': True, u'value': u'39 (9)'}, {u'size_id': 5, u'is_sold_out_waitlistable': True, u'value': u'40 (10)'}, {u'size_id': 6, u'is_sold_out_waitlistable': False, u'value': u'41 (11)'}]
+                            '''
+                            # ref: http://www.saksfifthavenue.com/Jewelry-and-Accessories/Jewelry/Rings/shop/_/N-52flr4/Ne-6lvnb5?FOLDER%3C%3Efolder_id=2534374306418144&Nao=120
+                            if all(s.get('size_id') and s.get('value') for s in sizes):
+                                sizes = [s.get('value') for s in sizes if s.get('value')]
+                        else:
+                            sizes = None
                     
                     mlrs = {
                         'url_canonical': url_canonical,
@@ -285,7 +300,7 @@ class ProductsSaks(object):
                         #'pagetype': obj.get('pagetype'),
                         'price': dehtmlify(obj['price'].get('list_price')) if 'price' in obj else None,
                         'sale_price': dehtmlify(obj['price'].get('sale_price')) if 'price' in obj else None,
-                        'sizes': obj['sizes'].get('sizes') if 'sizes' in obj else None,
+                        'sizes': sizes,
                         'skus': skus,
                         'upc': skus[0].get('upc') if skus and len(skus) == 1 else None,
                     }
