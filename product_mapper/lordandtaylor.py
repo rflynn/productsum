@@ -287,7 +287,8 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
                 ul = tag.find('ul')
                 features = [xstrip(normstring(dehtmlify(f.text)))
                                 for f in tag.findAll('li') if f]
-                ul.replace_with('') # remove list...
+                if ul:
+                    ul.replace_with('') # remove list...
                 descr = xstrip(normstring(tag.get_text()))
 
         img_urls = None
