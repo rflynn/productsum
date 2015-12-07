@@ -7,15 +7,10 @@ map a document archived from macys.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
-import base64
 import execjs
 import gzip
-import json
-import microdata
-import opengraph
 from pprint import pprint
 import re
-import requests
 import time
 import traceback
 
@@ -321,7 +316,11 @@ MACYS.pdp.upcmap["2544700"] = [{ "upcID": 35024398, "color": "Black Antique Nick
         data = {}
         script = soup.find(lambda tag: tag.name == 'script' and tag.get('id') == 'pdpMainData' and 'productDetail' in tag.text)
         if script:
-            obj = execjs.eval(script.text)
+            try:
+                obj = execjs.eval(script.text)
+            except Exception as e:
+                traceback.print_exc()
+                obj = {}
             if obj.get('productDetail'):
                 obj = obj.get('productDetail')
             if obj.get('categoryName'):
@@ -469,7 +468,6 @@ Globals.setValue( "props", {
                     #pprint(data)
                 except:
                     traceback.print_exc()
-                    
         return data
 
 if __name__ == '__main__':
