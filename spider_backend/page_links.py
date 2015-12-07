@@ -105,7 +105,8 @@ def from_url_results(url, body):
     base_url = canonicalize_url(base.get('href', url) if base else url)
     links = {a_to_url(soup, url, base_url, a)
                 for a in soup.findAll('a', href=True)}
-    return [l for l in links if l and might_be_html(l)]
+    return [l for l in links
+                if l and len(l) < 2048 and might_be_html(l)]
 
 
 assert from_url_results('http://foo.com/', u'') == []

@@ -278,6 +278,8 @@ def prefix_matches(path, prefix):
     )
 
 def ok_to_spider(url, fqdn, settings):
+    if len(url) > 2048:
+        return False
     u = URL(url)
     if u.host.lower() != fqdn:
         # stay on the same fqdn
