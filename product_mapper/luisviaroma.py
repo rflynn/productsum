@@ -22,9 +22,9 @@ if __name__ == '__main__':
     with gzip.open(filepath) as f:
         html = f.read()
 
-    sp = SchemaOrg.get_schema_product(html)
-    og = OG.get_og(html)
     soup = BeautifulSoup(html)
+    sp = SchemaOrg.get_schema_product(html)
+    og = OG.get_og(soup)
     meta = HTMLMetadata.do_html_metadata(soup)
     utag = Tealium.get_utag_data(soup)
 

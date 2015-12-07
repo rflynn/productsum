@@ -4,18 +4,15 @@
 a productsum wrapper around opengraph
 '''
 
-import opengraph
 from collections import defaultdict
+import re
+
 
 class OG(object):
 
-    # TODO: refactor out
     @staticmethod
-    def get_og(html):
-        d = {}
-        try:
-            ogp = opengraph.OpenGraph(html=html)
-            d = dict(ogp)
-        except Exception as e:
-            print e
-        return d
+    def get_og(soup):
+        og = {m['property'][3:]: m['content'].encode('utf8')
+                for m in soup.findAll('meta', content=True,
+                                    property=re.compile('^og:'))}
+        return og

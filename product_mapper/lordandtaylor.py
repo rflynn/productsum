@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from dermstore.com to zero or more products
+map a document archived from lordandtaylor.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -158,7 +158,7 @@ class ProductsLordandTaylor(object):
 
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
-        og = OG.get_og(html)
+        og = OG.get_og(soup)
         custom = ProductsLordandTaylor.get_custom(soup, html, url)
 
         signals = {

@@ -191,9 +191,9 @@ class ProductsBergdorfGoodman(object):
 
         products = []
 
-        sp1 = SchemaOrg.get_schema_product(html)
-        og = OG.get_og(html)
         soup = BeautifulSoup(html)
+        sp1 = SchemaOrg.get_schema_product(html)
+        og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
         custom = ProductsBergdorfGoodman.get_custom(soup, html, url)

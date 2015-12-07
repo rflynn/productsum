@@ -319,7 +319,7 @@ class ProductsBluefly(object):
         soup = BeautifulSoup(html)
 
         meta = HTMLMetadata.do_html_metadata(soup)
-        og = OG.get_og(html)
+        og = OG.get_og(soup)
         dv = DataVocabulary.get_schema_product(html)
         dd = script_dataDictionary(soup)
         gaprod = script_gaProduct(soup)

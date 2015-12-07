@@ -131,11 +131,9 @@ class ProductsYoox(object):
 
         starttime = time.time()
 
-        products = []
-
-        sp = SchemaOrg.get_schema_product(html)
-        og = OG.get_og(html)
         soup = BeautifulSoup(html)
+        sp = SchemaOrg.get_schema_product(html)
+        og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         custom = ProductsYoox.get_custom(soup, og)
 
@@ -148,6 +146,8 @@ class ProductsYoox(object):
             'custom': custom,
         }
         #pprint(signals)
+
+        products = []
 
         prodid = custom.get('prodid') or None
 

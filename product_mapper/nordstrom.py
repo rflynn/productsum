@@ -235,9 +235,8 @@ class ProductsNordstrom(object):
         soup = BeautifulSoup(html)
 
         # standard shit
-        # FIXME: these 2 require re-parsing the documents again, meaning we don't parse it once, we parse it three times argh...
         sp = SchemaOrg.get_schema_product(html)
-        og = OG.get_og(html)
+        og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
 

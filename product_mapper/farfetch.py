@@ -225,9 +225,9 @@ class ProductsFarfetch(object):
 
         products = []
 
-        sp = SchemaOrg.get_schema_product(html)
-        og = OG.get_og(html)
         soup = BeautifulSoup(html)
+        sp = SchemaOrg.get_schema_product(html)
+        og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         #utag = Tealium.get_utag_data(soup)
         twit = get_meta_twitter(soup)

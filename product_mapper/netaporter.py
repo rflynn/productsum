@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from neimanmarcus.com to zero or more products
+map a document archived from net-a-porter.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -119,9 +119,9 @@ class ProductsNetaPorter(object):
 
         starttime = time.time()
 
-        sp = SchemaOrg.get_schema_product(html)
-        og = OG.get_og(html)
         soup = BeautifulSoup(html)
+        sp = SchemaOrg.get_schema_product(html)
+        og = OG.get_og(soup)
         pd = ProductsNetaPorter.do_meta_product_data(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)

@@ -152,7 +152,7 @@ class ProductsSaks(object):
 
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
-        og = OG.get_og(html)
+        og = OG.get_og(soup)
         mlrs = ProductsSaks.get_custom(soup)
 
         signals = {
