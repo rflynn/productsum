@@ -149,8 +149,11 @@ def handle_responses(q2, min_handle=0):
         while results is not None or (recv < min_handle):
             if results is not None:
                 recv += 1
-                assert isinstance(results, ProductMapResult)
-                results.save()
+                try:
+                    assert isinstance(results, ProductMapResult)
+                    results.save()
+                except:
+                    traceback.print_exc()
             elif results is None:
                 if recv == 0 and time.time() - starttime > 30:
                     # try to avoid hanging forever, which seems to happen...
