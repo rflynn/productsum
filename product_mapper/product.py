@@ -9,6 +9,7 @@ every FoobarMerchantProduct maps to this thing
 import json
 import psycopg2
 import re
+from urlparse import urljoin
 from yurl import URL
 
 from util import dehtmlify, normstring
@@ -125,6 +126,7 @@ class Product(object):
 
         self.fixup_upc()
         self.fixup_prices_and_currency()
+        self.fixup_img_urls()
 
         # verify errors fixed up
         if self.name is not None:
@@ -134,6 +136,13 @@ class Product(object):
             assert '<br>' not in self.name
             assert '<strong>' not in self.name
             assert '&amp;' not in self.name
+
+    def fixup_img_urls(self):
+        # canonicalize; no protocol-less "//foo.bar/..."
+        if self.img_url:
+            self.img_url = urljoin(self.url_canonical, self.img_url)
+        if self.img_urls:
+            self.img_urls = [urljoin(self.url_canonical, u) for u in self.img_urls]
 
     def fixup_upc(self):
         # upc is intended to allow product mappers to specify a vague-ish UPC
