@@ -19,7 +19,7 @@ from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
-from util import nth, normstring, dehtmlify, maybe_join, xboolstr
+from util import nth, normstring, dehtmlify, maybe_join, xboolstr, xint
 
 
 class ProductBergdorfGoodman(object):
@@ -225,7 +225,7 @@ class ProductsBergdorfGoodman(object):
             p = ProductBergdorfGoodman(
                 prodid=prodid,
                 canonical_url=canonical_url,
-                stocklevel=nth(utag.get('stock_level'), 0) or None,
+                stocklevel=xint(nth(utag.get('stock_level'), 0)) or None,
                 in_stock=xboolstr(nth(utag.get('product_available'), 0) or None),
                 brand=( # sp lists a url path as the brand, not the brand name. ugh...
                         custom.get('brand') or None),

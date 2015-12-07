@@ -43,7 +43,10 @@ def xboolstr(x):
 def xint(x):
     if x is None:
         return None
-    return int(x)
+    try:
+        return int(xstrip(x))
+    except:
+        return None
 
 def balanced(s, updown=None):
     updown = updown or (lambda c: 1 if c == '{' else -1 if c == '}' else 0)
