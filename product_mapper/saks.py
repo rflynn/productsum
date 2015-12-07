@@ -286,8 +286,6 @@ class ProductsSaks(object):
                     if sizes and not all(isinstance(s, basestring) for s in sizes):
                         sizes = None
 
-obj['colors'].get('colors') if 'colors' in obj else None,
-
                     colors = obj['colors'].get('colors') if 'colors' in obj else None
                     if colors is not None and not isinstance(colors, list):
                         colors = None
