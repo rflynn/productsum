@@ -266,10 +266,10 @@ if __name__ == '__main__':
     url = 'http://www.bergdorfgoodman.com/Christian-Louboutin-Apostrophy-Pointed-Red-Sole-Pump-Black-Pumps/prod113370002_cat379623__/p.prod'
 
     # test no-op
-    #filepath = 'www.dermstore.com-product_Lipstick_31136.htm.gz'
+    #filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
 
     # test 1 product
-    filepath = 'www.bergdorfgoodman.com-Christian-Louboutin-So-Kate-Patent-Red-Sole-Pump-Nude-Pumps-prod109600142_cat379623__-p.prod.gz'
+    filepath = 'test/www.bergdorfgoodman.com-Christian-Louboutin-So-Kate-Patent-Red-Sole-Pump-Nude-Pumps-prod109600142_cat379623__-p.prod.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

@@ -295,7 +295,7 @@ class ProductsFarfetch(object):
 
 if __name__ == '__main__':
 
-    filepath = 'www.farfetch.com-shopping-women-jimmy-choo--lucy-pumps-item-11249317.aspx.gz'
+    filepath = 'test/www.farfetch.com-shopping-women-jimmy-choo--lucy-pumps-item-11249317.aspx.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

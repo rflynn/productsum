@@ -336,9 +336,9 @@ if __name__ == '__main__':
 
     url = 'http://saks.example/'
     # test no-op
-    filepath = 'www.dermstore.com-product_Lipstick_31136.htm.gz'
+    filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
     # test 1 product
-    filepath = 'www.saksfifthavenue.com-main-ProductDetail.jsp-folder_id-2534374306418242-prd_id-845524446849942.gz'
+    filepath = 'test/www.saksfifthavenue.com-main-ProductDetail.jsp-folder_id-2534374306418242-prd_id-845524446849942.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

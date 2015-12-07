@@ -473,11 +473,11 @@ Globals.setValue( "props", {
 if __name__ == '__main__':
 
     # test no-op, where page is empty-ish
-    filepath = 'www1.macys.com-shop-product-burberry-my-burberry-eau-de-parfum-3.4-oz-holiday-edition.gz'
+    filepath = 'test/www1.macys.com-shop-product-burberry-my-burberry-eau-de-parfum-3.4-oz-holiday-edition.gz'
 
     # test "full" page
     url = 'http://www1.macys.com/shop/product/coach-swagger-27-carryall-in-metallic-patchwork-leather?ID=2544700&CategoryID=26846'
-    filepath = 'www1.macys.com-shop-product-coach-swagger-27-carryall-in-metallic-patchwork-leather-ID-2544700.gz'
+    filepath = 'test/www1.macys.com-shop-product-coach-swagger-27-carryall-in-metallic-patchwork-leather-ID-2544700.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

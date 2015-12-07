@@ -302,26 +302,26 @@ if __name__ == '__main__':
 
     # test a shoe
     url = 'http://shop.nordstrom.com/s/jimmy-choo-abel-pointy-toe-pump-women/3426524'
-    filepath = 'shop.nordstrom.com-s-jimmy-choo-abel-pointy-toe-pump-women-3426524.html.gz'
+    filepath = 'test/shop.nordstrom.com-s-jimmy-choo-abel-pointy-toe-pump-women-3426524.html.gz'
 
     # test 2 products on page
     url = 'http://shop.nordstrom.com/o/tracy-porter-for-poetic-wanderlust-sisley-quilt-sham/4127306?origin=category'
-    filepath = 'shop.nordstrom.com-o-tracy-porter-for-poetic-wanderlust-sisley-quilt-sham-4127306-multiple-products.gz'
+    filepath = 'test/shop.nordstrom.com-o-tracy-porter-for-poetic-wanderlust-sisley-quilt-sham-4127306-multiple-products.gz'
 
     url = 'http://shop.nordstrom.com/s/ecco-sierra-ii-sneaker-men/3957994?origin=category'
-    filepath = 'shop.nordstrom.com-s-ecco-sierra-ii-sneaker-men-3957994-dd-empty.gz'
+    filepath = 'test/shop.nordstrom.com-s-ecco-sierra-ii-sneaker-men-3957994-dd-empty.gz'
 
     # not available
     url = 'http://shop.nordstrom.com/s/giorgio-armani-formal-loafer-men/4082797'
-    filepath = 'shop.nordstrom.com-s-giorgio-armani-formal-loafer-men-4082797-not-available.gz'
+    filepath = 'test/shop.nordstrom.com-s-giorgio-armani-formal-loafer-men-4082797-not-available.gz'
 
     # TODO: price failed
     url = 'http://shop.nordstrom.com/s/armani-collezioni-herringbone-silk-tie/4174895?origin=category'
-    filepath = 'shop.nordstrom.com-s-armani-collezioni-herringbone-silk-tie-4174895-price.gz'
+    filepath = 'test/shop.nordstrom.com-s-armani-collezioni-herringbone-silk-tie-4174895-price.gz'
 
     # TODO: dd js parse error
     url = 'http://shop.nordstrom.com/s/ugg-australia-amie-classic-slim-water-resistant-short-boot-women/4106431?origin=category'
-    filepath = 'shop.nordstrom.com-s-ugg-australia-amie-classic-slim-water-resistant-short-boot-women-4106431-dd-parse-error.gz'
+    filepath = 'test/shop.nordstrom.com-s-ugg-australia-amie-classic-slim-water-resistant-short-boot-women-4106431-dd-parse-error.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

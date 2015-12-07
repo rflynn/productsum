@@ -16,7 +16,7 @@ from util import nth, xstrip
 
 if __name__ == '__main__':
     import sys
-    testfile = 'www.luisviaroma.com-index-SeasonId-63I-CollectionId-D0Z-ItemId-6-VendorColorId-U1BJQ0U1.gz'
+    testfile = 'test/www.luisviaroma.com-index-SeasonId-63I-CollectionId-D0Z-ItemId-6-VendorColorId-U1BJQ0U1.gz'
     filepath = sys.argv[1] if len(sys.argv) > 1 else testfile
     products = []
     with gzip.open(filepath) as f:

@@ -318,7 +318,7 @@ class ProductsNetaPorter(object):
 if __name__ == '__main__':
 
     url = 'http://www.net-a-porter.com/product/638211'
-    filepath = 'www.net-a-porter.com-us-en-product-638211-christian_louboutin-so-kate-120-leather-pumps.gz'
+    filepath = 'test/www.net-a-porter.com-us-en-product-638211-christian_louboutin-so-kate-120-leather-pumps.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

@@ -409,9 +409,9 @@ if __name__ == '__main__':
 
     url = 'http://www.lordandtaylor.com/webapp/wcs/stores/servlet/en/lord-and-taylor/this-is-not-a-bra-strapless-underwire'
     # test no-op
-    filepath = 'www.dermstore.com-product_Lipstick_31136.htm.gz'
+    filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
     # test 1 product
-    filepath = 'www.lordandtaylor.com-webapp-wcs-stores-servlet-en-lord-and-taylor-this-is-not-a-bra-strapless-underwire.gz'
+    filepath = 'test/www.lordandtaylor.com-webapp-wcs-stores-servlet-en-lord-and-taylor-this-is-not-a-bra-strapless-underwire.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

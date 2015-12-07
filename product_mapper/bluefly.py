@@ -403,7 +403,7 @@ class ProductsBluefly(object):
 if __name__ == '__main__':
 
     url = 'http://www.bluefly.com/a-testoni-brown-leather-chelsea-boots/p/357144202/detail.fly'
-    filepath = 'www.bluefly.com-a-testoni-brown-leather-chelsea-boots-p-357144202-detail.fly.gz'
+    filepath = 'test/www.bluefly.com-a-testoni-brown-leather-chelsea-boots-p-357144202-detail.fly.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

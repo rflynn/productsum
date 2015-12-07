@@ -286,14 +286,14 @@ class ProductsNeimanMarcus(object):
 
 if __name__ == '__main__':
 
-    filepath = 'www.neimanmarcus.com-Eileen-Fisher-Linen-Jersey-Box-Top-Stretch-Boyfriend-Jeans-Petite--prod177290080--p.prod.gz'
-    filepath = 'www.neimanmarcus.com-Stuart-Weitzman-Nouveau-Floral-Print-Python-Pump-Rose-Multo-prod167650036-p.prod.gz'
-    filepath = 'www.neimanmarcus.com-Christian-Louboutin-Debout-Patent-PVC-Red-Sole-Pump-Multicolor-Shoes-prod182870064_cat39620738__-p.prod.gz'
+    filepath = 'test/www.neimanmarcus.com-Eileen-Fisher-Linen-Jersey-Box-Top-Stretch-Boyfriend-Jeans-Petite--prod177290080--p.prod.gz'
+    filepath = 'test/www.neimanmarcus.com-Stuart-Weitzman-Nouveau-Floral-Print-Python-Pump-Rose-Multo-prod167650036-p.prod.gz'
+    filepath = 'test/www.neimanmarcus.com-Christian-Louboutin-Debout-Patent-PVC-Red-Sole-Pump-Multicolor-Shoes-prod182870064_cat39620738__-p.prod.gz'
 
     url = 'http://neimanmarcus.example/'
 
     # doesn't populate url_product...
-    filepath = 'www.neimanmarcus.com-Sklo-Sway-Long-Bowl-Accents-prod185550170_cat40520739__-p.prod-icid--searchType-EndecaDrivenCat.gz'
+    filepath = 'test/www.neimanmarcus.com-Sklo-Sway-Long-Bowl-Accents-prod185550170_cat40520739__-p.prod-icid--searchType-EndecaDrivenCat.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

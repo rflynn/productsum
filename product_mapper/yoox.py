@@ -344,10 +344,10 @@ if __name__ == '__main__':
 
     url = 'http://www.yoox.com/us/44943424XH/item'
     # test no-op
-    #filepath = 'www.dermstore.com-product_Lipstick_31136.htm.gz'
+    #filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
 
-    #filepath = 'www.yoox.com-us-44848938PU-item.gz'
-    filepath = 'www.yoox.com-us-44814772VC-item.gz'
+    #filepath = 'test/www.yoox.com-us-44848938PU-item.gz'
+    filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

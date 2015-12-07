@@ -332,9 +332,9 @@ dataLayer.push({
 if __name__ == '__main__':
 
     url = 'http://dermstore.example/'
-    filepath = 'www.dermstore.com-product_Mild+Gel+Wash_363.htm.gz'
-    filepath = 'www.dermstore.com-product_Hair+Straightening+Ceramic+Brush_63616.htm-sold-out.gz'
-    filepath = 'www.dermstore.com-product_Lipstick_31136.htm.gz'
+    filepath = 'test/www.dermstore.com-product_Mild+Gel+Wash_363.htm.gz'
+    filepath = 'test/www.dermstore.com-product_Hair+Straightening+Ceramic+Brush_63616.htm-sold-out.gz'
+    filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
