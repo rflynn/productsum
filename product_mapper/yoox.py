@@ -236,6 +236,8 @@ class ProductsYoox(object):
                 try:
                     lolsource = 'tc_vars={};' + '\n'.join(m) + '; return tc_vars;'
                     tc_vars = execjs.exec_(lolsource) # o_O
+                except execjs.ProgramError as e:
+                    print e # not surprised by these...
                 except Exception as e:
                     traceback.print_exc()
         return tc_vars 
