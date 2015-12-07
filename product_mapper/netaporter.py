@@ -22,14 +22,16 @@ from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
-from util import nth, xboolstr
+from util import nth, xboolstr, normstring
 
 
 class ProductNetaPorter(object):
     def __init__(self, id=None, canonical_url=None,
                  stocklevel=None, instock=None,
-                 brand=None, name=None, title=None, descr=None,
                  price=None, currency=None,
+                 brand=None,
+                 name=None, title=None, descr=None,
+                 features=None,
                  img_url=None,
                  bread_crumb=None):
 
@@ -37,12 +39,13 @@ class ProductNetaPorter(object):
         assert canonical_url is None or isinstance(canonical_url, basestring)
         assert stocklevel is None or isinstance(stocklevel, basestring)
         assert instock is None or isinstance(instock, bool)
+        assert price is None or isinstance(price, float)
+        assert currency is None or isinstance(currency, basestring)
         assert brand is None or isinstance(brand, basestring)
         assert name is None or isinstance(name, basestring)
         assert title is None or isinstance(title, basestring)
         assert descr is None or isinstance(descr, basestring)
-        assert price is None or isinstance(price, float)
-        assert currency is None or isinstance(currency, basestring)
+        assert features is None or isinstance(features, list)
         assert img_url is None or isinstance(img_url, basestring)
         assert bread_crumb is None or isinstance(bread_crumb, list)
 
@@ -50,12 +53,13 @@ class ProductNetaPorter(object):
         self.canonical_url = canonical_url
         self.stocklevel = stocklevel
         self.instock = instock
+        self.price = price
+        self.currency = currency
         self.brand = brand
         self.name = re.sub('\s+', ' ', name.strip()) if name else None
         self.title = title
         self.descr = descr
-        self.price = price
-        self.currency = currency
+        self.features = features
         self.img_url = img_url
         self.bread_crumb = bread_crumb
 
@@ -71,17 +75,20 @@ class ProductNetaPorter(object):
     instock.....%s
     stocklevel..%s
     brand.......%s
+    price.......%s
+    currency....%s
     name........%s
     title.......%s
     descr.......%s
-    price.......%s
-    currency....%s
+    features....%s
     img_url.....%s
     bread_crumb.%s
 )''' % (self.id, self.canonical_url,
         self.instock, self.stocklevel,
-        self.brand, self.name, self.title, self.descr,
+        self.brand,
         self.price, self.currency,
+        self.name, self.title, self.descr,
+        self.features,
         self.img_url,
         self.bread_crumb)
 
@@ -102,7 +109,7 @@ class ProductNetaPorter(object):
             name=self.name,
             title=self.title,
             descr=self.descr,
-            features=None,
+            features=self.features,
             color=None,
             available_colors=None,
             size=None,
@@ -120,56 +127,62 @@ class ProductsNetaPorter(object):
         starttime = time.time()
 
         soup = BeautifulSoup(html)
+        meta = HTMLMetadata.do_html_metadata(soup)
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
-        pd = ProductsNetaPorter.do_meta_product_data(soup)
-        meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
+        # TODO: consolidate this mess...
+        pd = ProductsNetaPorter.do_meta_product_data(soup)
         ba = ProductsNetaPorter.do_body_attrs(soup)
         mi = ProductsNetaPorter.get_meta_itemprop(soup)
-
+        pa = ProductsNetaPorter.get_product_attrs(soup)
+        custom =  ProductsNetaPorter.get_custom(soup)
         #pprint(utag)
 
         sp = sp[0] if sp else {}
 
         signals = {
-            'sp':   SchemaOrg.to_json(sp),
-            'og':   og,
-            'pd':   pd,
             'meta': meta,
+            'og':   og,
+            'sp':   SchemaOrg.to_json(sp),
+            'pd':   pd,
             'ba':   ba,
             'mi':   mi,
+            'pa':   pa,
+            'custom': custom,
         }
-
         #pprint(signals)
 
         products = []
 
-        # is there one or more product on the page?
-        if (sp
-            or pd
-            or mi.get('product_id')
-            or og.get('type') == u'product'):
-            # ok, there's 1+ product. extract them...
+        prodid = (pa.get('prodid')
+                    or nth(sp.get('id'), 0)
+                    or pd.get('id')
+                    or mi.get('product_id') or None)
+
+        if prodid:
 
             p = ProductNetaPorter(
-                id=(nth(sp.get('id'), 0)
-                    or pd.get('id')
-                    or mi.get('product_id') or None),
+                id=prodid,
                 canonical_url=nth(sp.get('url'), 0) or url,
                 stocklevel=None,
                 instock=pd.get('availability'),
-                brand=pd.get('brand') or None,
+                price=pd.get('price') or None,
+                currency=ba.get('currency') or None,
+                brand=(pa.get('brand')
+                        or pd.get('brand')
+                        or custom.get('brand') or None),
                 name=(nth(sp.get('name'), 0)
                         or og.get('title')
                         or mi.get('name')
                         or meta.get('title')
                         or None),
                 title=meta.get('title') or None,
-                descr=meta.get('description'),
-                price=pd.get('price') or None,
-                currency=ba.get('currency') or None,
-                img_url=nth(sp.get('image'), 0) or mi.get('image') or None,
+                descr=(custom.get('descr')
+                        or meta.get('description')),
+                features=custom.get('features') or None,
+                img_url=(nth(sp.get('image'), 0)
+                            or mi.get('image') or None),
                 bread_crumb=(pd.get('bread_crumb')
                                 or mi.get('bread_crumb')
                                 or None)
@@ -220,13 +233,12 @@ class ProductsNetaPorter(object):
             data-currency-symbol="$"
             data-layout-id="responsive"
         '''
-        b = soup.find('body')
-        attrs = dict(b.attrs) if b else {}
+        body = soup.find('body') or {}
         data = {
-            'country': attrs.get('data-country'),
-            'currency': attrs.get('data-currency-code'),
-            'language': attrs.get('data-language'),
-            'region': attrs.get('data-region'),
+            'country': body.get('data-country'),
+            'currency': body.get('data-currency-code'),
+            'language': body.get('data-language'),
+            'region': body.get('data-region'),
         }
         return data
 
@@ -258,7 +270,7 @@ class ProductsNetaPorter(object):
             price = float(attrs.get('data-price')) / 100 if 'data-price' in attrs else None
             name = attrs.get('data-analytics-key').strip() if 'data-analytics-key' in attrs else None
             data = {
-                'id': attrs.get('data-pid'),
+                'id': attrs.get('data-pid') or None,
                 'availability': available,
                 'brand': brand_name,
                 'bread_crumb': bread_crumb,
@@ -268,7 +280,7 @@ class ProductsNetaPorter(object):
         return data
 
     @staticmethod
-    def do_schema_product(html):
+    def get_product_attrs(soup):
         '''
         bergdorfgoodman uses schema.org metadata
         ref: http://schema.org/
@@ -284,45 +296,81 @@ class ProductsNetaPorter(object):
             data-feature-colours="true"
         '''
 
-        product_uri = microdata.URI(u'http://schema.org/Product')
-        instock_uri = microdata.URI(u'http://schema.org/InStock')
+        p = soup.find(
+                {
+                    'data-designer-name': True,
+                    'itemtype': 'http://schema.org/Product',
+                }) or {}
 
-        sp = SchemaOrg.get_schema_product(html)
+        return {
+            'prodid': p.get('data-pid'),
+            'brand': p.get('data-designer-name'),
+            'breadcrumb': re.split(' / ', p.get('data-breadcrumb-keys') or ''),
+        }
 
-        sp = sp[0] if sp else {}
 
-        data = {}
-        if sp:
-            p = sp
-            if p.get(u'availability'):
-                data['availability'] = p[u'availability'][0] == product_uri
-            if p.get(u'brand'):
-                if p[u'brand'][0].get(u'url'):
-                    data['brand_url'] = p[u'brand'][0][u'url']
-                if p[u'brand'][0].get(u'name'):
-                    data['brand_name'] = p[u'brand'][0][u'name']
-            if p.get(u'category'):
-                data['category'] = re.split('\s*/\s*', p[u'category'][0])
-            if p.get(u'image'):
-                data['image_url'] = p[u'image'][0]
-            if p.get(u'name'):
-                data['name'] = p[u'name'][0]
-            if p.get(u'productID'):
-                data['id'] = p[u'productID'][0]
-            if p.get(u'url'):
-                data['url'] = p[u'url'][0]
+    @staticmethod
+    def get_custom(soup):
+        '''
+        <h1 itemprop="brand" itemscope itemtype="http://schema.org/Brand">
+            <a class="designer-name" href="/Shop/Designers/Jimmy_Choo" itemprop="url">
+                <span itemprop="name">Jimmy Choo</span>
+            </a>
+        </h1>
+        '''
+        brand = None
+        tag = soup.find(itemprop='brand',
+                        itemtype='http://schema.org/Brand')
+        if tag:
+            name = tag.find(itemprop='name')
+            if name and hasattr(name, 'text'):
+                brand = name.text
 
-        return data
+        descr = None
+        features = None
+        '''
+        <widget-show-hide id="accordion-2" class="editors-notes js-accordion-tab accordion-tab" open name="Editor's Notes">
+            <div class="show-hide-title heading">
+                EDITORS&#x27; NOTES
+            </div>
+            <div class="show-hide-content">
+                <div class="wrapper">
+                    <p>
+                    Jimmy Choo's 'Lucy' pumps have been crafted in Italy from gleaming silver leather - a particularly versatile hue. This classic pair is designed with flattering d'Orsay cutouts and a slim ankle strap.<br><br>Shown here with: <a href="/us/en/product/582413">Anya Hindmarch Clutch</a>, <a href="/us/en/product/608807">Mary Katrantzou Dress</a>, <a href="/us/en/product/573377">Bottega Veneta Rings</a>, <a href="/us/en/product/646519">Pamela Love Cuff</a>, <a href="/us/en/product/571681">Arme De L'Amour Ring</a>, <a href="/us/en/product/608087">Gucci Ring</a>, <a href="/us/en/product/571678">Arme De L'Amour Bracelet</a>.
+                    </p>
+                    <ul class="font-list-copy">
+                        <li>- Heel measures approximately 100mm/ 4 inches</li>
+                        <li>- Silver leather</li>
+                        <li>- Buckle-fastening ankle strap</li>
+                        <li>- Designer color: Steel</li>
+                        <li>- Made in Italy</li>
+                    </ul>
+                </div>
+            </div>
+        </widget-show-hide>
+        '''
+        ed = soup.find('widget-show-hide')#{'class': lambda c: c and 'editors-notes' in c})
+        if ed:
+            p = ed.find('p')
+            if p:
+                descr = normstring(p.get_text())
+            features = [re.sub('^[-]\s+', '', normstring(li.get_text()))
+                            for li in ed.findAll('li')] or None
 
+        return {
+            'brand': brand,
+            'descr': descr,
+            'features': features,
+        }
 
 if __name__ == '__main__':
 
     url = 'http://www.net-a-porter.com/product/638211'
     filepath = 'test/www.net-a-porter.com-us-en-product-638211-christian_louboutin-so-kate-120-leather-pumps.gz'
+    filepath = 'test/www.net-a-porter.com-us-en-product-638341-jimmy_choo-lucy-metallic-leather-pumps.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
-        products = ProductsNetaPorter.from_html(url, html)
 
+    products = ProductsNetaPorter.from_html(url, html)
     print products
-
