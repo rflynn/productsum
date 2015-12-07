@@ -111,8 +111,8 @@ class ProductMacys(object):
         self.bread_crumb = bread_crumb
         self.category = normstring(dehtmlify(category))
         self.brand = normstring(dehtmlify(brand))
-        self.name = normstring(name)
-        self.title = normstring(title)
+        self.name = normstring(dehtmlify(name))
+        self.title = normstring(dehtmlify(title))
         self.descr = dehtmlify(descr)
         self.price = price
         self.sale_price = sale_price
