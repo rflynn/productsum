@@ -378,8 +378,7 @@ nce: N--><!-- Padding: Lightly lined--><!-- Wire: Underwire-->
             #'product_code': obj.get('product_code'),
             'descr': descr,
             'features': features,
-            #'colors': obj['colors'].get('colors') if 'colors' in obj else None,
-            #'brand': obj['brand_name'].get('label') if 'brand_name' in obj else None,
+            'brand': None, # TODO: dammit...
             #'brandid': obj.get('brandid'),
             #'brandcatid': obj.get('brandcatid'),
             #'breadcrumb': re.split('\s+>\s+', obj.get('pageName') or '') or None,

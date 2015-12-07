@@ -84,6 +84,7 @@ class Product(object):
         assert isinstance(img_urls,         (type(None), list))
 
         # logical checking
+        assert merchant_sku
         # no false-y entries e.g. [''] or [None]
         assert not available_colors or all(available_colors)
         assert not available_sizes or all(available_sizes)
