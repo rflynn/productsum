@@ -187,6 +187,7 @@ pool = multiprocessing.Pool(POOLSIZE, worker, (q1, q2,))
 
 sent = 0
 recv = 0
+skip = 0
 
 # parsing the HTML is dreadfully slow old sport
 # so we had to pool our CPUs don't you know
@@ -206,11 +207,14 @@ try:
             url = link['url']
             sent += 1
             print sent, url.encode('utf8')
-            q1.put((url, host, sha256))
-            if sent - recv >= POOLSIZE * 2:
-                # input queue full enough, process output.
-                # throttles input rate
-                recv += handle_responses(q2, min_handle=1)
+            if sent < skip:
+                recv += 1 # fake it
+            else:
+                q1.put((url, host, sha256))
+                if sent - recv >= POOLSIZE * 2:
+                    # input queue full enough, process output.
+                    # throttles input rate
+                    recv += handle_responses(q2, min_handle=1)
             if sent % 1000 == 0:
                 show_progress(sent, recv)
     handle_responses(q2, sent - recv)
