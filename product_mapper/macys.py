@@ -8,7 +8,6 @@ map a document archived from macys.com to zero or more products
 
 from bs4 import BeautifulSoup
 import execjs
-import gzip
 from pprint import pprint
 import re
 import time
@@ -157,7 +156,7 @@ class ProductMacys(object):
             merchant_slug='macys',
             url_canonical=self.canonical_url,
             upc=self.upc,
-            merchant_sku=str(self.prodid),
+            merchant_sku=self.prodid,
             merchant_product_obj=self,
             price=self.price,
             sale_price=self.sale_price,
@@ -471,6 +470,8 @@ Globals.setValue( "props", {
         return data
 
 if __name__ == '__main__':
+
+    import gzip
 
     # test no-op, where page is empty-ish
     filepath = 'test/www1.macys.com-shop-product-burberry-my-burberry-eau-de-parfum-3.4-oz-holiday-edition.gz'
