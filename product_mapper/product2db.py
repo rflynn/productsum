@@ -254,7 +254,7 @@ try:
                 recv += 1 # fake it
             else:
                 q1.put((url, host, sha256))
-                if sent - recv >= POOLSIZE * 2:
+                if q1.qsize() >= POOLSIZE * 2:
                     # input queue full enough, process output.
                     # throttles input rate
                     recv += handle_responses(q2, min_handle=1)
