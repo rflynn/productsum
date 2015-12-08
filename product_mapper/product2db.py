@@ -88,6 +88,7 @@ def each_link(url_host=None):
         resp = table.query(
             IndexName='host-index',
             KeyConditionExpression=Key('host').eq(url_host),
+            FilterExpression=fe,
             ProjectionExpression=pe,
             ExpressionAttributeNames=ean
         )
@@ -98,6 +99,7 @@ def each_link(url_host=None):
                 ExclusiveStartKey=resp['LastEvaluatedKey'],
                 IndexName='host-index',
                 KeyConditionExpression=Key('host').eq(url_host),
+                FilterExpression=fe,
                 ProjectionExpression=pe,
                 ExpressionAttributeNames=ean
             )
