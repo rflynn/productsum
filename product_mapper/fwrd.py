@@ -38,7 +38,7 @@ class ProductFwrd(object):
         assert category is None or isinstance(category, basestring)
         assert bread_crumb is None or isinstance(bread_crumb, list)
         assert price is None or isinstance(price, basestring)
-        assert sale_price is None or isinstance(price, basestring)
+        assert sale_price is None or isinstance(sale_price, basestring)
         assert currency is None or isinstance(currency, basestring)
         assert name is None or isinstance(name, basestring)
         assert title is None or isinstance(title, basestring)
