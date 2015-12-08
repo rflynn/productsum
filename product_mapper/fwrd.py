@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from revolveclothing.com to zero or more products
+map a document archived from fwrd.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup

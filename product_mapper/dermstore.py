@@ -6,12 +6,12 @@ map a document archived from dermstore.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
-import gzip
 import execjs
 from pprint import pprint
 import re
 import time
 import traceback
+from yurl import URL
 
 from htmlmetadata import HTMLMetadata
 from og import OG
@@ -131,6 +131,32 @@ class ProductsDermstore(object):
 
         starttime = time.time()
 
+        u = URL(url)
+
+        if (u.path.startswith('/list_')
+         or u.path.startswith('/profile_')):
+            # there are tens of thousands of lists and profiles, and they don't contain product info...
+            # skip them
+            signals, products = {}, []
+        else:
+            signals, products = ProductsDermstore._do_from_html(url, html)
+
+        realproducts = [p.to_product() for p in products]
+
+        page = ProductMapResultPage(
+                 merchant_slug='dermstore',
+                 url=url,
+                 size=len(html),
+                 proctime=time.time() - starttime,
+                 signals=signals)
+
+        return ProductMapResult(page=page,
+                                products=realproducts)
+
+
+    @staticmethod
+    def _do_from_html(url, html):
+
         products = []
 
         soup = BeautifulSoup(html)
@@ -184,17 +210,7 @@ class ProductsDermstore(object):
             )
             products.append(p)
 
-        realproducts = [p.to_product() for p in products]
-
-        page = ProductMapResultPage(
-                 merchant_slug='dermstore',
-                 url=url,
-                 size=len(html),
-                 proctime = time.time() - starttime,
-                 signals=signals)
-
-        return ProductMapResult(page=page,
-                                products=realproducts)
+        return signals, products
 
 
     @staticmethod
@@ -333,10 +349,20 @@ dataLayer.push({
 
 if __name__ == '__main__':
 
-    url = 'http://dermstore.example/'
+    import gzip
+
+    url = 'http://www.dermstore.com/product_Mild+Gel+Wash_363.htm'
     filepath = 'test/www.dermstore.com-product_Mild+Gel+Wash_363.htm.gz'
+
+    url = 'http://www.dermstore.com/product_Hair+Straightening+Ceramic+Brush_63616.htm'
     filepath = 'test/www.dermstore.com-product_Hair+Straightening+Ceramic+Brush_63616.htm-sold-out.gz'
+
+    url = 'http://www.dermstore.com/product_Lipstick_31136.htm'
     filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
+
+    # test skipping over a list (filepath just has to exist)
+    #url = 'http://www.dermstore.com/list_100113-501453-500006.htm'
+    #filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
