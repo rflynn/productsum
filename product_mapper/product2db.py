@@ -163,6 +163,8 @@ def handle_responses(q2, min_handle=0):
             results = _get_nowait(q2)
     except KeyboardInterrupt:
         pass
+    except:
+        traceback.print_exc()
     return recv
 
 
