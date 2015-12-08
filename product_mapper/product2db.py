@@ -95,8 +95,9 @@ def each_link(url_host=None):
             yield item
         while 'LastEvaluatedKey' in resp:
             resp = table.query(
-                IndexName='host-index',
                 ExclusiveStartKey=resp['LastEvaluatedKey'],
+                IndexName='host-index',
+                KeyConditionExpression=Key('host').eq(url_host),
                 ProjectionExpression=pe,
                 ExpressionAttributeNames=ean
             )
