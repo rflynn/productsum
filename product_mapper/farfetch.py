@@ -5,12 +5,9 @@ map a document archived from farfetch.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
-import base64
-import gzip
 import json
 from pprint import pprint
 import re
-import requests
 import time
 
 from htmlmetadata import HTMLMetadata
@@ -243,14 +240,13 @@ class ProductsFarfetch(object):
             'uv':  uv,
         }
 
+        prodid = uv.get('id') or None
+
         # is there one or more product on the page?
-        if (og.get('type') == u'product'
-            #or utag.get(u'page_type') == u'Product Detail'
-            or twit.get('twitter:card') == u'product'
-            or uv.get('sku_code')):
+        if prodid:
 
             p = ProductFarfetch(
-                id=uv.get('id') or None,
+                id=prodid,
                 canonical_url=url,
                 sku=nth(sp.get(u'sku'), 0) or uv.get('sku') or None,
                 brand=uv.get('brand') or None,
@@ -295,14 +291,13 @@ class ProductsFarfetch(object):
 
 if __name__ == '__main__':
 
+    import gzip
+
+    url = 'http://farfetch.example/'
     filepath = 'test/www.farfetch.com-shopping-women-jimmy-choo--lucy-pumps-item-11249317.aspx.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
-        products = ProductsFarfetch.from_html('http://farfetch.example/', html)
 
+    products = ProductsFarfetch.from_html(url, html)
     print products
-
-
-'''
-'''
