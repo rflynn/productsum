@@ -86,6 +86,7 @@ def each_link(url_host=None):
     elif url_host is not None:
         # query for a specific url_host
         resp = table.query(
+            IndexName='host-index',
             KeyConditionExpression=Key('host').eq(url_host),
             ProjectionExpression=pe,
             ExpressionAttributeNames=ean
@@ -94,6 +95,7 @@ def each_link(url_host=None):
             yield item
         while 'LastEvaluatedKey' in resp:
             resp = table.query(
+                IndexName='host-index',
                 ExclusiveStartKey=resp['LastEvaluatedKey'],
                 ProjectionExpression=pe,
                 ExpressionAttributeNames=ean
