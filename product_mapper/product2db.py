@@ -14,6 +14,7 @@ import gc
 import multiprocessing
 import psycopg2
 import psycopg2.extensions
+import sys
 import time
 import traceback
 from yurl import URL
@@ -53,29 +54,53 @@ while reading metadata
 '''
 
 
-def each_link():
+def each_link(url_host=None):
+    # ref: http://boto3.readthedocs.org/en/latest/reference/customizations/dynamodb.html#ref-dynamodb-conditions
+
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('link')
-    # ref: http://boto3.readthedocs.org/en/latest/reference/customizations/dynamodb.html#ref-dynamodb-conditions
-    #fe = Key('year').between(1950, 1959);
+
     fe = Attr('body').ne(None) # TODO: does this work?
     pe = '#u,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
-    resp = table.scan(
-        FilterExpression=fe,
-        ProjectionExpression=pe,
-        ExpressionAttributeNames=ean
-    )
-    for item in resp['Items']:
-        yield item
-    while 'LastEvaluatedKey' in resp:
+
+    # TODO: refactor very similiar branches
+
+    if url_host is None:
+        # no url_host specified, scan the whole table...
         resp = table.scan(
-            ExclusiveStartKey=resp['LastEvaluatedKey'],
+            FilterExpression=fe,
             ProjectionExpression=pe,
             ExpressionAttributeNames=ean
         )
         for item in resp['Items']:
             yield item
+        while 'LastEvaluatedKey' in resp:
+            resp = table.scan(
+                ExclusiveStartKey=resp['LastEvaluatedKey'],
+                ProjectionExpression=pe,
+                ExpressionAttributeNames=ean
+            )
+            for item in resp['Items']:
+                yield item
+    elif url_host is not None:
+        # query for a specific url_host
+        resp = table.query(
+            KeyConditionExpression=Key('host').eq(url_host),
+            ProjectionExpression=pe,
+            ExpressionAttributeNames=ean
+        )
+        for item in resp['Items']:
+            yield item
+        while 'LastEvaluatedKey' in resp:
+            resp = table.query(
+                ExclusiveStartKey=resp['LastEvaluatedKey'],
+                ProjectionExpression=pe,
+                ExpressionAttributeNames=ean
+            )
+            for item in resp['Items']:
+                yield item
+
 
 def decompress_body(body):
     import gzip
@@ -180,6 +205,15 @@ def show_progress(sent, recv):
         elapsed, sent, recv, recvrate)
 
 
+url_host = None
+
+if len(sys.argv) > 1:
+    url_host = sys.argv[1]
+    print 'url_host:', url_host
+    if url_host not in Host2Map:
+        print 'url host not in ', sorted(Host2Map.keys())
+        sys.exit(1)
+
 man = multiprocessing.Manager()
 q1 = man.Queue()
 q2 = man.Queue()
@@ -203,7 +237,7 @@ if a link has a body, and we have a ProductMapper for that host
     also, process their output
 '''
 try:
-    for link in each_link():
+    for link in each_link(url_host=url_host):
         sha256 = link['body']
         host = link['host']
         if sha256 and host in Host2Map:
