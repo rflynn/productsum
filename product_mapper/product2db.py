@@ -9,6 +9,7 @@ sys.path.append('..')
 
 import binascii
 import boto3
+import botocore
 from boto3.dynamodb.conditions import Key, Attr
 import gc
 import multiprocessing
@@ -85,27 +86,41 @@ def each_link(url_host=None):
                 yield item
     elif url_host is not None:
         # query for a specific url_host
-        resp = table.query(
-            IndexName='host-index',
-            KeyConditionExpression=Key('host').eq(url_host),
-            FilterExpression=fe,
-            ProjectionExpression=pe,
-            ExpressionAttributeNames=ean
-        )
+
+        resp = None
+        # botocore.exceptions.ClientError: An error occurred (ProvisionedThroughputExceededException)
+        while resp is None:
+            try:
+                resp = table.query(
+                    IndexName='host-index',
+                    KeyConditionExpression=Key('host').eq(url_host),
+                    FilterExpression=fe,
+                    ProjectionExpression=pe,
+                    ExpressionAttributeNames=ean
+                )
+            except botocore.exceptions.ClientError as e:
+                print e
+                time.sleep(10)
         for item in resp['Items']:
             yield item
-        while 'LastEvaluatedKey' in resp:
-            resp = table.query(
-                ExclusiveStartKey=resp['LastEvaluatedKey'],
-                IndexName='host-index',
-                KeyConditionExpression=Key('host').eq(url_host),
-                FilterExpression=fe,
-                ProjectionExpression=pe,
-                ExpressionAttributeNames=ean
-            )
-            for item in resp['Items']:
-                yield item
 
+        while 'LastEvaluatedKey' in resp:
+            resp = None
+            while resp is None:
+                try:
+                    resp = table.query(
+                        ExclusiveStartKey=resp['LastEvaluatedKey'],
+                        IndexName='host-index',
+                        KeyConditionExpression=Key('host').eq(url_host),
+                        FilterExpression=fe,
+                        ProjectionExpression=pe,
+                        ExpressionAttributeNames=ean
+                    )
+                except botocore.exceptions.ClientError as e:
+                    print e
+                    time.sleep(10)
+                for item in resp['Items']:
+                    yield item
 
 def decompress_body(body):
     import gzip
