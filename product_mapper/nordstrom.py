@@ -46,6 +46,9 @@ class ProductNordstrom(object):
         self.img_urls = img_urls
 
         # fixup
+        if self.id is not None:
+            self.id = str(self.id) # ensure we're a string, some signals produce numeric
+        assert self.id != 'None'
         self.brand = dehtmlify(self.brand)
         self.name = dehtmlify(self.name)
         self.title = dehtmlify(self.title)
@@ -254,36 +257,36 @@ class ProductsNordstrom(object):
 
         #pprint(signals)
 
+        dd = ddx[0] if ddx else {}
+
         # NOTE: on the test product at least og[type] is 'website', oh well...
 
         products = []
 
-        if (ddx
-            or ppd.get('id')
-            or og.get('type') == u'product'):
+        prodid = ppd.get('id') or dd.get('id') or None
 
-            for dd in ddx:
-                p = ProductNordstrom(
-                    id=ppd.get('id') or dd.get('id') or None,
-                    url=url or og.get('url') or None,
-                    slug=ppd.get('slug') or None,
-                    style_number=ppd.get('style_number') or dd.get('style_number') or None,
-                    currency=None,
-                    current_price=ppd.get('current_price') or dd.get('current_price') or None,
-                    original_price=ppd.get('original_price') or None,
-                    brand=ppd.get('brand') or dd.get('brand') or None,
-                    brandpage=ppd.get('brandpage'),
-                    name=dd.get('name') or ppd.get('name') or None,
-                    title=dd.get('name') or ppd.get('title') or meta.get('title') or None,
-                    descr=dehtmlify(ppd.get('descr')) or meta.get('description') or None,
-                    in_stock=ppd.get('in_stock'),
-                    features=ppd.get('features') or None,
-                    color=dd.get('color') or None,
-                    colors=ppd.get('colors') or None,
-                    sizes=ppd.get('sizes') or None,
-                    img_urls=ppd.get('img_urls') or None
-                )
-                products.append(p)
+        if prodid:
+            p = ProductNordstrom(
+                id=prodid,
+                url=url or og.get('url') or None,
+                slug=ppd.get('slug') or None,
+                style_number=ppd.get('style_number') or dd.get('style_number') or None,
+                currency=None,
+                current_price=ppd.get('current_price') or dd.get('current_price') or None,
+                original_price=ppd.get('original_price') or None,
+                brand=ppd.get('brand') or dd.get('brand') or None,
+                brandpage=ppd.get('brandpage'),
+                name=dd.get('name') or ppd.get('name') or None,
+                title=dd.get('name') or ppd.get('title') or meta.get('title') or None,
+                descr=dehtmlify(ppd.get('descr')) or meta.get('description') or None,
+                in_stock=ppd.get('in_stock'),
+                features=ppd.get('features') or None,
+                color=dd.get('color') or None,
+                colors=ppd.get('colors') or None,
+                sizes=ppd.get('sizes') or None,
+                img_urls=ppd.get('img_urls') or None
+            )
+            products.append(p)
 
         realproducts = [p.to_product() for p in products]
 
