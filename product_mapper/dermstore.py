@@ -147,6 +147,7 @@ class ProductsDermstore(object):
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
             'meta': meta,
+            'utag': utag,
             'dl':   dl,
             'custom': custom,
         }
