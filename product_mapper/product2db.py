@@ -105,10 +105,10 @@ def each_link(url_host=None):
             yield item
 
         while 'LastEvaluatedKey' in resp:
-            resp = None
-            while resp is None:
+            r = None
+            while r is None:
                 try:
-                    resp = table.query(
+                    r = table.query(
                         ExclusiveStartKey=resp['LastEvaluatedKey'],
                         IndexName='host-index',
                         KeyConditionExpression=Key('host').eq(url_host),
@@ -116,6 +116,7 @@ def each_link(url_host=None):
                         ProjectionExpression=pe,
                         ExpressionAttributeNames=ean
                     )
+                    resp = r
                 except botocore.exceptions.ClientError as e:
                     print e
                     time.sleep(10)
