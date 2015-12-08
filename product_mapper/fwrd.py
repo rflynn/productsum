@@ -97,7 +97,7 @@ class ProductFwrd(object):
 )''' % (self.prodid, self.canonical_url,
        self.instock, self.stocklevel,
        self.price, self.sale_price, self.currency,
-       self.brand, self.category, self.bread_crumb, 
+       self.brand, self.category, self.bread_crumb,
        self.name, self.title, self.descr,
        self.features, self.size, self.sizes,
        self.color, self.colors,
@@ -154,7 +154,7 @@ class ProductsFwrd(object):
             'sp':   SchemaOrg.to_json(sp),
             'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         products = []
 
@@ -267,7 +267,7 @@ class ProductsFwrd(object):
                 >Can't Find Your Size</a></span>
         '''
         tag = soup.find(attrs={'data-code': True})
-        print 'prodid:', tag 
+        #print 'prodid:', tag
         if tag:
             prodid = tag.get('data-code')
 
@@ -300,15 +300,15 @@ class ProductsFwrd(object):
         '''
 
         prod_info = soup.find('div', {'class': 'product_info'})
-        print 'prod_info:', prod_info
+        #print 'prod_info:', prod_info
         if prod_info:
             tag = prod_info.find('h1', {'class': 'designer_brand'})
-            print 'tag:', tag
+            #print 'tag:', tag
             if tag:
                 brand = normstring(tag.text)
 
             tag = prod_info.find('h2', {'class': 'product_name'})
-            print 'tag:', tag
+            #print 'tag:', tag
             if tag:
                 name = normstring(tag.text)
 
@@ -337,7 +337,6 @@ class ProductsFwrd(object):
             tag = prod_info.find('div', {'class': 'product_detail'})
             if tag:
                 features = [normstring(li.get_text()) for li in tag.findAll('li') if li]
-        
 
         '''
             <label>Size</label>
@@ -389,11 +388,10 @@ class ProductsFwrd(object):
                             return 2 # logical inference...
                         quantity = [approx_quantity(t) for t in tags
                                         if t.get('value')]
-                        print 'quantity:', quantity
+                        #print 'quantity:', quantity
                         if quantity:
                             stock_level = sum(quantity)
-                    
-                    
+
         except Exception as e:
             traceback.print_exc()
             pass
@@ -419,7 +417,6 @@ class ProductsFwrd(object):
             <div class="product-detail-image-zoom">
                 <img alt="Image 2 of Rodarte Radarte Poly-Blend Sweatshirt in Heather Grey" src="https://is4.revolveassets.com/images/p/fw/z/RODA-UO3W_V2.jpg" data-zoom-image="https://is4.revolveassets.com/images/p/fw/z/RODA-UO3W_V2.jpg" class="product-detail-image" />
             </div>
-        
             ...
         </div>
         '''
@@ -434,7 +431,6 @@ class ProductsFwrd(object):
         '''
         <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/"><span itemprop="title">Women</span></a></div> / <div itemprop="child" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><span itemprop="title">Radarte Poly-Blend Sweatshirt</span></div>
         '''
-        
         # NOTE: they fucked this up; one breadcrumb item per?
         tags = soup.findAll(attrs={'itemtype': 'http://data-vocabulary.org/Breadcrumb'})
         if tags:
