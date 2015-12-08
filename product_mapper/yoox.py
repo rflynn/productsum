@@ -101,7 +101,7 @@ class ProductYoox(object):
         return Product(
             merchant_slug='yoox',
             url_canonical=self.canonical_url,
-            merchant_sku=str(self.prodid),
+            merchant_sku=self.prodid,
             merchant_product_obj=self,
             price=self.price,
             sale_price=self.sale_price,

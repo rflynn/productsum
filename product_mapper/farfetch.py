@@ -100,7 +100,7 @@ class ProductFarfetch(object):
         return Product(
             merchant_slug='farfetch',
             url_canonical=self.canonical_url,
-            merchant_sku=str(self.id),
+            merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.price,
             sale_price=self.sale_price,

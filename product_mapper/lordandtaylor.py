@@ -168,11 +168,13 @@ class ProductsLordandTaylor(object):
         }
         #pprint(signals)
 
+        prodid = custom.get('product_id') or None
+
         # is there one or more product on the page?
-        if (og.get('type') == u'product' or custom.get('product_id')):
+        if prodid:
 
             p = ProductLordandTaylor(
-                prodid=custom.get('product_id'),
+                prodid=prodid,
                 upc=custom.get('upc'),
                 canonical_url=og.get('url') or custom.get('url_canonical') or url,
                 stocklevel=custom.get('stock_level_total'),

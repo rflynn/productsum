@@ -340,15 +340,15 @@ class ProductsBluefly(object):
 
         products = []
 
-        if (og.get('type') == 'product'
-            or dd.get('productId')
-            or gaprod.get('id')):
-
-            p = ProductBluefly(
-                id=(dd.get('product_id')
+        prodid = (dd.get('product_id')
                     or gaprod.get('product_id')
                     or custom.get('sku')
-                    or None),
+                    or None)
+
+        if prodid:
+
+            p = ProductBluefly(
+                id=prodid,
                 url=og.get('url') or url or None,
                 in_stock=any(s.get('availability')
                                 for s in custom['skus'])

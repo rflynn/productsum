@@ -100,7 +100,7 @@ class ProductDermstore(object):
         return Product(
             merchant_slug='dermstore',
             url_canonical=self.canonical_url,
-            merchant_sku=str(self.prodid),
+            merchant_sku=self.prodid,
             merchant_product_obj=self,
             price=self.price,
             sale_price=None,
@@ -152,10 +152,11 @@ class ProductsDermstore(object):
         }
         #pprint(signals)
 
+        prodid = (nth(utag.get('product_id'), 0)
+                    or dl.get('id') or None)
+
         # is there one or more product on the page?
-        if (sp
-            or dl.get('pagetype') == 'product'
-            or og.get('type') == u'product'):
+        if prodid:
 
             name = (nth(sp.get('name'), 0)
                 or custom.get('name')
@@ -165,7 +166,7 @@ class ProductsDermstore(object):
                 or meta.get('title') or None)
 
             p = ProductDermstore(
-                prodid=nth(utag.get('product_id'), 0) or dl.get('id'),
+                prodid=prodid,
                 canonical_url=custom.get('url_canonical') or og.get('url') or url,
                 stocklevel=nth(utag.get('stock_level'), 0),
                 instock=xboolstr(nth(utag.get('product_available'), 0)) or og.get('availability') in ('instock',),

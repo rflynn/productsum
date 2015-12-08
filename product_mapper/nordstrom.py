@@ -110,7 +110,7 @@ class ProductNordstrom(object):
         return Product(
             merchant_slug='nordstrom',
             url_canonical=self.url,
-            merchant_sku=str(self.id),
+            merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.original_price,
             sale_price=self.current_price,

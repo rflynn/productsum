@@ -116,7 +116,7 @@ class ProductSaks(object):
         return Product(
             merchant_slug='saks',
             url_canonical=self.canonical_url,
-            merchant_sku=str(self.prodid),
+            merchant_sku=self.prodid,
             upc=self.upc,
             merchant_product_obj=self,
             price=self.price,
@@ -162,11 +162,13 @@ class ProductsSaks(object):
         }
         #pprint(signals)
 
+        prodid = mlrs.get('product_id') or None
+
         # is there one or more product on the page?
-        if (mlrs.get('product_id') or og.get('type') == u'product'):
+        if prodid:
 
             p = ProductSaks(
-                prodid=mlrs.get('product_id'),
+                prodid=prodid,
                 upc=mlrs.get('upc'),
                 canonical_url=mlrs.get('url_canonical') or og.get('url') or url,
                 stocklevel=None,

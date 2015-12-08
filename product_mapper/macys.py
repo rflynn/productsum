@@ -214,63 +214,58 @@ class ProductsMacys(object):
         }
         #pprint(signals)
 
-        # is there one or more product on the page?
-        if (sp
-            or og.get('type') == u'product' # macys says 'website'...
-            or utag.get(u'page_type') == u'Product Detail'
-            or tw.get('product id')
-            or macy.get('productid')
-            or pdp.get('id')):
-            # ok, there's 1+ product. extract them...
+        prodid=(nth(utag.get('productID'), 0)
+                or tw.get('product id')
+                or pdp.get('id') or None)
 
-                offer = {}
-                if sp.get('offers'):
-                    try:
-                        offer = sp.get('offers')[0]['properties']
-                    except:
-                        pass
+        if prodid:
 
-                p = ProductMacys(
-                        prodid=(nth(utag.get('productID'), 0)
-                                or tw.get('product id')
-                                or pdp.get('id') or None),
-                        canonical_url=url,
-                        upc=upcmap.get('upc') or None,
-                        stocklevel=nth(utag.get('stock_level'), 0) or None,
-                        instock=(xboolstr(nth(utag.get('product_available'), 0))
-                                or xboolstr(pdp.get('inStock'))
-                                or xboolstr(upcmap.get('isAvailable'))
-                                or None),
-                        bread_crumb=(macy.get('breadcrumb')
-                                    or pdp.get('breadcrumb') or None),
-                        category=(macy.get('category')
-                                or pdp.get('category') or None),
-                        brand=nth(sp.get(u'brand'), 0) or None,
-                        name=(nth(sp.get('name'), 0)
-                            or pdp.get('name')
-                            or og.get('title')
-                            or meta.get('title') or None),
-                        title=(og.get('title')
-                            or tw.get('title')
-                            or meta.get('title')
-                            or pdp.get('title') or None),
-                        descr=(nth(sp.get('description'), 0)
-                            or tw.get('description')
-                            or meta.get('description') or None),
-                        price=(nth(offer.get('price'), 0)
-                            or pdp.get('regularPrice')
-                            or tw.get('price') or None),
-                        sale_price=pdp.get('salePrice') or None,
-                        currency=nth(offer.get('priceCurrency'), 0) or None,
-                        color=upcmap.get('color') or None,
-                        size=upcmap.get('size') or None,
-                        img_url=(pdp.get('imageUrl')
-                                or nth(sp.get('image'), 0)
-                                or og.get('image')
-                                or tw.get('image') or None),
-                        features=macy.get('features')
-                )
-                products.append(p)
+            offer = {}
+            if sp.get('offers'):
+                try:
+                    offer = sp.get('offers')[0]['properties']
+                except:
+                    pass
+
+            p = ProductMacys(
+                    prodid=prodid,
+                    canonical_url=url,
+                    upc=upcmap.get('upc') or None,
+                    stocklevel=nth(utag.get('stock_level'), 0) or None,
+                    instock=(xboolstr(nth(utag.get('product_available'), 0))
+                            or xboolstr(pdp.get('inStock'))
+                            or xboolstr(upcmap.get('isAvailable'))
+                            or None),
+                    bread_crumb=(macy.get('breadcrumb')
+                                or pdp.get('breadcrumb') or None),
+                    category=(macy.get('category')
+                            or pdp.get('category') or None),
+                    brand=nth(sp.get(u'brand'), 0) or None,
+                    name=(nth(sp.get('name'), 0)
+                        or pdp.get('name')
+                        or og.get('title')
+                        or meta.get('title') or None),
+                    title=(og.get('title')
+                        or tw.get('title')
+                        or meta.get('title')
+                        or pdp.get('title') or None),
+                    descr=(nth(sp.get('description'), 0)
+                        or tw.get('description')
+                        or meta.get('description') or None),
+                    price=(nth(offer.get('price'), 0)
+                        or pdp.get('regularPrice')
+                        or tw.get('price') or None),
+                    sale_price=pdp.get('salePrice') or None,
+                    currency=nth(offer.get('priceCurrency'), 0) or None,
+                    color=upcmap.get('color') or None,
+                    size=upcmap.get('size') or None,
+                    img_url=(pdp.get('imageUrl')
+                            or nth(sp.get('image'), 0)
+                            or og.get('image')
+                            or tw.get('image') or None),
+                    features=macy.get('features')
+            )
+            products.append(p)
 
         realproducts = [p.to_product() for p in products]
 
