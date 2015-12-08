@@ -19,6 +19,7 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import flatten, nth, xstrip, normstring, xint, xboolstr, maybe_join, dehtmlify
 
+
 # ref: http://help.wanelo.com/customer/portal/articles/1527843-how-can-i-use-meta-tags-to-keep-store-product-info-accurate-
 def get_meta_wanelo(soup):
     '''

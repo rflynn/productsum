@@ -6,14 +6,11 @@ map a document archived from net-a-porter.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
-import json
 from pprint import pprint
 import re
-import requests
 import time
 import traceback
 from urlparse import urljoin
-from yurl import URL
 
 from htmlmetadata import HTMLMetadata
 from og import OG
