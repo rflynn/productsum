@@ -6,14 +6,12 @@ map a document archived from net-a-porter.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
-import base64
-import gzip
 import json
-import microdata
 from pprint import pprint
 import re
 import requests
 import time
+import traceback
 from urlparse import urljoin
 from yurl import URL
 
@@ -22,7 +20,7 @@ from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
-from util import nth, xboolstr, normstring
+from util import nth, xboolstr, normstring, xstrip
 
 
 class ProductNetaPorter(object):
@@ -56,7 +54,7 @@ class ProductNetaPorter(object):
         self.price = price
         self.currency = currency
         self.brand = brand
-        self.name = re.sub('\s+', ' ', name.strip()) if name else None
+        self.name = normstring(name)
         self.title = title
         self.descr = descr
         self.features = features
@@ -96,7 +94,7 @@ class ProductNetaPorter(object):
         return Product(
             merchant_slug='netaporter',
             url_canonical=self.canonical_url,
-            merchant_sku=str(self.id),
+            merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.price,
             sale_price=None,
@@ -136,15 +134,16 @@ class ProductsNetaPorter(object):
         ba = ProductsNetaPorter.do_body_attrs(soup)
         mi = ProductsNetaPorter.get_meta_itemprop(soup)
         pa = ProductsNetaPorter.get_product_attrs(soup)
-        custom =  ProductsNetaPorter.get_custom(soup)
+        custom = ProductsNetaPorter.get_custom(soup)
         #pprint(utag)
 
         sp = sp[0] if sp else {}
 
         signals = {
             'meta': meta,
-            'og':   og,
             'sp':   SchemaOrg.to_json(sp),
+            'og':   og,
+            'utag': utag,
             'pd':   pd,
             'ba':   ba,
             'mi':   mi,
@@ -217,7 +216,7 @@ class ProductsNetaPorter(object):
                     for m in soup.findAll('meta', itemprop=True)}
             data = {
                 'bread_crumb': re.split('\s+/\s+', d['category']) if 'category' in d else None,
-                'name': d['name'].strip() if 'name' in d else None,
+                'name': xstrip(d['name']) if 'name' in d else None,
                 'product_id': d.get('productID') or None,
             }
         return data
@@ -260,15 +259,25 @@ class ProductsNetaPorter(object):
             data-price="67500"
         '''
         data = {}
+        sold_out = None
+        available = None
+        brand_name = None
+        bread_crumb = None
+        price = None
+        name = None
         if attrs.get('product-data') == 'product-data':
             print 'not product-data, got %s' % (attrs.get('product-data'),)
         else:
-            sold_out = xboolstr(attrs.get('data-sold-out'))
-            available = not sold_out if sold_out is not None else None
-            brand_name = attrs.get('data-designer-name').replace('_', ' ') if 'data-designer-name' in attrs else None
-            bread_crumb = re.split('\s*/\s*', attrs.get('data-breadcrumb-names').strip()) if 'data-breadcrumb-names' in attrs else None
-            price = float(attrs.get('data-price')) / 100 if 'data-price' in attrs else None
-            name = attrs.get('data-analytics-key').strip() if 'data-analytics-key' in attrs else None
+            try:
+                sold_out = xboolstr(attrs.get('data-sold-out'))
+                available = not sold_out if sold_out is not None else None
+                brand_name = attrs.get('data-designer-name').replace('_', ' ') if 'data-designer-name' in attrs else None
+                bread_crumb = re.split('\s*/\s*', attrs.get('data-breadcrumb-names').strip()) if 'data-breadcrumb-names' in attrs else None
+                price = float(attrs.get('data-price')) / 100 if 'data-price' in attrs else None
+                name = attrs.get('data-analytics-key').strip() if 'data-analytics-key' in attrs else None
+            except:
+                traceback.print_exc()
+
             data = {
                 'id': attrs.get('data-pid') or None,
                 'availability': available,
@@ -364,6 +373,8 @@ class ProductsNetaPorter(object):
         }
 
 if __name__ == '__main__':
+
+    import gzip
 
     url = 'http://www.net-a-porter.com/product/638211'
     filepath = 'test/www.net-a-porter.com-us-en-product-638211-christian_louboutin-so-kate-120-leather-pumps.gz'

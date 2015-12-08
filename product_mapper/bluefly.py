@@ -287,7 +287,7 @@ class ProductBluefly(object):
         return Product(
             merchant_slug='bluefly',
             url_canonical=self.url,
-            merchant_sku=str(self.id),
+            merchant_sku=self.id,
             name=self.name,
             title=self.title,
             descr=self.descr,

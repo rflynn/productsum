@@ -122,7 +122,7 @@ class ProductLordandTaylor(object):
         return Product(
             merchant_slug='lordandtaylor',
             url_canonical=self.canonical_url,
-            merchant_sku=str(self.prodid),
+            merchant_sku=self.prodid,
             upc=self.upc,
             merchant_product_obj=self,
             price=self.price,
