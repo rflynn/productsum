@@ -197,7 +197,7 @@ ather pumps"}}]}]</script>
     if tag:
         try:
             obj = json.loads(tag.text)
-            pprint(obj)
+            #pprint(obj)
             o = obj[0]
             prodid = o.get('sku')
             name = o.get('name')
@@ -232,9 +232,9 @@ ather pumps"}}]}]</script>
         if m:
             try:
                 objstr = m.group(1)
-                print objstr
+                #print objstr
                 obj = json.loads(objstr)
-                pprint(obj)
+                #pprint(obj)
                 if obj:
                     # they're all the same...
                     anyofthem = obj.values()[0]
