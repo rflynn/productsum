@@ -122,9 +122,14 @@ class ProductDermstore(object):
         )
 
 
-
-
 class ProductsDermstore(object):
+
+    @staticmethod
+    def dynamodb_filter():
+        # TODO: instead of just filtering by url once we've already fetched the page,
+        # implement an interface that allows us to control which urls are even attempted!
+        # filter: url contains '.dermstore.com/product_'
+        raise NotImplementedError()
 
     @staticmethod
     def from_html(url, html):

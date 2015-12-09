@@ -122,8 +122,14 @@ class Product(object):
         self.available_colors = available_colors
         self.size = size
         self.available_sizes = available_sizes
-        self.img_url = img_url if img_url else img_urls[0] if img_urls else None
+        self.img_url = img_url
         self.img_urls = img_urls
+
+        # cross-populate
+        if img_url and not img_urls:
+            self.img_urls = [img_url]
+        elif img_urls and not img_url:
+            self.img_url = self.img_urls[0]
 
         self.fixup_upc()
         self.fixup_prices_and_currency()

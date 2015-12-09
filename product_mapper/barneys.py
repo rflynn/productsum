@@ -1,7 +1,7 @@
 # ex: set ts=4 et:
 
 '''
-map a document archived from shopbop.com to zero or more products
+map a document archived from barneys.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -20,7 +20,7 @@ from tealium import Tealium
 from util import nth, normstring, xboolstr
 
 
-class ProductShopbop(object):
+class ProductBarneys(object):
     def __init__(self,
                  prodid=None,
                  canonical_url=None,
@@ -72,7 +72,7 @@ class ProductShopbop(object):
             self.title = self.title[:-11]
 
     def __repr__(self):
-        return '''ProductShopbop:
+        return '''ProductBarneys:
     prodid...........%s
     url..............%s
     brand............%s
@@ -118,7 +118,7 @@ class ProductShopbop(object):
 
     def to_product(self):
         return Product(
-            merchant_slug='shopbop',
+            merchant_slug='barneys',
             url_canonical=self.canonical_url,
             merchant_sku=self.prodid,
             merchant_product_obj=self,
@@ -143,97 +143,42 @@ class ProductShopbop(object):
 
 
 
-def get_script_ProductDetail(soup):
-    '''
-    <script type="text/javascript">
-        var productDetail={
-            "colors": {
-        ...
-    '''
-    product = {}
+def get_custom(soup):
 
-    dd = {}
-    pd = {}
-    pp = {}
+    product = {}
 
     prodid = None
     brand = None
     name = None
     in_stock = None
     price = None
-    sale_price = None
+    currency = None
     sizes = None
-    colors = None
+    color = None
     img_url = None
     img_urls = None
 
-    pi = soup.find(id='product-information')
-    print pi
-    if pi:
-        tag = pi.find(itemprop='brand')
-        if tag:
-            brand = normstring(tag.get_text())
-        tag = pi.find(itemprop='name')
-        if tag:
-            name = normstring(tag.get_text())
-
-    script = soup.find('script', text=lambda t: t and 'var productDetail' in t)
-    if script:
-        m = re.search('{[^;]+}\s*;', script.text, re.DOTALL)
-        if m:
-            objstr = m.group(0).rstrip(';')
-            pd = json.loads(objstr)
-            #pprint(pd)
-            if 'sizes' in pd:
-                sizes = sorted(pd.get('sizes').keys())
-            if 'colors' in pd:
-                try:
-                    colors = [
-                        v.get('colorName')
-                            for k, v in pd['colors'].iteritems()
-                                if v.get('colorName')]
-                    img_urls = [
-                        v2['main']
-                            for k2, v2 in
-                                v['images'].iteritems()
-                                    for k, v in pd['colors'].iteritems()]
-                    if img_urls:
-                        img_url = img_urls[0]
-                except:
-                    traceback.print_exc()
-
-    script = soup.find('script', text=lambda t: t and 'var productPage' in t)
-    if script:
-        m = re.search('var productPage.*', script.text, re.DOTALL)
-        if m:
-            objstr = m.group(0)
-            objstr = 'var digitalData={};' + objstr + '; return productPage;'
-            pp = execjs.exec_(objstr) or {}
-            #pprint(pp)
-            if pp:
-                prodid = pp.get('productCode') or None
-                in_stock = xboolstr(pp.get('isInStock')) or None
-                price = pp.get('listPrice') or None
-                sale_price = pp.get('sellingPrice') or None
-
     '''
-    <script type='text/javascript'><!--
-        var t0_date = new Date();
-        window.ue_t0 = t0_date.getTime();
-        var headerCountryCode = 'US';
-        var chosenLanguageCode = 'en';
-        var s_account = "amznshopbopprod";
-        var digitalData = {"page":{"pageInfo":{"authState":"anonymous","variant":"prod","authType":"anonymous"},"attributes":{"country":"US","language":"en","currency":"USD","brand":"womens","platform":"www"},"category":{"primaryCategory":"Product:SERGI20248"}}} ;
-        //--></script>
+    <meta property="product:brand" content="Sergio Rossi" />
+    <meta property="product:retailer_part_no" content="504296100" />
+    <meta property="product:price:amount" content="995.00" />
+    <meta property="product:price:currency" content="USD" />
+    <meta property="product:availability" content="instock" />
+    <meta property="product:color" content="null" />
     '''
-    script = soup.find('script', text=lambda t: t and 'var digitalData' in t)
-    if script:
-        m = re.search('var digitalData\s*=\s*({[^;]+})\s*;', script.text, re.DOTALL)
-        if m:
-            objstr = m.group(1)
-            #print 'objstr:', objstr
-            dd = json.loads(objstr)
-            #pprint(dd)
+    mp = {t['property'][8:]: t['content'] for t in
+            soup.findAll('meta', content=True,
+                            property=re.compile('^product:'))}
+    pprint(mp)
+    prodid = mp.get('retailer_part_no') or None
+    brand = mp.get('brand') or None
+    price = mp.get('price:amount')
+    currency = mp.get('price:currency')
+    if 'availability' in mp:
+        in_stock = mp['availability'].lower() in ('instock', 'in stock')
+    if 'color' in mp:
+        if mp['color'] and mp['color'].lower() != 'null':
+            color = mp['color']
 
     product = {
         'prodid': prodid,
@@ -241,20 +186,17 @@ def get_script_ProductDetail(soup):
         'name': name,
         'in_stock': in_stock,
         'price': price,
-        'sale_price': sale_price,
+        'currency': currency,
         'sizes': sizes,
-        'colors': colors,
+        'color': color,
         'img_url': img_url,
         'img_urls': img_urls,
-        'dd': dd,
-        'pd': pd,
-        'pp': pp,
     }
     pprint(product)
     return product
 
 
-class ProductsShopbop(object):
+class ProductsBarneys(object):
 
     @staticmethod
     def from_html(url, html):
@@ -267,7 +209,7 @@ class ProductsShopbop(object):
         meta = HTMLMetadata.do_html_metadata(soup)
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
-        pd = get_script_ProductDetail(soup)
+        custom = get_custom(soup)
 
         sp = sp[0] if sp else {}
 
@@ -275,23 +217,23 @@ class ProductsShopbop(object):
             'meta':meta,
             'sp':  SchemaOrg.to_json(sp),
             'og':  og,
-            'pd':  pd,
+            'custom': custom,
         }
 
-        prodid = pd.get('prodid') or None
+        prodid = custom.get('prodid') or None
 
         # is there one or more product on the page?
         if prodid:
 
-            p = ProductShopbop(
+            p = ProductBarneys(
                 prodid=prodid,
                 canonical_url=url,
-                brand=pd.get('brand') or None,
-                instock=(pd.get('in_stock')
+                brand=custom.get('brand') or None,
+                instock=(custom.get('in_stock')
                             or og.get('availability') == u'instock'),
-                stocklevel=pd.get('stock_level'),
+                stocklevel=custom.get('stock_level'),
                 name=(nth(sp.get(u'name'), 0)
-                        or pd.get('name')
+                        or custom.get('name')
                         or og.get('title')
                         or meta.get('title') or None),
                 title=(og.get('title')
@@ -300,26 +242,26 @@ class ProductsShopbop(object):
                 descr=(nth(sp.get(u'description'), 0)
                         or og.get('description')
                         or meta.get('description') or None),
-                sale_price=pd.get('sale_price') or None,
-                price=(pd.get('price')
+                sale_price=custom.get('sale_price') or None,
+                price=(custom.get('price')
                        or og.get('price:amount') or None),
-                currency=pd.get('currency') or og.get('price:currency') or None,
-                size=pd.get('size') or None,
-                sizes=pd.get('sizes') or None,
-                color=pd.get('color') or None,
-                colors=pd.get('colors') or None,
-                img_url=pd.get('img_url') or og.get('image') or None,
-                img_urls=pd.get('img_urls') or None,
-                category=pd.get('category') or None,
-                category_id=pd.get('category_id') or None,
-                department=pd.get('department') or None
+                currency=custom.get('currency') or og.get('price:currency') or None,
+                size=custom.get('size') or None,
+                sizes=custom.get('sizes') or None,
+                color=custom.get('color') or None,
+                colors=custom.get('colors') or None,
+                img_url=custom.get('img_url') or og.get('image') or None,
+                img_urls=custom.get('img_urls') or None,
+                category=custom.get('category') or None,
+                category_id=custom.get('category_id') or None,
+                department=custom.get('department') or None
             )
             products.append(p)
 
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
-                    merchant_slug='shopbop',
+                    merchant_slug='barneys',
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
@@ -334,10 +276,13 @@ if __name__ == '__main__':
     import gzip
 
     url = 'https://www.shopbop.com/tresor-pump-sergio-rossi/vp/v=1/1576638246.htm'
-    filepath = 'test/www.shopbop.com-tresor-pump-sergio-rossi-vp-v-1-1576638246.htm.gz'
+    filepath = 'test/www.barneys.com_adidas-stan-smith-pony-hair-sneakers-504163267.html.gz'
+
+    url = 'http://www.barneys.com/sergio-rossi-puzzle-back-zip-sandals-504296100.html'
+    filepath = 'test/www.barneys.com-sergio-rossi-puzzle-back-zip-sandals-504296100.html.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
 
-    products = ProductsShopbop.from_html(url, html)
+    products = ProductsBarneys.from_html(url, html)
     print products

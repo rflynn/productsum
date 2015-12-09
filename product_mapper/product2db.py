@@ -23,6 +23,7 @@ from yurl import URL
 from product import ProductMapResult
 from spider_backend import s3wrap
 
+from barneys import ProductsBarneys
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bluefly import ProductsBluefly
 from dermstore import ProductsDermstore
@@ -135,6 +136,7 @@ def decompress_body(body):
 
 Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
+    'www.barneys.com':      ProductsBarneys,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www.bluefly.com':      ProductsBluefly,
     'www.dermstore.com':    ProductsDermstore,

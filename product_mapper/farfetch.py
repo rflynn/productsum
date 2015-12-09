@@ -269,7 +269,7 @@ class ProductsFarfetch(object):
                        or og.get('price:amount')
                        or twit.get(u'Price') or None),
                 currency=uv.get('currency') or og.get('price:currency') or None,
-                img_url=uv.get('img_url') or nth(og.get('image'), 0) or None,
+                img_url=uv.get('img_url') or og.get('image') or None,
                 category=uv.get('category') or None,
                 category_id=uv.get('category_id') or None,
                 department=uv.get('department') or None
