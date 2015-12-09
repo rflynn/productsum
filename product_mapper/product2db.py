@@ -31,6 +31,7 @@ from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
+from mytheresa import ProductsMyTheresa
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
@@ -146,6 +147,7 @@ Host2Map = {
     'www.fwrd.com':         ProductsFwrd,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
+    'www.mytheresa.com':    ProductsMyTheresa,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
     'www.revolveclothing.com': ProductsRevolveClothing,
