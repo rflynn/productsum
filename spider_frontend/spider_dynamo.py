@@ -35,8 +35,7 @@ _Seeds = {
     'http://www.fwrd.com/': {
         'skip': {
             '/blog/',
-            '/fw/DisplayProduct.jsp',
-            '/fw/Login.jsp',
+            '/fw/',
             '/fwd/',
             '/r/',
             '/Unsubscribe.jsp',
