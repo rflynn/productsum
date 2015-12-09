@@ -2,6 +2,7 @@
 
 from BeautifulSoup import BeautifulSoup
 from datetime import datetime
+from orderedset import OrderedSet
 import random
 import re
 import requests
@@ -387,7 +388,8 @@ def traverse(url, fqdn): # breadth-first traversal
     # best spider url to test this with is yoox; they have a bunch of crazy unicode urls
     settings = _Seeds[url]
     # fetch seed url w/o checking whitelist/blacklist
-    _canon, urls = get_links(python_sucks(url), referer=url)
+    _canon, urls_ = get_links(python_sucks(url), referer=url)
+    urls = OrderedSet(urls_)
     while urls:
         next_url = page_links.canonicalize_url(urls.pop(0))
         if ok_to_spider(next_url, fqdn, settings):
@@ -402,8 +404,7 @@ def traverse(url, fqdn): # breadth-first traversal
                         if canon != l:
                             print 'fetching canon', python_sucks(canon)
                             get_links(python_sucks(canon), referer=l)
-                        if canon not in urls:
-                            urls.append(canon)
+                        urls.add(canon)
 
 # TODO: have us try all seeds at all times; schedule each one...
 def run(url):

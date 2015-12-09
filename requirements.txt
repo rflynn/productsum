@@ -38,6 +38,7 @@ networkx==1.9.1
 nltk==3.1
 numpy==1.10.1
 -e git+https://github.com/Karmak23/opengraph.git@9006cbb4b40e5c0fca005b34dd1dc56ed00691d8#egg=opengraph-master
+orderedset==1.2
 psycopg2==2.6.1
 purl==1.1
 pyOpenSSL==0.15.1
