@@ -21,7 +21,7 @@ _Seeds = {
     'http://us.christianlouboutin.com/us_en/': {'ok':{'/us_en/'}},
     'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
     'http://us.topshop.com/en': {'ok':{'/en/'}},
-    'http://www.barneys.com/': {},
+    'http://www.barneys.com/': {'site':{'/on/'}},
     'http://www.bergdorfgoodman.com/': {},
     'http://www.bluefly.com/': {},
     'http://www.brownsfashion.com/': {},
@@ -47,7 +47,18 @@ _Seeds = {
     'http://www.neimanmarcus.com/': {},
     'http://www.net-a-porter.com/': {},
     'http://www.revolveclothing.com/': {},
-    'http://www.saksfifthavenue.com/': {},
+    'http://www.saksfifthavenue.com/': {
+        # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446904973
+        #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', u.path))
+        'skip': {
+            '/account/',
+            '/main/bridal_landing.jsp',
+            '/NoJavaScript.jsp',
+            '/search/',
+            '/stores/',
+            '/trendcaster',
+        }
+    },
     'http://www.selfridges.com/US/en/': {'ok':{'/US/en/'}},
     'http://www.sephora.com/': {},
     'http://www.shoescribe.com/us/women': {'ok':{'/us/'}},
@@ -77,11 +88,23 @@ _Seeds = {
     },
     'http://www.zappos.com/': {},
     'http://www1.bloomingdales.com/': {},
-    'http://www1.macys.com/': {},
+    'http://www1.macys.com/': {
+        'skip': {
+            '/cms/',
+        }
+    },
     'https://us.burberry.com/': {},
     'https://www.italist.com/en': {'ok':{'/en/'}},
     'https://www.modaoperandi.com/': {},
-    'https://www.shopbop.com/': {},
+    'https://www.shopbop.com/': {
+        'skip': {
+            '/actions/',
+            '/checkout/',
+            '/customerservice/',
+            '/myaccount/',
+            '/wishlist/',
+        }
+    },
     'https://www.ssense.com/': {'skip':{'/fr/', '/fr-fr/'}},
     'https://www.theoutnet.com/en-US/': {'ok':{'/en-US/'}},
     'https://www.tradesy.com/': {},
