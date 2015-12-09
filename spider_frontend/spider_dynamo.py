@@ -32,7 +32,16 @@ _Seeds = {
     'http://www.dsw.com/': {},
     'http://www.farfetch.com/': {},
     'http://www.footcandyshoes.com/': {},
-    'http://www.fwrd.com/': {},
+    'http://www.fwrd.com/': {
+        'skip': {
+            '/blog/',
+            '/fw/DisplayProduct.jsp',
+            '/fw/Login.jsp',
+            '/fwd/',
+            '/r/',
+            '/Unsubscribe.jsp',
+        }
+    },
     'http://www.gilt.com/': {},
     'http://www.gojane.com/': {},
     'http://www.harrods.com/': {},
