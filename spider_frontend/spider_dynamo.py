@@ -3,6 +3,7 @@
 from BeautifulSoup import BeautifulSoup
 from datetime import datetime
 import random
+import re
 import requests
 from time import sleep
 import traceback
@@ -21,7 +22,7 @@ _Seeds = {
     'http://us.christianlouboutin.com/us_en/': {'ok':{'/us_en/'}},
     'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
     'http://us.topshop.com/en': {'ok':{'/en/'}},
-    'http://www.barneys.com/': {'site':{'/on/'}},
+    'http://www.barneys.com/': {'skip':{'/on/'}},
     'http://www.bergdorfgoodman.com/': {},
     'http://www.bluefly.com/': {},
     'http://www.brownsfashion.com/': {},
@@ -49,7 +50,7 @@ _Seeds = {
     'http://www.revolveclothing.com/': {},
     'http://www.saksfifthavenue.com/': {
         # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446904973
-        #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', u.path))
+        #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', url.path)),
         'skip': {
             '/account/',
             '/main/bridal_landing.jsp',
@@ -91,7 +92,8 @@ _Seeds = {
     'http://www1.macys.com/': {
         'skip': {
             '/cms/',
-        }
+        },
+        #'favor': lambda url: bool(re.match(r'/shop/product/.*?\?ID=\d+&CategoryID=\d+', url.path)),
     },
     'https://us.burberry.com/': {},
     'https://www.italist.com/en': {'ok':{'/en/'}},
@@ -288,6 +290,7 @@ def get_links(url, referer=None):
     print 'get_links %s' % url
     links = []
     item = db.get_url(url)
+    canon = url
     if not item or should_fetch_again(item):
         if not item:
             print 'new %s' % url
@@ -300,7 +303,8 @@ def get_links(url, referer=None):
         (code, headers, body, canonical_url, mimetype) = results
         if canonical_url and canonical_url != url:
             print u'canonical_url', canonical_url
-            links.append(python_sucks(canonical_url))
+            canon = canonical_url
+            #links.append(python_sucks(canonical_url))
 
         links.extend(map(python_sucks, save_url_results(url, results)))
         sleep(5 + abs(int(random.gauss(1, 3)))) # sleep somewhere from 5 to about 21 seconds
@@ -309,7 +313,7 @@ def get_links(url, referer=None):
             links.append(python_sucks(item['url_canon']))
         if item.get('links'):
             links.extend(map(python_sucks, item['links']))
-    return links
+    return canon, links
 
 
 def prefix_matches(path, prefix):
@@ -340,22 +344,25 @@ def ok_to_spider(url, fqdn, settings):
         return False
     return True
 
-
 def traverse(url, fqdn): # breadth-first traversal
+    print 'traverse(%s, %s)' % (url, fqdn)
     # python's unicode support is horrible
     # best spider url to test this with is yoox; they have a bunch of crazy unicode urls
     settings = _Seeds[url]
     # fetch seed url w/o checking whitelist/blacklist
-    urls = get_links(python_sucks(url), referer=url)
+    _canon, urls = get_links(python_sucks(url), referer=url)
     while urls:
-        next_url = urls.pop(0)
+        next_url = page_links.canonicalize_url(urls.pop(0))
         if ok_to_spider(next_url, fqdn, settings):
-            links = get_links(next_url, referer=url)
-            #random.shuffle(links)
+            canon, links = get_links(next_url, referer=url)
+            # prioritize following up w/ canon first
+            if canon != next_url and ok_to_spider(canon, fqdn, settings):
+                print 'fetching canon', python_sucks(canon)
+                get_links(python_sucks(canon), referer=next_url)
             while links:
                 assert links[0] is not None
                 assert isinstance(links[0], unicode)
-                l = links.pop(0)
+                l = page_links.canonicalize_url(links.pop(0))
                 if l != next_url and l not in urls and ok_to_spider(l, fqdn, settings):
                     # stay in the same fdqn...
                     get_links(l, referer=next_url) # ignore results...
