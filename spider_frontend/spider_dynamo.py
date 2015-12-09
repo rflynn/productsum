@@ -23,7 +23,11 @@ _Seeds = {
     'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
     'http://us.topshop.com/en': {'ok':{'/en/'}},
     'http://www.barneys.com/': {'skip':{'/on/'}},
-    'http://www.bergdorfgoodman.com/': {},
+    'http://www.bergdorfgoodman.com/': {
+        'skip': {
+            '/account/',
+        }
+    },
     'http://www.bluefly.com/': {
         'skip': {
             '/cart/',
