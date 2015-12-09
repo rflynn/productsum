@@ -171,6 +171,20 @@ def get_custom(soup, orig_url):
     img_urls = None
 
     '''
+    <div class="product-sku">
+        <span class="h1">item no.&nbsp;P00163941</span>
+    </div>
+    '''
+    tag = soup.find('div', attrs={'class': 'product-sku'})
+    if tag:
+        try:
+            m = re.search(r'item no\..(P[0-9]{4,12})', tag.text)
+            if m:
+                prodid = m.groups(0)[0]
+        except:
+            traceback.print_exc()
+
+    '''
 <script type="application/ld+json">[{"@context":"http:\/\/schema.org","@type":"Product","name":"Pigalle Follies 100 patent leather pumps","description":"Christian Louboutin is r
 enowned for his footwear designs and iconic red leather sole. Taking on a girly charm, the classic 'Pigalle Follies' pumps are swathed in a bubblegum pink high-shine patent leat
 her, which contrasts against that iconic bright red sole. Keep the look feminine and team with a floral dress.","color":"pink","manufacturer":"Christian Louboutin","sku":"P00163
@@ -199,7 +213,7 @@ ather pumps"}}]}]</script>
             obj = json.loads(tag.text)
             #pprint(obj)
             o = obj[0]
-            prodid = o.get('sku')
+            prodid = prodid or o.get('sku')
             name = o.get('name')
             descr = o.get('description')
             color = o.get('color')
@@ -212,7 +226,7 @@ ather pumps"}}]}]</script>
             if 'brand' in o:
                 brand = o['brand'].get('name')
             if not brand:
-                brand = o.get('manufacturer')
+                brand = brand or o.get('manufacturer')
             if 'offers' in o:
                 price = str(o['offers'].get('price'))
                 currency = o['offers'].get('priceCurrency')
@@ -238,7 +252,7 @@ ather pumps"}}]}]</script>
                 if obj:
                     # they're all the same...
                     anyofthem = obj.values()[0]
-                    prodid = anyofthem.get('sku')
+                    prodid = prodid or anyofthem.get('sku')
                     brand = anyofthem.get('designer')
                     name = anyofthem.get('name')
                     img_url = anyofthem.get('image')
