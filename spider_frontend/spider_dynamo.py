@@ -47,7 +47,7 @@ _Seeds = {
     'http://www.nastygal.com/': {},
     'http://www.neimanmarcus.com/': {},
     'http://www.net-a-porter.com/': {},
-    'http://www.revolveclothing.com/': {},
+    'http://www.revolveclothing.com/': {'skip':{'/r/ajax/crawlerDiscovery.jsp'}},
     'http://www.saksfifthavenue.com/': {
         # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446904973
         #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', url.path)),
@@ -339,9 +339,6 @@ def ok_to_spider(url, fqdn, settings):
             if not any(prefix_matches(u.path, s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
-    # o_O
-    if 'revolveclothing.com/r/ajax/crawlerDiscovery.jsp' in url:
-        return False
     return True
 
 def traverse(url, fqdn): # breadth-first traversal
