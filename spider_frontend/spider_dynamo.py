@@ -94,7 +94,15 @@ _Seeds = {
     'http://www.stylebop.com/': {'skip':{'/de/','/fr/','/jp/'}},
     'http://www.toryburch.com/': {},
     'http://www.thecorner.com/us': {'ok':{'/us/'}},
-    'http://www.violetgrey.com/': {},
+    'http://www.violetgrey.com/': {
+        'skip': {
+            '/account',
+            '/cart',
+            '/checkout',
+            '/subscriptions',
+            '/users',
+        }
+    },
     'http://www.yoox.com/us': {
         # ugh...
         # yoox.com/ redirects to /us/women, but /us/women has a canonical address of yoox.com/
@@ -239,6 +247,7 @@ def compress_body(body):
     return stringio.getvalue()
     # TODO: consider one-liner
     #return body.encode('utf8').encode('zlib_encode')
+
 
 def should_save_body(url, canonical_url, httpcode, mimetype, bodylen):
     if url != canonical_url:
