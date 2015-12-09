@@ -189,7 +189,7 @@ def get_custom(soup):
             #print objstr
             try:
                 obj = execjs.exec_(objstr)
-                pprint(obj)
+                #pprint(obj)
             except:
                 traceback.print_exc()
         try:
@@ -213,7 +213,7 @@ def get_custom(soup):
         #print objstr
         try:
             obj = json.loads(tag.text)
-            pprint(obj)
+            #pprint(obj)
             dl = obj[0]
         except:
             traceback.print_exc()
