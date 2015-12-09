@@ -4,6 +4,14 @@
 from bs4 import BeautifulSoup
 import re
 
+def u(x):
+    if x is None:
+        return None
+    if isinstance(x, unicode):
+        return x
+    if isinstance(x, str):
+        return unicode(x, 'utf8')
+    raise Exception(str(x))
 
 def flatten(l):
     return [item for sublist in l for item in sublist]

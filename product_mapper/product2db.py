@@ -38,6 +38,7 @@ from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
 from shopbop import ProductsShopbop
 from yoox import ProductsYoox
+from zappos import ProductsZappos
 
 '''
 
@@ -150,6 +151,7 @@ Host2Map = {
     'www.saksfifthavenue.com': ProductsSaks,
     'www.shopbop.com':      ProductsShopbop,
     'www.yoox.com':         ProductsYoox,
+    'www.zappos.com':       ProductsZappos,
 }
 
 '''
@@ -163,7 +165,7 @@ def handle_url(url, host, sha256):
         body = s3wrap.get_body_by_hash('productsum-spider',
                                        binascii.hexlify(sha256))
         if body:
-            return Host2Map[host].from_html(url, decompress_body(body.read()))
+            return Host2Map[host].from_html(url, unicode(decompress_body(body.read()), 'utf8'))
     except:
         traceback.print_exc()
         raise
