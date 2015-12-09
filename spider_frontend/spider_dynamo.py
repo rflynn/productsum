@@ -389,10 +389,12 @@ def traverse(url, fqdn): # breadth-first traversal
                 if l != next_url and l not in urls and ok_to_spider(l, fqdn, settings):
                     canon, _links = get_links(l, referer=next_url) # ignore results...
                     # prioritize following up w/ canon first
-                    if canon != l and ok_to_spider(canon, fqdn, settings):
-                        print 'fetching canon', python_sucks(canon)
-                        get_links(python_sucks(canon), referer=l)
-                    urls.append(canon)
+                    if ok_to_spider(canon, fqdn, settings):
+                        if canon != l:
+                            print 'fetching canon', python_sucks(canon)
+                            get_links(python_sucks(canon), referer=l)
+                        if canon not in urls:
+                            urls.append(canon)
 
 # TODO: have us try all seeds at all times; schedule each one...
 def run(url):
