@@ -212,7 +212,7 @@ def get_custom(soup):
     if tag:
         #print objstr
         try:
-            obj = json.loads(tag.text)
+            obj = execjs.exec_(tag.text + '; return dataLayer;')
             #pprint(obj)
             dl = obj[0]
         except:
