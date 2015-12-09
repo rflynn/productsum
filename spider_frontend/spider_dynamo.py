@@ -108,7 +108,7 @@ _Seeds = {
         }
     },
     'https://www.ssense.com/': {'skip':{'/fr/', '/fr-fr/'}},
-    'https://www.theoutnet.com/en-US/': {'ok':{'/en-US/'}},
+    'https://www.theoutnet.com/': {'ok':{'/en-US/'}},
     'https://www.tradesy.com/': {},
     'https://www.victoriassecret.com/': {},
 }
