@@ -56,7 +56,25 @@ _Seeds = {
     'http://www.toryburch.com/': {},
     'http://www.thecorner.com/us': {'ok':{'/us/'}},
     'http://www.violetgrey.com/': {},
-    'http://www.yoox.com/us/women': {'ok':{'/us/'}},
+    'http://www.yoox.com/us': {
+        # ugh...
+        # yoox.com/ redirects to /us/women, but /us/women has a canonical address of yoox.com/
+        #'ok':{'/us/'},
+        'skip': {
+            '/al/','/dz/','/ad/','/ar/','/am/','/au/','/at/','/az/',
+            '/bh/','/by/','/be/','/ba/','/bn/','/bg/', '/ca/','/cl/','/co/','/ci/', '/cy/','/cz/',
+            '/dk/','/do/','/eg/','/ee/','/fi/','/fr/','/ge/','/de/','/gr/','/gt/',
+            '/hk/','/hr/','/hu/','/is/','/in/','/id/','/ie/','/il/','/it/','/jp/','/jo/',
+            '/kz/','/kw/','/kg/','/lv/','/lb/','/lr/','/li/','/lt/','/lu/',
+            '/mo/','/mk/','/mg/','/my/','/mt/','/mx/','/md/','/fr/','/me/','/ma/',
+            '/nl/','/nz/','/no/','/om/','/pa/','/py/','/pe/','/ph/','/pl/','/pt/',
+            '/qa/','/ro/','/ru/','/it/','/sa/','/rs/','/sg/','/sk/','/si/',
+            '/za/','/kr/','/es/','/sr/','/se/','/ch/','/sy/','/tw/','/tj/','/th/','/tn/','/tr/','/tm/',
+            '/ua/','/ae/','/uk/','/uz/','/it/','/ve/','/vn/',
+            # ?
+            '/cms/',
+        }
+    },
     'http://www.zappos.com/': {},
     'http://www1.bloomingdales.com/': {},
     'http://www1.macys.com/': {},
@@ -64,7 +82,7 @@ _Seeds = {
     'https://www.italist.com/en': {'ok':{'/en/'}},
     'https://www.modaoperandi.com/': {},
     'https://www.shopbop.com/': {},
-    'https://www.ssense.com/': {'skip':{'/fr/'}},
+    'https://www.ssense.com/': {'skip':{'/fr/', '/fr-fr/'}},
     'https://www.theoutnet.com/en-US/': {'ok':{'/en-US/'}},
     'https://www.tradesy.com/': {},
     'https://www.victoriassecret.com/': {},
