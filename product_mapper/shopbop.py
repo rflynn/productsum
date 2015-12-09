@@ -168,7 +168,7 @@ def get_script_ProductDetail(soup):
     img_urls = None
 
     pi = soup.find(id='product-information')
-    print pi
+    #print pi
     if pi:
         tag = pi.find(itemprop='brand')
         if tag:
@@ -250,7 +250,7 @@ def get_script_ProductDetail(soup):
         'pd': pd,
         'pp': pp,
     }
-    pprint(product)
+    #pprint(product)
     return product
 
 

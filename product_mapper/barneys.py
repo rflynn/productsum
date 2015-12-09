@@ -169,7 +169,7 @@ def get_custom(soup):
     mp = {t['property'][8:]: t['content'] for t in
             soup.findAll('meta', content=True,
                             property=re.compile('^product:'))}
-    pprint(mp)
+    #pprint(mp)
     prodid = mp.get('retailer_part_no') or None
     brand = mp.get('brand') or None
     price = mp.get('price:amount')
@@ -192,7 +192,7 @@ def get_custom(soup):
         'img_url': img_url,
         'img_urls': img_urls,
     }
-    pprint(product)
+    #pprint(product)
     return product
 
 

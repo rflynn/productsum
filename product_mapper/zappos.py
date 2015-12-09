@@ -270,7 +270,7 @@ subCategory = "Sneakers and Athletic Shoes";
         'img_url': img_url,
         'img_urls': img_urls,
     }
-    pprint(product)
+    #pprint(product)
     return product
 
 
@@ -297,7 +297,7 @@ class ProductsZappos(object):
             'og':  og,
             'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         prodid = custom.get('prodid') or None
 
