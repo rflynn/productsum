@@ -49,7 +49,7 @@ def canonicalize_url(url):
     # strip non-hashbang anchors
     if u.fragment and not u.fragment.startswith('!'):
         u = u.replace(fragment='')
-    return str(u)
+    return unicode(u)
 
 assert canonicalize_url('http://www.fwrd.com:80/fw/') == 'http://www.fwrd.com/fw/'
 assert canonicalize_url('http://foo.com/#anchor_stripped') == 'http://foo.com/'

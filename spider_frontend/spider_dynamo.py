@@ -352,18 +352,16 @@ def traverse(url, fqdn): # breadth-first traversal
         next_url = page_links.canonicalize_url(urls.pop(0))
         if ok_to_spider(next_url, fqdn, settings):
             canon, links = get_links(next_url, referer=url)
-            # prioritize following up w/ canon first
-            if canon != next_url and ok_to_spider(canon, fqdn, settings):
-                print 'fetching canon', python_sucks(canon)
-                get_links(python_sucks(canon), referer=next_url)
             while links:
-                assert links[0] is not None
                 assert isinstance(links[0], unicode)
                 l = page_links.canonicalize_url(links.pop(0))
                 if l != next_url and l not in urls and ok_to_spider(l, fqdn, settings):
-                    # stay in the same fdqn...
-                    get_links(l, referer=next_url) # ignore results...
-                    urls.append(l)
+                    canon, _links = get_links(l, referer=next_url) # ignore results...
+                    # prioritize following up w/ canon first
+                    if canon != l and ok_to_spider(canon, fqdn, settings):
+                        print 'fetching canon', python_sucks(canon)
+                        get_links(python_sucks(canon), referer=l)
+                    urls.append(canon)
 
 # TODO: have us try all seeds at all times; schedule each one...
 def run(url):
