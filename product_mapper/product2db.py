@@ -38,6 +38,7 @@ from nordstrom import ProductsNordstrom
 from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
 from shopbop import ProductsShopbop
+from stylebop import ProductsStylebop
 from tradesy import ProductsTradesy
 from yoox import ProductsYoox
 from zappos import ProductsZappos
@@ -153,6 +154,7 @@ Host2Map = {
     'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
     'www.shopbop.com':      ProductsShopbop,
+    'www.stylebop.com':     ProductsStylebop,
     'www.tradesy.com':      ProductsTradesy,
     'www.yoox.com':         ProductsYoox,
     'www.zappos.com':       ProductsZappos,
