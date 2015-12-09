@@ -24,7 +24,11 @@ _Seeds = {
     'http://us.topshop.com/en': {'ok':{'/en/'}},
     'http://www.barneys.com/': {'skip':{'/on/'}},
     'http://www.bergdorfgoodman.com/': {},
-    'http://www.bluefly.com/': {},
+    'http://www.bluefly.com/': {
+        'skip': {
+            '/cart/',
+        }
+    },
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
     'http://www.cusp.com/': {},
@@ -60,7 +64,11 @@ _Seeds = {
     'http://www.michaelkors.com/': {},
     'http://www.mytheresa.com/': {},
     'http://www.nastygal.com/': {},
-    'http://www.neimanmarcus.com/': {},
+    'http://www.neimanmarcus.com/': {
+        'skip': {
+            '/account/',
+        }
+    },
     'http://www.net-a-porter.com/': {},
     'http://www.revolveclothing.com/': {'skip':{'/r/ajax/crawlerDiscovery.jsp'}},
     'http://www.saksfifthavenue.com/': {
@@ -102,7 +110,11 @@ _Seeds = {
             '/cms/',
         }
     },
-    'http://www.zappos.com/': {},
+    'http://www.zappos.com/': {
+        'skip': {
+            '/favorites.do',
+        }
+    },
     'http://www1.bloomingdales.com/': {},
     'http://www1.macys.com/': {
         'skip': {
