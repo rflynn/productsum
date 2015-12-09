@@ -35,6 +35,7 @@ from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
 from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
+from shopbop import ProductsShopbop
 from yoox import ProductsYoox
 
 '''
@@ -145,6 +146,7 @@ Host2Map = {
     'www.net-a-porter.com': ProductsNetaPorter,
     'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
+    'www.shopbop.com':      ProductsShopbop,
     'www.yoox.com':         ProductsYoox,
 }
 
