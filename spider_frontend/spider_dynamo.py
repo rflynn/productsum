@@ -28,7 +28,14 @@ _Seeds = {
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
     'http://www.cusp.com/': {},
-    'http://www.dermstore.com/': {},
+    'http://www.dermstore.com/': {
+        'skip': {
+            '/account/',
+            '/blog/',
+            '/cart/',
+            '/reviews/',
+        },
+    },
     'http://www.dsw.com/': {},
     'http://www.farfetch.com/': {},
     'http://www.footcandyshoes.com/': {},
