@@ -429,11 +429,11 @@ def ok_to_spider(url, fqdn, settings):
     if settings:
         # enforce path prefix whitelist/blacklist
         if 'skip' in settings:
-            if any(prefix_matches(u.path, s) for s in settings['skip']):
+            if any(prefix_matches(u.path + u.query, s) for s in settings['skip']):
                 print 'skip', url, settings['skip']
                 return False
         if 'ok' in settings:
-            if not any(prefix_matches(u.path, s) for s in settings['ok']):
+            if not any(prefix_matches(u.path + query, s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
     return True
