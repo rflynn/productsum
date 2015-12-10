@@ -139,14 +139,46 @@ class ProductSaks(object):
         )
 
 
-
-
 class ProductsSaks(object):
+
+    @staticmethod
+    def url_startswith():
+        return u'http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id='
+
+    @staticmethod
+    def url_contains():
+        return u'/main/ProductDetail.jsp?PRODUCT<>prd_id='
+
+    @staticmethod
+    def url_might_be_a_product(url):
+        return ProductsSaks.url_contains() in url
 
     @staticmethod
     def from_html(url, html):
 
         starttime = time.time()
+
+        # all product pages look like this afaik
+        if ProductsSaks.url_might_be_a_product(url):
+            signals, products = ProductsSaks._do_from_html(url, html)
+        else:
+            signals, products = {}, []
+
+        realproducts = [p.to_product() for p in products]
+
+        page = ProductMapResultPage(
+                 merchant_slug='saks',
+                 url=url,
+                 size=len(html),
+                 proctime = time.time() - starttime,
+                 signals=signals)
+
+        return ProductMapResult(page=page,
+                                products=realproducts)
+
+
+    @staticmethod
+    def _do_from_html(url, html):
 
         products = []
 
@@ -195,17 +227,7 @@ class ProductsSaks(object):
             )
             products.append(p)
 
-        realproducts = [p.to_product() for p in products]
-
-        page = ProductMapResultPage(
-                 merchant_slug='saks',
-                 url=url,
-                 size=len(html),
-                 proctime = time.time() - starttime,
-                 signals=signals)
-
-        return ProductMapResult(page=page,
-                                products=realproducts)
+        return signals, products
 
 
     @staticmethod
@@ -336,7 +358,7 @@ class ProductsSaks(object):
 
 if __name__ == '__main__':
 
-    url = 'http://saks.example/'
+    url = 'http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446849942'
     # test no-op
     filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
     # test 1 product
