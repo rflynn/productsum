@@ -32,8 +32,37 @@ _Seeds = {
     },
     'http://www.bluefly.com/': {
         'skip': {
+            #'/*exclusives.fly',
+            #'/browse/bfly/', #Google getting 500s
+            #'/designers/list/', #Google getting 500s
+            #'/newarrivals/', #Google getting 500s
+            '/*/null', # Bad
+            '/*/search.fly', # Bad Url
+            '/*;jsessionid=*',
+            '/*CROSS-SELL/', #color cross sells
+            '/*CROSS_SELL/', #baynote cross sells
+            '/*FEATURED_ITEMS/', #featured
+            '/*SEARCH/',  #PDP from search results
+            '/*jsessionid=*',
+            '/Nrk-all/Nrr-all/Nrt-',
+            '/Ntt-',
+            '/addFavoriteProduct.jsp', # Bad
+            '/browse/f_quick_buy.jsp',
+            '/browse/pdpQuickAdd.jsp',
+            '/browse/quickLogin.jsp',
             '/cart/',
-        }
+            '/checkmyfly.jsp',
+            '/favorites.jsp', # Bad Url
+            '/invite/',
+            '/media/templates/html/popups/',
+            '/media/templates/html/sizecharts/',
+            '/myaccount/',
+            '/myfly/',
+            '/pages/',
+            '/removeFavoriteProduct.jsp', # Bad
+            '/sl/',
+
+        },
     },
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
