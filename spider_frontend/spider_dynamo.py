@@ -186,7 +186,11 @@ _Seeds = {
     'http://www.michaelkors.com/': {},
     'http://www.mytheresa.com/': {
         'skip': {
-            '*?designer=', # endless filters...
+            # endless filter combinations...
+            '*?*designer=*%7C',
+            '*?*size_harmonized=*%7C',
+            '*?*main_colors=*%7C',
+            '*?*color_pattern=*%7C',
         },
     },
     'http://www.nastygal.com/': {},
