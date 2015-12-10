@@ -293,7 +293,23 @@ _Seeds = {
             '/favorites.do',
         }
     },
-    'http://www1.bloomingdales.com/': {},
+    'http://www1.bloomingdales.com/': {
+        'skip': {
+            '/bag/',
+            '/customerservice/fandf/',
+            '/customerservice/international.jsp',
+            '/internationalContext/index.ognc',
+            '/myinfo/',
+            '/search/',
+            '/service/order/',
+            '/service/policies/',
+            '/shop/registry/wedding/search',
+            '/shop/search',
+            '/shop/wedding-registry/product',
+            '/signin/',
+            '/timedevents/index.ognc',
+        },
+    },
     'http://www1.macys.com/': {
         'skip': {
             '*Natuzzi*',
@@ -323,8 +339,44 @@ _Seeds = {
             '/wishlist/',
         }
     },
-    'https://www.ssense.com/': {'skip':{'/fr/', '/fr-fr/'}},
-    'https://www.theoutnet.com/': {'ok':{'/en-US/'}},
+    'https://www.ssense.com/': {
+        'skip': {
+            '/fr/',
+            '/fr-fr/'
+            # robots.txt
+            '*/addproductstoshoppingbag/',
+            '*/popup',
+            '/*?isAjax=*',
+            '/account/',
+            '/checkout',
+            '/cms/preview/',
+            '/compte/',
+            '/editorial/queryProduct/',
+            '/export/',
+            '/feeds/',
+            '/hq/',
+            '/newsletters/',
+            '/nl/',
+            '/paiement',
+            '/panier',
+            '/pma/',
+            '/shopping-bag',
+        },
+    },
+    'https://www.theoutnet.com/': {
+        'ok': {
+            '/en-US/'
+        },
+        'skip': {
+            '/*Filter',
+            '/*Search',
+            '/*keywords',
+            '/*pn=',
+            '/*sortBy',
+            '/*viewall',
+            '/*weekendpage',
+        },
+    },
     'https://www.tradesy.com/': {
         # seems legit...
     },
