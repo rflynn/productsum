@@ -277,7 +277,12 @@ ather pumps"}}]}]</script>
                     name = anyofthem.get('name')
                     img_url = anyofthem.get('image')
                     img_urls = [img_url] # all the same...
-                    sizes = sorted(v.get('size') for v in obj.values() if v.get('size'))
+                    sizes = sorted(v.get('size')
+                                        for v in obj.values()
+                                            if v.get('size'))
+                    if sizes:
+                        if sizes == ['-']:
+                            sizes = ['One size fits all']
                     def stocklevel_translate(s):
                         if s is False:
                             return 0
@@ -399,6 +404,9 @@ if __name__ == '__main__':
 
     url = 'http://www.mytheresa.com/en-de/dottie-silk-blouse.html'
     filepath = 'test/www.mytheresa.com-en-de-dottie-silk-blouse.html.gz'
+
+    url = 'http://www.mytheresa.com/en-de/leather-wallet-468258.html'
+    filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'
 
     # test no-op
     #filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
