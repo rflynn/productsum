@@ -21,6 +21,9 @@ from tealium import Tealium
 from util import nth, normstring, xstrip, xboolstr, maybe_join, dehtmlify
 
 
+MERCHANT_SLUG = 'dermstore'
+
+
 class ProductDermstore(object):
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, instock=None,
@@ -98,7 +101,7 @@ class ProductDermstore(object):
             category = self.bread_crumb[-1]
 
         return Product(
-            merchant_slug='dermstore',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.canonical_url,
             merchant_sku=self.prodid,
             merchant_product_obj=self,
@@ -125,31 +128,27 @@ class ProductDermstore(object):
 class ProductsDermstore(object):
 
     @staticmethod
-    def dynamodb_filter():
-        # TODO: instead of just filtering by url once we've already fetched the page,
-        # implement an interface that allows us to control which urls are even attempted!
-        # filter: url contains '.dermstore.com/product_'
-        raise NotImplementedError()
+    def url_contains():
+        return u'/product_'
 
-    @staticmethod
-    def from_html(url, html):
+    @classmethod
+    def url_might_be_a_product(cls, url):
+        return cls.url_contains() in url
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
-        u = URL(url)
-
-        if (u.path.startswith('/list_')
-         or u.path.startswith('/profile_')):
-            # there are tens of thousands of lists and profiles, and they don't contain product info...
-            # skip them
-            signals, products = {}, []
+        if cls.url_might_be_a_product(url):
+            signals, products = cls._do_from_html(url, html)
         else:
-            signals, products = ProductsDermstore._do_from_html(url, html)
+            signals, products = {}, []
 
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
-                 merchant_slug='dermstore',
+                 merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),
                  proctime=time.time() - starttime,
