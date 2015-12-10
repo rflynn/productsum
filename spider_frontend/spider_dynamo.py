@@ -533,7 +533,7 @@ def should_fetch_again(item):
     age = now - item.get('updated')
     hours = 60 * 60
     days = 24 * hours
-    try_fixing_error = httpcode_should_retry(item.get('code')) and age > 4 * hours
+    try_fixing_error = httpcode_should_retry(item.get('code')) and age > 24 * hours
     if try_fixing_error:
         print 'try_fixing_error now=%s updated=%s (%s) code=%s' % (
             now,
