@@ -537,9 +537,10 @@ def get_links(url, referer=None):
 
 def prefix_matches(path, prefix):
     if '*' in prefix:
-        pattern = prefix.replace('+', '[+]')
-        pattern = prefix.replace('?', '[?]')
-        pattern = prefix.replace('*', '.*?')
+        pattern = prefix
+        pattern = pattern.replace('+', '[+]')
+        pattern = pattern.replace('?', '[?]')
+        pattern = pattern.replace('*', '.*?')
         return bool(re.search(pattern, path))
     return (
         path.startswith(prefix)
