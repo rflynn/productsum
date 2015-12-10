@@ -22,6 +22,26 @@ from tealium import Tealium
 from util import nth, normstring, xboolstr, u
 
 
+def handle_color(c):
+    if c is None:
+        return c
+    if isinstance(c, basestring):
+        return c
+    if isinstance(c, list):
+        # some multi-color items get a list...
+        c = [x for x in c
+                if x and isinstance(x, basestring)] # sanitize
+        if not c:
+            return None
+        if len(c) == 1:
+            return c[0]
+        if len(c) == 2:
+            return c[0].title() + u' and ' + c[1].title()
+        if len(c) >= 3:
+            return u', '.join([x.title() for x in c])
+    raise Exception(str(c))
+
+
 class ProductMyTheresa(object):
     def __init__(self,
                  prodid=None,
@@ -348,7 +368,7 @@ class ProductsMyTheresa(object):
                 currency=custom.get('currency') or og.get('price:currency') or None,
                 size=custom.get('size') or None,
                 sizes=custom.get('sizes') or None,
-                color=u(nth(sp.get('color'), 0) or custom.get('color')) or None,
+                color=u(handle_color(nth(sp.get('color'), 0) or custom.get('color'))) or None,
                 colors=custom.get('colors') or None,
                 img_url=u(custom.get('img_url')
                             or og.get('image')
@@ -376,6 +396,9 @@ if __name__ == '__main__':
 
     url = 'http://www.mytheresa.com/en-de/pigalle-follies-100-patent-leather-pumps-513456.html'
     filepath = 'test/www.mytheresa.com-en-de-pigalle-follies-100-patent-leather-pumps-513456.html.gz'
+
+    url = 'http://www.mytheresa.com/en-de/dottie-silk-blouse.html'
+    filepath = 'test/www.mytheresa.com-en-de-dottie-silk-blouse.html.gz'
 
     # test no-op
     #filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
