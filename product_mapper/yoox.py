@@ -126,9 +126,41 @@ class ProductYoox(object):
 class ProductsYoox(object):
 
     @staticmethod
+    def url_contains():
+        return u'/item'
+
+    @staticmethod
+    def url_might_be_a_product(url):
+        return ProductsYoox.url_contains() in url
+
+    @staticmethod
     def from_html(url, html):
 
         starttime = time.time()
+
+        # all product pages look like this afaik
+        if ProductsYoox.url_might_be_a_product(url):
+            signals, products = ProductsYoox._do_from_html(url, html)
+        else:
+            signals, products = {}, []
+
+        realproducts = [p.to_product() for p in products]
+
+        page = ProductMapResultPage(
+                 merchant_slug='yoox',
+                 url=url,
+                 size=len(html),
+                 proctime = time.time() - starttime,
+                 signals=signals)
+
+        return ProductMapResult(page=page,
+                                products=realproducts)
+
+
+    @staticmethod
+    def _do_from_html(url, html):
+
+        products = []
 
         soup = BeautifulSoup(html)
         sp = SchemaOrg.get_schema_product(html)
@@ -185,17 +217,7 @@ class ProductsYoox(object):
             )
             products.append(p)
 
-        realproducts = [p.to_product() for p in products]
-
-        page = ProductMapResultPage(
-                 merchant_slug='yoox',
-                 url=url,
-                 size=len(html),
-                 proctime = time.time() - starttime,
-                 signals=signals)
-
-        return ProductMapResult(page=page,
-                                products=realproducts)
+        return signals, products
 
 
     @staticmethod
