@@ -4,7 +4,7 @@ source venv/bin/activate
 
 set -v
 
-while [ 1 ]
+while true
 do
     AWS_ACCESS_KEY_ID=AKIAIJSFBGWDARVXQBSA \
     AWS_SECRET_ACCESS_KEY=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 \
