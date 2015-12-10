@@ -39,26 +39,26 @@ _Seeds = {
     'http://www.cusp.com/': {},
     'http://www.dermstore.com/': {
         'skip': {
-            '/*source=igodigital*',
             '*/account/*',
+            '*/ajax/*',
             '*/cart/*',
-            '*/helpers/*',
+            '*/cart/flip.php*',
             '*/content/*',
-            '/reviews/add_intro.php',
-            '*/list.php?*',
             '*/giftcard/*',
-            '*/long_*',
+            '*/helpers/*',
+            '*/list.php?*',
+            '*/list_*-*.htm',
+            '*/list_*clearance.htm',
+            '*/list_*more*.htm',
             '*/list_*review.htm',
             '*/list_*shoppers.htm',
-            '*/list_*clearance.htm',
-            '*/list_*-*.htm',
-            '*/list_*more*.htm',
-            '*/ajax/*',
+            '*/long_*',
             '*/prod_finder_widget.php*',
-            '*/searchsite.php?*',
-            '*/search_facetted.php?*',
-            '*/cart/flip.php*',
             '*/question_list*',
+            '*/search_facetted.php?*',
+            '*/searchsite.php?*',
+            '/*source=igodigital*',
+            '/reviews/',
         },
     },
     'http://www.dsw.com/': {
@@ -73,7 +73,17 @@ _Seeds = {
             '/wl/',
         }
     },
-    'http://www.farfetch.com/': {},
+    'http://www.farfetch.com/': {
+        'skip': {
+            '/Account/',
+            '/Custom/flash/',
+            '/FFTEST/',
+            '/fftest/',
+            '/forum/',
+            '/tag/',
+            '/useraccount.aspx',
+        },
+    },
     'http://www.footcandyshoes.com/': {},
     'http://www.fwrd.com/': {
         'skip': {
@@ -216,7 +226,9 @@ _Seeds = {
     },
     'https://www.ssense.com/': {'skip':{'/fr/', '/fr-fr/'}},
     'https://www.theoutnet.com/': {'ok':{'/en-US/'}},
-    'https://www.tradesy.com/': {},
+    'https://www.tradesy.com/': {
+        # seems legit...
+    },
     'https://www.victoriassecret.com/': {},
 }
 
