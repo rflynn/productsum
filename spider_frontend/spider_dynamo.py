@@ -184,7 +184,11 @@ _Seeds = {
         }
     },
     'http://www.michaelkors.com/': {},
-    'http://www.mytheresa.com/': {},
+    'http://www.mytheresa.com/': {
+        'skip': {
+            '*?designer=', # endless filters...
+        },
+    },
     'http://www.nastygal.com/': {},
     'http://www.neimanmarcus.com/': {
         'skip': {
