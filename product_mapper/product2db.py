@@ -111,6 +111,7 @@ def each_link(url_host=None):
             yield item
 
         while 'LastEvaluatedKey' in resp:
+            retry_sleep = 1
             r = None
             while r is None:
                 try:
@@ -126,6 +127,12 @@ def each_link(url_host=None):
                 except botocore.exceptions.ClientError as e:
                     print e
                     time.sleep(10)
+                except Exception as e:
+                    # e.g. OpenSSL.SSL.SysCallError
+                    print e
+                    time.sleep(retry_sleep)
+                    if retry_sleep < 60:
+                        retry_sleep *= 2 # exponential backoff
                 for item in resp['Items']:
                     yield item
 
