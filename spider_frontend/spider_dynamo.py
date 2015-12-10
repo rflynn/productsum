@@ -370,7 +370,6 @@ _Seeds = {
     },
     'https://www.ssense.com/': {
         'skip': {
-            '/fr/',
             '/fr-fr/'
             # robots.txt
             '*/addproductstoshoppingbag/',
@@ -562,7 +561,7 @@ def should_fetch_again(item):
     age = now - item.get('updated')
     hours = 60 * 60
     days = 24 * hours
-    try_fixing_error = httpcode_should_retry(item.get('code')) and age > 24 * hours
+    try_fixing_error = httpcode_should_retry(item.get('code')) and age > 3 * days
     if try_fixing_error:
         print 'try_fixing_error now=%s updated=%s (%s) code=%s' % (
             now,
