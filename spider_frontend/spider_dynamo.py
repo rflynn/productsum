@@ -510,15 +510,20 @@ def compress_body(body):
 
 def should_save_body(url, canonical_url, httpcode, mimetype, bodylen):
     if url != canonical_url:
+        print "don't save, url != canonical_url"
         return False
     if httpcode < 0 or httpcode >= 400:
+        print "don't save, httpcode = %s" % httpcode
         return False
     if bodylen > 1024*1024:
+        print "don't save, bodylen > 1M (%s)" % bodylen
         return False
     if mimetype not in ('text/html',
                         'application/xhtml+xml',
                         'text/x-server-parsed-html'):
+        print "don't save, mimetype = %s" % mimetype
         return False
+    print "save body"
     return True
 
 
