@@ -45,7 +45,18 @@ _Seeds = {
             '/reviews/',
         },
     },
-    'http://www.dsw.com/': {},
+    'http://www.dsw.com/': {
+        'skip': {
+            '/Boot-Shop-',
+            '/Boots',
+            '/boots/',
+            '/dsw_shoes/',
+            '/emi/',
+            '/sandals/',
+            '/shoe/joseph+abboud+collection+robert+oxford',
+            '/wl/',
+        }
+    },
     'http://www.farfetch.com/': {},
     'http://www.footcandyshoes.com/': {},
     'http://www.fwrd.com/': {
@@ -60,9 +71,37 @@ _Seeds = {
     'http://www.gilt.com/': {},
     'http://www.gojane.com/': {},
     'http://www.harrods.com/': {},
-    'http://www.jcpenney.com/': {},
+    'http://www.jcpenney.com/': {
+        'skip': {
+            '/products/',
+            '/jsp/search',
+            '/jsp/browse/pp/print/',
+            '/jsp/profile/',
+        }
+    },
     'http://www.josephstores.com/': {},
-    'http://www.lordandtaylor.com/': {},
+    'http://www.lordandtaylor.com/': {
+        'skip': {
+            '/common/',
+            '/eng/',
+            '/extra/',
+            '/fre/',
+            '/frontEndComponents/',
+            '/maint',
+            '/sharedPages/',
+            '/webapp/wcs/stores/servlet/AjaxCatalogSearchResultView',
+            '/webapp/wcs/stores/servlet/AjaxChanelCatalogSearchResultView',
+            '/webapp/wcs/stores/servlet/AjaxOrderItemDisplayView',
+            '/webapp/wcs/stores/servlet/SearchDisplay',
+            '/webapp/wcs/stores/servlet/logonform',
+            '/webapp/wcs/stores/servlet/ProductDisplay',
+            '/webapp/wcs/stores/servlet/QuickInfoDetailsView',
+            '/webapp/wcs/stores/servlet/NavSearchDisplay',
+            '/webapp/wcs/stores/servlet/OrderShippingBillingView',
+            '/webapp/wcs/stores/servlet/en/thebay',
+            '/webapp/wcs/stores/servlet/fr/thebay',
+        }
+    },
     'http://www.luisaviaroma.com/': {},
     'http://madisonlosangeles.com/': {},
     'http://www.matchesfashion.com/': {},
@@ -74,7 +113,19 @@ _Seeds = {
             '/account/',
         }
     },
-    'http://www.net-a-porter.com/': {},
+    'http://www.net-a-porter.com/': {
+        'skip': {
+            '/*viewall',
+            '/*sortBy',
+            '/*image_view',
+            '/*designerFilter',
+            '/*colourFilter',
+            '/*sizeFilter',
+            '/Shop/Featured-Products/',
+            '/Shop/Lost/',
+            '/Shop/Search/',
+        },
+    },
     'http://www.revolveclothing.com/': {'skip':{'/r/ajax/crawlerDiscovery.jsp'}},
     'http://www.saksfifthavenue.com/': {
         # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446904973
@@ -358,10 +409,15 @@ def get_links(url, referer=None):
 
 
 def prefix_matches(path, prefix):
+    if '*' in prefix:
+        pattern = prefix.replace('*', '.*?')
+        return bool(re.search(pattern, path))
     return (
         path.startswith(prefix)
         or prefix[-1] == '/' and path == prefix[:-1] # "/en/" ~= "/en"
     )
+
+assert prefix_matches('/*bar', '/foo/bar?baz')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:
