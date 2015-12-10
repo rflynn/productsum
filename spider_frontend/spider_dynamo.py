@@ -417,7 +417,7 @@ def prefix_matches(path, prefix):
         or prefix[-1] == '/' and path == prefix[:-1] # "/en/" ~= "/en"
     )
 
-assert prefix_matches('/*bar', '/foo/bar?baz')
+assert prefix_matches('/foo/bar?baz', '/*bar')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:
