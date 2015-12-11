@@ -23,6 +23,7 @@ from util import nth, normstring, dehtmlify, maybe_join, xboolstr, xint
 
 
 class ProductBergdorfGoodman(object):
+    VERSION = 0
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, in_stock=None,
                  bread_crumb=None, brand=None,

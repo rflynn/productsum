@@ -25,6 +25,7 @@ from util import nth, normstring, xboolstr, maybe_join, dehtmlify
 
 
 class ProductNeimanMarcus(object):
+    VERSION = 0
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, instock=None,
                  brand=None,

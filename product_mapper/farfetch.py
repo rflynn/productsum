@@ -19,6 +19,7 @@ from util import nth, xstrip
 
 
 class ProductFarfetch(object):
+    VERSION = 0
     def __init__(self,
                  id=None,
                  canonical_url=None,

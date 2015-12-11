@@ -3,6 +3,7 @@ begin;
 
 -- record the last run of each page we tried to extract a product from
 create table url_page (
+    --id                  serial primary key,
     created             timestamp with time zone not null default (now() at time zone 'utc'),
     updated             timestamp with time zone not null default (now() at time zone 'utc'),
     merchant_slug       varchar(16)   not null,
@@ -14,6 +15,7 @@ create table url_page (
 );
 
 create table url_product (
+    --id                  serial primary key,
     created             timestamp with time zone not null default (now() at time zone 'utc'),
     updated             timestamp with time zone not null default (now() at time zone 'utc'),
     merchant_slug       varchar(16)   not null,
@@ -50,6 +52,11 @@ create table url_product (
 );
 
 alter table url_product add column upc varchar(16);
+
+alter table url_product add column id bigserial primary key;
+alter table url_page    add column id bigserial primary key;
+
+alter table url_product add column product_mapper_version smallint;
 
 commit;
 

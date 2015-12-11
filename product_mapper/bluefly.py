@@ -189,6 +189,7 @@ def bluefly_custom(soup):
 
 
 class ProductBluefly(object):
+    VERSION = 0
     def __init__(self, id=None, url=None,
                  in_stock=None,
                  brand=None, brand_type=None, 

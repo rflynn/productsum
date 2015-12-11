@@ -22,6 +22,7 @@ from util import nth, normstring, xboolstr, u
 
 
 class ProductStylebop(object):
+    VERSION = 0
     def __init__(self,
                  prodid=None,
                  canonical_url=None,

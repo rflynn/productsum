@@ -21,6 +21,7 @@ from util import nth, xboolstr, normstring, xstrip
 
 
 class ProductNetaPorter(object):
+    VERSION = 0
     def __init__(self, id=None, canonical_url=None,
                  stocklevel=None, instock=None,
                  price=None, currency=None,

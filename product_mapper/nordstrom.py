@@ -18,6 +18,7 @@ from util import nth, xstrip, dehtmlify
 
 
 class ProductNordstrom(object):
+    VERSION = 0
     def __init__(self, id=None, url=None, slug=None, style_number=None,
                  currency=None, current_price=None, original_price=None,
                  brand=None, brandpage=None,

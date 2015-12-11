@@ -25,6 +25,7 @@ MERCHANT_SLUG = 'dermstore'
 
 
 class ProductDermstore(object):
+    VERSION = 0
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, instock=None,
                  price=None, currency=None,

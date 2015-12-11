@@ -20,7 +20,13 @@ from schemaorg import SchemaOrg
 from util import nth, normstring, xint, maybe_join, dehtmlify
 
 
+MERCHANT_SLUG = 'yoox'
+
+
 class ProductYoox(object):
+
+    VERSION = 0
+
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, instock=None,
                  price=None, sale_price=None, currency=None,
@@ -99,7 +105,7 @@ class ProductYoox(object):
     def to_product(self):
 
         return Product(
-            merchant_slug='yoox',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.canonical_url,
             merchant_sku=self.prodid,
             merchant_product_obj=self,
@@ -147,7 +153,7 @@ class ProductsYoox(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
-                 merchant_slug='yoox',
+                 merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),
                  proctime = time.time() - starttime,

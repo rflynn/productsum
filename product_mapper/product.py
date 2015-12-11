@@ -59,6 +59,7 @@ class Product(object):
         assert isinstance(url_canonical,    basestring)
         assert isinstance(merchant_sku,     basestring)
         assert merchant_product_obj is not None
+        assert isinstance(merchant_product_obj.VERSION, int)
         assert isinstance(upc,              (type(None), basestring))
         assert isinstance(gtin8,            (type(None), basestring))
         assert isinstance(gtin12,           (type(None), basestring))
@@ -92,6 +93,7 @@ class Product(object):
         assert not available_sizes or all(available_sizes)
         assert not img_urls or all(img_urls)
 
+        self.merchant_product_obj = merchant_product_obj
         self.merchant_slug = merchant_slug
         self.url_canonical = url_canonical
         self.url_host = URL(url_canonical).host
@@ -258,6 +260,7 @@ class Product(object):
 
     def __repr__(self):
         return ('''Product(
+    VERSION........... %s
     merchant_slug..... %s
     url_canonical..... %s
     url_host.......... %s
@@ -290,7 +293,8 @@ class Product(object):
     available_sizes... %s
     img_url........... %s
     img_urls.......... %s
-)''' % (self.merchant_slug,
+)''' % (self.merchant_product_obj.VERSION,
+       self.merchant_slug,
        self.url_canonical,
        self.url_host,
        self.merchant_sku,
@@ -400,6 +404,7 @@ where
 insert into url_product (
     created,
     updated,
+    product_mapper_version,
     merchant_slug,
     url_host,
     url_canonical,
@@ -462,9 +467,11 @@ insert into url_product (
     %s,
     %s,
     %s,
+    %s,
     %s
 )
-''',  (self.merchant_slug,
+''',  (self.merchant_product_obj.VERSION,
+       self.merchant_slug,
        self.url_host,
        self.url_canonical,
        self.merchant_sku,

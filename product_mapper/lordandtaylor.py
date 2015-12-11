@@ -23,6 +23,7 @@ from util import nth, normstring, xstrip, xboolstr, maybe_join, dehtmlify
 
 
 class ProductLordandTaylor(object):
+    VERSION = 0
     def __init__(self, prodid=None, canonical_url=None, upc=None,
                  stocklevel=None, instock=None,
                  price=None, sale_price=None, currency=None,

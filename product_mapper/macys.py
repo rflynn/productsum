@@ -73,6 +73,7 @@ def get_meta_twitter(soup):
 
 
 class ProductMacys(object):
+    VERSION = 0
     def __init__(self, prodid=None, canonical_url=None,
                  upc=None,
                  stocklevel=None, instock=None,
@@ -469,7 +470,7 @@ if __name__ == '__main__':
     import gzip
 
     # test no-op, where page is empty-ish
-    filepath = 'test/www1.macys.com-shop-product-burberry-my-burberry-eau-de-parfum-3.4-oz-holiday-edition.gz'
+    #filepath = ''
 
     # test "full" page
     url = 'http://www1.macys.com/shop/product/coach-swagger-27-carryall-in-metallic-patchwork-leather?ID=2544700&CategoryID=26846'
