@@ -42,7 +42,7 @@ sudo apt-get install -y --force-yes firefox
 
 # install mosh
 sudo apt-get install -y python-software-properties
-sudo add-apt-repository -y --force-yes ppa:keithw/mosh
+sudo add-apt-repository -y ppa:keithw/mosh
 sudo apt-get update
 sudo apt-get -y install -y mosh
 
