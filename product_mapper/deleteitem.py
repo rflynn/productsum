@@ -58,13 +58,28 @@ def fetchall(table, url_host=None, url_contains=None):
                 yield item
 
 if __name__ == '__main__':
-    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
-    table = dynamodb.Table('link')
 
-    seq = fetchall(table, url_host='www.net-a-porter.com', url_contains='?image_view=')
-    for item in seq:
-        url = item['url']
-        print url
-        print table.delete_item(Key={'url': url})
-        #Key={'url':{'S': url}},
+    def deleteall(url_host, url_contains):
+        dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+        table = dynamodb.Table('link')
+        seq = fetchall(table, url_host=url_host, url_contains=url_contains)
+        for item in seq:
+            url = item['url']
+            print url
+            print table.delete_item(Key={'url': url})
 
+    #deleteall('www.fwrd.com', '/fw/Login.jsp')
+    #deleteall('www.zappos.com', '/favorites.do')
+    #deleteall('www.barneys.com', '/on/')
+
+    #deleteall('www.net-a-porter.com', '?image_view=')
+    #deleteall('www.mytheresa.com', '%7C')
+    #deleteall('www.dermstore.com', '/list_')
+    #deleteall('www.saksfifthavenue.com', '/stores/stores.jsp?')
+    #deleteall('www.bluefly.com', 'jsessionid=')
+    #deleteall('www.shopbop.com', '/actions/')
+    #deleteall('www.yoox.com', '/kg/')
+    #deleteall('www.yoox.com', '/ma/')
+    #deleteall('www.yoox.com', '/mk/')
+    #deleteall('www.yoox.com', '/tw/')
+    #deleteall('www.yoox.com', '/am/')
