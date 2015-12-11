@@ -9,6 +9,8 @@ sudo apt-get update
 sudo apt-get install -y postgresql-9.3
 sudo apt-get install -y postgresql-server-dev-9.3 # psycopg2
 
+# we need the postgresql packages, but we don't want the server
+# XXX: there *has* to be a smarter way of doing this...
 sudo /etc/init.d/postgresql stop
 sudo update-rc.d postgresql disable
 
@@ -24,6 +26,8 @@ sudo apt-get install -y --force-yes python-dev
 sudo apt-get install -y --force-yes python-cffi
 sudo apt-get install -y python-pip
 sudo apt-get install -y python-virtualenv
+# XXX: NOTE: pip install lxml compiles libxml, which is monstrous compile that fails on small machines,
+# so we install the binary instead
 sudo apt-get install -y python-lxml # pip lxml doesn't always work...
 
 # spider...
@@ -36,6 +40,13 @@ sudo apt-get install -y --force-yes chromium-browser
 sudo apt-get install -y --force-yes chromium-chromedriver
 sudo apt-get install -y --force-yes firefox
 
+# install mosh
+sudo apt-get install -y python-software-properties
+sudo add-apt-repository -y --force-yes ppa:keithw/mosh
+sudo apt-get update
+sudo apt-get -y install -y mosh
+
+# set up python virtualenv
 test -d venv || virtualenv venv
 source venv/bin/activate
 pip install -r requirements.txt
