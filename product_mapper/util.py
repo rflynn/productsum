@@ -28,10 +28,19 @@ def nth(maybelist, index, val=None):
         return val
 
 def xstrip(s):
-    return s.strip() if s is not None else None
+    if s is None:
+        return None
+    return s.strip()
 
 def normstring(s):
-    return xstrip(re.sub('\s+', ' ', s)) if s is not None else None
+    if s is None:
+        return None
+    return xstrip(re.sub('\s+', ' ', s))
+
+def unquote(s):
+    if s is None:
+        return None
+    return s.strip('\'"')
 
 def dehtmlify(s):
     if not s: return s
