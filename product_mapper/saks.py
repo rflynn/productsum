@@ -142,6 +142,8 @@ class ProductSaks(object):
 
 class ProductsSaks(object):
 
+    VERSION = 0
+
     @staticmethod
     def url_startswith():
         return u'http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id='
@@ -150,24 +152,25 @@ class ProductsSaks(object):
     def url_contains():
         return u'/main/ProductDetail.jsp?PRODUCT<>prd_id='
 
-    @staticmethod
-    def url_might_be_a_product(url):
-        return ProductsSaks.url_contains() in url
+    @classmethod
+    def url_might_be_a_product(cls, url):
+        return cls.url_contains() in url
 
-    @staticmethod
-    def from_html(url, html):
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
         # all product pages look like this afaik
-        if ProductsSaks.url_might_be_a_product(url):
-            signals, products = ProductsSaks._do_from_html(url, html)
+        if cls.url_might_be_a_product(url):
+            signals, products = cls._do_from_html(url, html)
         else:
             signals, products = {}, []
 
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug='saks',
                  url=url,
                  size=len(html),
@@ -178,15 +181,15 @@ class ProductsSaks(object):
                                 products=realproducts)
 
 
-    @staticmethod
-    def _do_from_html(url, html):
+    @classmethod
+    def _do_from_html(cls, url, html):
 
         products = []
 
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
         og = OG.get_og(soup)
-        mlrs = ProductsSaks.get_custom(soup)
+        mlrs = cls.get_custom(soup)
 
         signals = {
             'meta': meta,

@@ -160,11 +160,12 @@ class ProductNeimanMarcus(object):
 
 
 
-
 class ProductsNeimanMarcus(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -175,7 +176,7 @@ class ProductsNeimanMarcus(object):
         og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
-        custom = ProductsNeimanMarcus.get_custom(soup, og)
+        custom = cls.get_custom(soup, og)
 
         sp = sp[0] if sp else {}
 
@@ -246,6 +247,7 @@ class ProductsNeimanMarcus(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug='neimanmarcus',
                  url=url,
                  size=len(html),

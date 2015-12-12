@@ -265,8 +265,10 @@ def get_custom(soup):
 
 class ProductsStylebop(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -336,6 +338,7 @@ class ProductsStylebop(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='stylebop',
                     url=url,
                     size=len(html),

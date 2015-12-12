@@ -322,8 +322,10 @@ ather pumps"}}]}]</script>
 
 class ProductsMyTheresa(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -386,6 +388,7 @@ class ProductsMyTheresa(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='mytheresa',
                     url=url,
                     size=len(html),

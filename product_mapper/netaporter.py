@@ -117,8 +117,10 @@ class ProductNetaPorter(object):
 
 class ProductsNetaPorter(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -128,11 +130,11 @@ class ProductsNetaPorter(object):
         og = OG.get_og(soup)
         utag = Tealium.get_utag_data(soup)
         # TODO: consolidate this mess...
-        pd = ProductsNetaPorter.do_meta_product_data(soup)
-        ba = ProductsNetaPorter.do_body_attrs(soup)
-        mi = ProductsNetaPorter.get_meta_itemprop(soup)
-        pa = ProductsNetaPorter.get_product_attrs(soup)
-        custom = ProductsNetaPorter.get_custom(soup)
+        pd = cls.do_meta_product_data(soup)
+        ba = cls.do_body_attrs(soup)
+        mi = cls.get_meta_itemprop(soup)
+        pa = cls.get_product_attrs(soup)
+        custom = cls.get_custom(soup)
         #pprint(utag)
 
         sp = sp[0] if sp else {}
@@ -189,6 +191,7 @@ class ProductsNetaPorter(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='netaporter',
                     url=url,
                     size=len(html),

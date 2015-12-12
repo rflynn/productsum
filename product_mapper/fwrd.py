@@ -134,8 +134,10 @@ class ProductFwrd(object):
 
 class ProductsFwrd(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -143,7 +145,7 @@ class ProductsFwrd(object):
         meta = HTMLMetadata.do_html_metadata(soup)
         og = OG.get_og(soup)
         sp = SchemaOrg.get_schema_product(html)
-        custom = ProductsFwrd.get_custom(soup)
+        custom = cls.get_custom(soup)
 
         # FIXME: this is stupid...
         # FIXME: actually, this is broken for fwrd.com; they list multiple product variations on a page...
@@ -214,6 +216,7 @@ class ProductsFwrd(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug='fwrd',
                  url=url,
                  size=len(html),

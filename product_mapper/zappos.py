@@ -277,8 +277,10 @@ subCategory = "Sneakers and Athletic Shoes";
 
 class ProductsZappos(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -339,6 +341,7 @@ class ProductsZappos(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='zappos',
                     url=url,
                     size=len(html),

@@ -57,6 +57,8 @@ alter table url_product add column id bigserial primary key;
 alter table url_page    add column id bigserial primary key;
 
 alter table url_product add column product_mapper_version smallint;
+alter table url_product drop column product_mapper_version;
+alter table url_page    add column product_mapper_version smallint;
 
 commit;
 

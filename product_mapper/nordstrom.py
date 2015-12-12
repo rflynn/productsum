@@ -137,6 +137,8 @@ class ProductNordstrom(object):
 
 class ProductsNordstrom(object):
 
+    VERSION = 0
+
     @staticmethod
     def script_digitalData(soup):
         '''
@@ -231,8 +233,8 @@ class ProductsNordstrom(object):
                     
         return data
 
-    @staticmethod
-    def from_html(url, html):
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -245,8 +247,8 @@ class ProductsNordstrom(object):
         utag = Tealium.get_utag_data(soup)
 
         # custom
-        ddx = ProductsNordstrom.script_digitalData(soup)
-        ppd = ProductsNordstrom.script_ProductPageDesktop(soup)
+        ddx = cls.script_digitalData(soup)
+        ppd = cls.script_ProductPageDesktop(soup)
 
         signals = {
             'sp':   SchemaOrg.to_json(sp),
@@ -292,6 +294,7 @@ class ProductsNordstrom(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='nordstrom',
                     url=url,
                     size=len(html),

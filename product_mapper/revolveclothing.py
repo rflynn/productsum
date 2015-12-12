@@ -150,8 +150,10 @@ class ProductRevolveClothing(object):
 
 class ProductsRevolveClothing(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -160,7 +162,7 @@ class ProductsRevolveClothing(object):
         og = OG.get_og(soup)
         sp = SchemaOrg.get_schema_product(html)
         wa = get_meta_wanelo(soup)
-        custom = ProductsRevolveClothing.get_custom(soup, og)
+        custom = cls.get_custom(soup, og)
 
         sp = sp[0] if sp else {}
 
@@ -232,6 +234,7 @@ class ProductsRevolveClothing(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug='revolveclothing',
                  url=url,
                  size=len(html),

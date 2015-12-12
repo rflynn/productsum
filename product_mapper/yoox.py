@@ -24,9 +24,7 @@ MERCHANT_SLUG = 'yoox'
 
 
 class ProductYoox(object):
-
     VERSION = 0
-
     def __init__(self, prodid=None, canonical_url=None,
                  stocklevel=None, instock=None,
                  price=None, sale_price=None, currency=None,
@@ -131,28 +129,31 @@ class ProductYoox(object):
 
 class ProductsYoox(object):
 
+    VERSION = 0
+
     @staticmethod
     def url_contains():
         return u'/item'
 
-    @staticmethod
-    def url_might_be_a_product(url):
-        return ProductsYoox.url_contains() in url
+    @classmethod
+    def url_might_be_a_product(cls, url):
+        return cls.url_contains() in url
 
-    @staticmethod
-    def from_html(url, html):
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
         # all product pages look like this afaik
-        if ProductsYoox.url_might_be_a_product(url):
-            signals, products = ProductsYoox._do_from_html(url, html)
+        if cls.url_might_be_a_product(url):
+            signals, products = cls._do_from_html(url, html)
         else:
             signals, products = {}, []
 
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),
@@ -163,8 +164,8 @@ class ProductsYoox(object):
                                 products=realproducts)
 
 
-    @staticmethod
-    def _do_from_html(url, html):
+    @classmethod
+    def _do_from_html(cls, url, html):
 
         products = []
 
@@ -172,7 +173,7 @@ class ProductsYoox(object):
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
-        custom = ProductsYoox.get_custom(soup, og)
+        custom = cls.get_custom(soup, og)
 
         sp = sp[0] if sp else {}
 

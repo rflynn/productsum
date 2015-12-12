@@ -150,8 +150,10 @@ class ProductLordandTaylor(object):
 
 class ProductsLordandTaylor(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -160,7 +162,7 @@ class ProductsLordandTaylor(object):
         soup = BeautifulSoup(html)
         meta = HTMLMetadata.do_html_metadata(soup)
         og = OG.get_og(soup)
-        custom = ProductsLordandTaylor.get_custom(soup, html, url)
+        custom = cls.get_custom(soup, html, url)
 
         signals = {
             'meta': meta,
@@ -206,6 +208,7 @@ class ProductsLordandTaylor(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug='lordandtaylor',
                  url=url,
                  size=len(html),

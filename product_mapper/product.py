@@ -520,16 +520,21 @@ class ProductMapResultPage(object):
     regardless of whether it had products on it or not
     '''
     def __init__(self,
+                 version=None,
                  merchant_slug=None,
                  url=None,
                  size=None,
                  proctime=None,
                  signals=None):
+        assert isinstance(version, int)
+        assert version >= 0
+        assert version < 32768
         assert merchant_slug
         assert url
         assert size and size > 0
         assert proctime and proctime > 0
         assert signals is None or isinstance(signals, dict)
+        self.version = version
         self.merchant_slug = merchant_slug
         self.url = url
         self.url_host = URL(url).host
@@ -539,12 +544,14 @@ class ProductMapResultPage(object):
 
     def __repr__(self):
         return ('''ProductMapResultPage(
+    version.........%s
     merchant_slug...%s
     url.............%s
     size............%s
     proctime........%s
     signals.........%s
-)''' % (self.merchant_slug,
+)''' % (self.version,
+        self.merchant_slug,
         self.url,
         self.size,
         self.proctime,
@@ -574,6 +581,7 @@ where
 insert into url_page (
     created,
     updated,
+    version,
     merchant_slug,
     url_host,
     url_canonical,
@@ -588,9 +596,11 @@ insert into url_page (
     %s,
     %s,
     %s,
+    %s,
     %s
 )
-''',  (self.merchant_slug,
+''',  (self.version,
+       self.merchant_slug,
        self.url_host,
        self.url,
        self.size,
@@ -635,10 +645,12 @@ class ProductMapResult(object):
         conn.commit()
 
 if __name__ == '__main__':
+    class Foo:
+        VERSION = 0
     p = Product(merchant_slug='foo_merch',
                 url_canonical='http://example.com/',
                 merchant_sku='12345',
-                merchant_product_obj='lol',
+                merchant_product_obj=Foo(),
                 name=None)
     print p
 

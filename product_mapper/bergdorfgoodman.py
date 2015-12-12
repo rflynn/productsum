@@ -145,6 +145,8 @@ class ProductBergdorfGoodman(object):
 
 class ProductsBergdorfGoodman(object):
 
+    VERSION = 0
+
     @staticmethod
     def get_custom(soup, html, url):
         data = {}
@@ -185,8 +187,8 @@ class ProductsBergdorfGoodman(object):
         }
         return data
 
-    @staticmethod
-    def from_html(url, html):
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -197,7 +199,7 @@ class ProductsBergdorfGoodman(object):
         og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
-        custom = ProductsBergdorfGoodman.get_custom(soup, html, url)
+        custom = cls.get_custom(soup, html, url)
 
         # we get multiple... merge em!
         sp = {}
@@ -252,6 +254,7 @@ class ProductsBergdorfGoodman(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='bergdorfgoodman',
                     url=url,
                     size=len(html),

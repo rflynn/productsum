@@ -182,8 +182,10 @@ class ProductMacys(object):
 
 class ProductsMacys(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -194,11 +196,11 @@ class ProductsMacys(object):
         og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
-        glob = ProductsMacys.script_Globals(soup)
+        glob = cls.script_Globals(soup)
         tw = get_meta_twitter(soup)
-        macy = ProductsMacys.get_macy_extras(soup)
-        pdp = ProductsMacys.get_script_pdpMainData(soup)
-        upcmap = ProductsMacys.get_script_upcmap(soup)
+        macy = cls.get_macy_extras(soup)
+        pdp = cls.get_script_pdpMainData(soup)
+        upcmap = cls.get_script_upcmap(soup)
 
         sp = sp[0] if sp else {}
 
@@ -271,6 +273,7 @@ class ProductsMacys(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug='macys',
                  url=url,
                  size=len(html),

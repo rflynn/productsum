@@ -128,6 +128,8 @@ class ProductDermstore(object):
 
 class ProductsDermstore(object):
 
+    VERSION = 0
+
     @staticmethod
     def url_contains():
         return u'/product_'
@@ -149,6 +151,7 @@ class ProductsDermstore(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                 version=cls.VERSION,
                  merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),

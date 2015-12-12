@@ -21,9 +21,7 @@ from util import nth, normstring, xboolstr
 
 
 class ProductBarneys(object):
-
     VERSION = 0
-
     def __init__(self,
                  prodid=None,
                  canonical_url=None,
@@ -201,8 +199,10 @@ def get_custom(soup):
 
 class ProductsBarneys(object):
 
-    @staticmethod
-    def from_html(url, html):
+    VERSION = 0
+
+    @classmethod
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -264,6 +264,7 @@ class ProductsBarneys(object):
         realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
+                    version=cls.VERSION,
                     merchant_slug='barneys',
                     url=url,
                     size=len(html),
