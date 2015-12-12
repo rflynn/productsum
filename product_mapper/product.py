@@ -12,7 +12,7 @@ import re
 from urlparse import urljoin
 from yurl import URL
 
-from util import dehtmlify, normstring
+from util import dehtmlify, normstring, unquote
 
 
 dbhost = 'productmap.ccon1imhl6ui.us-east-1.rds.amazonaws.com'
@@ -136,6 +136,9 @@ class Product(object):
         self.fixup_upc()
         self.fixup_prices_and_currency()
         self.fixup_img_urls()
+
+        if self.brand:
+            self.brand = unquote(normstring(self.brand))
 
         if self.brand and self.name:
             if self.name.lower().startswith(self.brand.lower()):
@@ -333,6 +336,7 @@ class Product(object):
 update url_product
 set
     updated = now(),
+    product_mapper_version = %s,
     merchant_slug = %s,
     url_host = %s,
     merchant_sku = %s,
@@ -364,7 +368,8 @@ set
     img_urls = %s
 where
     url_canonical = %s
-''',  (self.merchant_slug,
+''',  (self.merchant_product_obj.VERSION,
+       self.merchant_slug,
        self.url_host,
        self.merchant_sku,
        self.upc,
