@@ -567,6 +567,7 @@ class ProductMapResultPage(object):
 update url_page
 set
     updated = now(),
+    product_mapper_version = %s,
     merchant_slug = %s,
     url_host = %s,
     size = %s,
@@ -575,6 +576,7 @@ set
 where
     url_canonical = %s
 ''',  (self.merchant_slug,
+       self.version,
        self.url_host,
        self.size,
        self.proctime,
@@ -586,7 +588,7 @@ where
 insert into url_page (
     created,
     updated,
-    version,
+    product_mapper_version,
     merchant_slug,
     url_host,
     url_canonical,
