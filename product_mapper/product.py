@@ -575,8 +575,8 @@ set
     signals = %s
 where
     url_canonical = %s
-''',  (self.merchant_slug,
-       self.version,
+''',  (self.version,
+       self.merchant_slug,
        self.url_host,
        self.size,
        self.proctime,
