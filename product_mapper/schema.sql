@@ -60,5 +60,17 @@ alter table url_product add column product_mapper_version smallint;
 alter table url_product drop column product_mapper_version;
 alter table url_page    add column product_mapper_version smallint;
 
+
+create table brand_translate (
+    id                  serial primary key,
+    created             timestamp with time zone not null default (now() at time zone 'utc'),
+    updated             timestamp with time zone not null default (now() at time zone 'utc'),
+    brand_from          varchar(64) not null unique,
+    brand_to            varchar(64) not null
+);
+
+-- update it like this
+-- \copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' with csv;
+
 commit;
 

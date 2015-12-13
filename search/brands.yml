@@ -3,31 +3,32 @@
         'LORD & TAYLOR KIDS':
         'DESIGN LAB LORD & TAYLOR':
 Saint Laurent:
-    alias:
+# ref: http://www.theguardian.com/fashion/2012/jun/21/yves-saint-laurent-renamed
+    aka:
         YVES SAINT LAURENT:
         Yves Saint Laurent:
     line:
         Yves Saint Laurent Beauty:
-            alias:
+            aka:
                 Yves Saint Laurent Beaute:
         Yves Saint Laurent Vintage:
         Yves Saint Laurent Fragrance:
 Givenchy:
-    alias:
+    aka:
         GIVENCHY:
     line:
         Givenchy Beauty:
         Givenchy Vintage:
 RALPH LAUREN:
-    alias:
+    aka:
         Ralph Lauren:
     line:
         LAUREN RALPH LAUREN:
-            alias:
+            aka:
                 LAUREN by Ralph Lauren:
                 Lauren Ralph Lauren:
         POLO RALPH LAUREN:
-            alias:
+            aka:
                 Polo Ralph Lauren:
                 POLO Ralph Lauren:
                 POLO:
@@ -35,50 +36,52 @@ RALPH LAUREN:
         POLO SPORT:
         RALPH LAUREN CHILDRENSWEAR:
         RALPH LAUREN BLACK LABEL:
-            alias:
+            aka:
                 Ralph Lauren Black Label:
                 Ralph Lauren Black:
         Ralph Lauren Childrenswear:
         RALPH LAUREN COLLECTION:
-            alias:
+            aka:
                 Ralph Lauren Collection:
         RALPH LAUREN HOME:
-            alias:
+            aka:
                 Ralph Lauren Home:
         RALPH BY RALPH LAUREN EYEWEAR:
         Ralph by Ralph Lauren:
 Barneys New York:
 Alexander McQueen:
-    alias:
+    aka:
         ALEXANDER MCQUEEN:
     line:
         MCQ ALEXANDER MCQUEEN:
-            alias:
+            type: diffusion
+            aka:
                 McQ Alexander McQueen:
                 'McQ - Alexander McQueen':
+                McQ:
 Burberry:
-    alias:
+    aka:
         BURBERRY:
     line:
         BURBERRY BRIT:
-            alias:
+            aka:
                 Burberry Brit:
         BURBERRY LONDON:
-            alias:
+            aka:
                 Burberry London:
         'BURBERRY SHOES & ACCESSORIES':
         Burberry Beauty:
         Burberry Prorsum:
-            alias:
+            aka:
                 BURBERRY PRORSUM:
         Burberry XO Barneys New York:
         Burberry Kids:
 CALVIN KLEIN:
-    alias:
+    aka:
         Calvin Klein:
     line:
         CALVIN KLEIN JEANS:
-            alias:
+            aka:
                 Calvin Klein Jeans:
         CALVIN KLEIN COLLECTION:
         CALVIN KLEIN KHAKIS:
@@ -87,63 +90,71 @@ CALVIN KLEIN:
         CALVIN KLEIN SWIMWEAR:
         CALVIN KLEIN WOMENS:
         CK CALVIN KLEIN:
+            type: diffusion
+        CK JEANS:
         Calvin Klein Collection:
         Calvin Klein Underwear:
 Prada:
-    alias:
+    aka:
         PRADA:
     line:
         PRADA SPORT:
         Prada Linea Rossa:
+        Miu Miu:
+            type: diffusion
+            aka:
+                MIU MIU:
 Valentino Garavani:
-    alias:
+    aka:
         VALENTINO GARAVANI:
         VALENTINO:
         Valentino:
     line:
         RED VALENTINO:
-            alias:
+            aka:
                 Red Valentino:
                 RED Valentino:
                 REDValentino:
                 'RED(V)':
         VALENTINO ROMA:
-            alias:
+            aka:
                 Valentino Roma:
 MICHAEL KORS:
-    alias:
+    aka:
         Michael Kors:
     line:
         MICHAEL MICHAEL KORS:
-            alias:
+            type: diffusion
+            aka:
                 MICHAEL Michael Kors:
                 Michael Michael Kors:
                 Michael by Michael Kors:
         MICHAEL KORS COLLECTION:
-            alias:
+            aka:
                 Michael Kors Collection:
         Kors Kids:
         KORS MICHAEL KORS:
 Gucci:
-    alias:
+    aka:
         GUCCI:
     line:
         Gucci Makeup:
 Marc Jacobs:
-    alias:
+    aka:
         MARC JACOBS:
     line:
         MARC BY MARC JACOBS:
-            alias:
+            type: diffusion
+            aka:
                 Marc by Marc Jacobs:
                 MARC by Marc Jacobs:
         MARC BY MARC JACOBS X DISNEY:
         Little Marc Jacobs:
-            alias:
+            aka:
                 LITTLE MARC JACOBS:
         Marc Jacobs Fragrance:
 Maison Margiela:
-    alias:
+    aka:
         MAISON  MARGIELA:
         MAISON MARGIELA:
     line:
@@ -153,72 +164,72 @@ Maison Margiela:
         MAISON MARGIELA 22:
         Maison Margiela Fine:
         Mm6 Maison Margiela:
-            alias:
+            aka:
                 MM6 by MAISON MARGIELA:
                 MM6 Maison Margiela:
 Lanvin:
-    alias:
+    aka:
         LANVIN:
     line:
         Lanvin Vintage:
 Stella McCartney:
-    alias:
+    aka:
         STELLA McCARTNEY:
     line:
         Stella McCartney Kids:
         adidas by Stella McCartney:
-            alias:
+            aka:
                 ADIDAS BY STELLA MCCARTNEY:
                 adidas x Stella McCartney:
                 Adidas by Stella McCartney:
 TOM FORD:
-    alias:
+    aka:
         Tom Ford:
     line:
         TOM FORD Beauty:
-            alias:
+            aka:
                 Tom Ford Beauty:
         Tom Ford Eyewear:
 Balenciaga:
-    alias:
+    aka:
         BALENCIAGA:
     line:
         Balenciaga Paris:
 David Yurman:
-    alias:
+    aka:
         DAVID YURMAN:
 Isabel Marant:
-    alias:
+    aka:
         ISABEL MARANT:
     line:
         Isabel Marant Etoile:
-            alias:
+            aka:
                 'Isabel Marant Étoile':
                 ISABEL MARANT ETOILE:
                 ISABEL MARANT ÉTOILE:
                 '"Isabel Marant, Étoile"':
                 Etoile Isabel Marant:
 Salvatore Ferragamo:
-    alias:
+    aka:
         SALVATORE FERRAGAMO:
         FERRAGAMO:
         Ferragamo:
 Moncler:
-    alias:
+    aka:
         MONCLER:
     line:
         Moncler Grenoble:
         Moncler Gamme Bleu:
         Moncler Gamme Rouge:
 Chloe:
-    alias:
+    aka:
         Chloé:
         CHLOÉ:
         'CHLO\xc9':
         'Chlo&#233;':
     line:
         See By Chloé:
-            alias:
+            aka:
                 See By Chloe:
                 See by Chloe:
                 See by Chloé:
@@ -227,27 +238,28 @@ Chloe:
 Christian Louboutin:
     line:
         Christian Louboutin Beauty:
-            alias:
+            aka:
                 Christian Louboutin Beaute:
 Fendi:
-    alias:
+    aka:
         FENDI:
     line:
         Fendi Vintage:
         Fendi Casa:
         Fendi Timepieces:
 Brunello Cucinelli:
-    alias:
+    aka:
         BRUNELLO CUCINELLI:
 Bottega Veneta:
-    alias:
+    aka:
         BOTTEGA VENETA:
 EFFY:
 DSQUARED2:
-    alias:
+    aka:
         Dsquared2:
+        DSQUARED:
 VINCE CAMUTO:
-    alias:
+    aka:
         Vince Camuto:
     line:
         VINCE CAMUTO PLUS:
@@ -255,69 +267,72 @@ VINCE CAMUTO:
         VINCE CAMUTO SIGNATURE:
         Two by Vince Camuto:
         Vince:
-            alias:
+            aka:
                 VINCE:
                 Vince.:
 'Dolce & Gabbana':
-    alias:
+    aka:
         'DOLCE & GABBANA':
         'Dolce and Gabbana':
         'Dolce&Gabbana':
     line:
+        'D&G':
+            type: diffusion
         'Dolce & Gabbana Vintage':
         'DOLCE & GABBANA UNDERWEAR':
 Tory Burch:
     line:
         Tory Burch Watches:
 Alexander Wang:
-    alias:
+    aka:
         ALEXANDER WANG:
     line:
         T by Alexander Wang:
-            alias:
+            type: diffusion
+            aka:
                 T BY ALEXANDER WANG:
                 T By Alexander Wang:
                 T by ALEXANDER WANG:
         DENIM x ALEXANDER WANG:
-            alias:
+            aka:
                 Denim x Alexander Wang:
 Acne Studios:
-    alias:
+    aka:
         ACNE STUDIOS:
 Free People:
-    alias:
+    aka:
         FREE PEOPLE:
 Jimmy Choo:
-    alias:
+    aka:
         JIMMY CHOO:
 EMILIO PUCCI:
-    alias:
-        Emilio Pucci
+    aka:
+        Emilio Pucci:
     line:
         Emilio Pucci Vintage:
 KATE SPADE NEW YORK:
-    alias:
+    aka:
         kate spade new york:
         Kate Spade New York:
         KATE SPADE:
         Kate Spade:
 Theory:
-    alias:
+    aka:
         THEORY:
         'Theory +':
 BLACK BROWN 1826:
 Manolo Blahnik:
 John Hardy:
 COLE HAAN:
-    alias:
+    aka:
         Cole Haan:
     line:
         COLE HAAN SIGNATURE:
 Proenza Schouler:
-    alias:
+    aka:
         PROENZA SCHOULER:
 UGG AUSTRALIA:
-    alias:
+    aka:
         UGG Australia:
         'UGG® Australia':
         Ugg:
@@ -328,60 +343,60 @@ UGG AUSTRALIA:
 'TAHARI ARTHUR S. LEVINE':
 Rebecca Minkoff:
 'rag & bone':
-    alias:
+    aka:
         'Rag & Bone':
         'RAG & BONE':
         'Rag and bone':
         'Rag Bone':
     line:
         'rag & bone/JEAN':
-            alias:
+            aka:
                 'Rag & Bone/JEAN':
 Diane von Furstenberg:
-    alias:
+    aka:
         DIANE VON FURSTENBERG:
         Diane Von Furstenberg:
 Splendid:
-    alias:
+    aka:
         SPLENDID:
     line:
         Splendid Littles:
         Splendid Pearls:
 JIL SANDER:
-    alias:
+    aka:
         Jil Sander:
     line:
         JIL SANDER NAVY:
-            alias:
+            aka:
                 Jil Sander Navy:
 GUESS:
-    alias:
+    aka:
         Guess:
     line:
         GUESS BY MARCIANO:
         GUESS BEACHWEAR:
         GUESS UNDERWEAR:
 Kenzo:
-    alias:
+    aka:
         KENZO:
     line:
         Kenzo Vintage:
 Ippolita:
 BCBGMAXAZRIA:
 Etro:
-    alias:
+    aka:
         ETRO:
         Etro Fragrances:
 NBD:
     line:
         X by NBD:
 ANNE KLEIN:
-    alias:
+    aka:
         Anne Klein:
     line:
         ANNE KLEIN PETITE:
 Marni:
-    alias:
+    aka:
         MARNI:
 Ermenegildo Zegna:
     line:
@@ -389,80 +404,81 @@ Ermenegildo Zegna:
         Zegna: # FIXME
         Zegna Sport:
 GOLDEN GOOSE:
-    alias:
+    aka:
         Golden Goose:
         Golden Goose Deluxe Brand:
 Eileen Fisher:
-    alias:
+    aka:
         EILEEN FISHER:
     line:
         EILEEN FISHER PLUS:
-            alias:
+            aka:
                 '"Eileen Fisher, Plus Size"':
 "Tod's":
-    alias:
+    aka:
         Tods:
         TODS:
         'Tod''s':
         'TOD''S':
 Stuart Weitzman:
-    alias:
+    aka:
         STUART WEITZMAN:
     line:
         Stuart Weitzman Kids:
 SWAROVSKI:
-    alias:
+    aka:
         Swarovski:
 '3.1 Phillip Lim':
-    alias:
+    aka:
         '3.1 phillip lim':
         '3.1 PHILLIP LIM':
         '31 Phillip Lim':
 LUCKY BRAND:
-    alias:
+    aka:
         Lucky Brand:
     line:
         LUCKY BRAND PLUS:
         Lucky Brand Kids:
 J Brand:
-    alias:
+    aka:
         J BRAND JEANS:
         J Brand Jeans:
         'J Brand for mytheresa.com':
     line:
         J BRAND X SIMONE ROCHA:
 Rick Owens:
-    alias:
+    aka:
         RICK OWENS:
     line:
         RICK OWENS MEN:
         DRKSHDW by Rick Owens:
-            alias:
+            type: diffusion
+            aka:
                 DRKSHDW by RICK OWENS:
                 Rick Owens DRKSHDW:
         RICK OWENS LILIES:
 Equipment:
-    alias:
+    aka:
         EQUIPMENT:
 STEFFEN SCHRAUT:
-    alias:
+    aka:
         Steffen Schraut:
 Elizabeth and James:
-    alias:
+    aka:
         'Elizabeth & James':
 'Current/Elliott':
-    alias:
+    aka:
         'CURRENT/ELLIOTT':
         'Current Elliott':
 Oscar de la Renta:
-    alias:
+    aka:
         OSCAR DE LA RENTA:
 Fornasetti:
 Helmut Lang:
-    alias:
+    aka:
         HELMUT LANG:
 'Alice + Olivia':
-    alias:
+    aka:
         'alice + olivia':
         Alice and Olivia:
         Alice Olivia:
@@ -471,17 +487,17 @@ Helmut Lang:
     line:
         'AIR by alice + olivia':
 'Ray-Ban':
-    alias:
+    aka:
         'RAY-BAN':
         RayBan:
     line:
         'Ray-Ban Junior':
         Rayban Junior:
 SERGIO ROSSI:
-    alias:
+    aka:
         Sergio Rossi:
 '7 For All Mankind':
-    alias:
+    aka:
         '7 FOR ALL MANKIND':
         '7 For All Mankind®':
         '7 for all mankind':
@@ -490,43 +506,45 @@ SERGIO ROSSI:
     line:
         'Giambattista Valli x 7 For All Mankind':
 BETSEY JOHNSON:
-    alias:
+    aka:
         Betsey Johnson:
     line:
         Betsey Johnson Bedding:
 'A.P.C.':
-    alias:
+    aka:
         APC Atelier de Production et de Creation:
 KENNETH COLE:
-    alias:
+    aka:
         Kenneth Cole:
         Kenneth Cole New York:
         KENNETH COLE NEW YORK:
     line:
         KENNETH COLE REACTION:
-            alias:
+            aka:
                 Kenneth Cole Reaction:
         UNLISTED BY KENNETH COLE:
 Sydney Evan:
     line:
         SHY by Sydney Evan:
 HUGO BOSS:
-    alias:
+    aka:
         Hugo Boss:
     line:
         HUGO:
         BOSS:
         BOSS Hugo Boss:
         BOSS Kidswear:
+        BOSS GREEN:
+        BOSS Orange:
 SAM EDELMAN:
-    alias:
+    aka:
         Sam Edelman:
     line:
         CIRCUS BY SAM EDELMAN:
-            alias:
+            aka:
                 Circus by Sam Edelman:
 Comme Des Garcons:
-    alias:
+    aka:
         Comme des Garçons:
         COMME des GARÇONS:
         Comme des Garcons:
@@ -534,50 +552,57 @@ Comme Des Garcons:
         Comme des Garçons Comme des Garçons:
     line:
         Comme Des Garcons PLAY:
-            alias:
+            aka:
                 Comme des Garçons PLAY:
                 Comme des Garcons PLAY:
                 Comme des Garcons Play:
         'JUNYA WATANABE COMME des GARÇONS':
-            alias:
+            aka:
                 'Junya Watanabe Comme Des Garçons':
                 'Junya Watanabe Man Comme des Garçons':
+                'Junya Watanabe Comme des Garçons':
         Comme Des Garcons SHIRT:
-            alias:
+            aka:
                 COMME des GARÇONS SHIRT:
         'TRICOT COMME des GARÇONS':
-            alias:
+            aka:
                 'tricot Comme des Garcons':
                 'Tricot Comme des Garçons':
         'Comme Des Garcons Homme Plus':
         'Comme des Garcons Parfums':
         'Comme des Garcons GIRL':
         'Comme des Garçons SHIRT':
-        'Junya Watanabe Comme des Garçons':
+Junya Watanabe:
+    aka:
+        JUNYA WATANABE:
 JESSICA SIMPSON:
-    alias:
+    aka:
         Jessica Simpson:
     line:
         JESSICA SIMPSON PLUS:
 Victoria Beckham:
-    alias:
+    aka:
         VICTORIA BECKHAM:
-        '"VICTORIA, VICTORIA BECKHAM"':
-        Victoria Victoria Beckham:
-        '"Victoria, Victoria Beckham"':
     line:
+        Victoria Victoria Beckham:
+            type: diffusion
+            aka:
+                Victoria by Victoria Beckham:
+                '"VICTORIA, VICTORIA BECKHAM"':
+                '"Victoria, Victoria Beckham"':
         Victoria Beckham Denim:
-            alias:
+            aka:
                 VICTORIA BECKHAM DENIM:
 NARS:
-    alias:
+    aka:
         Nars:
 ROBERTO CAVALLI:
-    alias:
+    aka:
         Roberto Cavalli:
     line:
         JUST CAVALLI:
-            alias:
+            type: diffusion
+            aka:
                 Just Cavalli:
         JUST CAVALLI BEACHWEAR:
         CLASS ROBERTO CAVALLI:
@@ -585,62 +610,62 @@ ROBERTO CAVALLI:
         ROBERTO CAVALLI UNDERWEAR:
         Roberto Cavalli Kids:
 The Row:
-    alias:
+    aka:
         THE ROW:
 Giuseppe Zanotti:
-    alias:
+    aka:
         GIUSEPPE ZANOTTI:
         Giuseppe Zanotti Design:
         GIUSEPPE ZANOTTI DESIGN:
 NAUTICA:
-    alias:
+    aka:
         Nautica:
 Gianvito Rossi:
-    alias:
+    aka:
         GIANVITO ROSSI:
 Aquazzura:
     line:
         Aquazzura x Poppy Delevingne:
 MOTHER: # FIXME: really?
-    alias:
+    aka:
         Mother:
 Nike:
-    alias:
+    aka:
         NIKE:
     line:
         Nike Golf:
         Nike Kids:
         NIKE SWIM:
 'Kiehl''s Since 1851':
-    alias:
+    aka:
         'Kiehl''s Since 1851':
         'KIEHL''S SINCE 1851':
         'Kiehl''s':
 ESTEE LAUDER:
-    alias:
+    aka:
         Estee Lauder:
         Estée Lauder:
 Topshop:
     line:
         Topshop Unique:
 CLINIQUE:
-    alias:
+    aka:
         Clinique:
 Chanel:
-    alias:
+    aka:
         CHANEL:
     line:
         Chanel Vintage:
 LE VIAN:
 Other:
 NINE WEST:
-    alias:
+    aka:
         Nine West:
 La Mer:
-    alias:
+    aka:
         La Mer Collections:
 Zimmermann:
-    alias:
+    aka:
         ZIMMERMANN:
     line:
         Zimmermann Kids:
@@ -648,186 +673,196 @@ Joie:
     line:
         Soft Joie:
 'For Love & Lemons':
-    alias:
+    aka:
         For Love Lemons:
 Valextra:
-    alias:
+    aka:
         VALEXTRA:
 Canada Goose:
 Citizens of Humanity:
-    alias:
+    aka:
         CITIZENS OF HUMANITY:
         Citizens Of Humanity:
 Anya Hindmarch:
-    alias:
+    aka:
         ANYA HINDMARCH:
 IRO:
-    alias:
+    aka:
         'IRO . JEANS':
         'IRO.JEANS':
         Iro:
 Jennifer Meyer:
-    alias:
+    aka:
         Barneys New York XO Jennifer Meyer:
 ELIE TAHARI:
+    aka:
+        Elie Tahari:
     line:
         Elie Tahari Sport:
+        Elie Tahari Kids:
+Tahari by ASL:
 'A.L.C.':
-    alias:
-        'ALC.'
+    aka:
+        'ALC.':
 Thom Browne:
 MSGM:
 Astley Clarke:
 Parker:
 Laura Mercier:
-    alias:
+    aka:
         LAURA MERCIER:
 BCBGENERATION:
-    alias:
+    aka:
         BCBGeneration:
 ATM Anthony Thomas Melillo:
-    alias:
+    aka:
         ATM:
 NSF:
-    alias:
+    aka:
         NSF x Bliss and Mischief:
 Smythson:
-    alias:
+    aka:
         SMYTHSON:
 Frye:
-    alias:
-        FRYE
+    aka:
+        FRYE:
     line:
         Frye Kids:
 FRAME Denim:
-    alias:
+    aka:
         FRAME:
         Frame:
         FRAME denim:
         Frame Denim:
 Byredo:
 Giorgio Armani:
-    alias:
+    aka:
         GIORGIO ARMANI:
         Armani:
     line: # TODO:
         ARMANI COLLEZIONI:
-            alias:
+            aka:
                 Armani Collezioni:
         ARMANI EXCHANGE:
-            alias:
+            aka:
                 Armani Exchange:
                 AX Armani Exchange:
         Emporio Armani:
-            alias:
+            type: diffusion
+            aka:
                 EMPORIO ARMANI:
                 EA7 Emporio Armani:
                 EMPORIO ARMANI SWIMWEAR:
         ARMANI JEANS:
-            alias:
+            aka:
                 Armani Jeans:
         Armani Junior:
 GIAMBATTISTA VALLI:
-    alias:
+    aka:
         Giambattista Valli:
-SCERVINO STREET:
+    line:
+        Giamba:
+            type: diffusion
+            aka:
+                GIAMBA:
 NICHOLAS:
 Enza Costa:
 PIERRE HARDY:
-    alias:
+    aka:
         Pierre Hardy:
 Kevyn Aucoin:
     line:
         Kevyn Aucoin Beauty:
 STEVE MADDEN:
-    alias:
+    aka:
         Steve Madden:
     line:
         STEVEN BY STEVE MADDEN:
-            alias:
+            aka:
                 Steven by Steve Madden:
-Miu Miu:
-    alias:
-        MIU MIU:
 Wolford:
-    alias:
+    aka:
         WOLFORD:
 'Velvet by Graham & Spencer':
-    alias:
+    aka:
         VELVET BY GRAHAM AND SPENCER:
         VELVET:
         Velvet:
 Akris:
-    alias:
+    aka:
         AKRIS:
         AKRIS PUNTO:
         Akris punto:
         Akris Punto:
 Loro Piana:
 Balmain:
-    alias:
+    aka:
         BALMAIN:
-        Pierre Balmain:
         Balmain Paris Hair Couture:
-        PIERRE BALMAIN:
         'Balmain x H&M':
+    line:
+        Pierre Balmain:
+            type: diffusion
+            aka:
+                PIERRE BALMAIN:
 Le Labo:
 Diptyque:
-    alias:
+    aka:
         diptyque:
 MISSONI:
-    alias:
+    aka:
         Missoni:
         M MISSONI:
         M Missoni:
     line:
         Missoni Mare:
-            alias:
+            aka:
                 MISSONI MARE:
         Missoni Vintage:
         MISSONI HOME:
-            alias:
+            aka:
                 Missoni Home:
 Paul Smith:
-    alias:
+    aka:
         PAUL SMITH:
     line:
         PAUL SMITH BLACK LABEL:
         Paul Smith Junior:
         PS BY PAUL SMITH:
-            alias:
+            aka:
                 PS Paul Smith:
         Paul Smith London:
         Paul Smith Exclusive:
         Paul Smith Jeans:
 Armenta:
 Moschino:
-    alias:
+    aka:
         MOSCHINO:
     line:
         LOVE MOSCHINO:
-            alias:
+            aka:
                 LOVE Moschino:
                 Love Moschino:
         BOUTIQUE MOSCHINO:
-            alias:
+            aka:
                 Boutique Moschino:
         Moschino Vintage:
         MOSCHINO COUTURE:
         MOSCHINO SWIM:
         MOSCHINO CHEAP AND CHIC:
-            alias:
+            type: diffusion
+            aka:
                 MOSCHINO CHEAPANDCHIC:
         MOSCHINO UNDERWEAR:
 SFERRA:
-    alias:
-        Sferra
+    aka:
+        Sferra:
 Oliver Peoples:
     line:
         Oliver Peoples WEST:
 LITTLE ME:
-    alias:
-        Little Mea
+    aka:
+        Little Mea:
 Mara Hoffman:
 One Teaspoon:
 'Lovers + Friends':
@@ -837,32 +872,40 @@ Louis Vuitton:
     line:
         Louis Vuitton Vintage:
 BB Dakota:
-KARL LAGERFELD:
-    alias:
-        Karl Lagerfeld:
     line:
-KARL LAGERFELD PARIS:
+        BB DAKOTA PLUS:
+        Jack by BB Dakota:
+KARL LAGERFELD:
+    aka:
+        Karl Lagerfeld:
+        KARL LAGERFELD PARIS:
+    line:
+        Karl:
+            type: diffusion
+            aka:
+                KARL LAGERFELD PARIS:
+                KARL:
 Wyatt:
 BOBBI BROWN:
 Lancôme:
-    alias:
+    aka:
         Lancome:
         'Lanc&#244;me':
         'LANC\xd4ME':
 Saks Fifth Avenue Collection:
-    alias:
+    aka:
         Saks Fifth Avenue:
     line:
         Saks Fifth Avenue Baby:
         Signature Saks:
 Nixon:
-    alias:
+    aka:
         NIXON:
 'Herschel Supply Co.':
-    alias:
+    aka:
         Herschel Supply Company:
 Versace:
-    alias:
+    aka:
         VERSACE:
         Gianni Versace:
         GIANNI VERSACE:
@@ -871,70 +914,83 @@ Versace:
         Versace  Collection:
         Versace Jeans Couture:
         VERSACE CLASSIC:
+    line:
+        Versus:
+            type: diffusion
+            aka:
+                Versus by Versace
 Bugaboo:
 AEROSOLES:
-    alias:
+    aka:
         Aerosoles:
 Paige Denim:
 IVANKA TRUMP:
-    alias:
+    aka:
         Ivanka Trump:
 Cosabella:
 Charlotte Olympia:
-    alias:
+    aka:
         CHARLOTTE OLYMPIA:
 Clarisonic:
-    alias:
+    aka:
         CLARISONIC:
 BRIONI:
-    alias:
+    aka:
         Brioni:
 Carolina Herrera:
-    alias:
+    aka:
         CAROLINA HERRERA:
 RVCA:
 Trina Turk:
-    alias:
+    aka:
         TRINA TURK:
     line:
         TRINA BY TRINA TURK:
 James Perse:
-    alias:
+    aka:
         JAMES PERSE:
 NADRI:
-    alias:
+    aka:
         Nadri:
 Ashley Pittman:
 Buscemi:
-    alias:
+    aka:
         BUSCEMI:
 Deborah Lippmann:
-    alias:
+    aka:
         deborah lippmann:
 UNDER ARMOUR:
-    alias:
+    aka:
         Under Armour:
     line:
         Under Armour Kids:
 Lafayette 148 New York:
-    alias:
+    aka:
         LAFAYETTE 148 NEW YORK:
 RACHEL ZOE:
-    alias:
+    aka:
         Rachel Zoe:
 Neiman Marcus:
     line:
         Neiman Marcus Cashmere Collection:
 Eres:
-    alias:
+    aka:
         ERES:
 Lana:
 'Joe''s Jeans':
+    aka:
+        'JOE''S Jeans':
+        'JOE''S':
+        'Joe''s':
+        'JOE''S JEANS':
+        Joes Jeans:
+    line:
+        'Joe''s Intimates':
 Roberto Coin:
-    alias:
+    aka:
         ROBERTO COIN:
 DIOR:
-    alias:
+    aka:
         Dior:
         Christian Dior:
     line:
@@ -942,190 +998,191 @@ DIOR:
         Christian Dior Vintage:
         Dior Beauty:
 Alexis Bittar:
-    alias:
+    aka:
         ALEXIS BITTAR:
 Blank NYC:
-    alias:
+    aka:
         BLANK NYC:
         BLANKNYC:
 CLOSED:
 Lucca Couture:
 TIBI:
-    alias:
+    aka:
         Tibi:
 MONROW:
 VANESSA BRUNO:
-    alias:
+    aka:
         Vanessa Bruno:
         'VANESSA BRUNO ATHE''':
         Athe by Vanessa Bruno:
         Vanessa Bruno Athé:
         'VANESSA BRUNO ATHÉ':
 SHISEIDO:
-    alias:
+    aka:
         Shiseido:
 JOSEPH:
-    alias:
+    aka:
         Joseph:
 Eugenia Kim:
     line:
         GENIE BY EUGENIA KIM:
-            alias:
+            aka:
                 Genie by Eugenia Kim:
 Donna Karan:
-    alias:
+    aka:
         DONNA KARAN:
     line:
         DONNA KARAN NEW YORK:
-            alias:
+            aka:
                 Donna Karan New York:
         Donna Karan Beauty:
         DKNY:
-            alias:
+            type: diffusion
+            aka:
                 DKNYC:
         DKNY JEANS:
         DKNY JEANS WOMEN:
         DKNY PURE:
         DKNYC PLUS:
 Lacoste:
-    alias:
+    aka:
         LACOSTE:
 ALAÏA:
-    alias:
+    aka:
         Alaia:
         'Ala&#239;a':
 LA PERLA:
-    alias:
+    aka:
         La Perla:
     line:
         La Perla Silver:
 Milly:
-    alias:
+    aka:
         MILLY:
     line:
         MILLY MINIS:
-            alias:
+            aka:
                 Milly Minis:
         MILLY CABANA:
 CAROLEE:
 Obey:
 Vilebrequin:
-    alias:
+    aka:
         VILEBREQUIN:
 Blue Life:
 Ella Moss:
-    alias:
+    aka:
         ELLA MOSS:
     line:
         Ella Moss Girl:
 CESARE PACIOTTI:
-    alias:
+    aka:
         Cesare Paciotti:
     line:
         CESARE PACIOTTI BEACHWEAR:
         CESARE PACIOTTI LINGERIE:
 Bobi:
 Clover Canyon:
-    alias:
+    aka:
         CLOVER CANYON:
 Tularosa:
-    alias:
+    aka:
         TULAROSA:
 LAGOS:
 Susana Monaco:
 Cleobella:
 gorjana:
-    alias:
+    aka:
         Gorjana:
 Rory Beca:
 Sophia Webster:
-    alias:
+    aka:
         SOPHIA WEBSTER:
 bareMinerals:
-    alias:
+    aka:
         'bareMinerals®':
 Chaser:
-    alias:
+    aka:
         CHASER:
 Yummie by Heather Thomson:
-    alias:
+    aka:
         YUMMIE BY HEATHER THOMSON:
 Only Hearts:
 FRENCH CONNECTION:
-    alias:
+    aka:
         French Connection:
 Nanette Lepore:
-    alias:
+    aka:
         NANETTE LEPORE:
 Amanda Uprichard:
 Sanctuary:
-    alias:
+    aka:
         SANCTUARY:
 KENSIE:
-    alias:
+    aka:
         kensie:
         Kensie:
         KENSIE JEANS:
 R13:
 SPANX:
-    alias:
+    aka:
         Spanx:
         'SPANX®':
 'J.O.A.':
 THE KOOPLES:
-    alias:
+    aka:
         The Kooples:
 Nancy Gonzalez:
-    alias:
+    aka:
         NANCY GONZALEZ:
 MINKPINK:
 RAYE:
 COSTUME NATIONAL:
-    alias:
+    aka:
         'C''N''C'' COSTUME NATIONAL':
         Costume National:
 Hudson Jeans:
-    alias:
+    aka:
         HUDSON JEANS:
 AERIN:
-    alias:
+    aka:
         Aerin:
     line:
         AERIN Beauty:
 DIESEL:
-    alias:
+    aka:
         Diesel:
     line:
         DIESEL BLACK GOLD:
 The Great:
-    alias:
+    aka:
         'THE GREAT.':
 Commando:
 Indah:
 LA Made:
-    alias:
+    aka:
         LA MADE:
 NYDJ:
 CLARINS:
-    alias:
+    aka:
         Clarins:
 Wildfox Couture:
 BUFFALO DAVID BITTON:
-    alias:
+    aka:
         Buffalo David Bitton:
 Altuzarra:
 HARTSTRINGS:
-    alias:
+    aka:
         Hartstrings:
 ADRIANNA PAPELL:
-    alias:
+    aka:
         Adrianna Papell:
 John Varvatos:
-    alias:
+    aka:
         JOHN VARVATOS:
     line:
         'John Varvatos Star U.S.A.':
-            alias:
+            aka:
                 'JOHN VARVATOS U.S.A.':
                 John Varvatos Star USA:
                 JOHN VARVATOS STAR USA:
@@ -1133,50 +1190,55 @@ The Fifth Label:
 Karina Grimaldi:
 Somedays Lovin:
 'C/MEO':
-    alias:
+    aka:
         'C/Meo Collective':
 eberjey:
-    alias:
+    aka:
         Eberjey:
 Chan Luu:
-    alias:
+    aka:
         CHAN LUU:
 Bella Luxx:
 Heather:
 Hourglass:
-    alias:
+    aka:
         HOURGLASS:
 AMUSE SOCIETY:
-    alias:
+    aka:
         Amuse Society:
 Lauren Moshi:
 SAYLOR:
-    alias:
+    aka:
         Saylor:
-'T-Bags LosAngeles':
+'T-Bags Los Angeles':
+    aka:
+        'tbagslosangeles':
+        'T-Bags LosAngeles':
+        Tbags Los Angeles:
 Motel:
 Feel the Piece:
 GALLIANO:
-    alias:
+    aka:
         JOHN GALLIANO:
     line:
         John Galliano Vintage:
         JOHN GALLIANO BEACHWEAR:
 Loeffler Randall:
 Hermès:
-    alias:
+    aka:
         Hermes:
         Hermès Vintage:
         HERMÈS:
+        'HERM&#200;S':
 Mason by Michelle Mason:
 MAJESTIC:
-    alias:
+    aka:
         Majestic:
 Clayton:
-    alias:
+    aka:
         CLAYTON:
 'Young Fabulous & Broke':
-    alias:
+    aka:
         '"Young, Fabulous & Broke"':
         Young Fabulous and Broke:
 SUNDRY:
@@ -1184,51 +1246,51 @@ Alexis:
 'Jen''s Pirate Booty':
 'LONNA & LILLY':
 Fleur du Mal:
-    alias:
+    aka:
         fleur du mal:
         Fleur Du Mal:
 Halston Heritage:
-    alias:
+    aka:
         HALSTON HERITAGE:
         HALSTON:
         Halston:
 Nina Ricci:
-    alias:
+    aka:
         NINA RICCI:
 Frédéric Malle:
-    alias:
+    aka:
         Frederic Malle:
 JUICY COUTURE:
-    alias:
+    aka:
         Juicy Couture:
 Raquel Allegra:
 Elizabeth Arden:
-    alias:
+    aka:
         ELIZABETH ARDEN:
 Kanye West x Adidas Originals:
 NINA:
-    alias:
+    aka:
         Nina:
     line:
         Nina Originals:
         Nina Shoes:
 adidas:
-    alias:
+    aka:
         ADIDAS:
         Adidas:
     line:
         adidas Originals:
-            alias:
+            aka:
                 Adidas Originals:
                 ADIDAS ORIGINALS:
                 'adidas Originals by Kanye West YEEZY SEASON 1':
         adidas x kolor:
-            alias:
+            aka:
                 Adidas x kolor:
         adidas Skateboarding:
         adidas Kids:
         adidas by Raf Simons:
-            alias:
+            aka:
                 Adidas By Raf Simons:
                 adidas x Raf Simons:
         adidas x Mary Katrantzou:
@@ -1237,120 +1299,123 @@ adidas:
         adidas by JUUN J:
         'adidas Y-3 by Yohji Yamamoto':
 DRIES VAN NOTEN:
-    alias:
+    aka:
         Dries Van Noten:
         Dries van Noten:
 Nili Lotan:
 CHIE MIHARA:
 TUMI:
-    alias:
+    aka:
         Tumi:
 WILLIAM RAST:
 Seafolly:
-    alias:
+    aka:
         SeaFolly:
 Charlotte Tilbury:
-LAGENT BY AGENT PROVOCATEUR:
-    alias:
-        Agent Provocateur:
+Agent Provocateur:
+    aka:
+    line:
         'L''Agent by Agent Provocateur':
-        LAgent by Agent Provocateur:
+            type: diffusion
+            aka:
+                LAGENT BY AGENT PROVOCATEUR:
+                LAgent by Agent Provocateur:
 Bella Dahl:
 LAUNDRY BY SHELLI SEGAL:
-    alias:
+    aka:
         Laundry by Shelli Segal:
 ORLEBAR BROWN:
-    alias:
+    aka:
         Orlebar Brown:
 AG Adriano Goldschmied:
-    alias:
+    aka:
         AG ADRIANO GOLDSCHMIED:
 Kenneth Jay Lane:
-    alias:
+    aka:
         KENNETH JAY LANE:
     line:
         CZ by Kenneth Jay Lane:
-            alias:
+            aka:
                 CZ by KENNETH JAY LANE:
 philosophy:
-    alias:
+    aka:
         PHILOSOPHY:
         Philosophy:
 Maaji:
 Edie Parker:
 Molton Brown:
-    alias:
+    aka:
         MOLTON BROWN:
 NEST Jewelry:
 Ann Demeulemeester:
-    alias:
+    aka:
         ANN DEMEULEMEESTER:
     line:
         AD Ann Demeulemeester:
 NEIL BARRETT:
-    alias:
+    aka:
         Neil Barrett:
 WOOLRICH:
-    alias:
+    aka:
         Woolrich:
 ThePerfext:
 The North Face:
 'J.Crew':
-    alias:
+    aka:
         JCrew:
 'L*SPACE':
-    alias:
+    aka:
         'L*Space':
         L Space:
 MIKOH:
-    alias:
+    aka:
         Mikoh:
     line:
         MIKOH SWIMWEAR:
 True Religion:
-    alias:
+    aka:
         TRUE RELIGION:
         True Religion Brand Jeans:
 Jeffrey Campbell:
 Gorski:
 Autumn Cashmere:
 Sperry:
-    alias:
+    aka:
         SPERRY:
     line:
         Sperry Kids:
         'Sperry Top-Sider':
 'L''AGENCE':
-    alias:
+    aka:
         'L''Agence':
     line:
         'LA''t by L''agence':
 Hayden:
 Nordstrom:
-    alias:
+    aka:
     line:
         'John W. Nordstrom®':
-            alias:
+            aka:
                 'John W. Nordstrom® Signature':
         Nordstrom Baby:
         Nordstrom Collection:
         Nordstrom at Home:
 FOSSIL:
-    alias:
+    aka:
         Fossil:
 'Line & Dot':
 ELLIATT:
 Sun Buddies:
 Tomas Maier:
 Isaia:
-    alias:
+    aka:
         ISAIA:
 GLUCKSTEINHOME:
 Jonathan Adler:
-    alias:
+    aka:
         JONATHAN ADLER:
 Céline:
-    alias:
+    aka:
         CÉLINE:
         Celine:
     line:
@@ -1358,69 +1423,69 @@ Céline:
 Zuo:
 Davines:
 Junk Food:
-    alias:
+    aka:
         JUNK FOOD:
 'DL1961':
-    alias:
+    aka:
         'DL1961 Premium Denim':
 'AQ/AQ':
 Cushnie et Ochs:
-    alias:
+    aka:
         Cushnie Et Ochs:
 'Tucker + Tate':
 Style Stalker:
 BEACH RIOT:
-    alias:
+    aka:
         Beach Riot:
 '360 Sweater':
-    alias:
+    aka:
         '360 SWEATER':
         '360 Cashmere':
         '360Cashmere':
 House of Harlow:
-    alias:
+    aka:
         'HOUSE OF HARLOW 1960':
         'House of Harlow 1960':
         'House of Harlow 1960 Jewelry':
 ORIGINAL PENGUIN:
-    alias:
+    aka:
         Original Penguin:
 Opening Ceremony:
-    alias:
+    aka:
         OPENING CEREMONY:
 Connor:
 Aesop:
 sky:
 Ettika:
 THE JETSET DIARIES:
-    alias:
+    aka:
         The Jetset Diaries:
 CARVEN:
-    alias:
+    aka:
         Carven:
         Carven Fragrance:
 Madewell:
 PERRY ELLIS:
-    alias:
+    aka:
         Perry Ellis:
 LOUISE ET CIE:
-    alias:
+    aka:
         Louise et Cie:
 Chantecaille:
 Old Soles:
 Siwy:
 Sofia Cashmere:
-    alias:
+    aka:
         SOFIA CASHMERE:
 VIA SPIGA:
-    alias:
+    aka:
         Via Spiga:
 'UNO DE 50':
 Paco Rabanne:
-    alias:
+    aka:
         PACO RABANNE:
 'G-Star':
-    alias:
+    aka:
         'G-STAR RAW':
         'G-STAR':
         G Star:
@@ -1428,150 +1493,152 @@ Paco Rabanne:
 'Bishop + Young':
 Michael Lauren:
 'DONALD J. PLINER':
-    alias:
+    aka:
         Donald J Pliner:
 ELIZA J:
-    alias:
+    aka:
         Eliza J:
 Schutz:
-    alias:
+    aka:
         SCHUTZ:
 Gift Boutique:
 By Terry:
-    alias:
+    aka:
         BY TERRY:
 TOMMY BAHAMA:
-    alias:
+    aka:
         Tommy Bahama:
 Ash:
-    alias:
+    aka:
         ASH:
 VAVA by Joy Han:
 'Y-3':
-    alias:
+    aka:
         'Y 3':
 Ileana Makri:
-    alias:
+    aka:
         ILEANA MAKRI:
     line:
         IAM by Ileana Makri:
 The Art of Shaving:
-    alias:
+    aka:
         THE ART OF SHAVING:
         The Art Of Shaving:
 Herve Leger:
+    aka:
+        Hervé Léger:
 Roland Mouret:
-    alias:
+    aka:
         ROLAND MOURET:
 TIGI:
 Caption:
 Dolce Vita:
-    alias:
+    aka:
         DOLCE VITA:
     line:
         DV by Dolce Vita:
         Dolce Girl:
         Dolce Vita Kids:
 Furla:
-    alias:
+    aka:
         FURLA:
 Dagmara:
 Bliss:
-    alias:
+    aka:
         BLISS:
         bliss:
 Kiki de Montparnasse:
 VIONNET:
-    alias:
+    aka:
         Vionnet:
 Twelfth Street By Cynthia Vincent:
-    alias:
+    aka:
         'Twelfth St. by Cynthia Vincent':
         Twelfth Street by Cynthia Vincent:
         TWELFTH ST BY CYNTHIA VINCENT:
 Bloch:
 Eddie Borgo:
-    alias:
+    aka:
         EDDIE BORGO:
 Rails:
-    alias:
+    aka:
         RAILS:
 Norma Kamali:
-    alias:
+    aka:
         NORMA KAMALI:
     line:
         KAMALIKULTURE by Norma Kamali:
 Trish McEvoy:
-    alias:
+    aka:
         TRISH MCEVOY:
 Hanro:
-    alias:
+    aka:
         HANRO:
 'ZADIG & VOLTAIRE':
-    alias:
+    aka:
         'Zadig & Voltaire':
 BLQ BASIQ:
 'RENE'' CAOVILLA':
-    alias:
+    aka:
         Rene Caovilla:
 Maison Michel:
-    alias:
+    aka:
         MAISON MICHEL:
 amour vert:
 Tamara Mellon:
-    alias:
+    aka:
         TAMARA MELLON:
 TED BAKER:
-    alias:
+    aka:
         Ted Baker:
         Ted Baker London:
 Raoul:
-    alias:
+    aka:
         RAOUL:
 Vita Fede:
 Kissy Kissy:
 BLAQUE LABEL:
-    alias:
+    aka:
         Blaque Label:
 Guerlain:
-    alias:
+    aka:
         GUERLAIN:
 Sulwhasoo:
 Dita:
-    alias:
+    aka:
         DITA:
 Brixton:
 Oribe:
 Endless Rose:
-    alias:
+    aka:
         endless rose:
 VERA WANG:
-    alias:
+    aka:
         Vera Wang:
         Vera Wang Bridal:
     line:
         LAVENDER LABEL by VERA WANG:
-            alias:
+            aka:
                 VERA WANG LAVENDER:
 NIPON BOUTIQUE:
 Ben Sherman:
-    alias:
+    aka:
         BEN SHERMAN:
 Quiksilver:
-    alias:
+    aka:
         QUIKSILVER:
     line:
         Quiksilver Kids:
 krisa:
 Vanessa Mooney:
-    alias:
+    aka:
         VANESSA MOONEY:
 KC Designs:
 CREED:
-    alias:
+    aka:
         Creed:
 'LEVI''S':
-    alias:
+    aka:
         'Levi''s':
         'Levi''s®':
     line:
@@ -1580,14 +1647,15 @@ CREED:
         'Levi''s Vintage Clothing':
 Miansai:
 Greylin:
-'DEREK LAM 10 CROSBY':
-    alias:
-        Derek Lam:
+Derek Lam:
+    aka:
         DEREK LAM:
     line:
         'Derek Lam 10 Crosby':
-            alias:
+            type: diffusion
+            aka:
                 '10 CROSBY DEREK LAM':
+                'DEREK LAM 10 CROSBY':
 AHAVA:
 Cheap Monday:
 Cartier:
@@ -1597,7 +1665,7 @@ Cartier:
 Saint Grace:
 PARAJUMPERS:
 'M.i.h Jeans':
-    alias:
+    aka:
         M I H JEANS:
         MiH Jeans:
 Bari Lynn:
@@ -1610,64 +1678,66 @@ Bardot:
 Hanna Andersson:
 PETIT LEM:
 Haute Hippie:
-    alias:
+    aka:
         HAUTE HIPPIE:
 JONATHAN SIMKHAI:
-    alias:
+    aka:
         Jonathan Simkhai:
 Hanky Panky:
-    alias:
+    aka:
         HANKY PANKY:
 Roksanda:
-    alias:
+    aka:
         ROKSANDA:
         ROKSANDA ILINCIC:
 Lanston:
     line:
         Lanston Sport:
 jane iredale:
-    alias:
+    aka:
         Jane Iredale:
     line:
         Jane Iredale Cosmetics:
 BULOVA:
-    alias:
+    aka:
         Bulova:
     line:
         Accutron by Bulova:
 'VIKTOR & ROLF':
-    alias:
+    aka:
         'Viktor & Rolf':
         'Viktor&Rolf':
 Elegant Baby:
 Yosi Samra:
 PETER PILOTTO:
-    alias:
+    aka:
         Peter Pilotto:
 Lipstick Queen:
 FRANCO SARTO:
-    alias:
+    aka:
         Franco Sarto:
 Fresh:
-    alias:
+    aka:
         'Fresh®':
 Rene Furterer:
 AGNONA:
-    alias:
+    aka:
         Agnona:
 ROCHAS:
-    alias:
+    aka:
         Rochas:
 Gottex:
-    alias:
+    aka:
         GOTTEX:
         Gottex Swim:
         '"Gottex Swim, Plus Size"':
+    line:
+        BLUSH BY GOTTEX:
 FAITH CONNEXION:
-    alias:
+    aka:
         Faith Connexion:
 NICOLE MILLER:
-    alias:
+    aka:
         Nicole Miller:
     line:
         Nicole Miller Bridal:
@@ -1679,17 +1749,17 @@ WYLDR:
 'MORRIS & DAVID':
 Central Park West:
 Acqua di Parma:
-    alias:
+    aka:
         Acqua Di Parma:
 American Vintage:
-    alias:
+    aka:
         AMERICAN VINTAGE:
 CAPELLI NEW YORK:
-    alias:
+    aka:
         CAPELLI:
         Capelli of New York:
 'Pam & Gela':
-    alias:
+    aka:
         'PAM & GELA':
 Lela Rose:
 AUGUSTE:
@@ -1697,18 +1767,18 @@ Royal Baby:
     line:
         Royal Baby for Barneys New York:
 Adrienne Landau:
-    alias:
+    aka:
         ADRIENNE LANDAU:
 Bally:
 Outerstuff:
 Badgley Mischka:
-    alias:
+    aka:
         BADGLEY MISCHKA:
     line:
         BELLE BY BADGLEY MISCHKA:
 Engineered Garments:
 CLARKS:
-    alias:
+    aka:
         'Clarks®':
         Clarks:
     line:
@@ -1717,43 +1787,43 @@ CLARKS:
 Kelly Wearstler:
 CHANTAL THOMASS:
 HUE:
-    alias:
+    aka:
         Hue:
 Nookie:
 'Sass & Bide':
-    alias:
+    aka:
         'sass & bide':
 Caffe:
 koral activewear:
-    alias:
+    aka:
         Koral:
     line:
         Koral Activewear:
-            alias:
+            aka:
                 KORAL ACTIVEWEAR:
 'FIORENTINI & BAKER':
-    alias:
+    aka:
         'Fiorentini + Baker':
         'Fiorentini +  Baker':
 'DOONEY & BOURKE':
-    alias:
+    aka:
         'Dooney & Bourke':
 BALDESSARINI:
 Haider Ackermann:
-    alias:
+    aka:
         HAIDER ACKERMANN:
 Nails inc:
 Vintage Addiction:
 Minty Meets Munt:
 Theia:
-    alias:
+    aka:
         THEIA:
 Florence Eiseman:
 BORGHESE:
-    alias:
+    aka:
         Borghese:
 Sisley Paris:
-    alias:
+    aka:
         Sisley   Paris:
         'SISLEY-PARIS':
         Sisley:
@@ -1762,56 +1832,58 @@ Skin:
 Southern Enterprises:
 'STONE_COLD_FOX':
 Stance:
-    alias:
+    aka:
         STANCE:
 PHILOSOPHY DI LORENZO SERAFINI:
-    alias:
+    aka:
         Philosophy di Lorenzo Serafini:
 DOGEARED:
-    alias:
+    aka:
         Dogeared:
 Riedel:
 LESPORTSAC:
-    alias:
+    aka:
         LeSportsac:
 Hunter:
-    alias:
+    aka:
         HUNTER:
 Three of Something:
 Alterna:
-    alias:
+    aka:
         'ALTERNA®':
 SOREL:
-    alias:
+    aka:
         Sorel:
 bkr:
 CYNTHIA STEFFE:
-    alias:
+    aka:
         Cynthia Steffe:
     line:
         CECE BY CYNTHIA STEFFE:
 ELLEN TRACY:
-    alias:
+    aka:
         Ellen Tracy:
 '8':
 RtA:
-    alias:
+    aka:
         Rta:
         RtA Denim:
 Converse:
-    alias:
+    aka:
         CONVERSE:
     line:
         Converse Kids:
 NYTT:
 Shun:
+    aka:
+        Shun Kai:
 The Laundry Room:
 Brooks Brothers:
     line:
         BROOKS BROTHERS RED FLEECE:
 SEIKO:
 By Malene Birger:
-    alias:
+    aka:
         BY MALENE BIRGER:
 Tai:
 TOMS:
@@ -1819,77 +1891,92 @@ FREDS at Barneys New York:
 Mulberry:
 Nation LTD:
 PILYQ:
-    alias:
+    aka:
         PilyQ:
 YFB CLOTHING:
 Eminence:
 Bvlgari:
-    alias:
+    aka:
         BVLGARI:
         Bulgari:
 Jo Malone London:
 Nicholas Kirkwood:
-    alias:
+    aka:
         NICHOLAS KIRKWOOD:
+        Nicholas K:
 Rachel Comey:
 Geox:
-    alias:
+    aka:
         GEOX:
 Ancient Greek Sandals:
-    alias:
+    aka:
         ANCIENT GREEK SANDALS:
 'LABEL+thread':
 Janessa Leone:
 Gurhan:
 Sachajuan:
+    aka:
+        SACHAJUAN:
 Jay Strongwater:
 LACAUSA:
 Ronny Kobo:
+    aka:
+        RONNY KOBO:
+    line:
+        Torn by Ronny Kobo:
 PAIGE:
+    aka:
+        Paige:
 Barton Perreira:
 State of Being:
 Goddis:
 'Atelje''':
 'A.B.S. BY ALLEN SCHWARTZ':
-    alias:
+    aka:
         'A.B.S. by Allen Schwartz':
         ABS by Allen Schwartz Jewelry:
 RUPERT SANDERSON:
+    aka:
+        Rupert Sanderson:
 Puma:
 'Clare V.':
-    alias:
+    aka:
         Clare V:
 Coyuchi:
 Something Strong:
 La Prairie:
-Mugler:
 France Luxe:
 Vimmia:
 The Elder Statesman:
-PRABAL GURUNG:
 MCM:
 Anita Ko:
+    aka:
+        ANITA KO:
 Gund:
 ALBERTA FERRETTI:
 Royce Leather:
 'NIC+ZOE':
+    aka:
+        NIC ZOE:
     line:
         'NIC+ZOE PLUS':
         'NIC+ZOE PETITES':
 TALLIA ORANGE:
 Skinny Tie Madness:
 DUVETICA:
+    aka:
+        Duvetica:
 Linda Richards:
 MARY KATRANTZOU:
 Gola:
 TOYWATCH:
 Natalie B Jewelry:
-    alias:
+    aka:
         'Natalie B. Jewelry':
 Jelly Cat:
 Nightcap:
 'Donna Salyers'' Fabulous-Furs':
-    alias:
+    aka:
         'Donna Salyers Fabulous-Furs':
         DONNA SALYERS:
 Luca Chiara:
@@ -1899,12 +1986,10 @@ This Works:
 KAREN KANE:
 DELFINA DELETTREZ:
 Le Creuset:
-Liebeskind Berlin:
 Avene:
 Band of Gypsies:
 STRELLSON:
 Ethan Williams Clothing:
-'L''Artisan Parfumeur':
 'Threads 4 Thought':
 Kerastase:
 Capulet:
@@ -1919,9 +2004,13 @@ Maika:
 Staub:
 Reign:
 Cocobelle:
+    aka:
+        cocobelle:
 Kristin Perry Accessories:
 Ted Lapidus:
 Wusthof:
+    aka:
+        Wüsthof:
 Aquaswiss:
 Blue Candy Jewelry:
 Manna Kadar Cosmetics:
@@ -1940,12 +2029,13 @@ Meredith Banzhoff:
 Laura Cole:
 LumiSource:
 'Whiting & Davis':
-Henckels International:
 Jivago:
 Luli Fama:
 Nova Lamps:
 Wall Pops:
-MAJORICA:
+Majorica:
+    aka:
+        MAJORICA:
 'Holly & Martin':
 Nioxin:
 Glam Rock:
@@ -1970,6 +2060,8 @@ SUSU:
 Feizy:
 Meli Beach Swimwear:
 Superior:
+    aka:
+        SUPERIOR:
 MaLi Beads:
 MissFit Activewear:
 Artisan Tees:
@@ -1980,50 +2072,79 @@ PEGASUS HOME FASHIONS:
 Delano Decor:
 samantha eng:
 La Regale:
+    aka:
+        LA REGALE:
 Calvin Rucker:
 '3LAB':
 VITA Lighting:
 Un Deux Trois:
-LAURENCE DACADE:
 Nicole Romano:
-'JOE''S JEANS':
 Madeleine Maternity:
 Vans:
+    line:
+        Vans Kids:
 Olive Yew:
 JULIAN CHANG:
 FIRST PEOPLE FIRST:
 ADORNIA:
 Alliyah Rugs:
 'St. John Collection':
+    aka:
+        St John:
+        'St. John':
+        'ST. JOHN':
 JOCKEY:
 Second Base:
 Walter Baker:
+    line:
+        'W118 BY WALTER BAKER':
 Nada Sawaya:
 KleanSpa:
-ELIE SAAB:
+Elie Saab:
+    aka:
+        ELIE SAAB:
 Lucy Paris:
+    aka:
+        lucy:
 Boum:
 'TRYB212':
 Soul Journey Jewelry:
 '6 SHORE ROAD':
+    aka:
+        '6 Shore Road by Pooja':
 Pacific Accents:
 Marysia Swim:
+    aka:
+        Marysia:
 CITIZEN:
+    aka:
+        Citizen Watches:
+        Citizen:
 Key West Aloe:
 Curioos Wall Art:
 Komono:
+    aka:
+        KOMONO:
 'self-portrait':
 Kilian:
 Vifah:
 Obagi:
 Thakoon:
+    line:
+        Thakoon Addition:
+            aka:
+                THAKOON ADDITION:
 Stateside:
 'Malin+Goetz':
+    aka:
+        Malin and Goetz:
 Spiritual Gangster:
 Pinc Premium:
+    aka:
+        PINC PREMIUM:
 Until Theres A Cure:
 ANNA SUI:
-    alias:
+    aka:
         Anna Sui:
     line:
         Anna Sui Cosmetics:
@@ -2031,16 +2152,30 @@ OH MY LOVE:
 HONORA STYLE:
 MLV:
 Rimowa:
+    aka:
+        Rimowa North America:
 Teri Jon Pour Monsieur:
+Teri Jon by Rickie Freeman:
+    aka:
+        Rickie Freeman for Teri Jon:
+        TERI JON:
 SpaRitual:
 Fifteen Twenty:
 Dopp:
-ALEX EVENINGS:
+Alex Evenings:
+    aka:
+        ALEX EVENINGS:
 '525 america':
-    alias:
+    aka:
         '525 America':
 Clé de Peau Beauté:
+    aka:
+        Cle de Peau Beaute:
+        'Cl233De Peau Beaut233':
+        Clé de Peau Synactif:
 Zimmerli:
+    aka:
+        ZIMMERLI:
 RAFAELLA:
     line:
         RAFAELLA PETITES:
@@ -2048,24 +2183,38 @@ RAFAELLA:
 Liz Claiborne:
 Dion Lee:
 Falke:
+    aka:
+        FALKE:
 Mary Jurek Design:
 Yaxell:
 Lady Alamo:
 Hudson:
+    line:
+        Hudson Kids:
 Portolano:
+    aka:
+        PORTOLANO:
 MAATI:
 T TAHARI:
-    alias:
+    aka:
         T Tahari:
-Robert Clergerie:
 Paul Andrew:
+    aka:
+        PAUL ANDREW:
 Clara Sunwoo:
-'GV2':
+GV2:
 Unravel:
 Anastasia Beverly Hills:
+    aka:
+        ANASTASIA BEVERLY HILLS:
 RISE OF DAWN:
 ale by alessandra:
+Alessandra Rich:
 Monique Lhuillier:
+    line:
+        ML Monique Lhuillier:
+            aka:
+                'ML - MONIQUE LHUILLIER':
 Charvet:
 Canali:
 Bettinis:
@@ -2074,34 +2223,50 @@ Hye Park and Lune:
 Stefano Ricci:
 Stone Rose:
 Bebe:
+    aka:
+        bebe:
 Rebecca Taylor:
 Michael Stars:
 alo:
 BOSCA:
 TAHARI:
 ADRIENNE VITTADINI:
+    aka:
+        Adrienne Vittadini:
 Native Shoes:
 Adam Lippes:
 LIV:
 KIDS HEADQUARTERS:
 Olay:
 DUNE LONDON:
+    aka:
+        Dune London:
 Bling Jewelry:
 XSCAPE:
 'R.J. GRAZIANO':
 Henckels:
+    aka:
+        Henckels International:
 New Balance:
+    aka:
+        NEW BALANCE:
 BRAHMIN:
+    aka:
+        Brahmin:
 Pamela Love:
 NANNETTE:
 Peixoto:
 Lisa Marie Fernandez:
 Issa:
+    aka:
+        ISSA:
 Jules Smith:
 DownTown Company:
 Georg Jensen:
 Huit:
 Loquet:
+    aka:
+        LOQUET:
 BUCO Handbags:
 'Spell & The Gypsy Collective':
 Alfred Angelo:
@@ -2109,9 +2274,13 @@ IKKS Paris:
 Mirame:
 'Level 99':
 Ike Behar:
+    line:
+        IKE BY IKE BEHAR:
 Allure Bridals:
 Konstantino:
 Assouline:
+    line:
+        ASSOULINE:
 TISSOT:
 SkinCeuticals:
 Le Salty Label:
@@ -2122,6 +2291,8 @@ Our Legacy:
 Adee Kaye:
 Greenland:
 Little Giraffe:
+    line:
+        Giraffe at Home:
 Six Twenty:
 California Baby:
 Whitney Eve:
@@ -2129,26 +2300,44 @@ Chloe Oliver:
 Common Projects:
 Steiner Sports:
 Klorane:
-MOVADO:
+Movado:
+    aka:
+        MOVADO:
+    line:
+        MOVADO BOLD:
 SOFFT:
+    aka:
+        Sofft:
 Angela Nuran:
 Barbara Bui:
+    aka:
+        BARBARA BUI:
 ALTERNATIVE:
+    aka:
+        Alternative:
+        Alternative Apparel:
 'GEORGE J. LOVE':
 Rituals:
 Soludos:
 Kim Seybert:
 Chiara Ferragni:
+    aka:
+        CHIARA FERRAGNI:
 Peace Love World:
 Superga:
+    aka:
+        SUPERGA:
 'David''s Bridal':
 REEBOK:
-Report Collection:
+    aka:
+        Reebok:
 Kiton:
 Toby Heart Ginger:
 Berluti:
 GroVia:
 Coach:
+    aka:
+        COACH:
 OW SOCKS:
 John Richard:
 JOHN RICHMOND:
@@ -2157,30 +2346,50 @@ JOHN RICHMOND:
         JOHN RICHMOND BEACHWEAR:
 Howard Elliott:
 VIVIAN CHAN:
-'JOHNSTON & MURPHY':
+'Johnston & Murphy':
+    aka:
+        'JOHNSTON & MURPHY':
 Lifestyle Solutions:
 Shoshanna:
-'BEC&BRIDGE':
+    aka:
+        SHOSHANNA:
+'Bec & Bridge':
+    aka:
+        'BEC&BRIDGE':
 ROBERT ROSE:
 tiger Mist:
-COACH:
 ROBERTA DI CAMERINO:
+    line:
+        Roberta Di Camerino Vintage:
+        Roberta  Di Camerino Vintage:
 Mini Melissa:
-HEIDI KLUM INTIMATES:
+Heidi Klum Intimates:
+    aka:
+        HEIDI KLUM INTIMATES:
 Havaianas:
+    aka:
+        HAVAIANAS:
 '27 miles malibu':
-FAITHFULL THE BRAND:
+Faithfull the Brand:
+    aka:
+        FAITHFULL THE BRAND:
 'Wanderlust + Co':
 KAY UNGER:
+    aka:
+        Kay Unger New York:
 Jack Spade:
+    aka:
+        JACK SPADE:
 Stokke:
-Versus:
 Brian Lichtenberg:
 Plush:
+Plush Cashmere:
 Philip B:
-    alias:
+    aka:
         'Philip B.':
 Tailor Vintage:
+    aka:
+        TAILOR VINTAGE:
 Talulah:
 Graphic Image:
 'ISLA_CO':
@@ -2188,36 +2397,61 @@ Briefing:
 Wilde Heart:
 The Honest Company:
 GLAMOROUS:
+    aka:
+        Glamorous:
 Cozy Home Collection:
 Jerome Dreyfuss:
+    aka:
+        Jérôme Dreyfuss:
+        JÉRÔME DREYFUSS:
 'OLYMPIA LE-TAN':
-'T&C THEODORA & CALLUM':
-ME TOO:
-REED KRAKOFF:
-Pink Stitch:
+'Theodora & Callum':
+    aka:
+        'T&C THEODORA & CALLUM':
+Me Too:
+    aka:
+        ME TOO:
+Reed Krakoff:
+    aka:
+        REED KRAKOFF:
 Maggie Sottero:
 Volcom:
+    line:
+        Volcom Snow:
 Pureology:
 Paddywax:
+'PAUL & JOE':
+    aka:
+        'Paul & Joe':
 Knot Sisters:
+    aka:
+        KNOT SISTERS:
 IRIS VON ARNIM:
-Yves Salomon:
-AG:
 Chronicle Books:
 Anna Kosturova:
 Elegance by Carbonneau:
 'Arte & Cuoio':
 Philipp Plein:
+    line:
+        PHILIPP PLEIN COUTURE:
+PLEIN SUD:
+    aka:
+        PLEIN SUD JEANIUS:
+        PLEIN SUD PAR FAYҪAL AMOR:
 Leonor Greyl:
-    alias:
+    aka:
         Leonor Greyl PARIS:
 Sacai:
 'J.W. ANDERSON':
-    alias:
+    aka:
         'J.W. Anderson':
         JWAnderson:
         'J.W.ANDERSON':
 Porsche:
+    line:
+        Porsche Design:
+            aka:
+                Porsche Design Sport:
 'L.A.M.B.':
 RES Denim:
 Les Coquines:
@@ -2228,37 +2462,54 @@ My Other Bag:
 Pia Pauro:
 Premonition:
 David Koma:
+    aka:
+        DAVID KOMA:
 Pedro Garcia:
 Tommy Hilfiger:
-Paige:
+    aka:
+        TOMMY HILFIGER:
 'HAWKE & CO':
 GOLD TOE:
 Eleven Paris:
 'SHE + LO':
 Foreo:
+    aka:
+        FOREO:
 Temptu:
 'Yon-Ka':
 JEAN PAUL GAULTIER:
-    alias:
+    aka:
         Jean Paul Gaultier:
     line:
         JEAN PAUL GAULTIER SOLEIL:
         JEAN PAUL GAULTIER FEMME:
         Jean Paul Gaultier Vintage:
+        Junior Gaultier:
 Design History:
+    aka:
+        DESIGN HISTORY:
 Janod:
 Tiare Hawaii:
 Nesh NYC:
-ROBERT CLERGERIE:
+Robert Clergerie:
+    aka:
+        ROBERT CLERGERIE:
 Dermalogica:
 Winston White:
 Stephen Webster:
 Prism:
-ADRIANA DEGREAS:
+Adriana Degreas:
+    aka:
+        ADRIANA DEGREAS:
 JUDITH JACK:
 THIERRY MUGLER:
-Hudson Kids:
+    aka:
+        Thierry Mugler:
+        MUGLER:
+        Mugler:
 BANDOLINO:
+    aka:
+        Bandolino:
 Tarte Cosmetics:
 Whimsical:
 Linda Farrow:
@@ -2269,34 +2520,51 @@ Linda Farrow:
 Naturino:
 Lumier:
 LONDON FOG:
+    aka:
+        London Fog:
 MISS SELFRIDGE:
 AQUATALIA:
+    aka:
+        Aquatalia:
 WOLF:
 'Kiehls Since 1851':
 glominerals:
 Misha Collection:
 David Lerner:
 TABITHA SIMMONS:
+    aka:
+        Tabitha Simmons:
 '424 FIFTH':
 Retrosuperfuture:
+    line:
+        Super by Retrosuperfuture:
 'Church''s':
 Tuleste:
-GAS BIJOUX:
+GAS Bijoux:
+    aka:
+        GAS BIJOUX:
 Tigerlily:
 Umbra:
 GiGi New York:
 REPETTO:
-PAUL ANDREW:
 Christopher Kane:
 Spitfire:
+    aka:
+        SPITFIRE:
 ISOLA:
 Rachel Riley:
 Zents:
 De Carlini:
 Victoria:
 PHILIP KINGSLEY:
-SONIA RYKIEL:
-FOREO:
+Sonia Rykiel:
+    aka:
+        SONIA RYKIEL:
+    line:
+        Sonia by Sonia Rykiel:
+            type: diffusion
+            aka:
+                SONIA by SONIA RYKIEL:
 BORN:
 Curriculum Vitae:
 Tangerine NYC:
@@ -2314,52 +2582,103 @@ Jay Godfrey:
 Carolina Bucci:
 Harrison:
 'J. Mendel':
+    aka:
+        J Mendel:
 '1 Voice':
 Lover:
 AIMEE KESTENBERG:
 'hook + ALBERT':
 'No. 21':
+    aka:
+        'NO. 21':
+        'Nº21':
+        'N° 21':
 Aurélie Bidermann:
-    alias:
+    aka:
         Aurelie Bidermann:
+        AURÉLIE BIDERMANN:
     line:
         Aurélie Bidermann Fine:
-            alias:
+            aka:
                 Aurelie Bidermann Fine Jewelry:
+        AURÉLIE BIDERMANN:
 Sant and Abel:
 Venettini:
+    line:
+        Venettini Kids:
 Sleepy Jones:
 Davidoff:
+    aka:
+        DAVIDOFF:
 David Donahue:
+    aka:
+        DAVID DONAHUE:
 Lilly Pulitzer:
+    aka:
+        'Lilly Pulitzer®':
+    line:
+        Lilly Pulitzer Kids:
 Henson:
 'Viktoria + Woods':
 Mia Bossi:
 SKAGEN DENMARK:
+    aka:
+        Skagen:
 HELLY HANSEN:
+    aka:
+        Helly Hansen:
 La Petite Robe di Chiara Boni:
-Maui Jim:
 Cire Trudon:
-vitamin A:
+Vitamin A:
+    aka:
+        vitamin A:
+        Vitamin A Swimwear:
 Rodarte:
 '81 HOURS BY DEAR CASHMERE':
 Sally Miller:
+    aka:
+        SALLY MILLER:
 'M. Bottiglieri':
 DevaCurl:
 SWEETHEART ROSE:
 Ellery:
 BOTKIER NEW YORK:
+    aka:
+        Botkier New York:
+        Botkier:
 CORINNE MCCORMACK:
 Narciso Rodriguez:
+    aka:
+        NARCISO RODRIGUEZ:
 Illesteva:
+    aka:
+        ILLESTEVA:
+        illesteva:
 'Solid & Striped':
-B BRIAN ATWOOD:
+    aka:
+        Solid and Striped:
+Brian Atwood:
+    aka:
+        BRIAN ATWOOD:
+    line:
+        B BRIAN ATWOOD:
 Levtex:
 Patagonia:
 LNA:
+    aka:
+        LnA:
 SKECHERS:
 Sigerson Morrison:
+    aka:
+        SIGERSON MORRISON:
+    line:
+        BELLE BY SIGERSON MORRISON:
+            aka:
+                Belle by Sigerson Morrison:
+                BELLE by Sigerson Morrison:
 'Burt''s Bees':
+    line:
+        'BURT''S BEES BABY':
 Italia Independent:
 Karen Walker:
 Serge Lutens:
@@ -2369,32 +2688,47 @@ Serge Lutens:
         Serge Lutens Parfums:
 Sonix:
 Laurence Dacade:
+    aka:
+        LAURENCE DACADE:
 Jack Black:
 Jennifer Zeuner:
 Anthony Vaccarello:
+    aka:
+        ANTHONY VACCARELLO:
 Bodhi:
-LOQUET:
 'Dr.Hauschka':
+    aka:
+        'Dr. Hauschka':
 Elon:
 Nailtiques:
 Demeyere:
 'OFF-WHITE':
 Erdem:
+    aka:
+        ERDEM:
 Privacy Please:
 Love Sam:
-MAUI JIM:
+Maui Jim:
+    aka:
+        MAUI JIM:
 ROCOCO SAND:
 Cuisinart:
 KORE SWIM:
 Intelligent Nutrients:
 'Dr. Dennis Gross Skincare':
-    alias:
+    aka:
         'Dr. Dennis Gross':
 JITROIS:
 Lisa Maree:
 HOGAN:
+    aka:
+        Hogan:
+    line:
+        HOGAN REBEL:
 A Fine Line:
 Maclaren:
+    line:
+        beginning by Maclaren:
 Socheec:
 RARE EDITIONS:
 joolz by Martha Calvo:
@@ -2404,28 +2738,40 @@ Tanya Taylor:
 'Noodle & Boo':
 Essentiel:
 'PIPPA & JULIE':
-FREDERIC FEKKAI:
+    aka:
+        'Pippa & Julie':
+Frederic Fekkai:
+    aka:
+        FREDERIC FEKKAI:
+        Fekkai:
 Preen by Thornton Bregazzi:
-    alias:
+    aka:
         PREEN BY THORNTON BREGAZZI:
         Preen By Thornton Bregazzi:
 AllSaints:
 Cifonelli:
 Garrett Leight:
 Tweezerman:
+    aka:
+        TWEEZERMAN:
 Stila:
+    aka:
+        Stila Cosmetics:
+        stila:
 MICHI:
-'Cufflinks Inc.':
 Botto Giuseppe:
 CARMEN MARC VALVO:
+    aka:
+        Carmen Marc Valvo:
+        CARMEN MARC VALVO CALZATURE:
 Toteme:
 Birkenstock:
+    aka:
+        BIRKENSTOCK:
 'Crockett & Jones':
 glotherapeutics:
 'R+Co':
-Lilly Pulitzer Kids:
 Tobias Wistisen:
-Catherine Malandrino:
 '1 STATE':
 'Frankie & Ava':
 Aegean Apparel:
@@ -2436,29 +2782,46 @@ TAYLOR:
 Mason Pearson:
 PRISMSPORT:
 Belstaff:
+    aka:
+        BELSTAFF:
 Guinot:
 Vivienne Westwood:
 WANT Les Essentiels de la Vie:
 Lisakai:
 The Original Retro Brand Kids:
 SHE MADE ME:
+    aka:
+        She Made Me:
 Etienne Marcel:
+    aka:
+        ETIENNE MARCEL:
 Essie:
 Parker Black:
 Electric Picks:
+    aka:
+        Electric Picks Jewelry:
 Sally Lapointe:
 Le Metier de Beaute:
 DC:
+    line:
+        DC Kids:
 Boucheron:
+    aka:
+        BOUCHERON:
 Jan Marini:
 Acquaverde:
 MacKenzie Childs:
-    alias:
+    aka:
         'MacKenzie-Childs':
-MARC FISHER LTD:
-'Bond No. 9 New York':
+Marc Fisher LTD:
+    aka:
+        MARC FISHER LTD:
+'Bond No. 9':
+    aka:
+        'Bond No. 9 New York':
 Bumble Collection:
 Zoe:
+FLOWERS BY ZOE: # ...?
 Smith Optics:
 'DR. SCHOLLS':
 Lili Gaufrette:
@@ -2469,69 +2832,86 @@ CosMedix:
 Eternal Sunshine Creations:
 Shakuhachi:
 Melanie Auld:
-GENTLE SOULS:
-Hervé Léger:
 Pixi by Petra:
 'Drake''s':
-VICTORINOX:
-    alias:
-        VICTORINOX SWISS ARMY:
-ECHO:
+Echo Design:
+    aka:
+        ECHO:
 Jenni Kayne:
 PAULE KA:
 'Maurie & Eve':
-POLAROID:
+Polaroid:
+    aka:
+        POLAROID:
 Alara:
 Couture By Lolita:
 Ohne Titel:
 Gorgeous Cosmetics:
 John Masters Organics:
-Marciano Kids:
+MARCIANO:
+    aka:
+        Marciano:
+    line:
+        Marciano Kids:
 Lib Tech:
 Timberland:
+    aka:
+        TIMBERLAND:
 Weleda:
 NeoStrata:
 Yigal Azrouel:
 ELLIOTT LUCCA:
-    alias:
+    aka:
         Elliott Lucca:
 Lavish Alice:
 Lucky Luciano:
 The LDRS:
-BARBARA BUI:
 GETTINGBACKTOSQUAREONE:
 Superfine:
 J KARA:
-'SELF-PORTRAIT':
-CUFFLINKS:
+Self Portrait:
+    aka:
+        'SELF-PORTRAIT':
+'Cufflinks Inc.':
+    aka:
+        CUFFLINKS:
+        '"Cufflinks, Inc."':
 'Frankie''s Bikinis':
 Evil Twin:
 Kerstin Florian:
 Pendleton:
+    aka:
+        PENDLETON:
 BENCH:
-LOEWE:
+    aka:
+        Bench:
 Majestic Paris for Neiman Marcus:
-Magnanni for Neiman Marcus:
 Elie Tahari Exclusive for Neiman Marcus:
 DAMIR DOMA:
+    aka:
+        Damir Doma:
+    line:
+        SILENT DAMIR DOMA:
+        DOMA:
 The Organic Pharmacy:
 Irene Neuwirth:
 Sigma Beauty:
 'Halogen®':
-DOCKERS:
 ROGUE STATE:
 Yeezy:
 'Deakin & Francis':
 Barielle:
 Maileg:
 Claudio Riaz:
-JULIEN DAVID:
+Julien David:
+    aka:
+        JULIEN DAVID:
 MJK Knits:
 Hoss Intropia:
 Pop Beauty:
 Christopher Fischer:
 KUT FROM THE KLOTH:
-    alias:
+    aka:
         KUT from the Kloth:
 Twin Sister:
 Iphoria:
@@ -2540,7 +2920,7 @@ emerginC:
 CAROLINA BUCCI:
 camilla and marc:
 'A. Testoni':
-    alias:
+    aka:
         'A. TESTONI':
         'A.Testoni':
     line:
@@ -2550,20 +2930,22 @@ Hampton Sun:
 NEUMA:
 'Travelers Polo & Raquet Club':
 Noor Fares:
-MOVADO BOLD:
 Chelsea Flower:
-ISSA:
 LoveShackFancy:
+    aka:
+        LOVESHACKFANCY:
 Mizuki:
 'Cote & Ciel':
 Camilla:
+    aka:
+        CAMILLA:
 Sydney Paige:
 Dermablend:
+    aka:
+        DERMABLEND:
 'Dr. Brandt':
 Noam Hanoch:
 Alice McCall:
-LIEBESKIND BERLIN:
-Kahri by KahriAnne Kerr:
 Elizabeth Taylor:
 Artecnica:
 'Dr. Loretta':
@@ -2571,11 +2953,10 @@ DemyLee:
 HEIDI KLEIN:
 Basta Surf:
 'Bric''s':
-    alias:
+    aka:
         'BRIC''S':
     line:
         'Bric''s Milano':
-FALKE:
 Alex and Ani:
 Elemis:
 Tia Collections:
@@ -2584,17 +2965,22 @@ Vineyard Vines:
 Doma Leather:
 AXL Brand:
 Prive:
-JENNY PACKHAM:
+Jenny Packham:
+    aka:
+        JENNY PACKHAM:
 Svoboda:
 'Fleur''s':
 'DR. BRANDT':
+    aka:
+        'Dr.Brandt':
 Ilike Organic Skin Care:
 Karin Herzog:
-MINNETONKA:
 Incotex:
 Red Flower:
 Storksak:
 'Penhaligon''s':
+    aka:
+        Penhaligons:
 Lulu Frost:
 UltraLuxe:
 Monica Vinader:
@@ -2620,58 +3006,88 @@ Elisabeth Weinstock:
 TFNC London:
 Costa Del Mar:
 Jellycat:
-LA CANADIENNE:
+La Canadienne:
+    aka:
+        LA CANADIENNE:
 Daniel Wellington:
 Tartine et Chocolat:
 Epionce:
-TIMBERLAND:
 Nouvel Studio:
 Natural Curiosities:
-Marchesa Notte:
 DONNA MORGAN:
 Skip Hop:
 Matisse:
 Tubbs:
 Escada:
+    aka:
+        ESCADA:
+    line:
+        ESCADA SPORT:
 RAYMOND WEIL:
 EASY SPIRIT:
 ISOTONER:
 Shashi:
 Julieri:
 Trunks:
-IKE BY IKE BEHAR:
-'Joe''s':
 Dash:
 Books with Style:
 Exuviance:
 Jose Maria Barrera:
+    aka:
+        'Jose & Maria Barrera':
 ROXY:
+    aka:
+        Roxy:
 Peter Thomas Roth:
 CARITA:
 KISSKILL:
 James Jeans:
-PLENTY BY TRACY REESE:
+Tracy Reese:
+    aka:
+        TRACY REESE:
+    line:
+        Plenty by Tracy Reese:
+            aka:
+                PLENTY BY TRACY REESE:
 SAMSONITE:
 Glycolix Elite:
 Hot Tools:
 ROTHSCHILD:
-'B-Low The Belt':
+'B-Low the Belt':
+    aka:
+        'B-Low The Belt':
 Poler:
+    aka:
+        Poler Stuff:
 PCA Skin:
 Pima Doll:
 Tome:
+    aka:
+        TOME:
 Oakley:
+    aka:
+        OAKLEY:
 'Sub_Urban RIOT':
 'C&C California':
 MAVI:
+    aka:
+        Mavi Jeans:
 Glass Eye Studio:
 Adopted:
 Dannijo:
+    aka:
+        DANNIJO:
 Purely Pro Cosmetics:
-FALIERO SARTI:
+Faliero Sarti:
+    aka:
+        FALIERO SARTI:
 Talbot Runhof:
+    aka:
+        TALBOT RUNHOF:
 Laura Geller Beauty:
 Lucas Hugh:
+    aka:
+        LUCAS HUGH:
 Mai Couture:
 TYLER JACOBS:
 'Paula''s Choice':
@@ -2680,49 +3096,87 @@ Peek:
 elysewalker los angeles:
 Felisi:
 PIAZZA SEMPIONE:
-Cle de Peau Beaute:
 Loewe:
+    aka:
+        LOEWE:
 TARYN ROSE:
+    aka:
+        Taryn Rose:
 'T3':
+    line:
+        'T3 MICRO':
+        'T3 Gear':
 'T. Anthony':
 Jay Ahr:
 TORCHLIGHT:
 JONES NEW YORK:
 Stride Rite:
-ASSOULINE:
 Strider:
-Majorica:
 'Mimi & Lu':
 '88 RUE DU RHONE':
 Oscar Blandi:
 Kacey K:
 Andrew Marc:
+    aka:
+        ANDREW MARC:
     line:
-        Marc New York:
-        MARC NEW YORK ANDREW MARC:
-MELISSA ODABASH:
-FLORSHEIM:
-'J. Lindeberg Golf':
+        Marc New York by Andrew Marc:
+            aka:
+                MARC NEW YORK ANDREW MARC:
+                MARC NEW YORK PERFORMANCE PLUS:
+                MARC NEW YORK PERFORMANCE:
+                MARC NEW YORK:
+                Marc New York:
+        'Denim & Leathers by Andrew Marc':
+Melissa Odabash:
+    aka:
+        MELISSA ODABASH:
+Florsheim:
+    aka:
+        FLORSHEIM:
+    line:
+        Florsheim for Kids:
+        Florsheim x Esquivel:
+'J. Lindeberg':
+    line:
+        'J. Lindeberg Golf':
+        'J. Lindeberg Ski':
 DEX:
 MERRITT CHARLES:
 DIBI:
 JUNAROSE:
+    aka:
+        Junarose:
 Natalie Martin:
 Perlier:
 Baxter of California:
 Deby Debo:
 'BETSY & ADAM':
-TOMMY HILFIGER:
 Cures by Avance:
-CATHERINE CATHERINE MALANDRINO:
+Catherine Malandrino:
+    aka:
+        CATHERINE MALANDRINO:
+    line:
+        Catherine Catherine Malandrino:
+            aka:
+                CATHERINE Catherine Malandrino:
+                CATHERINE CATHERINE MALANDRINO:
 Bionova:
+    aka:
+        BIONOVA:
 Officine Creative:
+    aka:
+        OFFICINE CREATIVE:
 Massoud:
 'L''Occitane':
 Viski:
 HELLO KITTY:
 BECCA:
+    line:
+        BECCA SWIM:
 Offspring:
+    aka:
+        OFFSPRING:
 Serapian:
 Stampd:
 NCLA:
@@ -2730,12 +3184,13 @@ NCLA:
 Zigozago:
 CATHERINE STEIN:
 'Cutler & Gross':
-    alias:
+    aka:
         Cutler and Gross:
 Tom Dixon:
 EltaMD:
 'G-Shock':
-Tabitha Simmons:
+    aka:
+        'G-SHOCK':
 Natura Bisse:
 REPTILES HOUSE:
 Kickety Split:
@@ -2743,24 +3198,34 @@ Marco Bicego:
 LAUTRE CHOSE:
 Lalique:
 Diane Kordas:
+    aka:
+        DIANE KORDAS:
 Maison Home:
 Kendra Scott:
-Hanae Mori:
 Repossi:
-SJP by Sarah Jessica Parker:
+Sarah Jessica Parker:
+    line:
+        SJP by Sarah Jessica Parker:
 OLCAY GULSEN:
+    aka:
+        Olcay Gulsen:
 Boogie Baby:
 'Trixie & Milo':
 Ladakh:
-Elie Saab:
-LANCER:
 Independent Reign:
 HAZE Collection:
-DIANE KORDAS:
 Vintage Home:
 Billy Jealousy:
 WACOAL:
+    aka:
+        Wacoal:
+    line:
+        'b.tempt''d':
+            aka:
+                'B. TEMPT''D BY WACOAL':
 DEEPA GURNANI:
+    aka:
+        Deepa Gurnani:
 Ryan Roche:
 Simonnot Godard:
 Pomellato:
@@ -2773,63 +3238,93 @@ Mark Cross:
 Judith Leiber:
     line:
         Judith Leiber Couture:
+        Overture:
+            type: diffusion
 Impressions:
 Sol Sana:
 'Ragdoll & Rockets':
 Marcelo Burlon:
-    alias:
+    aka:
         Marcelo Burlon County of Milan:
         Marcelo Burlon County Of Milan:
         MARCELO BURLON:
 Paris Hilton:
 Organix:
 Crown Cap:
+    aka:
+        CROWN CAP:
 Serge Normant:
 Donna Bella:
+EVA FRANCO:
+    aka:
+        EVA BY EVA FRANCO:
 '4.collective':
 Foot Petals:
 Harris:
 Most Wanted USA:
 Hender Scheme:
-FERRARI:
 Mela Artisans:
 Lucchese:
 Hilton Club:
 'La Roche-Posay':
-FAUSTO PUGLISI:
+Fausto Puglisi:
+    aka:
+        FAUSTO PUGLISI:
 FILSON:
+    aka:
+        Filson:
 Carrera:
+    aka:
+        CARRERA:
 Cunill:
-'MYNT 1792 PLUS':
-Menscience Androceuticals:
+'Mynt 1792':
+    aka:
+        'MYNT 1792 PLUS':
+Menscience:
+    aka:
+        Menscience Androceuticals:
 GALLERY:
 Colette Kids:
+    aka:
+        Colette Nicolai:
 Chin Teo:
 BILLION DOLLAR BROWS:
+    aka:
+        Billion Dollar Brows:
 Christofle:
 Vogue:
 Mansur Gavriel:
 Eve Lom:
+    aka:
+        EVE LOM:
 '2XIST':
+    aka:
+        '2xist':
 Stephanie Kantis:
 CHETTA B:
-DESIGN HISTORY:
-St John:
 Massimo Matteo:
 Jonathan Product:
 Mackage:
 TARA JARMON:
 VBH:
-VERONICA BEARD:
+Veronica Beard:
+    aka:
+        VERONICA BEARD:
 via cacao:
 Mamoo Kids:
 harlyn:
+    aka:
+        Harlyn:
 '"Basler, Plus Size"':
 Tateossian:
 Devon Leigh:
 Mignon:
+    line:
+        LM by MIGNON:
 'Oliver & Adelaide':
-JASON WU:
+Jason Wu:
+    aka:
+        JASON WU:
 Addison Ross:
 Madeline Weinrib:
 Glytone:
@@ -2837,32 +3332,48 @@ Amenapih:
 Survivalon:
 Brighton:
 REN:
+    aka:
+        Ren Skincare:
 Valmont:
 Prabal Gurung:
+    aka:
+        PRABAL GURUNG:
 Haute House:
 SAND BY SAYA:
 PINK TARTAN:
-KITCHENAID:
+KitchenAid:
+    aka:
+        KITCHENAID:
 'COLLECTION 18':
 Alexandre Birman:
 Deborah Rhodes:
 Vanhi:
 ERIN FETHERSTON:
+    line:
+        ERIN erin fetherston:
 Hat Attack:
 Dareen Hakim:
 Karen Kane:
     line:
         KAREN KANE PLUS:
 '11 by Boris Bidjan Saberi':
-    alias:
+    aka:
         '11 By Boris Bidjan Saberi':
-YVES SALOMON:
 KORA Organics by Miranda Kerr:
 KEDS:
+    aka:
+        Keds:
 Beautiful People:
+Swiss Army:
+    aka:
+    line:
+        Victorinox by Swiss Army:
+            aka:
+                VICTORINOX SWISS ARMY:
+                VICTORINOX:
+                'Victorinox Swiss Army®':
 KITESTRINGS:
 PUMA:
-ANDREW MARC:
 COBB HILL:
 Alba:
 Supra:
@@ -2870,10 +3381,22 @@ AMO:
 Vintageous:
 Maiyet:
 ZERO GRAVITY:
-Minnetonka:
+MINNETONKA:
+    aka:
+        Minnetonka:
 Nested Bean:
 Ellis Faas:
 Zac Posen:
+    line:
+        Zac Zac Posen:
+            type: diffusion
+            aka:
+                ZAC ZAC POSEN:
+                ZAC Zac Posen:
+        Zac Spoke:
+            type: diffusion
+            aka:
+                ZAC SPOKE:
 'S13/NYC':
 Auden:
 BB DAKOTA:
@@ -2887,24 +3410,32 @@ Baby CZ:
 Same Swim:
 Charlie Charlie:
 Travelers Club Luggage:
-Naot Footwear:
 ISSEY MIYAKE:
 'Tiffany & Co.':
 'Fitz & Floyd':
 DS Laboratories:
 MARCHESA:
+    line:
+        Marchesa Voyage:
+        Notte:
+            type: diffusion
+            aka:
+                Marchesa Notte:
 Aviva Stanoff:
 'CA & LOU':
 KYME:
 'Mungo & Maud':
 Electric Eyewear:
-lolli swim:
+Lolli:
+    line:
+        lolli swim:
+        lolli LIVING:
 We Are Handsome:
-Rimowa North America:
 SATIN FLOWERS:
 Myne:
 keepsake:
-'Johnston & Murphy':
+    aka:
+        Keepsake:
 Donna Morgan:
 Tahari:
 Royal Copenhagen:
@@ -2913,48 +3444,58 @@ Onzie:
 Charles David:
     line:
         CHARLES BY CHARLES DAVID:
-            alias:
+            aka:
                 Charles by Charles David:
-Christian Lacroix by Vista Alegre:
 ANTIK BATIK:
-Citizen:
 Elizabeth Grant:
 Global:
-Details By Patricia Green:
 Neova:
 CARA:
 Robert Geller:
-ISA ARFEN:
-DAVID KOMA:
+Isa Arfen:
+    aka:
+        ISA ARFEN:
 Egg Baby:
 'SAM.':
+    aka:
+        SAM:
 CAPARROS:
+    aka:
+        Caparros:
 Erin Kleinberg:
 'L. Erickson':
+    aka:
+        L Erickson:
 Pikolinos:
 Tretorn:
+    aka:
+        TRETORN:
 RéVive:
+    aka:
+        ReVive:
+        'R&#233;Vive':
+    line:
+        reVive Light Therapy:
 Charles Jourdan:
-VIGOSS:
+Vigoss:
+    aka:
+        VIGOSS:
 weargrace:
-LYSSE:
+Lysse:
+    aka:
+        LYSSE:
 Pistil:
-Dune London:
 Scully:
-Rablabs:
 Thirty by ThirtyNine:
-'PAUL & JOE':
 San Diego Hat Company:
 Bakel:
-TENEUES:
-CARRERA:
 Treesje:
+    line:
+        Joelle Hawkens by Treesje:
 'Flight 001':
-Self Portrait:
 What Goes Around Comes Around:
 Whish:
 Imoga:
-Vigoss:
 Yottoy:
 Belle Fare:
 eskandar:
@@ -2964,18 +3505,21 @@ The Wet Brush:
 Sarah Chloe:
 'Harley-Davidson':
 'Mustela®':
-'Arc''teryx':
-Filson:
 Bao Bao Issey Miyake:
 NEST Fragrances:
+    aka:
+        Nest Fragrances:
 Marmot:
 Jan Leslie:
 '100 Pure':
 Barbour:
+    aka:
+        BARBOUR:
 Aidan Mattox:
+    aka:
+        AIDAN MATTOX:
 MICHELA:
 'Joop!':
-BOSS GREEN:
 Billabong:
 Eagle Creek:
 'L''Academie':
@@ -2983,8 +3527,11 @@ Lodis Accessories:
 Grace MMXIII:
 To Boot New York:
 Sanford Design:
-SANTONI:
+Santoni:
+    aka:
+        SANTONI:
 twenty:
+TWENTY EASY by KAOS:
 MARCO MOORE:
 Maison Boinet:
 American West:
@@ -2995,12 +3542,10 @@ Ksubi:
 Sophie Hulme:
 ALEXIA ADMOR:
 'M&F Western':
-SALLY MILLER:
 Luxor Treasures:
 Ariat:
 'HARPER + LIV PLUS':
 'Dr. Martens':
-Jason Wu:
 'LAQA and Co.':
 MIA:
 Each x Other:
@@ -3008,8 +3553,6 @@ Each x Other:
 Rieker:
 Jessica McClintock:
 Cowshed:
-Carmen Marc Valvo:
-ALEXA CHUNG FOR AG:
 Chinese Laundry:
 zipit:
 Books To Bed:
@@ -3020,19 +3563,24 @@ OUT:
 Sauvage:
 Oxford Ivy:
 'Juliet & Company':
-Aquatalia:
 MIR:
 Jack Wolfskin:
 Moroccanoil:
+    aka:
+        'Moroccanoil®':
 Spring Step:
 Anna Coroneo:
 Western Chief Kids:
 Columbia:
+    aka:
+        COLUMBIA:
+    line:
+        Columbia Kids:
 Bavna:
 Albert Nipon:
-Citizen Watches:
 Blondo:
-ALEXANDER OLCH:
+    aka:
+        BLONDO:
 Artis Brush:
 Julbo Eyewear:
 Elephantito:
@@ -3040,8 +3588,11 @@ Lisa Chow:
 Moscot:
 PLANET GOLD:
 Wildfox:
+    aka:
+        WILDFOX:
 STRIVECTIN:
-Voluspa:
+    aka:
+        StriVectin:
 Smartwool:
 eyedress:
 Uye Surana:
@@ -3050,69 +3601,82 @@ Onia:
 JudeFrances Jewelry:
 Tsovet:
 Boostcase:
-Florsheim:
 Soybu:
-Jenny Packham:
+    aka:
+        SOYBU™:
+    line:
+        Soybu Kids:
 ECCO:
+    line:
+        ECCO Golf:
 Helena and Harry:
 PALM BEACH:
+    line:
+        PalmBeach Jewelry:
 Biopelle:
 Nvey Eco:
 LifeStride:
 Steven:
 Thierry Lasry:
+    url: 'https://www.thierrylasry.com/'
 BOYS ROCK:
 Blundstone:
 ABRAMS:
-Alexa Chung for AG:
 Rip Curl:
 Herno:
 Finn Comfort:
 Tori Praver Swimwear:
 Bull Titanium:
 Taylor:
-Wacoal:
 Pearl Izumi:
 Kurt Adler:
+    aka:
+        'KURT S.ADLER':
+    line:
+        Kurt S Adler Xmas:
 Vaneli:
-Alessandra Rich:
 Harry Josh Pro Tools:
 Dale of Norway:
 NuFACE:
 Australia Luxe Collective:
 Mezlan:
 PFEIFFER:
+    line:
+        ONE by Pfeiffer:
 Thorlos:
 MyChelle Dermaceuticals:
 BUCKETFEET:
+    aka:
+        BucketFeet:
 LE KASHA:
 Acorn:
 Osprey:
 Magnanni:
-MARC NEW YORK PERFORMANCE:
+    line:
+        Magnanni for Neiman Marcus:
 Bosca:
 Justin:
 Sundek:
 Lucky Jade:
 kai:
-POLLINI:
 Mephisto:
 Princess Linens:
 'S''well':
 Amber Sceats:
 Ondade Mar:
 Lipault Paris:
+    aka:
+        LIPAULT PARIS:
 Michael Antonio:
 GODIVA:
 Jack Rogers:
 'BAILEY 44':
-    alias:
+    aka:
         'Bailey 44':
         'Bailey44':
     line:
         'B44 Dressed by Bailey 44':
 Natasha Collis:
-NARCISO RODRIGUEZ:
 K Kane:
 Josh Goot:
 Stephen Dweck:
@@ -3123,13 +3687,20 @@ Camper:
 Miz Mooz:
 Jag Jeans:
 SkinMedica:
-ENGLISH LAUNDRY:
+English Laundry:
+    aka:
+        ENGLISH LAUNDRY:
 NeoCutis:
 Dimity Bourke:
 'Mr & Mrs Italy':
+    aka:
+        Mr and Mrs Italy:
+        MR and MRS ITALY:
 Bed Stu:
 LITTLE LASS:
 Cacharel:
+    aka:
+        cacharel:
 Gray Malin:
 Yardley:
 Pisu Bazaar:
@@ -3138,20 +3709,20 @@ DORISSA:
 Stetson:
 Deux Lux:
 'FISICO-Cristina Ferrari':
-Heidi Klum Intimates:
 Jane Tran:
 Fjällräven:
+    aka:
+        Fjällräven Kids:
 ZARA TEREZ:
-ARTERIORS:
-Salomon:
+Arteriors:
+    aka:
+        ARTERIORS:
 TIGER OF SWEDEN:
 'Off-White c/o Virgil Abloh':
-Patricia Green:
 EF STUDIO:
 GABBY SKYE:
 TechnoMarine:
 Seirus:
-Roberta  Di Camerino Vintage:
 ADDISON:
 Tundra Boots:
 Tess Giberson:
@@ -3162,7 +3733,6 @@ Charlie by Matthew Zink:
 Adriana Orsini:
 Bionda Castana:
 LONGINES:
-COURREGES:
 Manebi:
 Mountain Hardwear:
 Original Sprout:
@@ -3170,16 +3740,24 @@ Bianca Pratt:
 LUDWIG REITER:
 'Craft & Commerce':
 Munro:
+    aka:
+        Munro American:
 ESSENTIEL:
 Artesano:
 Three Dots:
+    aka:
+        three dots:
 Alison Lou:
 'Needle & Thread':
 Miniclasix:
 JAG:
 EMILIA WICKSTEAD:
+    aka:
+        Emilia Wickstead:
 Kuhl:
 SAN LORENZO:
+    aka:
+        San Lorenzo:
 New Era:
 Helena Quinn:
 Stacy Adams:
@@ -3187,22 +3765,29 @@ Ginger and Liz Colour Collection:
 Kimberly McDonald:
 'Briggs & Riley':
 Baby Deer:
+    aka:
+        BABY DEER:
 Zeal Optics:
 Rizzoli:
+    aka:
+        RIZZOLI:
 'SAM&LAVI':
 KC Parker:
+    aka:
+        KC PARKER:
 ABSORBA:
 Kaloo:
 ONLY:
 Amour:
 Islay:
-ANTHONY VACCARELLO:
 Cocoa Butter Formula:
 Royal Robbins:
 Escentric Molecules:
 Phaidon:
 Josef Seibel:
-THE FLEXX:
+The FLEXX:
+    aka:
+        THE FLEXX:
 Dina Mackney:
 taos Footwear:
 Nova Harley:
@@ -3216,10 +3801,8 @@ Fantasia by DeSerio:
 Gosha Rubchinskiy:
 Victorinox:
 Del Toro:
-Junya Watanabe:
-Porsche Design:
 'Allen-Edmonds':
-    alias:
+    aka:
         ALLEN EDMONDS:
         Allen Edmonds:
 Abrams Books:
@@ -3231,41 +3814,58 @@ Onex:
 CAROLINNA ESPINOSA:
 'Zero + Maria Cornejo':
 David Kirsch Wellness:
-    alias:
+    aka:
         David Kirsch Wellness Co:
-Joelle Hawkens by Treesje:
 Marvis:
 Finders Keepers:
-RAWLINGS:
+    aka:
+        FINDERS KEEPERS:
+Rawlings:
+    aka:
+        RAWLINGS:
 MISS BEHAVE:
 Trotters:
 Penfield:
 Vie Collection:
 Raf Simons:
 Tadashi Shoji:
+    aka:
+        TADASHI SHOJI:
 Tiziana Terenzi:
 Miraclesuit:
-MARC NEW YORK:
-ML Monique Lhuillier:
+    aka:
+        MIRACLESUIT:
 Samudra:
 Paul Green:
+    aka:
+        PAUL GREEN:
 'L''Eclaireur':
-NEW BALANCE:
+    aka:
+        'L''Eclaireur Made By':
 'Giles & Brother':
-    alias:
+    aka:
         Giles and Brother:
         GILES AND BROTHER:
         Giles Brother:
 BlueRidge:
 ZUNIE:
+    aka:
+        Zunie:
 BAGGU:
-VOLATILE:
+    aka:
+        Baggu:
+Volatile:
+    aka:
+        VOLATILE:
+    line:
+        Very Volatile:
 'John Elliott + Co':
-Alternative:
 Reef:
 Messico:
 Blank Denim:
 blowpro:
+    aka:
+        'blowPro®':
 Point Zero:
 ADDITION ELLE LOVE AND LEGEND:
 ADDITION ELLE NADIA FOR L AND L:
@@ -3273,16 +3873,24 @@ ADDITION ELLE NOLA:
 ADDITION ELLE MICHEL STUDIO:
 Maison Scotch:
 Rosantica:
-Army by Yves Salomon:
+Yves Salomon:
+    aka:
+        YVES SALOMON:
+    line:
+        Salomon:
+        Army by Yves Salomon:
 Sbicca:
 'SOPHIA + ZEKE':
 Algenist:
 Shaun Leane:
 Cobb Hill:
 KNOMO London:
-TOGA PULLA:
-LATIGO:
+Toga Pulla:
+    aka:
+        TOGA PULLA:
 Hood by Air:
+    aka:
+        Hood By Air:
 Caterpillar:
 Aravon:
 Freewaters:
@@ -3291,7 +3899,10 @@ Chippewa:
 Roger Vivier:
 Agua:
 Max Mara:
-'R&#233;Vive':
+    aka:
+        '''S MAX MARA':
+    line:
+        WEEKEND MAX MARA:
 SOPHIE BILLE BRAHE:
 Nightwalker:
 US ANGELS:
@@ -3300,8 +3911,9 @@ Carhartt:
 Mateo Bijoux:
 'M2Malletier':
 Bernardo:
+    aka:
+        BERNARDO:
 Timex:
-'Bond No. 9':
 Booty Parlor:
 Kipling:
 Jurlique:
@@ -3323,11 +3935,12 @@ Footmates:
 Royal Apothic:
 Robert Graham:
 Patchology:
+    aka:
+        patchology:
 SILVER JEANS:
 'CW-X':
 fiveloaves twofish:
 Robyn Lawley:
-LIPAULT PARIS:
 Touch Ups:
 Surratt:
 'Ju-Ju-Be':
@@ -3335,17 +3948,14 @@ Feathered Soul:
 Culture Phit:
 Louis Garneau:
 Racinne:
-La Canadienne:
 GERARD YOSCA:
 Haiku:
 ISAAC MIZRAHI NEW YORK:
 Venessa Arizaga:
-Veronica Beard:
 Tina Frey Designs:
 Batiste:
 David Tate:
 MATISSE:
-Bandolino:
 LaPina by David Helwani:
 Old Friend:
 'Bling 2o':
@@ -3360,18 +3970,15 @@ nuLOOM Rugs:
 Cinch:
 Annick Goutal:
 Keranique:
-Miraclebody Jeans:
 Earth:
-Brahmin:
 La Sportiva:
 Kelty:
 'SK-II':
-    alias:
+    aka:
         SK II:
 Tria Beauty:
 EACH x OTHER:
 GlyDerm:
-Elie Tahari:
 Pollini:
 Crocs:
 Dunham:
@@ -3387,11 +3994,11 @@ Baggallini:
 Giorgio Brutini:
 Linea Pelle:
 Amiana:
-HANAE MORI PERFUMES:
-ZAC Zac Posen:
+Hanae Mori:
+    aka:
+        HANAE MORI PERFUMES:
 Magnum:
 Blowfish:
-JULIA JORDAN:
 Red Carpet Manicure:
 Majestic Threads:
 Christopher Radko:
@@ -3403,17 +4010,18 @@ Rebels:
 Rocket Dog:
 Local Celebrity:
 Report:
+    line:
+        REPORT SIGNATURE:
+        Report Collection:
 Casadei:
-OAKLEY:
 'bless''ed are the meek':
 Lole:
 'CIRCA JOAN & DAVID':
 Tifosi Optics:
 homebodii:
 Gabor:
-TADASHI SHOJI:
 Robeez:
-    alias:
+    aka:
         'Robeez®':
 Walter Van Beirendonck Vintage:
 Shinola:
@@ -3429,7 +4037,6 @@ Add Down:
 SEBASTIAN:
 VINTAGE HAVANA:
 Jala Clothing:
-See Kai Run Kids:
 OTBT:
 Steiff:
 Barena Venezia:
@@ -3442,17 +4049,17 @@ DELMAN:
 Ragdoll:
 EIGHT by GJENMI JEWELRY:
 Rosie Assoulin:
-Hobo:
 Nunn Bush:
 LAGOSTINA:
 ExOfficio:
 Vapour Organic Beauty:
-Movado:
 El Naturalista:
 Mountain Khakis:
 Alegria:
 Westward Leaning:
-NIKOS KOULIS:
+Nikos Koulis:
+    aka:
+        NIKOS KOULIS:
 ION Design:
 Native Eyewear:
 Gnu:
@@ -3461,11 +4068,8 @@ Spenco:
 Travelpro:
 Saint Louis Crystal:
 Eric Michael:
-JACK SPADE:
 FASHION FOCUS:
-Lysse:
 DANIEL WELLINGTON:
-'K.JACQUES':
 GENETIC LOS ANGELES:
 Aromatherapy Associates:
 Gypsy SOULE:
@@ -3475,8 +4079,6 @@ Loli Bijoux:
 Vasque:
 Deer Stags:
 Delvaux:
-CYNTHIA ROWLEY:
-SUPERGA:
 Manduka:
 Erno Laszlo:
 Hunter Bell:
@@ -3503,7 +4105,11 @@ SEYCHELLES:
 Le Couvent des Minimes:
 WAYWARD:
 OndadeMar:
-ALEXANDRE VAUTHIER:
+    aka:
+        ONDADEMAR:
+Alexandre Vauthier:
+    aka:
+        ALEXANDRE VAUTHIER:
 Le Specs:
 Fashion Focus:
 Brigitte Bailey:
@@ -3512,83 +4118,106 @@ Gabriela Hearst:
 Ahnu:
 OPALINE:
 ROBERT PIGUET:
-Gigi Burris Millinery:
+Gigi Burris:
+    aka:
+        Gigi Burris Millinery:
 Line:
 Flamingos:
 VINTAGE by Jessica Liebeskind:
-Botkier:
+    aka:
+        Liebeskind:
+        Liebeskind Berlin:
+        LIEBESKIND BERLIN:
 Level Naturals:
 Haflinger:
 SoftWalk:
+    aka:
+        'SoftWalk®':
 VENeffect:
 Vianel:
 BALI:
 Summit White Mountain:
 Bostonian:
-FitFlop:
 BLOOME:
 'Barefoot Dreams®':
 POETIC WANDERLUST:
-SOFIA by ViX:
+Vix Swimwear:
+    aka:
+        Vix:
+    line:
+        SOFIA by ViX:
 Montrail:
-VOLUSPA:
+Voluspa:
+    aka:
+        VOLUSPA:
 Laredo:
 Hot Chillys:
-MUGLER:
 Jennifer Fisher:
 Jefferies Socks:
 'Bella-Vita':
 SOLACE London:
+    aka:
+        Solace London:
 'Fontana Milano 1915':
 Lejon:
 'Finn & Emma':
-'B-Low the Belt':
 Wes Gordon:
-PORTOLANO:
 RAEN Optics:
-    alias:
+    aka:
         RAEN optics:
 '1 MADISON':
-    alias:
+    aka:
         '1 Madison':
 TOTES:
 JACHS:
 Alexander Olch:
+    aka:
+        ALEXANDER OLCH:
 ORLY:
 Marsell:
 Le Savonnier Marseillais:
 Dammann Tea:
-BELSTAFF:
 Body Glove:
-Alfred Dunhill:
+    aka:
+        BODY GLOVE:
+dunhill:
+    aka:
+        Alfred Dunhill:
 Pampili:
 Hape Toys:
 Kiyonna:
 Icebreaker:
 Zirh:
+    aka:
+        Zirh International:
 ADD:
 Neff:
+    aka:
+        neff:
 Verso:
 SkinTx:
 LORAC Cosmetics:
+    aka:
+        LORAC:
 ON GOSSAMER:
 Chaco:
 Tocca Beauty:
-MERRELL:
+Merrell:
+    aka:
+        MERRELL:
 NUNUNU:
-DAVID DONAHUE:
 Smashbox:
 Kahina Giving Beauty:
 Bobeau:
 Life is good:
-Sofft:
 Tomorrowland:
 Cobian:
 Maison Francis Kurkdjian:
 Mens:
 Scarpa:
+    aka:
+        ROBERTA SCARPA:
 '8 Other Reasons':
-SILENT DAMIR DOMA:
 VERA BRADLEY:
 SunCloud Polarized Optics:
 The Tie Bar:
@@ -3597,29 +4226,45 @@ Howe:
 Club Monaco:
 Antipast:
 SeaVees:
-FLOWERS BY ZOE:
 petunia pickle bottom:
+    aka:
+        Petunia Pickle Bottom:
 Spyder:
 Richard James:
 Arche:
 Liverpool:
+    line:
+        Liverpool Jeans Company:
 Jardin:
+    line:
+        ICE BY JARDIN:
 Amber Hagen:
 Flojos:
 Baby Aspen:
 Pablosky Kids:
-Jumping Jacks Kids:
+Jumping Jacks:
+    line:
+        Jumping Jacks Kids:
 '3x1':
     line:
         '3x1 NYC':
 Jorg Gray:
 ANTHONY:
+    aka:
+        Anthony:
 Valery Joseph:
+    line:
+        Long by Valery Joseph:
 WE ARE HANDSOME:
 VitaMedica:
-BOUCHERON:
 POPATU:
+    aka:
+        Popatu:
 MOU:
+    aka:
+        mou:
+    line:
+        ONE by Mou:
 A Diciannoveventitre:
 Globe:
 Show Me Your Mumu:
@@ -3630,25 +4275,35 @@ CATERINA MASONI:
 Bellroy:
 VitaMan:
 butter LONDON:
+    url: 'http://www.butterlondon.com/'
+    aka:
+        Butter London:
+        BUTTER:
+    line:
+Butter Shoes:
+    url: 'https://www.buttershoes.com/'
 LEMON:
 Antica Farmacista:
 OSKLEN:
 HAPPY SOCKS:
-Melissa Odabash:
 Lululemon:
 Beatrix NY:
 Old Gringo:
 Bronx and Banco:
 Allen Allen:
-Umi Kids:
+Umi:
+    line:
+        Umi Kids:
 Muubaa:
-FITFLOP:
+FitFlop:
+    aka:
+        FITFLOP:
 Tolani:
 KURT GEIGER LONDON:
+    line:
+        KG KURT GEIGER:
 Dirty Laundry:
 '4 COLLECTIVE':
-The Sak:
-BIRKENSTOCK:
 Cordani:
 Skirt Sports:
 SOPRANO:
@@ -3657,7 +4312,6 @@ Menaji:
 Gabriella Rocha:
 Farah Vintage:
 Klogs:
-KC PARKER:
 Samantha Wills:
 Delman:
 EAVES:
@@ -3669,7 +4323,8 @@ Co:
 Rachel Kids:
 'LEO & SAGE':
 Corso Como:
-'b.tempt''d':
+    line:
+        '10 corso como':
 Finn:
 Roda:
 AGAIN:
@@ -3677,7 +4332,6 @@ Pacsafe:
 SENSO:
 MARCO DE VINCENZO:
 Hoka One One:
-Lucy:
 Coal:
 '"ABS, Plus Size"':
 JANE AND BLEECKER:
@@ -3686,13 +4340,10 @@ KAI LANI:
 Song for the Mute:
 NATIVE STRANGER:
 'Splits59':
-Pajar CANADA:
 Not Rated:
 Pierre Cardin Vintage:
 David Webb:
-Liebeskind:
 NasonMoretti:
-BERNARDO:
 Freestyle:
 JONES NEW YORK PLUS:
 Zoe Chicco:
@@ -3707,12 +4358,9 @@ JEAN PATOU:
 Perricone MD:
 MISS POPULAR:
 XCVI:
-Hogan:
 Easy Spirit:
-Calypso:
 Sanita:
 Jocelyn:
-Mavi Jeans:
 Infinity Headbands by Ambrosia Designs:
 Ooh La Leggings:
 Lowa:
@@ -3726,14 +4374,17 @@ SOLE:
 Valira:
 Black Orchid:
 LaMarque:
+    aka:
+        LAMARQUE:
 Clyde:
-Alexandre Vauthier:
 Premiata:
 Rifle Paper Co:
 Dakine:
 MARIOS SCHWAB:
 High Sierra:
 Shrimps:
+    aka:
+        SHRIMPS:
 Jennifer Behr:
 Carisa Rene:
 MOZO:
@@ -3741,32 +4392,26 @@ GIORGIO BRATO:
 Arcopedico:
 Mira Mikati:
 Boglioli:
-Marc Fisher LTD:
 Le Roar:
 Olivia von Halle:
 Marc Blackwell:
 BLOKE:
 Athena Alexander:
 Danner:
-'B. TEMPT''D BY WACOAL':
-Butter London:
-Menscience:
 KOMAR KIDS:
 SUPERDRY:
 EVOLV:
 Patricia Nash:
-StriVectin:
 CAMI AND JAX:
 Annabel Ingall:
 'Spratters & Jayne':
-Christian Lacroix:
 Catya:
 Snow Sugar:
 Carve Designs:
 Taschen:
 'BOYS + ARROWS':
 'SACHIN & BABI':
-    alias:
+    aka:
         'Sachin & Babi':
         'Sachin & Babi Noir':
 OnGossamer:
@@ -3789,16 +4434,13 @@ Tejido:
 Lynn Haney:
 Georgia Perry:
 Replenix:
-SACHAJUAN:
 Drymax Sport:
 Bates Footwear:
 BRAD Biophotonic Skin Care:
 Trumpette:
-Munro American:
 GOLPIRA:
 MUD Cosmetics:
 CAMI NYC:
-AIDAN MATTOX:
 BJØRG:
 Mele:
 Lizzie Fortunato:
@@ -3807,51 +4449,69 @@ Maya Brenner Designs:
 JILL JILL STUART:
 Goldfaden MD:
 Babee Talk:
-KG KURT GEIGER:
 ST Louis:
 Le Mystere:
-Gianfranco Ferre Vintage:
+    aka:
+        LE MYSTERE:
+Gianfranco Ferre:
+    aka:
+        'GIANFRANCO FERRE''':
+    line:
+        Gianfranco Ferre Vintage:
 MODAMIX PLUS:
-CATHERINE Catherine Malandrino:
 etnies:
 Rachel Gilbert:
 Dermaflage:
-ROLANDO BY ROLANDO SANTANA:
+ROLANDO SANTANA:
+    line:
+        ROLANDO BY ROLANDO SANTANA:
 Dockers:
+    aka:
+        DOCKERS:
 Luv AJ:
 Ercolano:
 Erickson Beamon:
 Simone Rocha:
 Moorer:
 Kamik:
+    line:
+        Kamik Kids:
 Elle Sasson:
-The FLEXX:
-TRACY REESE:
 Palladium:
 Black Halo:
 Nick Chavez:
 Tsukihoshi Kids:
 'Victoria''s Secret':
+    line:
+        PINK:
+            ref: 'https://en.wikipedia.org/wiki/Pink_(Victoria%27s_Secret)'
+            url: 'https://www.victoriassecret.com/pink'
 BASS:
-mou:
+    aka:
+        Bass:
 SASHA:
 Shwood:
 'Therapy-G':
 Hatley:
+    line:
+        Hatley Kids:
 Cienta Kids Shoes:
 'CATHY''S CONCEPTS':
 jocelyn:
+    aka:
+        JOCELYN:
 Suunto:
 GBX:
 Spy Optic:
-Venettini Kids:
 Delsey:
 Parrot:
-J Mendel:
 Lele Sadoughi:
 Us Angels:
-DERMABLEND:
-ROSIE POPE BABY:
+    line:
+        BLUSH by Us Angels:
+Rosie Pope:
+    line:
+        ROSIE POPE BABY:
 heartLoom:
 Fabiana Filippi:
 Leatherock:
@@ -3859,36 +4519,50 @@ FASHION FORMS:
 Eleventy:
 Walking Cradles:
 Diadora:
+    line:
+        Diadora Heritage:
 Kat Burki:
+    aka:
+        KAT BURKI:
 Urban Decay:
 'Ari D. Norman':
-WEEKEND MAX MARA:
 Wonderland:
 INARI:
-'6 Shore Road by Pooja':
 RADICAL SKINCARE:
+    aka:
+        Radical Skincare:
 FERGIE:
 Mud Australia:
 VonZipper:
 Pazitos:
 KIDDO:
+    aka:
+        Kiddo:
 Christopher Drummond Beauty:
 Apolinar:
-Thakoon Addition:
 Metrokane:
 Oliveve:
-Tahari by ASL:
 Luli and Me:
+    aka:
+        'Luli & Me':
 Magaschoni:
 Nurse Mates:
 Love Haus by Beach Bunny:
 Lauren Lorraine:
+    aka:
+        LAUREN LORRAINE:
 Unique Vintage:
 SPEEDO:
+    aka:
+        Speedo:
 FOGAL:
+    aka:
+        Fogal:
 CamelBak:
 'Bois 1920':
-CJ by Cookie Johnson:
+Cookie Johnson:
+    line:
+        CJ by Cookie Johnson:
 Stonewear Designs:
 Sunday Riley:
 Nathan:
@@ -3898,25 +4572,32 @@ Vibram FiveFingers:
 Perfect Moment:
 Ingersoll:
 'M.R.K.T.':
-    alias:
+    aka:
         M R K T:
 Le Chameau:
 Sue Wong:
+    aka:
+        SUE WONG:
 Judy Geib:
 TOPO DESIGNS:
+    aka:
+        TOPO athletic:
 Stouls:
-ANASTASIA BEVERLY HILLS:
 KAREN NEUBURGER:
 SCALA:
 'J-41':
 IPANEMA:
+    aka:
+        Ipanema:
 VOTIVO:
 DAY Birger et Mikkelsen:
-    alias:
+    aka:
         DAY BIRGER ET MIKKELSEN:
 Studer Schild:
 EF Collection:
-HOBO:
+Hobo:
+    aka:
+        HOBO:
 Softspots:
 Osmotics:
 'Hi-Tec':
@@ -3924,7 +4605,9 @@ Boon:
 NM EXCLUSIVE:
 'Z. Bigatti':
 JACK ROGERS:
-Sjal:
+själ:
+    aka:
+        Sjal:
 'Torino Leather Co.':
 Swedish Hasbeens:
 Ruffwear:
@@ -3937,11 +4620,12 @@ Feetures:
 DermStore:
 Barbisio:
 Officine Generale:
-'J. Renee':
 Helle Comfort:
 Car Shoe:
 'K-Swiss':
-CARLOS by Carlos Santana:
+Carlos Santana:
+    line:
+        CARLOS by Carlos Santana:
 Markus Lupfer:
 Mustela:
 Maggy London:
@@ -3950,10 +4634,11 @@ Crabtree Evelyn:
 Anavini:
 basq skin care:
 Cellmen Switzerland:
-MARCIANO:
 SOLOW:
 Jaipur:
 Articles of Society:
+    line:
+        Articles of Society Red Label:
 Topix:
 'Ace & Jig':
 Hill and Friends:
@@ -3970,7 +4655,11 @@ PJ LUXE:
 SCIENTIFIC Rx:
 Modena:
 'St. Tropez':
+    aka:
+        'ST. TROPEZ':
 'WARNER''S':
+    aka:
+        'Warner''s':
 Cloverpost:
 FIG Clothing:
 FootJoy:
@@ -3980,7 +4669,11 @@ Fat Witch Bakery:
 'Je suis en CP!':
 Carmella:
 Khombu:
-THE SAK:
+    aka:
+        KHOMBU:
+The Sak:
+    aka:
+        THE SAK:
 Scotch Shrunk:
 Mischa Lampert:
 CLAUDIA SCHIFFER FOR TSE:
@@ -3990,12 +4683,10 @@ Patchington:
 Superfeet:
 md formulations:
 SIDE OF FRIES:
-Kurt S Adler Xmas:
 Clyda:
 Private Party:
 'HUDSON''S BAY COMPANY':
 Chooka:
-REPORT SIGNATURE:
 NACH:
 Stonz:
 Sudha Pennathur:
@@ -4006,15 +4697,12 @@ NoSoX:
 Members Only:
 A Gold E:
 SHIRTDRESS:
-AG Green Label:
 Oboz:
 KALAN by Suzanne Kalan:
 Mariah Carey:
 Halabaloo:
 Harveys Seatbelt Bag:
-Zac Zac Posen:
 Rodin:
-Marc New York by Andrew Marc:
 KLEVER KIDS:
 Dansko:
 Tecnica:
@@ -4025,58 +4713,65 @@ Elizabeth Locke:
 Mila Moursi:
 Ephemera:
 Jansport:
+    aka:
+        JanSport:
 MAC DUGGAL:
 'DECODE 1.8':
 CATTIVA Cosmetics:
-OFFSPRING:
-WILDFOX:
 Gabriela Artigas:
-'NO. 21':
 di Bianco:
 CEJON:
 Zella:
+    line:
+        Zella Girl:
 JENNIFER FISHER:
 Catimini:
-Ultracor:
 'Think!':
 Lucky Star:
-Gentle Souls:
+GENTLE SOULS:
+    aka:
+        Gentle Souls:
 Supersmile:
-dunhill:
 Figue:
 Mio:
+    aka:
+        Mama Mio:
+        Mio Skincare:
 Injinji:
-AZZARO:
+Azzaro:
+    aka:
+        AZZARO:
 Marie Turnor:
 FASHION FAIR:
 MONTBLANC:
 LIBERTY:
-Bass:
 PANACEA:
 Fjallraven:
 Wrightsock:
 Melissa Shoes:
 Miracle Skin Transformer:
 Aventura Clothing:
-BECCA SWIM:
 Antonio Berardi:
+    aka:
+        ANTONIO BERARDI:
 'R&Y Augousti':
-BLONDO:
 FELINA:
 Uzerai Edits:
 Tractr:
+    aka:
+        TRACTR:
 Ichendorf:
 Champion:
 Kathryn McCarron:
-Ramy Brook:
 '2XU':
 Zuhair Murad:
+    aka:
+        ZUHAIR MURAD:
 'Officina51':
 OAK:
 'Willow + Stout':
 Pallas:
 By Johnny:
-Junior Gaultier:
 Butterscotch Blankees:
 SURFACE TO AIR:
 Neom Organics:
@@ -4085,8 +4780,6 @@ Santi:
 DeCarlini:
 Gordon Rush:
 Terramar:
-JAX:
-MR and MRS ITALY:
 Evie Bett:
 'Per-fekt Beauty':
 Iluxe Organics:
@@ -4094,14 +4787,15 @@ QUAY AUSTRALIA:
 NATORI:
 Zara Terez:
 Kate Sylvester:
-beginning by Maclaren:
 Sincerely Jules:
 Matt Bernson:
+    aka:
+        MATT BERNSON:
 PUR Cosmetics:
 THEA THEA:
 Chocolat Moderne:
 Miss Me:
-    alias:
+    aka:
         Miss Me Jeans:
     line:
         MM Couture by Miss Me:
@@ -4113,23 +4807,19 @@ Sharon Khazzam:
 UPPAbaby:
 Mismo:
 Tisch New York:
-Adrienne Vittadini:
 'BICKLEY & MITCHELL':
 Sacai Luck:
 Newton Running:
 Steven Alan:
 BING BANG:
 AVANI Dead Sea Cosmetics:
-Caparros:
 Freebird:
 Churchs:
 Henry Beguelin:
 Bois:
 Sonoma Lavender:
-Anita:
 Chinti and Parker:
 'CHINTI & PARKER':
-CAMILLA:
 Linell Ellis:
 Temperley London:
 Lenora Dame:
@@ -4141,13 +4831,11 @@ Callahan:
 Casetify:
 zerouv:
 Jin Soon:
-'Eastland 1955 Edition':
 Fred Perry:
 'Oil & Water':
 '111SKIN':
-    alias:
+    aka:
         '111Skin':
-BB DAKOTA PLUS:
 Cathy Waterman:
 Smythe:
 BELUSSO:
@@ -4174,14 +4862,14 @@ NUDESTIX:
 Kennebunk Home:
 KLUB NICO:
 Surratt Beauty:
-BeautyRx Skincare:
 CINZIA DUE:
 Giesswein:
 Romeo Gigli Vintage:
 Osiris:
+    line:
+        Osiris Kids:
 Suboo:
 'Prospector Co.':
-Keds:
 theMINIclassy:
 Porter:
 CHOOZE:
@@ -4216,7 +4904,6 @@ Cinzia Rocca:
 One Fell Swoop:
 Salinas:
 Osmosis Pur Medical Skincare:
-Tbags Los Angeles:
 Brera Orologi:
 SLEEP ON IT:
 Sanitas Skincare:
@@ -4226,25 +4913,26 @@ APERLAI:
 'Andy & Evan':
 'Bickley + Mitchell':
 VPL:
+    line:
+        VPL Active:
 ghd:
+    aka:
+        GHD:
 Bedhead:
-Anthony:
 FLASH Tattoos:
 'Saint & Libertine':
 'Pomega5':
 CHARLIE ROCKET:
 Sarah Lavoine:
 Bella Freud Parfum:
+    aka:
+        Bella Freud:
 Scott Hawaii:
 Soehnle:
 DIANA GALLESI:
 Ken Paves:
-SONIA by SONIA RYKIEL:
-TRACTR:
 Robert Wayne:
-Petunia Pickle Bottom:
 MOMONÍ:
-WEATHERPROOF VINTAGE:
 CARMAKOMA PLUS:
 Kiki McDonough:
 'Olive + Oak':
@@ -4252,7 +4940,6 @@ Kiki McDonough:
 Julien Farel Haircare:
 'X-RAY Jeans':
 Wendy Nichol:
-Nicholas K:
 Arielle:
 '81hours':
 CACHET:
@@ -4276,18 +4963,13 @@ Cruel:
 SURELL:
 Original Paperbacks:
 Coobie:
-FRENDS:
-Echo Design:
 Andrea Marques:
 KAVU:
 Steam Creams and Oils:
 beautyblender:
 Spira:
 'SALT. OPTICS':
-JanSport:
 Amedei:
-Krizia Vintage:
-Sonia Rykiel:
 DayNa Decker:
 Amore Pacific:
 CALLAWAY:
@@ -4296,10 +4978,7 @@ Haerfest:
 Oliberte:
 Shona Joy:
 'D.A.P.':
-Swiss Army:
 Coqui Coqui:
-Shourouk:
-Vitamin A Swimwear:
 Russell Organics:
 Bleu Nature:
 Pitusa:
@@ -4313,24 +4992,30 @@ VMV Hypoallergenics:
 HUDSON NORTH:
 Wigwam:
 JOLIE:
-'Athletic Propulsion Labs: APL':
 BLUGIRL BLUMARINE BEACHWEAR:
 HART SCHAFFNER MARX:
+    aka:
+        Hart Schaffner Marx:
 Sacs Of Life:
 Stefere:
 Elle Zeitoune:
 Little DiLascia:
 Jose Eber:
-JB by Julie Brown:
+Julie Brown:
+    line:
+        JB by Julie Brown:
 Caruso:
 The Case Factory:
-'Dr.Brandt':
 La Petite Couture:
 Laranjinha:
 'Casely-Hayford':
-RACHEL RACHEL ROY:
+RACHEL ROY:
+    line:
+        RACHEL RACHEL ROY:
 Earnest Sewn:
 'Jen7':
+    aka:
+        'JEN7':
 Diana Vreeland Parfums:
 Baby Threads:
 Matter and Home:
@@ -4343,25 +5028,19 @@ Bernhardt:
 Lea Journo Cosmetique:
 'Gunner & Lux':
 Nomia:
+    aka:
+        NOMIA:
 'D''Blanc':
 Hero:
 CINZIA ROCCA:
 Ringuet:
-RIZZOLI:
-Pamella Roland:
 Luna Skye:
-patchology:
 Vitaliano:
-PAUL GREEN:
-Porsche Design Sport:
-AG Jeans:
 MOUNSER:
 BRUNO MAGLI:
 Thorogood:
-TRETORN:
 Calibrate:
 Pretty Polly:
-'Nº21':
 eyebobs:
 Chandra Jewelry:
 'Joshua''s':
@@ -4385,7 +5064,7 @@ CATHERINE DEANE:
 Nue by Shani:
 Atkinsons:
 'L.B. Evans':
-    alias:
+    aka:
         'L.B. EVANS':
 JS COLLECTIONS:
 Paula Bianco:
@@ -4397,18 +5076,24 @@ The Bonnie Mob:
 ANNE COLE:
 Daniel Green:
 GX By Gwen Stefani:
+    aka:
+        GX BY GWEN STEFANI:
+        gx by GWEN STEFANI:
 'PONCHO & GOLDSTEIN':
 SunaharA:
 cupcakes and cashmere:
-'MASTER & DYNAMIC':
 'Alice & Trixie':
-Ferrari:
+FERRARI:
+    aka:
+        Ferrari:
 Malcolm Betts:
 Cane and Austin:
 Emanuel Ungaro:
+    line:
+        Emanuel Ungaro Vintage:
 Monreal London:
 Yohji Yamamoto:
-    alias:
+    aka:
         YOHJI YAMAMOTO:
     line:
         Regulation Yohji Yamamoto:
@@ -4417,7 +5102,6 @@ Yohji Yamamoto:
         'Y''s by Yohji Yamamoto':
 Alden:
 'Carol''s Daughter':
-Speedo:
 Kokun:
 Davek:
 Beyonce:
@@ -4427,11 +5111,15 @@ Ghurka:
 AME SLEEPWEAR:
 'Tempur-Pedic':
 DAV:
+    aka:
+        Dav:
 Marissa Webb:
 Capezio:
 'P.J. Salvage':
 Matiko:
-RabLabs:
+Rablabs:
+    aka:
+        RabLabs:
 UNIF:
 Hunter Boot:
 Bettye Muller:
@@ -4439,10 +5127,13 @@ Simple Life:
 Red Wing Heritage:
 Dana Rebecca:
 Kooba:
-EVA BY EVA FRANCO:
 julia jordan:
+    aka:
+        JULIA JORDAN:
 HydroPeptide:
 SHOUROUK:
+    aka:
+        Shourouk:
 Rosamosario:
 Inis Meain:
 DWP:
@@ -4450,16 +5141,25 @@ MELISSA AND DOUG:
 Armand Diradourian:
 H Brand:
 Aedes de Venustas:
-Apres Ramy Brook:
+Ramy Brook:
+    aka:
+        RAMY BROOK:
+        Apres Ramy Brook:
 Isabel Garreton:
 CARON:
 DITTOS:
+    aka:
+        Dittos:
 YIREH:
 Dibbern:
 KidKraft:
 Random House:
+    aka:
+        VERLAGSGRUPPE RANDOM HOUSE GMBH: # FIXME: ???
 Mepra:
 MIKASA:
+    aka:
+        Mikasa:
 Maslin:
 Viktoria Hayman:
 MeisterSinger:
@@ -4470,51 +5170,68 @@ Rani Arabella:
 ARENA:
 Boxie Tees:
 Bionica:
-Dransfield and Ross House:
+'Dransfield & Ross':
+    line:
+        Dransfield and Ross House:
 VALLEY EYEWEAR:
 Vilhelm Parfumerie:
 Latigo:
+    aka:
+        LATIGO:
 'Poeme & Poesie':
-Fekkai:
 'Carrot & Gibbs':
 School Issue:
 Urth:
 'L.K. Bennett':
 Eastland Made in Maine:
+    aka:
+        Eastland:
+    line:
+        'Eastland 1955 Edition':
 LITO:
+    aka:
+        Lito:
 FJALL RAVEN:
 'Nia 24':
 Lifeline Skin Care:
 Apivita:
 Topman:
 Frends:
-ILLESTEVA:
+    aka:
+        FRENDS:
 JULIAN JOYCE:
 Jolt:
 Rado:
 Melannco:
 LIU •JO:
+    aka:
+        LIU JO:
+    line:
+        LIU •JO BEACHWEAR:
+        LIU •JO ACCESSORIES:
+        LIU •JO JEANS:
 Zalto Glassware:
-ReVive:
 Hooker Furniture:
 Myswear:
 Zhivago:
-teNeues:
+TENEUES:
+    aka:
+        teNeues:
 bohemian BONES:
 'Riller & Fount':
 Chicago Skates:
 J VALDI:
 Matiere:
 RAINFOREST:
+    aka:
+        Rainforest:
 '1.61':
 Wen:
 Faherty:
 Blind Barber:
-illesteva:
 Baby Jogger:
 RD Style:
 Elisa B:
-Waterford:
 Lee Cooper:
 Element:
 'SLATE & STONE':
@@ -4548,28 +5265,31 @@ Bayolea:
 CREATIVE RECREATION:
 Han Kjobenhavn:
 Save the Duck:
-    alias:
+    aka:
         Save The Duck:
 Kid Express:
 VIDORRETA:
+    aka:
+        Vidorreta:
 Carlson Craft:
 ALO:
+    aka:
+        Alo:
 Balmer:
 MISSGUIDED:
 Jim Marvin:
 PAJAR:
+    aka:
+        Pajar CANADA:
 Art Walk:
 Andrianna Shamaris:
 'John & Jenn by Line':
 LAURA ASHLEY:
 'Cellex-C':
 SONDRA ROBERTS:
-PINC PREMIUM:
 Emerica:
 Tart:
-Torn by Ronny Kobo:
 Revaleskin:
-Ipanema:
 Charlotte Simone:
 TORN RANCH:
 'May.':
@@ -4579,7 +5299,6 @@ Chaz Dean:
 TKEES:
 JOLIE by EDWARD SPIERS:
 Zensah:
-SPITFIRE:
 The Lacquer Company:
 Finell:
 'Scotch R''Belle':
@@ -4587,7 +5306,7 @@ Flexus:
 Tavik:
 CEP:
 CHARBONNEL ET WALKER:
-    alias:
+    aka:
         Charbonnel et Walker:
         Charbonnel ET Walker:
 PALLADIUM:
@@ -4595,9 +5314,8 @@ PALLADIUM:
 Kai:
 Alexa Wagner:
 'Regina-Andrew Design':
-    alias:
+    aka:
         Regina Andrew Design:
-LE MYSTERE:
 EMU Australia Kids:
 EYLAND:
 Cliche:
@@ -4607,23 +5325,19 @@ Joy To The World:
 Sartore:
 Sequin:
 Esteban Cortazar:
-MIRACLESUIT:
-RAMY BROOK:
 Alexander:
 On:
 Babytime by Episencial:
-OFFICINE CREATIVE:
 TINSEL:
 Paz Rodriguez:
 MANILA GRACE:
+    aka:
+        MANILA GRACE DENIM:
 Sunuva:
 Credentials:
-Duvetica:
 Ricci Silversmiths:
 Patrik Ervell:
 ROUDELAIN:
-Radical Skincare:
-DOMA:
 HOORSENBUHS:
 Indie Soul:
 MY PRINCESS WEAR:
@@ -4633,8 +5347,12 @@ S AND S:
 Stelton:
 Tawny Goods:
 Aviator Nation:
-CAROLINA AMATO:
+Carolina Amato:
+    aka:
+        CAROLINA AMATO:
 MIISTA:
+    aka:
+        Miista:
 Eric Javits:
 Lola Hats:
 Thomas Mason:
@@ -4644,19 +5362,22 @@ Ritratti:
 'Cutter & Buck':
 Stutterheim Raincoats:
 The Journey Collection by Annette Ferber:
-ANITA KO:
-ICE BY JARDIN:
+Anita:
 Kate Somerville:
 June:
-San Lorenzo:
 'A.F.Vandevorst':
 Roberto Marroni:
 Triple Eight:
 Sevan Biçakçi:
 Scali Salvatore srl:
 Alex Marshall:
+    aka:
+        Alex Marshall Studios:
+Marshall:
 'Heko +Life':
 'Thairapy 365':
+    aka:
+        'THAIRAPY 365':
 Unreal Fur:
 'Sons + Daughters Ltd':
 BHLDN:
@@ -4664,21 +5385,25 @@ The Sleep Shirt:
 Faviana:
 Thapelo:
 FREEBIRD BY STEVEN:
+    aka:
+        Freebird by Steven:
 PMD:
-Nest Fragrances:
+    aka:
+        PMD Personal Microderm:
 HEDGREN:
 Ceramiche Bucci:
-SHOSHANNA:
 Alicia Adams Alpaca:
 DETTAGLI:
-HIPANEMA:
 IKKII:
 Delfina Delettrez:
 Iluminage Beauty:
+    aka:
+        iluminage:
 'Kork-Ease':
-GHD:
 Block Headwear:
 PRPS:
+    aka:
+        PRPS Japan:
 NuFace:
 Dezso by Sara Beltran:
 BAND OF OUTSIDERS:
@@ -4689,22 +5414,30 @@ Petit Nord:
 Archipelago Botanicals:
 David Mallett:
 Arquiste Parfumeur:
+    aka:
+        'L''Artisan Parfumeur':
 Zanella:
 Cushe:
 Elizabeth Cole:
 Chalayan:
 Cedric Charlier:
-'MM6':
+    aka:
+        CEDRIC CHARLIER:
+        CÉDRIC CHARLIER:
+MM6:
 REMINISCENCE:
 Baby Zen:
 Christin Michaels:
 suki:
 'Sherri''s Designs':
 Carole Hochman:
+    aka:
+        CAROLE HOCHMAN:
 Manuelle:
+    aka:
+        Manuelle Scarves:
 CRANE AIR:
 Susanne Kaufmann:
-'G-SHOCK':
 Fusalp:
 Rousseau:
 La Vie Boheme Yoga:
@@ -4712,48 +5445,48 @@ EMANUELE BICOCCHI:
 Craft:
 Standard Form:
 The Kama Sutra Company:
-BABY DEER:
-Freebird by Steven:
 Musa:
 My Flat In London:
 'TRUNKS SWIM + SURF':
 Georgia Boot:
-Kay Unger New York:
 Raw Spirit:
 Nudie Jeans:
+    aka:
+        Nudie:
 'Val & Max':
 Blissliving Home:
 Kiddimoto:
 'B&O Play':
 ASILIO:
-Helly Hansen:
 Marie Daage:
 'STELA 9':
 LILLY e VIOLETTA:
-ENZO ANGIOLINI:
+Enzo Angiolini:
+    aka:
+        ENZO ANGIOLINI:
 Steve J and Yoni P:
-Frederic Fekkai:
 JOOMI LIM:
 JAGGAR:
 Frascos Mirrors:
 Spiewak:
 Ercuis:
 '''OH MY CORSET!''':
-Jean Louis Scherrer Vintage:
+Jean Louis Scherrer:
+    line:
+        Jean Louis Scherrer Vintage:
 PERSOL:
 'L'' AUTRE CHOSE':
 Pom Pom at Home:
 Peak Performance:
 Edun:
+    aka:
+        EDUN:
 Tru Luv:
 'Mrs. Prindable''s':
 Japonesque:
 Mezoome:
 Araks:
 Ana Khouri:
-LA REGALE:
-Botkier New York:
-Nikos Koulis:
 Swankie Blankie:
 Louis Feraud Vintage:
 Odin New York:
@@ -4768,34 +5501,28 @@ Jacquie Aiche:
 Sophie Anderson:
 French Sole:
 Manitobah Mukluks:
-Fogal:
 Smiley World:
 SUSAN FOSTER:
 PerioSciences:
 Chopard:
 'Katherine''s Collection':
 Lilah B:
-Reebok:
 The BrowGal By Tonya Crooks:
+    aka:
+        THE BROWGAL BY TONYA CROOKS:
 Menbur:
 'TWIN-SET LINGERIE':
-Mr and Mrs Italy:
 Sea:
-Santoni:
 Suzanne Felsen:
 DAYLEE DESIGNS:
 HUNTER BELL:
-Emanuel Ungaro Vintage:
 Colombo:
-Vitamin A:
 Franceschetti:
 Zoot Sports:
 Lakai:
 RumbaTime:
 MISS NAORY:
 Tusting:
-cocobelle:
-KHOMBU:
 Michele Keeler:
 Decleor:
 'ROLLA''S':
@@ -4803,12 +5530,9 @@ ALDO:
 JBU:
 Denis Colomb:
 Nikki Reed for REVOLVE:
-REVERSE:
 Duchamp:
-ZAC ZAC POSEN:
 CHARLI:
 Isaac Reina:
-KAT BURKI:
 Rockins:
 VERNISSAGE:
 JILL Jill Stuart:
@@ -4826,11 +5550,9 @@ Smoothing Therapy:
 EACH OTHER:
 Brevity:
 FRS For Restless Sleepers:
-K Jacques:
 Katherines Collection:
 Fay:
 '1717 Olive':
-stila:
 TanTowel:
 Silk by Bryony:
 The Rail:
@@ -4848,10 +5570,8 @@ KRUPS:
 Antonio Puig:
 'Lilies & Roses NY':
 Melissa:
-'St. John':
 US Polo Association:
 Longchamp:
-Brian Atwood:
 FDMTL:
 Kjus:
 IKTINOS MARMARON SPIROS SOULIS DESIGNS:
@@ -4859,7 +5579,6 @@ COCO RAVE:
 Callaway:
 'B. Belt':
 Zutoq:
-Vix:
 Claude Montana Vintage:
 Randolph:
 'Ruby & Bloom':
@@ -4868,7 +5587,6 @@ Task Essential:
 Surell:
 Perrin Paris:
 COOMI:
-Giraffe at Home:
 'Eleni''s New York':
 Ouidad:
 Eton:
@@ -4889,17 +5607,19 @@ Fits:
 Fernando Jorge:
 LEITMOTIV:
 WEATHERPROOF:
+    aka:
+        WEATHERPROOF VINTAGE:
 Jim Hjelm Occasions:
-three dots:
 CARLOS CAMPOS:
 'Henry & Belle':
 PJ Salvage:
-'HERM&#200;S':
 Jon Josef:
 Fisher Price:
 MadPax:
 Raga:
 HiPANEMA:
+    aka:
+        HIPANEMA:
 Sophie Bille Brahe:
 For Two Fitness:
 'Goen.J':
@@ -4907,23 +5627,21 @@ For Two Fitness:
 Nu Bra:
 Tasha Polizzi:
 Bernardaud:
-Bench:
-Mama Mio:
-Solace London:
 Lotuff Leather:
 Karen Zambos:
 Les Princes:
 Callisto Home:
 Estella:
 Olukai:
-'D&G':
 Patron Boots:
 'Bose®':
 'Goodman''s':
 AIGLE:
 HANES:
 FINE LINES:
-KLEINFELD PINK:
+KLEINFELD:
+    line:
+        KLEINFELD PINK:
 '1. STATE':
 Eau dItalie:
 De Lacy:
@@ -4937,7 +5655,6 @@ Eight Sixty:
 UR POWERED:
 AYNI:
 Kikkerland Design:
-HOGAN REBEL:
 BLUMARINE:
 GLAM GLOW:
 CASTAÑER:
@@ -4953,14 +5670,10 @@ Aila Blue:
 TAG HEUER:
 Mori Lee:
 Sybilla:
-BARBOUR:
 Skultuna:
 Frederique Constant:
-Jean Louis Scherrer:
 House of Lafayette:
-Long by Valery Joseph:
 Sara Battaglia:
-Nudie:
 'Piet Hein Eek & LEFF Amsterdam':
 Whyred:
 Venroy:
@@ -4983,7 +5696,7 @@ Mineral Fusion:
 Bergdorf Goodman:
 Luzern Laboratories:
 Pour La Victoire:
-    alias:
+    aka:
         Pour la Victoire:
 Sachi:
 MAD ENGINE:
@@ -4997,6 +5710,7 @@ NUXE:
 Mederma:
 ERMANNO SCERVINO:
     line:
+        SCERVINO STREET:
         ERMANNO SCERVINO LINGERIE:
         ERMANNO SCERVINO BEACHWEAR:
         ERMANNO ERMANNO SCERVINO:
@@ -5007,17 +5721,24 @@ Pevonia Botanica:
 Ethocyn by chanTal:
 'AND1':
 HEMANT AND NANDITA:
+    aka:
+        Hemant and Nandita:
 DANSKIN:
 Rita Hazan:
 '21 Drops':
 Woodlore:
+    aka:
+        WOODLORE:
 Cullen:
-'Victorinox Swiss Army®':
 Meri Meri:
 Jamie Young:
 BeautyRX:
+    aka:
+        BeautyRx Skincare:
 Circa:
 APOTHIA Los Angeles:
+    aka:
+        Apothia:
 MiA BelleZZa Cosmetics:
 Pluma:
 Adia Kibur:
@@ -5028,22 +5749,34 @@ Appaman:
     line:
         Appaman Kids:
 SWIMS:
+    aka:
+        Swims:
 NAUGHTY MONKEY:
 DHS:
-Lancer:
+LANCER:
+    aka:
+        Lancer:
 BabyBjorn:
 Babo Botanicals:
 Pharmaceutical Specialties:
 Filling Pieces:
-MARC NEW YORK PERFORMANCE PLUS:
 'B. Kamins':
 'MELISSA & DOUG':
 Rauwolf:
 Strand:
 bbrowbar:
+    aka:
+        BBROWBAR:
 'K. Jacques':
+    aka:
+        K Jacques:
+        'K.JACQUES':
+        K Jacques St Tropez:
+        'K.Jacques St. Tropez':
 ELLEJAY:
 David Meister:
+    aka:
+        DAVID MEISTER:
 Atelier Buffile:
 Børn:
 Arnette:
@@ -5059,23 +5792,18 @@ PIANURASTUDIO:
 'MR.':
 Bodyism:
 Ringly:
-PENDLETON:
 Skylar Luna:
-Dav:
 PURE REBEL:
 COCO REEF:
 Georgie Beauty:
 Regalect:
 Brora:
-CATHERINE MALANDRINO:
 Chic Buds:
 Solbar:
 'D.L. & Co':
 PENELOPE MACK:
 Bensimon:
-MATT BERNSON:
 BIKKEMBERGS:
-DS and Durga:
 Crabbyclaws:
 Federica Moretti:
 Siaomimi:
@@ -5085,15 +5813,12 @@ TEA FORTE:
 Solvere:
 FACTO:
 Emannuelle Junqueira:
-ZIMMERLI:
 FarmHouse Fresh:
 MICHELE:
 Briogeo:
-Gigi Burris:
 ARE YOU AM I:
 Y YIGAL X DESIGN LAB:
 ÉGOTIQUE:
-Roxy:
 ROMEO AND JULIET COUTURE:
 Global Views:
 MARINA:
@@ -5105,29 +5830,36 @@ Petronius:
 FLYNN:
 Michael Jordan:
 WOLVERINE:
-CHIARA FERRAGNI:
 Edward Armah:
 Cashhimi:
 McGuire:
 LA BLANCA:
-Solid and Striped:
 Josie:
 Munnu:
 Bruno Bordese:
+    aka:
+        BRUNO BORDESE:
+    line:
+        BB WASHED by BRUNO BORDESE:
 Eastern Accents:
 Agave Denim:
+    aka:
+        Agave:
 JAX STUDIO:
+    aka:
+        JAX:
 XCEL Wetsuits:
 Renzo Romagnoli:
 Medicell Labs:
 'Tri-Coastal Design':
 GALVAN:
+    aka:
+        Galvan:
 Chilewich:
 Mario Luca Giusti:
 KELSI DAGGER:
 Shock Absorber:
 Maria Black Fine Jewelry:
-'686':
 LILY BLEU:
 Lennon and Wolfe:
 Obermeyer Kids:
@@ -5138,8 +5870,6 @@ Bern:
 MCGUIRE:
 JOSIE:
 Rip Offs:
-ERIN erin fetherston:
-Toga Pulla:
 'John-Richard Collection':
 Lost And Found:
 VERDISSIMA:
@@ -5159,7 +5889,6 @@ Kartell:
 Allerderm:
 Lierac Paris:
 BLUMARINE UNDERWEAR:
-Taryn Rose:
 'Harry''s of London':
 ADA:
 Tim Coppens:
@@ -5167,9 +5896,7 @@ Nunamoochie:
 Komarov:
 Carmakoma:
 BULA:
-Alexa Chung For AG Jeans:
 Eva Fehren:
-MATTHEW WILLIAMSON ESCAPE:
 ORA:
 Maggie Louise Confections:
 Bigi:
@@ -5178,17 +5905,14 @@ Lomasi:
 Oeuf:
 Skullcandy:
 PHYNE by Paige Novick:
-ZOBHA:
 La Fiorentina:
 Legacy:
-CARMEN MARC VALVO CALZATURE:
 'Nally & Millie':
 Bibz N Thingz:
 DARZZI:
 Maternal America:
 South Parade:
 BLUGIRL BLUMARINE UNDERWEAR:
-Rawlings:
 Valenz Leather:
 Johnny Was:
 The Dragon and The Rabbit:
@@ -5199,16 +5923,20 @@ Ditz Designs by the Hen House:
 PRESCRIBEDsolutions:
 Lab Series:
 Di Camillo:
+    aka:
+        'Di Camillo Baking Co.':
 Becca Cosmetics:
 I dig denim:
 'GRAZIA''LLIANI':
-    alias:
+    aka:
         'GRAZIA''LLIANI SOON':
 SUGARLIPS:
 KYI KYI:
 COYE NOKES:
 Jacques Fath:
 Soleil Toujours:
+    aka:
+        SOLEIL TOUJOURS:
 Illamasqua:
 Martial vivot:
 Bill Levkoff:
@@ -5227,11 +5955,14 @@ Auriderm:
 Greg Lauren:
 Caroline Rose:
 Sagaform:
-PMD Personal Microderm:
 Beautyblender:
+    aka:
+        'beautyblender®':
 'Make + Model':
 Boulee:
-'Arc''Teryx Veilance':
+'Arc''teryx':
+    aka:
+        'Arc''Teryx Veilance':
 Jan Barboglio:
 Post Card:
 Michael Storrings for Landmark Creations:
@@ -5280,11 +6011,9 @@ Uniform Wares:
 Muelhens:
 Laurafed:
 Melissa Masse:
-DC Kids:
 Alyssa Ashley:
 Ball Watch:
 Pumpkin Patch Kids:
-'THAIRAPY 365':
 Lazaro:
 FALKE Ergonomic Sport System:
 'Caslon®':
@@ -5293,7 +6022,7 @@ John Robshaw:
 ALEMDARA:
 Zoffoli:
 Lucien Pellat-Finet:
-    alias:
+    aka:
         Lucien Pellat Finet:
 Double D Ranchwear:
 Weiss:
@@ -5303,20 +6032,21 @@ Sambonet:
 Jennifer Haley:
 Face Stockholm:
 BROOKLYN ANIMAL dESIGN:
-Giulietta New York:
 Deborah Ehrlich:
 FEAR OF GOD:
 Athletic Propulsion Labs:
+    aka:
+        'Athletic Propulsion Labs: APL':
 Kuboraum:
 'K-WAY':
-RACHEL ROY:
-'ST. TROPEZ':
 Mario Badescu:
 'Kevin O''Brien':
 Scandola Marmi:
 Joseph Abboud:
 Terry de Gunzburg:
 Krizia:
+    line:
+        Krizia Vintage:
 Ever Eden by Michelle Phan:
 Astara:
 'DL 1961':
@@ -5325,22 +6055,25 @@ Astara:
 'Vosges Haut-Chocolat':
 Project Canvas:
 würkin stiffs:
-TWEEZERMAN:
 RIALTO JEAN PROJECT:
+    aka:
+        Rialto:
 'CHELSEA & THEODORE':
 Outpost Original:
-KARA ROSS:
+Kara Ross:
+    aka:
+        Kara:
+        KARA ROSS:
 Valia Gabriel:
 Yoshio Kubo:
 'Hudson''s Bay Company':
 Winter Water Factory:
 Malone Souliers:
 Live the Process:
-    alias:
+    aka:
         Live the PROCESS:
         Live The Process:
 RUUM:
-Zirh International:
 'Bungalow 20':
 PRIMITIVES BY KATHY:
 'K. Bell Socks':
@@ -5357,10 +6090,8 @@ Bop Basics:
 SOPHIE THEALLET:
 'L''ATELIER d''exercices':
 Little Flock of Horrors:
-KOMONO:
 Jacques Marie Mage:
 Ela Rae:
-Billion Dollar Brows:
 Nurse Jamie:
 Senna Cosmetics:
 BASIX:
@@ -5379,13 +6110,15 @@ mybody:
 Eidos:
 Dexter Bowling:
 Original and Mineral:
-Stila Cosmetics:
 'Eyevan7285':
 Joan Calabrese:
 '4 Eva Eva':
 FRANCHI:
 ARAMIS:
 Asics:
+    line:
+        ASICS:
+        'ASICS®':
 Harvey Faircloth:
 skinChemists:
 BIG STAR:
@@ -5393,12 +6126,15 @@ BIG STAR:
 Trophy Skin:
 Tracie Martyn:
 gray disappear:
-'K.Jacques St. Tropez':
 Publish:
+    aka:
+        PUBLISH BRAND:
 Chef Dean Fearing:
 YakTrax:
 Vivant Skin Care:
 Paloma Picasso:
+    aka:
+        PALOMA PICASSO:
 WIDGEON:
 Bonnie Young:
 BareEASE:
@@ -5410,30 +6146,22 @@ isapera:
 Visual Comfort:
 AmLactin:
 siempre golden:
-Keen Kids:
 Liquid Keratin:
 Allen Brothers:
 Smoke x Mirrors:
 Donni Charm:
 Crumpler:
-CAROLE HOCHMAN:
 Thorsun:
 REASON:
 IZOD:
 FOREVER AND EVER:
-Harper Collins:
 DANNER:
 Piazza Sempione:
-DSQUARED:
 Dee Keller:
-'Cl233De Peau Beaut233':
 FISHS EDDY:
 Yeti Yoga:
-Rickie Freeman for Teri Jon:
 Drybar:
 Some Days Lovin:
-ZUHAIR MURAD:
-Carolina Amato:
 Inverni:
 Belli Skin Care:
 The Horse:
@@ -5442,12 +6170,10 @@ Westin At Home:
 Aurelia Probiotic Skincare:
 Alvaro:
 Lizzie Mandler Fine Jewelry:
-SMEG:
 Moon Boot:
 Tamara Baskin:
 Zagliani:
 OURS:
-'SoftWalk®':
 MISS BIKINI:
 'H2O+':
 Affliction:
@@ -5463,14 +6189,13 @@ MD:
 Penrose London:
 I Love Gorgeous:
 'Robin''s Jean':
-    alias:
+    aka:
         Robins Jeans:
 Maria Lucia Hohan:
 Jennie Kwon:
 INTERLUDE:
 Les Petits Joueurs:
 Jennifer Ouellette:
-Khirma:
 Yoko London:
 Dee Berkley:
 APEPAZZA:
@@ -5478,13 +6203,11 @@ Edgardo Osorio for Ferragamo:
 PLANET LONDON:
 SWEDISH HASBEENS:
 Kid Made Modern:
-THE BROWGAL BY TONYA CROOKS:
 Streets Ahead:
 Primigi:
 NUR:
 LUXE City Guides:
 Modern Frock:
-Thierry Mugler:
 Ana Apple:
 First Base:
 PIN UP STARS:
@@ -5515,14 +6238,17 @@ Liberty London:
 Adi Designs:
 Prtty Peaushun:
 Love Stories:
-JOCELYN:
 ANDROID HOMME:
 Zhuu:
 Miller Harris:
 Body Language:
-Delpozo:
 CA by CINZIA ARAIA:
-Marc Ecko:
+Marc Eckō:
+    aka:
+        Marc Ecko:
+        Ecko:
+    line:
+        'MARC ECKO CUT & SEW':
 LObjet:
 WATERFORD:
 Cycleur de Luxe:
@@ -5543,7 +6269,6 @@ Holly Fulton:
 Emuaid:
 simplehuman:
 PRIVATE PARTY:
-'KURT S.ADLER':
 'A.V. Max':
 'G-LISH':
 The Handbag Raincoat:
@@ -5563,28 +6288,26 @@ Lacroix:
 IN BLOOM:
 Yasmine Eslami:
 TravisMathew:
-Giamba:
 The Laundress:
 Tea Collection:
 The Hampton Popcorn Company:
 'Kennel & Schmenger':
 PINKO SKIN:
 Dexton Kids:
-AGL Attilio Giusti Leombruni:
+Attilio Giusti Leombruni:
+    line:
+        AGL Attilio Giusti Leombruni:
 Disney:
 Fresh Slumber:
 VNDA:
 Clive Christian:
-bebe:
 Destin:
 Sole Society:
 Auskin:
 Armitage Avenue:
-BLUSH BY GOTTEX:
 Fitbit:
 VINTAGE AMERICA:
 ShirtsThatGo:
-'Bec & Bridge':
 DESA NINETEENSEVENTYTWO:
 Ricci:
 Kinto:
@@ -5592,23 +6315,27 @@ Gedebe:
 Shiraleah:
 Coravin:
 Alejandro Ingelmo:
+    aka:
+        ALEJANDRO INGELMO:
 Attachment:
 SP Black:
 'L''Amour Des Pieds':
-Faliero Sarti:
 LODIS:
 Margo Morrison:
 National Book Network:
-Kara Ross:
 NM:
-Skagen:
 BOSTON HARBOUR:
 June Jacobs:
 No Scream Cream:
 'LIME & VINE':
 Dress Gallery:
-LOVESHACKFANCY:
-'"Pamella, Pamella Roland"':
+Pamella Roland:
+    line:
+        Pamella Pamella Roland:
+            aka:
+                '"Pamella, Pamella Roland"':
+                'Pamella, Pamella Roland':
+                PAMELLA PAMELLA ROLAND:
 ZOE ADAMS:
 BLANC NOIR:
 Verdura:
@@ -5616,7 +6343,6 @@ BUNNIES BY THE BAY:
 Wallace Sewell:
 GG Collection:
 Thomas Fuchs:
-Malin and Goetz:
 Francois Pralus:
 '08sircus':
 'MASTER&MUSE x MELISSA JOY MANNING':
@@ -5629,22 +6355,21 @@ Castaner:
 'BOUTIQUE 9':
 'Naked & Famous Denim':
 Zelens:
-Vix Swimwear:
 'Hawke & Co.':
 Bang Candy:
 Elan:
 'E-GÓ':
 Stone Fox Sweat:
-Victorinox by Swiss Army:
 Carelle:
 Victor Alfaro:
 AUGUST HATS:
 FAP FILLES A PAPA:
 Kinetix:
+    aka:
+        KINETIX:
 ARTURO CHIANG:
 Khirma New York:
 The Super Elixir:
-Apothia:
 AMPERSAND AS APOSTROPHE:
 Huishan Zhang:
 Carine Gilson:
@@ -5657,25 +6382,17 @@ MARELLA:
 Secondome:
 'H&M':
 Juara:
-London Fog:
 Billieblush:
 Diamancel:
 Chach:
-PalmBeach Jewelry:
 Franco Ferrari:
 Brackish Bowties:
-K Jacques St Tropez:
 Mimi So:
 Patek Philippe:
 Nourison:
 Alexandra Von Furstenberg:
-'T3 MICRO':
 SOL Republic:
 McCoy Design:
-'Joe''s Intimates':
-Rupert Sanderson:
-'ML - MONIQUE LHUILLIER':
-ECCO Golf:
 Theo Fennell:
 Mimisol:
 FULTON:
@@ -5686,6 +6403,8 @@ Karen Didion Originals:
 VENESSA ARIZAGA:
 Kate Bissett:
 Beverly Hills Polo:
+    aka:
+        Beverly Hills Polo Club:
 Shades of Grey by Micah Cohen:
 Anaconda:
 Christopher Raeburn:
@@ -5703,7 +6422,6 @@ Deakin Francis:
 ANDRE ASSOUS:
 JUST PRETEND:
 MAGIC SUIT BY MIRACLESUIT:
-Umi:
 TID Watches:
 Banana Republic:
 Baghera:
@@ -5715,8 +6433,12 @@ Psycho Bunny:
 'Bow & Drape':
 Single Dress:
 Saloni:
+    aka:
+        SALONI:
 Lily Juliet:
 Gap:
+    line:
+        Gap Maternity:
 bloom:
 Follique:
 Beauty and Truth:
@@ -5731,12 +6453,9 @@ Apples of Gold:
 Jack Wolfskin Kids:
 Dusters:
 BOY London:
-Vidorreta:
 Pronovias:
-KIINI:
 BORN SHOE:
 'CLOTH & STONE':
-Florsheim x Esquivel:
 Tomasini Paris:
 Creative Recreation:
 Vaubel:
@@ -5749,7 +6468,6 @@ Alberto Fasciani:
 Donell:
 Gauchere:
 Bremont:
-Hatch:
 Tabac Original:
 MARIKA CURVES:
 Intelligent Beauty Labs:
@@ -5757,7 +6475,6 @@ Ilse Jacobsen:
 Etnia Barcelona:
 LOYAL HANA:
 BAILEY:
-BBROWBAR:
 'JHJ Design - The Art of Wearing Socks':
 Bony Levy:
 PHILIP STEIN:
@@ -5777,14 +6494,12 @@ Atlas:
 Frasco Mirrors:
 MADAME ALEXANDER:
 Svevo:
-Shun Kai:
 ASTR:
-Colette Nicolai:
 'Bio-Medical Research':
 De Vecchi Milano:
 Zensation:
-Fausto Puglisi:
-Lito:
+    aka:
+        ZENSATION:
 Earth Cork:
 Giacometti:
 Dry Divas:
@@ -5804,15 +6519,15 @@ Heroine Sport:
 Derek Rose:
 House of Holland:
 Bessa:
-Very Volatile:
 NORMA by MK:
 Sunspel:
 Cynthia Rowley:
+    aka:
+        CYNTHIA ROWLEY:
 Truss:
 Clu:
 Land of Women:
 Fala:
-GX BY GWEN STEFANI:
 Womens Clothing:
 Venini :
 Lynn Ban:
@@ -5822,11 +6537,9 @@ NAJ:
 Nikko Ceramics:
 Gryson:
 Zadeh:
-LIU •JO BEACHWEAR:
 COZY ORANGE:
 Etre Cecile:
 Simone Perele:
-Clé de Peau Synactif:
 Malo:
 Backstage:
 Worth:
@@ -5839,19 +6552,17 @@ LAVENDER:
 Acanthus:
 Profumo di Firenze:
 Urban Originals:
-'J. Lindeberg Ski':
 '6397':
 Basix Black Label:
 SPACE STYLE CONCEPT:
 Kjaer Weis:
-PINK:
 Paul Morelli:
 'MEGUMI-O':
 SKINNY DIP:
-Popatu:
 HERVE VAN DER STRAETEN:
-LORAC:
-DANNIJO:
+    aka:
+        Herve Van Der Straeten:
+        HERVÉ VAN DER STRAETEN:
 LE CREUSET:
 Geoffrey Beene:
 Himalayan Trading Post:
@@ -5871,14 +6582,11 @@ MUSE:
 Viviscal:
 NutraLuxe MD:
 Zales:
-JANE POST:
 CP SHADES:
-SAM:
 Venini:
 Limeapple:
 MASALABABY:
 LoLLIA:
-Catherine Catherine Malandrino:
 Noir Jewelry:
 'Corners4':
 'Bogner Fire + Ice':
@@ -5895,39 +6603,48 @@ Paloma Barcelo:
 Natasha Zinko:
 VRY WRM:
 'John Allan''s':
-LAUREN LORRAINE:
 Giada Forte:
 ATHENA:
+    aka:
+        Athena:
 ZoLi:
 Orobos:
 MET:
 Hidesign:
 Titanium:
-Studio Pollini:
+POLLINI:
+    aka:
+        Studio Pollini:
 SUGAR AND DIAMONDS:
-ARI BY ARIANA GRANDE:
-UNITED NUDE:
-Westbrook XO Barneys New York x Jordan:
-Soybu Kids:
+ARIANA GRANDE:
+    line:
+        ARI BY ARIANA GRANDE:
+United Nude:
+    aka:
+        UNITED NUDE:
 RECENT TOYS:
 OXO:
 Hazel Village:
 Fatty Sundays:
 smeg:
+    aka:
+        SMEG:
 Hinge:
 LightStim:
-'Theodora & Callum':
 Zabattigli:
 Harris Wharf London:
 Talitha:
 Valas:
 'D.S. & Durga':
+    aka:
+        DS and Durga:
 Miguelina:
 Zuny:
 Gaiam:
 CARVELA KURT GEIGER:
 Cynthia Vincent:
-Me Too:
+    aka:
+        Cynthia Vincent Handbags:
 Selena Gomez:
 COUVRe:
 La Blanca:
@@ -5938,7 +6655,6 @@ Table Art:
 DAWN LEVY:
 'SPRING 2015':
 Chantelle:
-SOLEIL TOUJOURS:
 'CUL-DE-SAC':
 Sarti:
 'Forever 21':
@@ -5950,7 +6666,6 @@ theBalm:
 Sothys:
 Fire:
 Laidback London:
-Molo Kids:
 BIG CHILL:
 REAL CHEMISTRY:
 'MOUILLE''':
@@ -5978,15 +6693,11 @@ Sorbet:
 TITLE A:
 Michael Bastian:
 Arcade Vitrum:
-ASICS:
 Colbert MD:
-Eastland:
 Old Navy:
 Snowberry:
 Red Carter:
 Amanda Brisbane:
-ESCADA:
-LnA:
 SJYP:
 Kimora Lee Simmons:
 ElevenParis:
@@ -6001,6 +6712,7 @@ ScarLine Rx:
 Special Day:
 Bogner:
 VDP BEACH:
+VDP COLLECTION:
 Net-a-Porter:
     line:
         Net A Porter Beauty:
@@ -6011,13 +6723,16 @@ Sinful by Affliction:
 blanca monros gomez:
 Massimo Alba:
 HarperCollins:
+    aka:
+        Harper Collins:
 Agua Bendita:
-Zobha:
+ZOBHA:
+    aka:
+        Zobha:
 RICHMOND:
 Marchon:
 Incase:
 Japanese Weekend:
-Rosie Pope:
 Erox:
 Amanda Rose Collection:
 PyroPet:
@@ -6026,22 +6741,20 @@ DREAMERS BY DEBUT:
 Augusta Baby:
 MZ Wallace:
 Geneva Sound:
-Issey Miyake Men:
-Junarose:
+Issey Miyake:
+    line:
+        Issey Miyake Men:
 MAIOCCI:
 Maze:
 Amelia Toro:
 Amsale:
 Nasir Mazhar:
 Brooklyn Tailors:
-'J. Lindeberg':
-Issey Miyake:
 Woouf:
 Madonna:
 'a. drea':
 SAUNDER:
 Mark Davis:
-'Lilly Pulitzer®':
 PINKO:
 Bamford:
 Assouline Publishing:
@@ -6050,7 +6763,6 @@ Two:
 Baublerella:
 nuna:
 '10 Strawberry Street':
-Marshall:
 Arca:
 Lollaland:
 Infinique:
@@ -6061,7 +6773,9 @@ Kristin Hanson:
 All Gloves:
 ERIKA CAVALLINI SEMICOUTURE:
 'KR3W':
-Liz Lange Maternity for Target:
+Liz Lange Maternity:
+    aka:
+        Liz Lange Maternity for Target:
 Serengeti:
 Enzoani:
 Fidelity:
@@ -6076,7 +6790,6 @@ Katie Diamond:
 'JEI O''':
 CRISTINAEFFE:
 Fadeless:
-själ:
 The Handford Collection:
 'sara happ®':
 PERSY:
@@ -6095,7 +6808,6 @@ FRIDABABY:
 bianca spender:
 Bodrum:
 FANTASIE:
-Zella Girl:
 LEE COOPER:
 Hansa:
 NATURAL LIFE:
@@ -6141,7 +6853,6 @@ Grown Alchemist:
 SVILU:
 Dosa:
 'TOKENS & ICONS':
-Elie Tahari Kids:
 Linda Lee Johnson:
 'V Rugs &Home':
 meli melo:
@@ -6150,16 +6861,20 @@ Urge:
 'CREATIVE CO-OP':
 Casarialto:
 Campomaggi:
-ERDEM:
 Matthew Williamson:
+    line:
+        MATTHEW WILLIAMSON ESCAPE:
+        MW:
+            type: diffusion
 Guanabana:
 POSIES AND PEONIES:
 Lobmeyr:
 AMERICAN RETRO:
 Lamica:
 'Off-White':
-'2xist':
-Adina by Adina Reyter:
+Adina Reyter:
+    line:
+        Adina by Adina Reyter:
 Margaret Dabbs:
 CHIEF TRUNK:
 Vanessa Seward:
@@ -6170,9 +6885,10 @@ CARMINA CAMPUS:
 Ariel Gordon Jewelry:
 Charisma:
 Cavalleria Toscana:
-CEDRIC CHARLIER:
 'Inge''s Christmas Decor':
 Marques Almeida:
+    aka:
+        Marques’Almeida:
 sen:
 Cedes Milano:
 Mario Portolano:
@@ -6183,21 +6899,16 @@ Lisa Carrier Designs:
 coolchange:
 Dena Home:
 Orrefors:
-Marysia:
 PURE:
 DML:
 Saturdays Surf NYC:
 Sarah Chapman:
 Recipe for Men:
 'CAILAN''D':
-Marques’Almeida:
 IIIBeCa by Joy Gryson:
 Britten Couture Home:
 Marie Chantal:
-Polaroid:
 Lisa Perry:
-Teri Jon by Rickie Freeman:
-Baggu:
 Frownies:
 RegenePure:
 'Freeze 24-7':
@@ -6209,11 +6920,12 @@ Roberto Capucci:
 Esme:
 FASHION ANGELS:
 Jane Post:
+    aka:
+        JANE POST:
 Black Rivet:
 EARNSHAW:
 TRILOGY:
 Billy Bandit:
-'beautyblender®':
 Sophia Kokosalaki:
 DREAMER:
 Infinity Sun:
@@ -6230,17 +6942,14 @@ Lori Kassin:
 Ozone Design Inc:
 '22 MAGGIO by MARIA GRAZIA SEVERI':
 Designs by Marble Crafters:
-Kiddo:
 Pili Carrera:
 'Ovadia & Sons':
 Vivetta:
 Wtoo:
-Athena:
 BARON VON FANCY:
 HAILEY LOGAN:
 Sunbeam:
 Droga:
-Hart Schaffner Marx:
 MCL by Matthew Campbell Laurenza:
 Janice Minor:
 Tootie Pie Company:
@@ -6254,7 +6963,11 @@ Skarlett Blue:
 Trixxi:
 HOUGHTON MIFFLIN HARCOURT:
 NewbarK:
+    aka:
+        NEWBARK:
 Burton:
+    line:
+        Burton Kids:
 AUTEURS DU MONDE:
 Jouer:
 'Dr. Marder Skincare':
@@ -6262,8 +6975,6 @@ DuWop:
 Oleg Cassini:
 PUJ:
 David Tutera for Mon Cheri:
-BUTTER:
-L Erickson:
 RoC:
 JUCCA:
 Candice Olson:
@@ -6276,9 +6987,7 @@ Bisang:
 Vilac:
 KAPLAN MD:
 Williamsburg Garment Co:
-PAMELLA PAMELLA ROLAND:
 Tsumori Chisato:
-Julien David:
 Eve of Milady:
 Toy State:
 Isa Tapia:
@@ -6292,23 +7001,28 @@ Won Hundred:
 Peacock Alley:
 Craig Green:
 The Oriole Mill:
-RED HAUTE:
+Red Haute:
+    aka:
+        RED HAUTE:
 Breitling:
 Loveless:
 Bodas:
 Khirma Eliazov:
+    aka:
+        Khirma:
 Sutra:
 Robert Matthew:
 Sarah Cihat:
-RONNY KOBO:
 Sixt:
 THE BEAD SHOP:
 BaubleBar:
 Toes on the Nose:
-TERI JON:
 Ryder:
 Hard Tail:
-Mimi Holliday:
+Damaris:
+    line:
+        Mimi Holliday:
+            type: diffusion
 Brochu Walker:
 Bontoni:
 Lovestrength:
@@ -6318,12 +7032,10 @@ ROBIN PICCONE:
 'Lori''s Shoes':
 Yoana Baraschi:
 AMARETTI DESIGN:
-Glamorous:
 Beauty Box:
 FOOTPETALS:
 Alfred Sung:
 Too Good Gourmet:
-'Jose & Maria Barrera':
 M Clip:
 '4moms':
 Dana Reed:
@@ -6339,7 +7051,6 @@ Fannie Schiavoni:
 DANIELE ALESSANDRINI:
 Paula Dorf:
 Zoe Karssen:
-United Nude:
 Sue Devitt:
 Parfums De Marly:
 Undefeated:
@@ -6347,9 +7058,7 @@ Fuzzi:
 'Tak. Ori':
 GRANDOE:
 ANGELINA FOLIES:
-THAKOON ADDITION:
 Bloomsbury Publishing:
-BIONOVA:
 'Sir Oliver''s':
 Swiss Guard:
 'ARK & CO':
@@ -6359,7 +7068,6 @@ Hummer:
 Blowout Beauty:
 SHARPER IMAGE:
 PRESS:
-HAVAIANAS:
 LIVIANA CONTI:
 Laura B:
 CARLO FELLINI:
@@ -6383,17 +7091,20 @@ SEL MAGIQUE:
 Sheryl Lowe:
 Iomoi:
 Editex:
-HATCH:
+Hatch:
+    aka:
+        HATCH:
 Goyard:
-PRPS Japan:
 Just Female:
-'Anna-Karin Karlsson':
 LemLem:
 Moose Knuckles:
 N NATORI:
 FLORA NIKROOZ:
+    line:
+        FLORA BY FLORA NIKROOZ:
 ILLUME CANDLES:
-LM by MIGNON:
+    aka:
+        ILLUME:
 New World Arts:
 James Long:
 DMondaine:
@@ -6402,31 +7113,27 @@ pulsaderm:
 Grey Ant:
 Bruder Toys:
 Era Face:
-Liverpool Jeans Company:
 BelleCore:
-Super by Retrosuperfuture:
 Title of Work:
-Agave:
 Devon Page McCleary:
 MDSolarSciences:
 EMAMÒ:
 Catherine Regehr:
 'BAN.DO':
-MADEWORN ROCK:
 TRIWA:
 'Frenchi®':
 'C2 by Calibrate':
 'Dylan''s Candy Bar':
 Freda Salvador:
 'Amy''s Cookies':
-Kamik Kids:
-'L''Eclaireur Made By':
 MICKY LONDON:
-'Hush Puppies®':
+Hush Puppies:
+    aka:
+        'Hush Puppies®':
+        HUSH PUPPIES:
 CaLou:
 Lotus:
 Pedro del Hierro Madrid:
-CROWN CAP:
 Kain:
 Dana Kellin:
 Daum:
@@ -6434,13 +7141,14 @@ Godinger:
 La Maison du Chocolat:
 LILY KAMPER:
 Alex Mill:
-Swims:
 Lillianne:
 Jenny Yoo:
 Palm Angels:
 GP Luxe:
 CINQ MONDES:
-KAHRI:
+Kahri by KahriAnne Kerr:
+    aka:
+        KAHRI:
 Fred and Sibel:
 Musk:
 Fringe Studio:
@@ -6451,14 +7159,12 @@ Sailormade:
 IDA CALLEGARO:
 DEN IM:
 Eliza Gran:
-Hood By Air:
 Frette:
 Ole Henriksen:
 The Different Company:
 Mia Chica:
 FATE:
 '2 HIP':
-'Moroccanoil®':
 Jamie Wolf:
 Wilson:
 Napoleon Perdis:
@@ -6468,7 +7174,11 @@ SPENSE:
 KOZA:
 CafeBleu:
 Westbrook XO Barneys New York x NLST:
+Westbrook XO Barneys New York x WANT Les Essentiels de la Vie:
+Westbrook XO Barneys New York x Jordan:
 Kiini:
+    aka:
+        KIINI:
 Jay Adoni:
 Payot:
 Parfums DelRae:
@@ -6478,28 +7188,35 @@ Ulysse Nardin:
 'DX-XTREME':
 FRIGO:
 LAGENCE:
+    aka:
+        LAgence:
 HMDX:
 Madeworn:
+    line:
+        MADEWORN ROCK:
 Pearls Before Swine:
 The Little Linen Company:
-Keepsake:
 'G/FORE':
 Speechless:
 Hampton Mermaid:
 Lee Savage:
 Jason Markk:
-BLEU BY ROD BEATTIE:
+Rod Beattie:
+    line:
+        Bleu By Rod Beattie:
+            aka:
+                Bleu Rod Beattie:
+                BLEU BY ROD BEATTIE:
 Goodhew:
 Celtek:
 'J. Reneé':
+    aka:
+        'J. Renee':
 Circulon:
 Prana:
 faustine steinmetz:
-ETIENNE MARCEL:
 Giuliana Teso:
 And Re Walker:
-NIC ZOE:
-English Laundry:
 Primula:
 Karla Colletto:
 Vendorafa:
@@ -6507,7 +7224,6 @@ YMC:
 Tricomin:
 Danzo:
 'NPW Toys/Games':
-BRUNO BORDESE:
 NIMBL design:
 MATTSON:
 Giro:
@@ -6517,16 +7233,18 @@ zestt:
 'LE COEUR de TWIN-SET SIMONA BARBIERI':
 MY LITTLE PONY:
 Cosatto:
-Mio Skincare:
 TATTLY:
 'Kempton & Co.':
 'STYLEBOP.COM FESTIVAL CAPSULE COLLECTION':
 Betmar:
+    aka:
+        BETMAR:
 Little Marc:
 Calypso St Barth:
+    aka:
+        Calypso:
 Kktp:
 Anatology:
-Alex Evenings:
 Melange Home:
 Yazbukey:
 GOOD ART HLYWD:
@@ -6536,6 +7254,8 @@ GIOBAGNARA:
 Petzl:
 Smith and Cult:
 Playforever:
+    aka:
+        Playforever Toys:
 Nasomatto:
 Studio Nicholson:
 AMAZING FLAMELESS CANDLE:
@@ -6546,18 +7266,21 @@ Ride on Cars:
 OLIVELLA:
 Creatures of the Wind:
 JONATHAN SAUNDERS:
+    aka:
+        Jonathan Saunders:
 Deborah Pagani:
 TOUS:
-ONE by Mou:
 'MASTER&MUSE x MATT & NAT':
 Giulietta:
+    aka:
+        Giulietta New York:
 'GF FERRE''':
 Mauviel:
 'M.PATMOS':
 Au Jour Le Jour:
 Mykita:
 Marie Helene de Taillac:
-    alias:
+    aka:
         Marie Helene De Taillac:
 Branch:
 Berti Cutlery:
@@ -6575,9 +7298,6 @@ Wooyoungmi:
 Sponge Skin Care:
 AMERICAN STITCH:
 A Pea In The Pod:
-gx by GWEN STEFANI:
-Ecko:
-SUE WONG:
 Iosselliani:
 Vincent Longo:
 Japsis Jewellery:
@@ -6591,6 +7311,8 @@ Phat Buddha:
 Kay Jewelers:
 Joanna Laura Constantine:
 See Kai Run:
+    line:
+        See Kai Run Kids:
 ZERO Halliburton:
 'MASTER&MUSE x A PEACE TREATY':
 Georgia Alice:
@@ -6606,15 +7328,21 @@ Arme De LAmour:
 Embryolisse:
 'FELICITY & COCO':
 Roxy Kids:
-TOME:
 Dyeables:
 Wei East:
 'Crabtree & Evelyn':
-VPL Active:
 Enfants Riches Deprimes:
 Little Ashkim:
-Alexa Chung For Ag Jeans:
-Kara:
+AG Jeans:
+    aka:
+        AG:
+    line:
+        AG Green Label:
+        Alexa Chung for AG:
+            aka:
+                Alexa Chung For Ag Jeans:
+                Alexa Chung For AG Jeans:
+                ALEXA CHUNG FOR AG:
 Maison Rabih Kayrouz:
 Tagliatore:
 After Six:
@@ -6623,13 +7351,11 @@ DUNHILL:
 Burnetie:
 Yacht Man:
 Beats By Dre:
-    alias:
+    aka:
         'Beats by Dr. Dre':
         'Beats By Dr. Dre':
-TALBOT RUNHOF:
 Clerc:
 BUTTERFLY TWISTS:
-PLEIN SUD:
 Hydroxatone:
 Koonhor:
 'ANNIE PIE''S BAKERY':
@@ -6637,7 +7363,6 @@ Band of Outsiders NO BUNK NO JUNK:
 Fabio Gavazzi:
 Perseus:
 Norell:
-lolli LIVING:
 Lumene:
 BECCA ETC:
 ALPHAMOMENT:
@@ -6655,13 +7380,14 @@ Blissful Brownies:
 Bob Mackie:
 The Third Piece:
 Hartmann:
+    aka:
+        HARTMANN:
 Payard:
 Yogi:
 Katherine Barclay:
 EILEEN WEST:
 Journey Collection by Annette Ferber:
 Yumi Kim:
-Merrell:
 FAY ANDRADA:
 Plaza Sweets:
 Mandarina Duck:
@@ -6671,16 +7397,15 @@ Osmosis Colour:
 SEKKISEI:
 WKleinberg:
 Little Campers by FieldCandy:
-Isa Arfen:
 SLANT COLLECTIONS:
 Lira Clothing:
 Loma:
-She Made Me:
+    aka:
+        LOMA:
 Julie Hewett Los Angeles:
 Musto Equestrian:
 Kalorik:
 'N.D.C.':
-NOMIA:
 Puppet Workshop:
 HER ACCESSORIES:
 'ATELJE 71':
@@ -6693,7 +7418,6 @@ Melissa Joy Manning:
 Jem and the Holograms:
 TITANIA INGLIS:
 WILD AND WOLF:
-'JOE''S Jeans':
 Hucklebones:
 Petrossian:
 Brock Collection:
@@ -6704,20 +7428,16 @@ GUARDAROBA by ANIYE BY:
 Sweater Stone:
 Gemeli Power:
 Ambella:
-Olcay Gulsen:
 Baja East:
 DAYDREAMER:
-'BURT''S BEES BABY':
 BORGO DEGLI ULIVI:
 'B2':
 'C3 Collection':
 'Ports 1961':
 Montale:
 Street Level:
-Electric Picks Jewelry:
 Heliocare:
 Kwiat:
-COLUMBIA:
 HEIRLOOM:
 'SHI 4':
 Empowered by You:
@@ -6734,24 +7454,24 @@ Nook Sleep Systems:
 The You Pant:
 EVOLVh:
 LUXURY REBEL:
+    aka:
+        Luxury Rebel:
 SkinClinical:
 Advanced Skin Technology:
 Kristinit:
 BULBUL:
-BRIAN ATWOOD:
 ilovegorgeous:
 Carl Mertens:
 Aurora World Toys:
 FRED MELLO:
 Nanushka:
-'GIANFRANCO FERRE''':
 'n.d.c made by hand':
 MARIELLA BURANI:
 Vivienne Westwood:
     line:
         Vivienne Westwood Gold Label:
         Vivienne Westwood Anglomania:
-            alias:
+            aka:
                 Vivienne Westwood Anglomania :
 BIBI LOU:
 Rachel Roy:
@@ -6763,7 +7483,6 @@ Sterling Essentials:
 'Jane & Bleecker':
 LEONARD SOLEIL:
 Elodie:
-BODY GLOVE:
 TokyoMilk:
 Kroon:
 LaserPegs:
@@ -6772,8 +7491,6 @@ Maria Canale for Forevermark:
 NILA ANTHONY:
 Haba:
 Covet:
-Liz Lange Maternity:
-seedling:
 ONE by Love Token:
 LA Idol:
 Sugarfina:
@@ -6784,11 +7501,9 @@ Lelli Kelly Kids:
 SWAP INSIDE:
 RevitaLash:
 'MASTER&MUSE x KRIS NATIONS':
-Damir Doma:
 Collection XIIX:
 BLUE LES COPAINS:
 Generation Love:
-PALOMA PICASSO:
 Hog Wild Toys:
 Aaron Basha:
 'GJ GAUDI'' JEANS':
@@ -6798,24 +7513,24 @@ Freida Rothman:
 Robert Barakett:
 LeLabo:
 CARLO PIGNATELLI:
-    alias:
+    aka:
         CARLO PIGNATELLI CERIMONIA:
 EVERLY:
 MAISON DU SOIR:
 IO Hawk:
-Jack by BB Dakota:
 Circle of Friends:
 YAS:
 Bansri:
 Wolverine:
 Mineral Essence:
-Harlyn:
 Clearogen:
 LAFCO:
 NOIZE:
 'Samira 13':
 Teva:
 Baby Bling:
+    aka:
+        BABY BLING:
 AR SRPLS:
 Isabella Oliver:
 LVR:
@@ -6825,17 +7540,16 @@ Esquivel:
 Venius:
 Perrelet:
 'Master & Dynamic':
+    aka:
+        'MASTER & DYNAMIC':
 Beth Richards:
 RoloxinTM Lift:
-Ren Skincare:
 Sarah Seven:
 artee couture:
 HOFF BY HOFF:
-LAgence:
 Beautyzzz:
 Dylan by True Grit:
 Pantanetti:
-reVive Light Therapy:
 Boconi:
 Alpinestars:
 'P''kolino':
@@ -6844,13 +7558,13 @@ CARGO:
 Sejour:
 Vuarnet:
 Yvonne Leon:
-Mikasa:
+    aka:
+        Yvonne Léon:
 James Read:
 'GAUDI''':
 Piaget:
 MASON SHAKER:
 Heeley Parfums:
-Deepa Gurnani:
 Gat Rimon:
 'Dillard''s':
 'Chef''s Choice':
@@ -6870,15 +7584,12 @@ Parfumologie:
 'LILA.EUGENIE':
 GOLD CASE:
 Sweet Bamboo:
-LOMA:
 Republic of Pigtails:
 WHITE CROW:
 Breil:
 Dusan:
-Alo:
 Malo :
 Comodynes:
-PLEIN SUD PAR FAYҪAL AMOR:
 'RA-RE':
 Scar Heal:
 Fleurette:
@@ -6913,13 +7624,10 @@ RICHMOND X:
 Concord:
 FASHION ACCESSORY BAZAAR:
 MISCELLANEOUS:
-'''S MAX MARA':
 Brooklyn Brew Shop:
 Coclico Shoes:
-Bleu Rod Beattie:
 British Science Formulations:
 ADELE FADO:
-'Paul & Joe':
 Rosa Clará:
 Vale:
 Imposter:
@@ -6935,13 +7643,13 @@ ALBERTO BIANI:
 Roseanna:
 Proof:
 Enessa:
-ANTONIO BERARDI:
 CLAUS PORTO:
 VANINA:
 Magpie:
-'Werkstatt:München':
+'Werkstatt München':
+    aka:
+        'WERKSTATT:MÜNCHEN':
 Schoenhut:
-Dittos:
 Iittala:
 Mesoestetic:
 Mask:
@@ -6955,8 +7663,9 @@ Everly Grey:
 Chelsea Paris:
 Maje:
 Keen:
+    line:
+        Keen Kids:
 KAS New York:
-KINETIX:
 TOSCA BLU:
 Umgee USA:
 'DYLAN''S CANDY BAR':
@@ -6964,15 +7673,14 @@ Seltzer:
 'DAS BOOM. INDUSTRIES':
 South Seas Skincare:
 Molo:
+    line:
+        Molo Kids:
 Philip Treacy:
 No Name:
-Volcom Snow:
 PARKHURST:
-LAMARQUE:
 RK New York:
 Alberto Fermani:
 AIAIAI:
-Hatley Kids:
 Vika Gazinskaya:
 Hammamas:
 AKID:
@@ -6995,10 +7703,8 @@ FUSION BEAUTY:
 CAPITANA:
 Elemental Herbology:
 Yulia Magdych:
-Butter Shoes:
 FLAVIA PADOVAN:
 Mink Pink:
-Playforever Toys:
 NAPAPIJRI:
 MAXMARA:
 sugar paper:
@@ -7013,28 +7719,32 @@ Kaymet Works:
 AMI:
 Santa Maria Novella:
 Dee Ocleppo:
-Rialto:
 'DV8':
 Galina:
-Courreges:
+COURREGES:
+    aka:
+        Courreges:
 Tessora:
 Oliver Gal:
-ILLUME:
+    aka:
+        'THE OLIVER GAL ARTIST CO.':
 Merry Makers:
 MODISTE DRESSES:
 BACI RUBATI:
 Independent Publishing Group:
-Penhaligons:
 ALALA:
 Martha Stewart:
 'G.SEL':
 Kate Moss:
 'Dr. Scholl''s':
 Reverse:
+    aka:
+        REVERSE:
 Chicco:
-Miraclebody:
+Miraclebody Jeans:
+    aka:
+        Miraclebody:
 Bill Blass:
-VAN CLEEF AND ARPELS:
 Generra:
 'ET2 Lighting':
 Capri Positano:
@@ -7043,6 +7753,8 @@ Cinzia Rocca DUE:
 PENGUIN BOOKS:
 Julie Wolfe:
 SEVENTY by SERGIO TEGON:
+    aka:
+        SEVENTY:
 ARTE CASHMERE:
 Chetta B:
 Amoralia:
@@ -7063,7 +7775,6 @@ Judith Jack:
 JOAN AND DAVID:
 Oscar Heyman:
 'TOC''QUEVILLE':
-'PASSEPARTOUT DRESS by ELISABETTA FRANCHI CELYN b.':
 HELIS BRAIN:
 HULA STAR:
 'M.N. Bird':
@@ -7086,7 +7797,6 @@ Daisy Rock:
 Filippa Scott:
 MURYX:
 Aubade:
-TAILOR VINTAGE:
 Lazy Oaf:
 BRIGITTE BARDOT:
 Crippen:
@@ -7108,7 +7818,6 @@ VENNA:
 Bobby Jones:
 'Gaido''s':
 WXYZ:
-EDUN:
 Aum Clothing:
 Tundra Boots Kids:
 Karena Katrina Beauty:
@@ -7118,11 +7827,9 @@ JOVONNA:
 David Charles:
 mi cielo:
 DITA VON TEESE:
-Faithfull the Brand:
 Made In Mayhem:
 Flogg:
 TWELVElittle:
-FINDERS KEEPERS:
 Symphony Bridal:
 Mikimoto:
 Joy to the World Collectibles:
@@ -7131,7 +7838,6 @@ StingHD:
 Compendium:
 Desigual:
 MeMoi:
-KNOT SISTERS:
 Toss:
 Shoto:
 Tabula Rasa:
@@ -7145,28 +7851,27 @@ Hurley:
 Olgana:
 Autotec:
 Van Cleef and Arpels:
-'MARC ECKO CUT & SEW':
 MOSKADA:
 Teixidors:
 ELISABETTA FRANCHI:
+    line:
+        'PASSEPARTOUT DRESS by ELISABETTA FRANCHI CELYN b.':
 ONE DIRECTION:
 Ann Gish:
-GAS Bijoux:
 Red Jacket:
 Couleur Nature:
 Naot:
+    aka:
+        Naot Footwear:
 radii Footwear:
 Plan Toys:
 MOLLY BRACKEN:
 Bugatchi:
-'Luli & Me':
 Paul Leinburd by Crown Cap:
 PRINCESS FAITH:
 'Sun & Shadow':
 Cache:
-CK JEANS:
 N Nicholas:
-Diadora Heritage:
 SEAN COLLECTIONS:
 Cult of Individuality:
 Lost:
@@ -7178,7 +7883,6 @@ Lisa Todd:
 Dolma:
 'Mack & Co':
 BeerCapTrap:
-Wüsthof:
 Modloft:
 SUNO:
 Martin Grant:
@@ -7191,16 +7895,12 @@ LAVINIATURRA:
 Longmire:
 'J. Shoes':
 Lisa Freede:
-Florsheim for Kids:
 Tammy Fender:
 Womens Apparel:
-ZENSATION:
 ASSEMBLY NEW YORK:
 Uman:
 Babyroo by Bestaroo:
 JAY Z GOLD:
-Gap Maternity:
-Westbrook XO Barneys New York x WANT Les Essentiels de la Vie:
 'M.Cohen':
 CRYSTAL ART GALLERY:
 MUK LUKS:
@@ -7208,16 +7908,12 @@ IVAN MONTESI:
 AYR:
 BIBB Home:
 Walter:
-'ASICS®':
 Lolita Lempicka:
 KANNA:
 Alivia Simone:
-PHILIPP PLEIN COUTURE:
 La Bella Donna:
 Memo Fragrances:
-Zunie:
 ZUBI:
-Alternative Apparel:
 Running Bare:
 AZUL by moussy:
 Perry Mackin:
@@ -7242,7 +7938,6 @@ Lili Alessandra:
 Moser:
 'Lot 78':
 Tinsel:
-ONDADEMAR:
 Jardin des Orangers:
 Rollie:
 Playable Art:
@@ -7251,18 +7946,13 @@ Invisibobble:
 Wakaya Perfection:
 FAY:
 Petit Poi:
-SHRIMPS:
-Arteriors:
 FRANCESCO SCOGNAMIGLIO:
 Tkees:
 Olfactive Studio:
-McQ:
 Hispanitas:
 'KI6? WHO ARE YOU?':
 Hable Construction:
-LUCAS HUGH:
 HOUSE OF DORCHESTER:
-Eshvi:
 Hairmax:
 Southwest Books:
 EVER:
@@ -7279,10 +7969,11 @@ Drome:
 SILVIAN HEACH:
 'Denim & Supply':
 PERRY MACKIN:
-ONE by Pink Stitch:
+Pink Stitch:
+    line:
+        ONE by Pink Stitch:
 Jennifer Aniston:
 PIQUADRO:
-Adriana Degreas:
 AminoGenesis:
 OTZ:
 de Mamiel:
@@ -7295,11 +7986,9 @@ Play Visions Toys:
 'CRUX Supply Co.':
 ESCADRILLE:
 'CLOLI''':
-'JEN7':
 'Arthur George by R. Kardashian':
 North American Bear:
 'CANDLES & QUOTES':
-HUSH PUPPIES:
 Lauren B Beauty:
 SERGIO FERETTI:
 Tarina Tarantino:
@@ -7318,21 +8007,17 @@ Ottotredici:
 Marquis:
 PPLA:
 'ROSE & LINI':
-'Dransfield & Ross':
 Surya:
 Grovana:
 Blossom:
 Pas de Calais:
 Thomas Dean:
-'N° 21':
 LOCAL APPAREL:
 'ginette_ny':
 'Chico''s':
 'Edith A. Miller':
 'Day & Mood':
-'W118 BY WALTER BAKER':
 Stella Jean:
-EVE LOM:
 Uttermost:
 Truly Me:
 Little Blue House by Hatley:
@@ -7340,36 +8025,39 @@ AMEDEO:
 NATARAJA:
 JS Collections:
 MARCO BOLOGNA:
-Lolli:
 CARDINAL OF CANADA:
 Scof:
-TOPO athletic:
 OLIVER SPENCER:
-WOODLORE:
 NEXT:
 Sedu:
 LUCIO CASTRO:
-ULTRACOR:
+Ultracor:
+    aka:
+        ULTRACOR:
 The Hanger Project:
 YUMMIE TUMMIE:
 Mover:
 Helzberg Diamonds:
 Lil Gadgets:
 Treestump Woodcraft:
-Bella Freud:
-Jumping Jacks:
-Jonathan Saunders:
 SACAI:
-patricia green:
+Patricia Green:
+    aka:
+        patricia green:
+    line:
+        Details By Patricia Green:
 KEMPNER:
+    aka:
+        Kempner:
 ESHVI:
+    aka:
+        Eshvi:
 '47 Brand':
 Kiss:
 Austin Cake Ball:
 DAFNI:
 Embody Clothing:
 Denham the Jeanmaker:
-Joes Jeans:
 Tonya Gross Millinery:
 SOALLURE:
 'PORTS 1961':
@@ -7378,7 +8066,6 @@ Reiss:
 MARCELA YIL:
 Nespresso:
 SmartFX:
-PLEIN SUD JEANIUS:
 Hale Bob:
 BLUGIRL BLUMARINE:
 JOSEPH WILLIAMS:
@@ -7398,11 +8085,9 @@ Promiscuous:
 PORTER Magazine:
 KATHY JEANNE:
 Essense of Australia:
-iluminage:
 McLovebuddy:
 Timpa:
 Valerie Atkisson:
-'JOE''S':
 Buttero:
 CINZIA ARAIA:
 Odori:
@@ -7418,13 +8103,13 @@ Dori n Adam:
 Blue Duck:
 Yeprem:
 'Van Cleef & Arpels':
+    aka:
+        VAN CLEEF AND ARPELS:
 SOH:
 United By Blue:
 AGUADECOCO:
 flight:
 LUCA GIORDANI:
-Cynthia Vincent Handbags:
-Yvonne Léon:
 Concrete Runway:
 Retromarine:
 SAY WHAT:
@@ -7440,7 +8125,7 @@ Abrams:
 Diane James:
 EX OFFICIO:
 Larkspur and Hawk:
-    alias:
+    aka:
         Larkspur Hawk:
 Generic Surplus:
 Angel Schlesser:
@@ -7462,7 +8147,6 @@ MiH:
 Lyssé:
 The Limited:
 Revivogen:
-Sonia by Sonia Rykiel:
 Paskal:
 ONE by Goddis:
 Design Ideas:
@@ -7470,7 +8154,6 @@ Estia:
 Electric Yoga:
 Grey City:
 Sassybax:
-Marchesa Voyage:
 'Rolla''s':
 MELROSE GIFTS:
 Filles A Papa:
@@ -7479,50 +8162,50 @@ ASOS:
 Camilla and Marc:
 Brownie Points:
 Su Man Skincare:
-Red Haute:
 Oxygenetix:
 Stussy:
 Alberta Ferretti Collection:
 NV NICK VERREOS:
-SEVENTY:
 Tiny Cottons:
-'ST. JOHN':
 'CARDIFF SKATE CO.':
 A Peace Treaty:
 Melinda Eng:
 ALBERTINE:
 YARNZ:
 Kismet by Milka:
-SUPERIOR:
 Thule:
 AGATHA CRI:
 '686 Kids':
+    aka:
+        '686':
 ID Sarrieri:
 Yosuzi:
 BARE:
 BARBARA LOHMANN:
 YANG LI:
-JUNYA WATANABE:
+    aka:
+        Yang Li:
 Seedling:
+    aka:
+        seedling:
 Sunday Somewhere:
 LUIS CIVIT:
 'Eyevan 7285':
 Leith:
-Alex Marshall Studios:
 Sehti Na:
 Bijules:
 KittyChen Couture:
 Brilliance New York:
 Sabira:
 Bussola:
-VERLAGSGRUPPE RANDOM HOUSE GMBH:
 Ravi Ratan:
 Baldwin Denim:
 RAS:
 WELSPUN USA:
 Coordinates Collection:
-BETMAR:
 Anna Karin Karlsson:
+    aka:
+        'Anna-Karin Karlsson':
 Vintage:
 'G.H. Bass and Co.':
 StepChild:
@@ -7534,29 +8217,23 @@ Valentina Carrano:
 SLOANE STATIONERY:
 SUNDRESS:
 SOS Creations:
-BABY BLING:
 Diba:
 'TRUE linkswear':
 NOE Undergarments:
 El Casco:
-LIU •JO ACCESSORIES:
 GoldieBlox:
 Littledoe:
 Lisa Curran Swim:
 Shoes of Prey:
-Tracy Reese:
 'KATIA G.':
 Marie Turnor Accessories:
 Cutie Bees:
-ROBERTA SCARPA:
 JOYA:
-Beverly Hills Polo Club:
 Victoria Classics:
 'L''Oreal':
 Travis Sandoval Glass:
 ROYAL APOTHIC:
 ANNA RACHELE:
-'Di Camillo Baking Co.':
 Libertine:
 Ann Taylor:
 DFI:
@@ -7572,32 +8249,32 @@ Purified:
 Elizabeth Koh:
 ONE by DE NOVO:
 Barney Cools:
-'blowPro®':
 Naeem Khan:
 Katie Ermilio:
-'Pippa & Julie':
 'A.J':
 Peuterey:
-DELPOZO:
-Emilia Wickstead:
+Delpozo:
+    aka:
+        DELPOZO:
 Ultima II:
 pitbull:
-Big Buddha:
-Herve Van Der Straeten:
 FIORI CHIARI:
 Urban O:
 Royal London Hotel Bedding:
 Import Collection:
 'Casilda & Jimena':
 BedbugLogic:
-CXL BY CHRISTIAN LACROIX:
+Christian Lacroix:
+    aka:
+        CHRISTIAN LACROIX:
+    line:
+        CXL BY CHRISTIAN LACROIX:
+        Christian Lacroix by Vista Alegre:
 Jasmine Couture Bridal:
 Alyria:
 Ariva Fine Jewelry:
 'Toast-Its':
-Reed Krakoff:
 'Addicted to T''s':
-DAVIDOFF:
 Aubusson:
 ALEX:
 'Baume & Mercier':
@@ -7608,11 +8285,9 @@ My Prime:
 Tt Beach:
 Mignone:
 LIFE IS GOOD:
-BB WASHED by BRUNO BORDESE:
 Walter Steiger:
 Jean Philippe:
 Sophia Kah:
-KitchenAid:
 TextureTame:
 Gibson:
 Merchant Archive:
@@ -7623,23 +8298,22 @@ Alo Yoga:
 'NO. 6':
 Bella J:
 John Kelly Chocolates:
-Kempner:
 Holly Dyment:
 Milestone Cards:
 Nicole Polizzi:
 The Rug Market:
-PENGUIN:
+Penguin:
+    aka:
+        PENGUIN:
 Dunlop:
 TAOLEI:
 'Antonia''s Flowers':
 Thayer:
 Joseph Williams:
 Loudmouth Golf:
-'T3 Gear':
 'Donald & Lisa Signature':
 BOOTIE PATOOTIE:
 Novis:
-Galvan:
 London Brush Company:
 IL GUFO:
 Harry Winston:
@@ -7651,11 +8325,9 @@ Remede:
 ManCave:
 Yossi Harari:
 'Ca & Lou':
-'10 corso como':
 CIATE:
 Yigal Azrouël:
 ZIGI GIRL:
-Osiris Kids:
 Charles Youssef:
 'Luca &co':
 BC Mini:
@@ -7664,7 +8336,6 @@ MATTEL:
 CHALK:
 Park Accessories:
 Colorful Creations:
-Plush Cashmere:
 Bajo:
 All Black:
 tba:
@@ -7675,18 +8346,14 @@ Fiona Walker England:
 NOA NOA:
 Akashic Books:
 ANGIE:
-ALEJANDRO INGELMO:
 Edith Dohmen:
-'Denim & Leathers by Andrew Marc':
 PIECES:
 noyah:
 LEKI:
 Thing Thing:
-BLUSH by Us Angels:
 Darphin:
 'FERRE''':
 DONDUP:
-Azzaro:
 FANTASTIC CRAFT:
 Blue Ridge:
 'TOY G.':
@@ -7696,9 +8363,6 @@ ATP Atelier:
 CRISTINA GAVIOLI:
 CANGIARI:
 Call it SPRING:
-LIU •JO JEANS:
-FLORA BY FLORA NIKROOZ:
-Manuelle Scarves:
 LANCETTI:
 ADAM TUCKER:
 Stella Cadente:
@@ -7706,7 +8370,6 @@ EVOLUTIONEYES:
 TUCKER:
 Tomat:
 Pologeorgis:
-Enzo Angiolini:
 Swiss Tech:
 Sara Weinstock:
 Christopher Kon:
@@ -7718,20 +8381,16 @@ Anthem of the Ants:
 Bun Maternity:
 Govino:
 Bantu:
-NEWBARK:
 Tim McGraw:
 Vetro Vero:
 NAYA:
 NIKKI CHASIN:
-'"Cufflinks, Inc."':
 High Camp Supply:
 Premier Designs:
 Vulli:
 Kosta Boda:
-GIAMBA:
 Parfums Gal:
 Mason:
-ONE by Pfeiffer:
 Buffalo Jeans:
 Love Token:
 Eleven Thirty:
@@ -7739,17 +8398,13 @@ SIMON MILLER:
 PIJAMA:
 Mikaella Bridal:
 'V::ROOM x BARNEYS':
-Plenty by Tracy Reese:
 'MASTER&MUSE x TIFFANY KUNZ':
 John Derian:
 SPIAGGE E LUNE:
-Poler Stuff:
-Penguin:
 Christina Aguilera:
 'WHO*S WHO':
 Mark Nason:
 A V DENIM:
-cacharel:
 'BLUE E. by LES COPAINS':
 Gimos:
 Tumblewalla:
@@ -7757,18 +8412,16 @@ MELANIA TRUMP:
 KELLY VAN GOGH:
 Jamison:
 Apiece Apart:
-Yang Li:
-DAVID MEISTER:
 PACT:
-'P. M. Delights':
-Rainforest:
+PM Delights:
+    aka:
+        'P. M. Delights':
 'N.HOOLYWOOD':
 bodum:
 OmamiMini:
 Proraso:
 Designhype:
 Blind:
-MANILA GRACE DENIM:
 NuCelle:
 Mommy Makeup:
 SPARQ:
@@ -7779,13 +8432,11 @@ HOUSE OF MENTAL:
 Hex:
 Robert Siegel:
 Vivis:
-TWENTY EASY by KAOS:
 Christian Bernard:
 Paladone:
 Vasic Collection:
 MERCADO GLOBAL:
 '5th & Mercer':
-'THE OLIVER GAL ARTIST CO.':
 From The Road:
 'Silence + Noise':
 HACK:
@@ -7805,7 +8456,6 @@ LumaRx:
 PANDORA:
 Lola James Jewelry:
 Pauls Hats:
-'Mynt 1792':
 CoTZ:
 KOTUR:
 Grand Central Beauty:
@@ -7817,24 +8467,13 @@ La Femme Actuelle:
 CHRISSIE MORRIS:
 toesox:
 Vkoo:
-BucketFeet:
 CRUCIANI:
 'I-AM':
 Razor:
 'Melissa & Doug':
 Candela:
 Scholastic:
-Marciano:
-SIGERSON MORRISON:
-    line:
-        BELLE BY SIGERSON MORRISON:
-            alias:
-                Belle by Sigerson Morrison:
-                BELLE by Sigerson Morrison:
 KAS Designs:
-VDP COLLECTION:
-CHRISTIAN LACROIX:
-Hemant and Nandita:
 SLIP FOR BEAUTY SLEEP:
 'Lola 76':
 GENERAL IDEA:
@@ -7844,21 +8483,16 @@ Italguanto:
 Adelyn Rae:
 CAMERUCCI:
 Total Block:
-Articles of Society Red Label:
 VANDOR:
 MATE the Label:
-Attilio Giusti Leombruni:
 Mango:
-PUBLISH BRAND:
 Saxx:
-Columbia Kids:
 Andrew Gn:
 Baby Foot:
 MICHELLE KIM:
 Fake Bake:
 MARTA PALMIERI:
 MakerBot:
-HARTMANN:
 Ashley Williams:
 'Femme D''armes':
 Litter:
@@ -7883,31 +8517,22 @@ EMMERICH:
 Maxilip:
 'Ben''s Garden':
 'Alex® Toys':
-neff:
 For Restless Sleepers:
 Fabio Rusconi:
 Color Me:
 Il Gufo:
 Foundrae:
-Vans Kids:
 Hotel Collection:
 Salon Shoes:
 'Bos. & Co.':
-SOYBU™:
-KLEINFELD:
 Tilda Biehn:
-ESCADA SPORT:
 Montage:
 '180''S':
 MAIDENFORM:
 Ila:
 Barbara Casasola:
-BOSS Orange:
-SALONI:
 AGNELLE:
-lucy:
 CAUDALÍE:
-Fjällräven Kids:
 HIGH:
 Salvatore Piccolo:
 Peas and Queues:
@@ -7915,7 +8540,6 @@ LUCKY LU Milano:
 LOVE ADY:
 Zentique:
 SKIN AND CO ROMA:
-Miista:
 TILLMANN LAUTERBACH:
 Staurino Fratelli:
 Zelie For She:
@@ -7931,11 +8555,7 @@ jKNIX:
 Sneaky Steve:
 Ten Pieces:
 Gina Raphaela:
-PM Delights:
-Luxury Rebel:
 Sylvie Schimmel:
 DIANA ROSH:
 Lexus:
-Burton Kids:
 PT01:
-Adina Reyter:
