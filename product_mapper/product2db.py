@@ -273,7 +273,7 @@ skip = 0
 
 # calculate the earliest timestamp we should accept
 since_ts = 0
-conn = dbconn.get_psql_conn()
+conn = get_psql_conn()
 if url_host:
     since_ts = ProductMapResultPage.first_any_updated(conn, url_host)
 
@@ -288,7 +288,7 @@ try:
         sha256 = link['body']
         host = link['host']
         url = link['url']
-        last_updated = ProductMapResultsPage.last_updated(conn, host, url) or 0
+        last_updated = ProductMapResultPage.last_updated(conn, host, url) or 0
         if sha256 and host in Host2Map and link['updated'] > last_updated:
             # has data, we have a mapper for the host, and updated since last seen...
             sha256 = bytearray(sha256.value) # extract raw binary

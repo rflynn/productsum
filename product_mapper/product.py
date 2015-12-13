@@ -6,6 +6,7 @@ one product to rule them all
 every FoobarMerchantProduct maps to this thing
 '''
 
+import calendar
 from datetime import datetime
 import json
 import psycopg2
@@ -612,7 +613,7 @@ and url_canonical = %s
             row = cursor.fetchone()
             if not row or row[0] is None:
                 return None
-            return row[0]#datetime.utcfromtimestamp(row[0])
+            return calendar.timegm(row[0].timetuple())
 
     @staticmethod
     def first_any_updated(conn, url_host):
@@ -625,7 +626,7 @@ where url_host = %s
             row = cursor.fetchone()
             if not row or row[0] is None:
                 return None
-            return row[0]#datetime.utcfromtimestamp(row[0])
+            return calendar.timegm(row[0].timetuple())
 
 
 class ProductMapResult(object):

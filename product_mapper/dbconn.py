@@ -1,5 +1,8 @@
 # ex: set ts=4 et:
 
+import psycopg2
+
+
 dbhost = 'productmap.ccon1imhl6ui.us-east-1.rds.amazonaws.com'
 dbname = 'productmap'
 dbuser = 'root'
