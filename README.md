@@ -1,6 +1,17 @@
 
 productsum.com
 
+# Learning Tech
+1. AWS Dynamo
+2. AWS RDS - Postgresql
+3. Postgresql Array and JSON data types
+4. AWS SQS
+5. AWS Lambda
+6. AWS ElasticSearch Service
+7. DigitalOcean
+8. Docker?
+
+
 ## API Calls
 
 1. `/prod/by/query/?q=gianvito+rossi+pink+leather+pump`

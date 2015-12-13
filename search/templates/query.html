@@ -1,0 +1,208 @@
+<!html>
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <style type="text/css">
+            * {
+                font-family: GillSans,"Gill Sans MT",Calibri,sans-serif;
+                font-size: 16px;
+            }
+            input {
+                font-size: x-large;
+                margin: 5px;
+                margin-bottom: 1em;
+            }
+            div.box {
+                width: 240px;
+                height: 380px;
+                float: left;
+                display: inline-block;
+                border-right: 1px solid #eee;
+                border-bottom: 1px solid #eee;
+                border-radius: 0px;
+                margin: 0px;
+                padding: 5px;
+                background-color: #fff;
+            }
+            div.img {
+                width: 200px;
+                height: 240px;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        </style>
+    </head>
+    <body>
+
+        <ol>
+            <li><a href="?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink</a>
+            <li><a href="?q=Christian Louboutin Follies Spikes Pumps">Christian Louboutin Follies Spikes Pumps</a>
+            <li><a href="?q=Christian Louboutin Leopard pump">Christian Louboutin Leopard pump</a>
+        </ol>
+
+        <form method="get" action=".">
+            <input id="q" name="q" size="90">
+        </form>
+
+        <div id="results">
+        </div>
+
+        <br style="clear:both">
+
+        <xmp></xmp>
+        
+    </body>
+
+    <script>
+
+function is_url(str)
+{
+    var s = str.trim();
+    return s.startsWith('http://') || s.startsWith('https://');
+}
+
+function es_url()
+{
+    return 'http://search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search';
+}
+
+function text_query(str)
+{
+    return {
+        'query_string': {
+            'query': str,
+        }
+    };
+}
+
+function url_query(str)
+{
+    return {
+        'bool':{
+            'must':[
+                {'match':{'url':str}}
+                //,{'match':{'brand':'VALENTINO GARAVANI'}}
+                //,{'match':{'name':'pump'}}
+            ]
+        }
+    };
+}
+
+function display_data(query, data)
+{
+    $('xmp').text(JSON.stringify(data.hits, null, 4))
+
+    $('#results').hide();
+    $('#results').empty();
+
+    $.each(data.hits.hits, function(i, item) {
+
+        var p = item._source;
+        var a = $('<a>');
+        a.attr('href', p.url);
+        a.attr('target', '_blank');
+
+        var imgurl = p.img_urls ? p.img_urls[0] : '';
+
+        var divimg = $('<div class="img" style="background-image:url(' + imgurl + ')">');
+        if (p.img_urls) {
+            p.img_urls.forEach(function(x){ divimg.attr('data-img', x); });
+        }
+
+        $(divimg).mouseover(function(){
+            var imgs = p.img_urls || [];
+            function next(idx) {
+                $(divimg).css('background-image', 'url(' + imgs[idx] + ')');
+                //setInterval(function(){ next(idx + 1 % imgs.length || 0); }, 1000);
+            }
+            next(0);
+        });
+
+        $('<div class="box">').append(
+            $('<div class="score">').text(item._score),
+            divimg,
+            $('<div class="brand">').text(p.brand),
+            $('<div class="name">').append(a.text(p.name)),
+            $('<div class="price">').text(p.price_min),
+            $('<div class="host">').text(p.url_host)
+        ).appendTo('#results');
+    });
+    $('div.box').draggable({
+        start: function(event, ui) {
+            $(this).css('z-index', 9999);
+        },
+        revert: function(event, ui) {
+            // ref: http://stackoverflow.com/questions/5735270/revert-a-jquery-draggable-object-back-to-its-original-container-on-out-event-of
+            $(this).data("uiDraggable").originalPosition = {
+                top : 0,
+                left : 0
+            };
+            $(this).css('z-index', 1);
+            return !event;
+        }
+    });
+    $('#results').show();
+    var url = location.protocol + '//' + location.host + location.pathname;
+    url += '?q=' + encodeURI(query);
+    history.pushState('data', '', url);
+}
+
+function es_cape(str) {
+    return str.replace(/[/]/gi, function(c){ return "\\"+c; });
+}
+
+function search(str)
+{
+    // curl -X POST 'search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search' -d '{"query":{"bool":{"must":[{"match":{"brand":"VALENTINO GARAVANI"}},{"match":{"name":"pump"}}]}}}' | python -mjson.tool | less
+    $.ajax({
+        method: 'POST',
+        url: es_url(),
+        crossDomain: true,
+        dataType: 'json',
+        data: JSON.stringify({
+            'query': (is_url(str) ? url_query : text_query)(es_cape(str)),
+            'from': 0,
+            'size': 50
+        })
+    }).done(function(data) {
+        display_data(str, data);
+    });
+}
+
+$(document).ready(function() {
+
+    function do_search(q)
+    {
+        $('#q').val(q);
+        search(q);
+    }
+
+    // form input
+    $('form').submit(function(event) {
+        event.preventDefault();
+    });
+    $('#q').on('change paste', function() {
+        search($(this).val());
+    });
+
+    // querystring
+    if (location.search.startsWith('?q=')) {
+        var q = decodeURI(location.search.substr(3));
+        do_search(q);
+    }
+
+    $('#q').droppable({
+        tolerance: 'touch',
+        drop: function(event, ui) {
+            var dropped = ui.draggable;
+            var brand = dropped.find('.brand').text();
+            var name = dropped.find('.name').text();
+            var newq = brand + ' ' + name;
+            do_search(newq);
+        }
+    });
+});
+    </script>
+</html>
