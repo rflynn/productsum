@@ -29,8 +29,8 @@ schema = \
     'price_max':      { 'type': 'float'  },
     'sale_price_min': { 'type': 'float'  },
     'sale_price_max': { 'type': 'float'  },
-    'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
-    #'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
+    #'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
+    'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
   }
 }
 
@@ -52,7 +52,7 @@ select
     price_max,
     sale_price_min,
     sale_price_max,
-    img_url
+    img_urls
 from url_product up
 left join brand_translate bt
     on bt.brand_from = up.brand
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     cnt = 0
     for ok, result in streaming_bulk(es, get_rows(conn),
                                      doc_type='product', index='product',
-                                     chunk_size=1000, max_chunk_bytes=8*1024*1024):
+                                     chunk_size=500, max_chunk_bytes=8*1024*1024):
         cnt += 1
         if cnt % 1000 == 0:
             print cnt,
