@@ -29,7 +29,8 @@ schema = \
     'price_max':      { 'type': 'float'  },
     'sale_price_min': { 'type': 'float'  },
     'sale_price_max': { 'type': 'float'  },
-    'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
+    'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
+    #'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
   }
 }
 
@@ -37,11 +38,11 @@ def get_rows(conn):
     with conn.cursor(cursor_factory=RealDictCursor) as cursor:
         cursor.execute('''
 select
-    updated,
+    up.updated as updated,
     merchant_sku,
     url_host,
     url_canonical as url,
-    brand,
+    coalesce(bt.brand_to, up.brand) as brand,
     name,
     descr,
     in_stock,
@@ -51,8 +52,10 @@ select
     price_max,
     sale_price_min,
     sale_price_max,
-    img_urls
-from url_product
+    img_url
+from url_product up
+left join brand_translate bt
+    on bt.brand_from = up.brand
 -- limit 1000
 ''')
         for row in cursor:
@@ -68,6 +71,8 @@ curl -XPOST 'localhost:9200/test/type1/1/_update' -d '{
 '''
 
 if __name__ == '__main__':
+
+    import sys
 
     conn = get_psql_conn()
 
@@ -88,10 +93,13 @@ if __name__ == '__main__':
 
     cnt = 0
     for ok, result in streaming_bulk(es, get_rows(conn),
-                                     doc_type='product', index='product'):
+                                     doc_type='product', index='product',
+                                     chunk_size=1000, max_chunk_bytes=8*1024*1024):
         cnt += 1
-        if cnt % 100 == 0:
-            print cnt
+        if cnt % 1000 == 0:
+            print cnt,
+            sys.stdout.flush()
+    print cnt
 
     es.indices.refresh(index='product')
 
