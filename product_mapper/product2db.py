@@ -20,8 +20,9 @@ import time
 import traceback
 from yurl import URL
 
-from product import ProductMapResult
+from product import ProductMapResult, ProductMapResultPage
 from spider_backend import s3wrap
+from dbconn import get_psql_conn
 
 from barneys import ProductsBarneys
 from bergdorfgoodman import ProductsBergdorfGoodman
@@ -61,14 +62,14 @@ while reading metadata
 '''
 
 
-def each_link(url_host=None):
+def each_link(url_host=None, since_ts=0):
     # ref: http://boto3.readthedocs.org/en/latest/reference/customizations/dynamodb.html#ref-dynamodb-conditions
 
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('link')
 
-    fe = Attr('body').ne(None) # TODO: does this work?
-    pe = '#u,host,body' # TODO: updated as well...
+    fe = Attr('updated').gt(since_ts) & Attr('body').ne(None)
+    pe = '#u,updated,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
 
     # TODO: refactor very similiar branches
@@ -270,6 +271,12 @@ skip = 0
 # parsing the HTML is dreadfully slow old sport
 # so we had to pool our CPUs don't you know
 
+# calculate the earliest timestamp we should accept
+since_ts = 0
+conn = dbconn.get_psql_conn()
+if url_host:
+    since_ts = ProductMapResultPage.first_any_updated(conn, url_host)
+
 '''
 scan all links in dynamodb
 if a link has a body, and we have a ProductMapper for that host
@@ -277,12 +284,14 @@ if a link has a body, and we have a ProductMapper for that host
     also, process their output
 '''
 try:
-    for link in each_link(url_host=url_host):
+    for link in each_link(url_host=url_host, since_ts=since_ts):
         sha256 = link['body']
         host = link['host']
-        if sha256 and host in Host2Map:
+        url = link['url']
+        last_updated = ProductMapResultsPage.last_updated(conn, host, url) or 0
+        if sha256 and host in Host2Map and link['updated'] > last_updated:
+            # has data, we have a mapper for the host, and updated since last seen...
             sha256 = bytearray(sha256.value) # extract raw binary
-            url = link['url']
             sent += 1
             print sent, url.encode('utf8')
             if sent < skip:

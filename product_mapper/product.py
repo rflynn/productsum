@@ -6,6 +6,7 @@ one product to rule them all
 every FoobarMerchantProduct maps to this thing
 '''
 
+from datetime import datetime
 import json
 import psycopg2
 import re
@@ -13,30 +14,7 @@ from urlparse import urljoin
 from yurl import URL
 
 from util import dehtmlify, normstring, unquote
-
-
-dbhost = 'productmap.ccon1imhl6ui.us-east-1.rds.amazonaws.com'
-dbname = 'productmap'
-dbuser = 'root'
-dbpass = 'SyPi6q1gp961'
-
-# PGPASSWORD=SyPi6q1gp961 psql -h productmap.ccon1imhl6ui.us-east-1.rds.amazonaws.com -U root productmap
-
-# ref: http://initd.org/psycopg/docs/usage.html#unicode-handling
-psycopg2.extensions.register_type(psycopg2.extensions.UNICODE)
-psycopg2.extensions.register_type(psycopg2.extensions.UNICODEARRAY)
-#psycopg2.extensions.register_adapter(dict, psycopg2.extras.Json)
-
-
-_Conn = None
-def get_psql_conn():
-    global _Conn
-    if not _Conn:
-        _Conn = psycopg2.connect("host='%s' user='%s' password='%s' dbname='%s'" % (
-            (dbhost, dbuser, dbpass, dbname)))
-        _Conn.set_client_encoding('utf8')
-        print _Conn
-    return _Conn
+from dbconn import get_psql_conn
 
 
 class Product(object):
@@ -621,6 +599,33 @@ insert into url_page (
                 self._psql_insert(cursor)
             if commit:
                 conn.commit()
+
+    @staticmethod
+    def last_updated(conn, url_host, url_canonical):
+        with conn.cursor() as cursor:
+            cursor.execute('''
+select updated
+from url_page
+where url_host = %s
+and url_canonical = %s
+''', (url_host, url_canonical))
+            row = cursor.fetchone()
+            if not row or row[0] is None:
+                return None
+            return row[0]#datetime.utcfromtimestamp(row[0])
+
+    @staticmethod
+    def first_any_updated(conn, url_host):
+        with conn.cursor() as cursor:
+            cursor.execute('''
+select min(updated)
+from url_page
+where url_host = %s
+''', (url_host,))
+            row = cursor.fetchone()
+            if not row or row[0] is None:
+                return None
+            return row[0]#datetime.utcfromtimestamp(row[0])
 
 
 class ProductMapResult(object):
