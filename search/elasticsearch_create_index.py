@@ -40,7 +40,7 @@ schema = \
         }
     },
     'mappings': {
-        'product' {
+        'product': {
             'properties': {
                 'updated':        { 'type': 'long'   },
                 'merchant_sku':   { 'type': 'string' },

@@ -304,6 +304,7 @@ if __name__ == '__main__':
                         recv += handle_responses(q2, min_handle=1)
                 if sent % 1000 == 0:
                     show_progress(sent, recv)
+        print 'finishing up final %s...' % (sent - recv)
         handle_responses(q2, sent - recv)
     except KeyboardInterrupt:
         try:
