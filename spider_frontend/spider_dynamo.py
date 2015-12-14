@@ -18,6 +18,7 @@ from spider_frontend import ua
 _Seeds = {
     #'http://www.abercrombie.com/shop/us': {'ok':{'/shop/us/'}},
     'http://couture.zappos.com/': {},
+    'https://shop.harpersbazaar.com/': {},
     'http://shop.mango.com/US': {'ok':{'/US/'}},
     'http://shop.nordstrom.com/': {},
     'http://us.christianlouboutin.com/us_en/': {'ok':{'/us_en/'}},
@@ -376,6 +377,7 @@ _Seeds = {
             '/actions/',
             '/checkout/',
             '/customerservice/',
+            '/gp/help/',
             '/myaccount/',
             '/wishlist/',
         }
@@ -645,6 +647,7 @@ def prefix_matches(path, prefix):
     )
 
 assert prefix_matches('/foo/bar?baz', '/*bar')
+assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:

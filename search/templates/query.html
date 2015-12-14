@@ -1,8 +1,12 @@
 <!html>
 <html>
     <head>
+        <title></title>
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src="http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js"></script>
+        <!--script src="http://cdn.rawgit.com/lokesh/color-thief/master/dist/color-thief.min.js"></script-->
         <style type="text/css">
             * {
                 font-family: GillSans,"Gill Sans MT",Calibri,sans-serif;
@@ -10,8 +14,6 @@
             }
             input {
                 font-size: x-large;
-                margin: 5px;
-                margin-bottom: 1em;
             }
             div.box {
                 width: 240px;
@@ -25,6 +27,10 @@
                 padding: 5px;
                 background-color: #fff;
             }
+            div.match {
+                border-right: 1px solid green;
+                border-bottom: 1px solid green;
+            }
             div.img {
                 width: 200px;
                 height: 240px;
@@ -32,19 +38,64 @@
                 background-position: center;
                 background-repeat: no-repeat;
             }
+            #sparkline {
+                margin: 0.5em;
+            }
+            ol {
+                margin-top: 0;
+            }
         </style>
     </head>
     <body>
 
-        <ol>
-            <li><a href="?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink</a>
-            <li><a href="?q=Christian Louboutin Follies Spikes Pumps">Christian Louboutin Follies Spikes Pumps</a>
-            <li><a href="?q=Christian Louboutin Leopard pump">Christian Louboutin Leopard pump</a>
+        <div style="width: 40%; display: inline-block">
+        <label for="goodlist">Good</label>
+        <ol id="goodlist">
+            <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink 675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink 675</a>
+            <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown 1045">NVPS Leopard-Print Red Sole Pump, Brown 1045</a>
+            <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink 745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink 745</a>
+            <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
+            <li><a href="/?q=Limited Edition In the Nude Compact for Eyes">Limited Edition In the Nude Compact for Eyes</a>
+            <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
+            <li><a href="/?q=Powder Blush Case & Brush 40">Powder Blush Case & Brush 40</a>
+            <li><a href="/?q=Sonic System Purifying Cleansing Brush Head">Sonic System Purifying Cleansing Brush Head</a>
+            <li><a href="/?q=For Men Sonic System Deep Cleansing Brush 89.5">For Men Sonic System Deep Cleansing Brush 89.5</a>
+            <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 32">SHISEIDO Urban Environment UV Protection Cream SPF 40 32</a>
         </ol>
+        </div>
+
+        <div style="width: 60%; float:right">
+        <label for="badlist">FIXME</label>
+        <ol id="badlist">
+
+            <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
+            <li><a href="/?q=Christian Louboutin Follies Spikes Pumps 1295">Christian Louboutin Follies Spikes Pumps 1295</a> &mdash; fails to match NM '<a href="/?q=Follies Spiked Patent Red Sole Pump Black/Demi Lune">Follies Spiked Patent Red Sole Pump Black/Demi Lune</a>'
+            <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> &mdash; TODO: too broad
+            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; better w/o brand '<a href="/?q=Limited Edition Nail Lacquer Trio">Limited Edition Nail Lacquer Trio</a>'
+            <li><a href="/?q=Clinique Blush Brush 29.5">Clinique Blush Brush 29.5</a> -- Clinique brand mixed into name for 1, but not the other...
+            <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38</a> &mdash; TODO: match images
+            <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It 1">Deborah Lippmann Nail Lacquer in Whip It 18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
+            <li><a href="/?q=UV Plus SPF 50, 1.7 oz. 42">UV Plus SPF 50, 1.7 oz. 42</a>
+            <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
+            <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015</a> &mdash; too specific, compare <a href="/?q=Alexander McQueen Leopard-Print Hair Envelope Clutch">Alexander McQueen Leopard-Print Hair Envelope Clutch</a>
+            <li><a href="/?q=STEVE MADDEN S5705 38">STEVE MADDEN S5705 38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
+            <li>scoring accounts for price similarity
+            <li>'<a href="/?q=red lipstick">red lipstick</a>' has problems with
+                <ol>
+                    <li>lipstick red leopard print suede slip-on sneakers
+                    <li>lipstick red stretch satin 'Lillie' strapless dress
+                    <li>Lipstick-Print Leather Ranger Boot, Black/Red
+                    <li>Coverstar Dress in Lipstick Red
+                </ol>
+            <li>some names still have the brand as a suffix...
+        </ol>
+        </div>
 
         <form method="get" action=".">
-            <input id="q" name="q" size="90">
+            <input id="q" name="q" size="90" value="{{ q }}">
         </form>
+
+        <div id="sparkline"></div>
 
         <div id="results">
         </div>
@@ -71,8 +122,13 @@ function es_url()
 function text_query(str)
 {
     return {
+        /*
         'query_string': {
             'query': str,
+        }*/
+        'multi_match' : {
+            'query': str,
+            'fields': [ 'name', 'brand', 'price'] 
         }
     };
 }
@@ -83,16 +139,55 @@ function url_query(str)
         'bool':{
             'must':[
                 {'match':{'url':str}}
-                //,{'match':{'brand':'VALENTINO GARAVANI'}}
-                //,{'match':{'name':'pump'}}
             ]
         }
     };
 }
 
+function match_threshold(scores)
+{
+    var scores = scores.slice(0, 25);
+    var threshold = math.max(scores) - (math.std(scores) * 1.1);
+    console.log('threshold:', threshold);
+    return threshold;
+}
+
+function analyze(scores)
+{
+    var scores = scores.slice(0, 25);
+    console.log('mean:', math.mean(scores));
+    console.log('median:', math.median(scores));
+    console.log('mode:', math.mode(scores));
+    console.log('std:', math.std(scores));
+    console.log('var:', math.var(scores));
+    console.log('max:', math.max(scores));
+    var threshold = match_threshold(scores);
+    var k1 = '' + threshold.toFixed(2) + ':100';
+    var k2 = '0:' + threshold.toFixed(2);
+    var h2 = {};
+    h2[k1] = 'green';
+    h2[k2] = '#ccc';
+    return $.range_map(h2);
+}
+
+function do_sparkline(scores)
+{
+    var rangeMap = analyze(scores);
+    $('#sparkline').sparkline(scores,
+        {
+            type: 'bar',
+            colorMap: rangeMap
+        });
+}
+
 function display_data(query, data)
 {
     $('xmp').text(JSON.stringify(data.hits, null, 4))
+
+    var scores = data.hits.hits.map(function(hit){ return hit._score; });
+
+    do_sparkline(scores);
+    var score_threshold = match_threshold(scores);
 
     $('#results').hide();
     $('#results').empty();
@@ -104,6 +199,9 @@ function display_data(query, data)
         a.attr('href', p.url);
         a.attr('target', '_blank');
 
+        var searchbyme = $('<a>');
+        searchbyme.attr('href', '?q=' + encodeURI(p.name));
+
         var imgurl = p.img_urls ? p.img_urls[0] : '';
 
         var divimg = $('<div class="img" style="background-image:url(' + imgurl + ')">');
@@ -113,21 +211,30 @@ function display_data(query, data)
 
         $(divimg).mouseover(function(){
             var imgs = p.img_urls || [];
-            function next(idx) {
-                $(divimg).css('background-image', 'url(' + imgs[idx] + ')');
-                //setInterval(function(){ next(idx + 1 % imgs.length || 0); }, 1000);
+            if (imgs.length > 1) {
+                $(divimg).css('background-image', 'url(' + imgs[1] + ')');
             }
-            next(0);
         });
 
-        $('<div class="box">').append(
-            $('<div class="score">').text(item._score),
+        $(divimg).mouseout(function(){
+            var imgs = p.img_urls || [];
+            if (imgs.length > 0) {
+                $(divimg).css('background-image', 'url(' + imgs[0] + ')');
+            }
+        });
+
+        var boxdiv = $('<div class="box">').append(
+            $('<div class="score">').text(Number(item._score).toFixed(3)),
             divimg,
-            $('<div class="brand">').text(p.brand),
-            $('<div class="name">').append(a.text(p.name)),
-            $('<div class="price">').text(p.price_min),
+            $('<div class="brand">').text(p.brand || ''),
+            $('<div class="name">').append(a.text(p.name || '')),
+            $('<div class="price">').text(p.price_min || (p.in_stock ? '' : 'out of stock')),
+            searchbyme.text('search by me'),
             $('<div class="host">').text(p.url_host)
-        ).appendTo('#results');
+        );
+        if (item._score >= score_threshold)
+            boxdiv.addClass('match');
+        boxdiv.appendTo('#results');
     });
     $('div.box').draggable({
         start: function(event, ui) {
@@ -164,21 +271,21 @@ function search(str)
         data: JSON.stringify({
             'query': (is_url(str) ? url_query : text_query)(es_cape(str)),
             'from': 0,
-            'size': 50
+            'size': 100
         })
     }).done(function(data) {
         display_data(str, data);
     });
 }
 
-$(document).ready(function() {
+function do_search(q)
+{
+    $('#q').val(q);
+    search(q);
+}
 
-    function do_search(q)
-    {
-        $('#q').val(q);
-        search(q);
-    }
-
+function on_page_load()
+{
     // form input
     $('form').submit(function(event) {
         event.preventDefault();
@@ -188,8 +295,12 @@ $(document).ready(function() {
     });
 
     // querystring
-    if (location.search.startsWith('?q=')) {
-        var q = decodeURI(location.search.substr(3));
+    var q = $('#q').val()
+    if (!q && location.search.startsWith('?q=')) {
+        q = decodeURI(location.search.substr(3));
+    }
+    if (q) {
+        console.log('decoded url', q);
         do_search(q);
     }
 
@@ -199,10 +310,25 @@ $(document).ready(function() {
             var dropped = ui.draggable;
             var brand = dropped.find('.brand').text();
             var name = dropped.find('.name').text();
-            var newq = brand + ' ' + name;
+            var price = dropped.find('.price').text();
+            var newq = brand + ' ' + name + ' ' + price;
             do_search(newq);
         }
     });
+}
+
+function support_back_button()
+{
+    if (window.history && window.history.pushState) {
+        $(window).on('popstate', function() {
+            on_page_load();
+        });
+    }
+}
+
+$(document).ready(function() {
+    support_back_button();
+    on_page_load();
 });
     </script>
 </html>

@@ -44,9 +44,13 @@ def unquote(s):
 
 def dehtmlify(s):
     if not s: return s
-    soup = BeautifulSoup(s)
-    return u''.join(t.text if hasattr(t, 'text') else t
-                for t in soup.contents)
+    try:
+        soup = BeautifulSoup(s)
+        return u''.join(t.text if hasattr(t, 'text') else t.encode('utf8')
+                    for t in soup.contents)
+    except Exception as e:
+        print e
+        return s
 
 def maybe_join(joinwith, joinme):
     if joinme is None:

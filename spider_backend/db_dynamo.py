@@ -12,14 +12,22 @@ from yurl import URL
 import zlib
 
 
-dynamodb = boto3.resource('dynamodb')
-client = boto3.client('dynamodb')
+dynamodb = None
+client = None
+
+def init():
+    global dynamodb
+    global client
+    dynamodb = boto3.resource('dynamodb')
+    client = boto3.client('dynamodb')
 
 def utcnow():
     return long(datetime.utcnow().strftime('%s'))
 
-# gotta support brand pages e.g. http://www.gilt.com/brands
-MAXLINKS = 10000
+# brand pages e.g. http://www.gilt.com/brands have ~9000 links
+# ...but dynamo has a 400k hard limit on item size...
+# ...no we don't!
+MAXLINKS = 2000
 
 def link_update_results(url, httpcode, olen, clen,
                         sha256, canonical_url, mimetype, links):
@@ -152,9 +160,6 @@ def get_url(url):
 def invalidate_cache(url):
     global _URLCache
     del _URLCache[url]
-
-def init():
-    pass
 
 def shutdown():
     pass

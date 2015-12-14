@@ -235,83 +235,82 @@ def handle_responses(q2, min_handle=0):
         traceback.print_exc()
     return recv
 
+if __name__ == '__main__':
 
-starttime = time.time()
+    starttime = time.time()
 
-def show_progress(sent, recv):
-    now = time.time()
-    elapsed = now - starttime
-    recvrate = recv / max(1.0, elapsed)
-    print 'progress: %.1f sec, %d sent, %d recv (%.1f/sec)' % (
-        elapsed, sent, recv, recvrate)
+    def show_progress(sent, recv):
+        now = time.time()
+        elapsed = now - starttime
+        recvrate = recv / max(1.0, elapsed)
+        print 'progress: %.1f sec, %d sent, %d recv (%.1f/sec)' % (
+            elapsed, sent, recv, recvrate)
 
+    url_host = None
 
-url_host = None
+    if len(sys.argv) > 1:
+        url_host = sys.argv[1]
+        print 'url_host:', url_host
+        if url_host not in Host2Map:
+            print 'url host not in ', sorted(Host2Map.keys())
+            sys.exit(1)
 
-if len(sys.argv) > 1:
-    url_host = sys.argv[1]
-    print 'url_host:', url_host
-    if url_host not in Host2Map:
-        print 'url host not in ', sorted(Host2Map.keys())
-        sys.exit(1)
+    man = multiprocessing.Manager()
+    q1 = man.Queue()
+    q2 = man.Queue()
 
-man = multiprocessing.Manager()
-q1 = man.Queue()
-q2 = man.Queue()
+    # our worker processes don't peg the CPU due to i/o
+    # so if we directly map 1:1 w/ CPU we waste a lot of resources
+    POOLSIZE = multiprocessing.cpu_count() * 2
+    pool = multiprocessing.Pool(POOLSIZE, worker, (q1, q2,))
 
-# our worker processes don't peg the CPU due to i/o
-# so if we directly map 1:1 w/ CPU we waste a lot of resources
-POOLSIZE = multiprocessing.cpu_count() * 2
-pool = multiprocessing.Pool(POOLSIZE, worker, (q1, q2,))
+    sent = 0
+    recv = 0
+    skip = 0
 
-sent = 0
-recv = 0
-skip = 0
+    # parsing the HTML is dreadfully slow old sport
+    # so we had to pool our CPUs don't you know
 
-# parsing the HTML is dreadfully slow old sport
-# so we had to pool our CPUs don't you know
+    # calculate the earliest timestamp we should accept
+    since_ts = 0
+    conn = get_psql_conn()
+    if url_host:
+        since_ts = ProductMapResultPage.first_any_updated(conn, url_host)
 
-# calculate the earliest timestamp we should accept
-since_ts = 0
-conn = get_psql_conn()
-if url_host:
-    since_ts = ProductMapResultPage.first_any_updated(conn, url_host)
-
-'''
-scan all links in dynamodb
-if a link has a body, and we have a ProductMapper for that host
-    enqueue it for the worker processes
-    also, process their output
-'''
-try:
-    for link in each_link(url_host=url_host, since_ts=since_ts):
-        sha256 = link['body']
-        host = link['host']
-        url = link['url']
-        last_updated = ProductMapResultPage.last_updated(conn, host, url) or 0
-        if sha256 and host in Host2Map and link['updated'] > last_updated:
-            # has data, we have a mapper for the host, and updated since last seen...
-            sha256 = bytearray(sha256.value) # extract raw binary
-            sent += 1
-            print sent, url.encode('utf8')
-            if sent < skip:
-                recv += 1 # fake it
-            else:
-                q1.put((url, host, sha256))
-                if q1.qsize() >= POOLSIZE * 2:
-                    # input queue full enough, process output.
-                    # throttles input rate
-                    recv += handle_responses(q2, min_handle=1)
-            if sent % 1000 == 0:
-                show_progress(sent, recv)
-    handle_responses(q2, sent - recv)
-except KeyboardInterrupt:
+    '''
+    scan all links in dynamodb
+    if a link has a body, and we have a ProductMapper for that host
+        enqueue it for the worker processes
+        also, process their output
+    '''
     try:
-        pool.terminate()
-    except:
-        pass
+        for link in each_link(url_host=url_host, since_ts=since_ts):
+            sha256 = link['body']
+            host = link['host']
+            url = link['url']
+            last_updated = ProductMapResultPage.last_updated(conn, host, url) or 0
+            if sha256 and host in Host2Map and link['updated'] > last_updated:
+                # has data, we have a mapper for the host, and updated since last seen...
+                sha256 = bytearray(sha256.value) # extract raw binary
+                sent += 1
+                print sent, url.encode('utf8')
+                if sent < skip:
+                    recv += 1 # fake it
+                else:
+                    q1.put((url, host, sha256))
+                    if q1.qsize() >= POOLSIZE * 2:
+                        # input queue full enough, process output.
+                        # throttles input rate
+                        recv += handle_responses(q2, min_handle=1)
+                if sent % 1000 == 0:
+                    show_progress(sent, recv)
+        handle_responses(q2, sent - recv)
+    except KeyboardInterrupt:
+        try:
+            pool.terminate()
+        except:
+            pass
 
-show_progress(sent, recv)
+    show_progress(sent, recv)
 
-print 'done'
-
+    print 'done'

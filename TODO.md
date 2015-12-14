@@ -56,14 +56,18 @@ TODO:
     22. ✔ run product2db more efficiently: respect link timestamps and product mapper versions
     23. ✔ normalize brands
     24. ✔ one-time import of url_product + normalized brand to elasticsearch
-    25. ... www frontend for elasticsearch
+    25. ✔ www frontend for elasticsearch
+    26. ✔ research efficacy of LCD search
+
+    27. test url -> content -> product extraction -> search by url -> search by product
+        e.g. http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
+
     23. hook up a script to listen to a process product pages off an SQS queue based on host
     24. set up AWS Lambda on Dynamo to enqueue page metadata to SQS when a page is spidered
 
-    21. map the similarity across all products in the database
-            easy! :-/
-    22. map/match Brands
-            ...
+    ... download images
+    ... analyze images
+    ref: http://www.pyimagesearch.com/2014/12/01/complete-guide-building-image-search-engine-python-opencv/
     23. parse/classify Product Name components
     25. figure out how to re-start spider and "catch up" faster; fast-forward though visited links
 

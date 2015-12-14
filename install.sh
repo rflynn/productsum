@@ -46,6 +46,9 @@ sudo add-apt-repository -y ppa:keithw/mosh
 sudo apt-get update
 sudo apt-get -y install -y mosh
 
+# misc
+sudo apt-get install -y jq
+
 # set up python virtualenv
 test -d venv || virtualenv venv
 source venv/bin/activate

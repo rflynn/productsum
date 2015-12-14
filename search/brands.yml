@@ -641,10 +641,11 @@ Nike:
         'Kiehl''s Since 1851':
         'KIEHL''S SINCE 1851':
         'Kiehl''s':
-ESTEE LAUDER:
+Estee Lauder:
     aka:
-        Estee Lauder:
+        ESTEE LAUDER:
         Estée Lauder:
+        'Est&#233;e Lauder':
 Topshop:
     line:
         Topshop Unique:
@@ -2173,6 +2174,7 @@ Clé de Peau Beauté:
         Cle de Peau Beaute:
         'Cl233De Peau Beaut233':
         Clé de Peau Synactif:
+        'Cl&#233; de Peau Beaut&#233;':
 Zimmerli:
     aka:
         ZIMMERLI:
@@ -7283,6 +7285,8 @@ Marie Helene de Taillac:
     aka:
         Marie Helene De Taillac:
 Branch:
+    aka:
+        'Branch&#233;':
 Berti Cutlery:
 MAURO GRIFONI:
 Ninco RC:

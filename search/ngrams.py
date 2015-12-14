@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from collections import Counter
-import nltk
+#import nltk
 from nltk.util import ngrams
 from pprint import pprint
 import re
