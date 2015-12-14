@@ -663,7 +663,7 @@ def ok_to_spider(url, fqdn, settings):
                 print 'skip', url, settings['skip']
                 return False
         if 'ok' in settings:
-            if not any(prefix_matches(u.path + query, s) for s in settings['ok']):
+            if not any(prefix_matches(u.path + u.query, s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
     return True
