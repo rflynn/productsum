@@ -4,13 +4,18 @@
         <title></title>
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <script src="http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js"></script>
+        <script src="http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.min.js"></script>
         <!--script src="http://cdn.rawgit.com/lokesh/color-thief/master/dist/color-thief.min.js"></script-->
         <style type="text/css">
             * {
                 font-family: GillSans,"Gill Sans MT",Calibri,sans-serif;
                 font-size: 16px;
+            }
+            form {
+                margin: 0px;
+                margin-bottom: 3px;
+                padding: 0;
             }
             input {
                 font-size: x-large;
@@ -39,17 +44,88 @@
                 background-repeat: no-repeat;
             }
             #sparkline {
-                margin: 0.5em;
             }
             ol {
                 margin-top: 0;
             }
+            #spinner {
+                position: absolute;
+                left: 30%;
+                top: 25%;
+                margin:0px auto;
+                height: 250px;
+                width: 250px;
+                -webkit-animation: rotation .6s infinite linear;
+                -moz-animation: rotation .6s infinite linear;
+                -o-animation: rotation .6s infinite linear;
+                animation: rotation .6s infinite linear;
+                /*background-color: #fff;*/
+                border-left:50px solid rgba(0,174,239,.15);
+                border-right:50px solid rgba(0,174,239,.15);
+                border-bottom:50px solid rgba(0,174,239,.15);
+                border-top:50px solid rgba(0,174,239,.8);
+                border-radius:100%;
+                z-index: 9999;
+                display: none; /* hide initially */
+            }
+            @-webkit-keyframes rotation {
+                from {-webkit-transform: rotate(0deg);}
+                to {-webkit-transform: rotate(359deg);}
+            }
+            @-moz-keyframes rotation {
+                from {-moz-transform: rotate(0deg);}
+                to {-moz-transform: rotate(359deg);}
+            }
+            @-o-keyframes rotation {
+                from {-o-transform: rotate(0deg);}
+                to {-o-transform: rotate(359deg);}
+            }
+            @keyframes rotation {
+                from {transform: rotate(0deg);}
+                to {transform: rotate(359deg);}
+            }
+            #clear {
+                font-size: x-large;
+                cursor: pointer;
+            }
         </style>
     </head>
+
     <body>
 
-        <div style="width: 40%; display: inline-block">
-        <label for="goodlist">Good</label>
+        <div id="spinner"></div>
+
+        <div style="clear:both">{{ url }}</div>
+
+        <form method="get" action=".">
+            <span id="clear">&times;</span>
+            <input id="q" name="q" size="90" value="{{ q }}">
+        </form>
+
+        <div id="sparkline"></div>
+
+        <div id="results">
+        </div>
+
+        <br style="clear:both">
+
+        <div id="notes">
+
+        <div>
+
+        <div style="width: 45%; display: inline-block">
+
+        <label for="goodlist">Example URLs</label>
+        <ol id="goodlist">
+            <li><a href="/?q=http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1">http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1</a>
+            <li><a href="/?q=http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/">http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/</a>
+            <li><a href="/?q=http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1">http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1</a>
+            <li><a href="/?q="></a>
+            <li><a href="/?q="></a>
+            <li><a href="/?q="></a>
+        </ol>
+
+        <label for="goodlist">Example Products</label>
         <ol id="goodlist">
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink 675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink 675</a>
             <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown 1045">NVPS Leopard-Print Red Sole Pump, Brown 1045</a>
@@ -62,12 +138,12 @@
             <li><a href="/?q=For Men Sonic System Deep Cleansing Brush 89.5">For Men Sonic System Deep Cleansing Brush 89.5</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 32">SHISEIDO Urban Environment UV Protection Cream SPF 40 32</a>
         </ol>
+
         </div>
 
-        <div style="width: 60%; float:right">
+        <div style="width: 55%; float:right">
         <label for="badlist">FIXME</label>
         <ol id="badlist">
-
             <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
             <li><a href="/?q=Christian Louboutin Follies Spikes Pumps 1295">Christian Louboutin Follies Spikes Pumps 1295</a> &mdash; fails to match NM '<a href="/?q=Follies Spiked Patent Red Sole Pump Black/Demi Lune">Follies Spiked Patent Red Sole Pump Black/Demi Lune</a>'
             <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> &mdash; TODO: too broad
@@ -78,6 +154,7 @@
             <li><a href="/?q=UV Plus SPF 50, 1.7 oz. 42">UV Plus SPF 50, 1.7 oz. 42</a>
             <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
             <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015</a> &mdash; too specific, compare <a href="/?q=Alexander McQueen Leopard-Print Hair Envelope Clutch">Alexander McQueen Leopard-Print Hair Envelope Clutch</a>
+            <li><a href="/?q=Life is good Go-To Hoodie 48">Life is good Go-To Hoodie 48</a> &mdash; too many matches, brand overpowers
             <li><a href="/?q=STEVE MADDEN S5705 38">STEVE MADDEN S5705 38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
             <li>scoring accounts for price similarity
             <li>'<a href="/?q=red lipstick">red lipstick</a>' has problems with
@@ -91,13 +168,7 @@
         </ol>
         </div>
 
-        <form method="get" action=".">
-            <input id="q" name="q" size="90" value="{{ q }}">
-        </form>
-
-        <div id="sparkline"></div>
-
-        <div id="results">
+        </div>
         </div>
 
         <br style="clear:both">
@@ -144,10 +215,13 @@ function url_query(str)
     };
 }
 
+SCORE_MIN_THRESHOLD = 1.0
+
 function match_threshold(scores)
 {
     var scores = scores.slice(0, 25);
-    var threshold = math.max(scores) - (math.std(scores) * 1.1);
+    var threshold = Math.max(SCORE_MIN_THRESHOLD,
+                             math.max(scores) - (math.std(scores) * 1.1));
     console.log('threshold:', threshold);
     return threshold;
 }
@@ -155,18 +229,20 @@ function match_threshold(scores)
 function analyze(scores)
 {
     var scores = scores.slice(0, 25);
-    console.log('mean:', math.mean(scores));
-    console.log('median:', math.median(scores));
-    console.log('mode:', math.mode(scores));
-    console.log('std:', math.std(scores));
-    console.log('var:', math.var(scores));
-    console.log('max:', math.max(scores));
-    var threshold = match_threshold(scores);
-    var k1 = '' + threshold.toFixed(2) + ':100';
-    var k2 = '0:' + threshold.toFixed(2);
     var h2 = {};
-    h2[k1] = 'green';
-    h2[k2] = '#ccc';
+    if (scores) {
+        console.log('mean:', math.mean(scores));
+        console.log('median:', math.median(scores));
+        console.log('mode:', math.mode(scores));
+        console.log('std:', math.std(scores));
+        console.log('var:', math.var(scores));
+        console.log('max:', math.max(scores));
+        var threshold = match_threshold(scores);
+        var k1 = '' + threshold.toFixed(2) + ':100';
+        var k2 = '0:' + threshold.toFixed(2);
+        h2[k1] = 'green';
+        h2[k2] = '#ccc';
+    }
     return $.range_map(h2);
 }
 
@@ -224,7 +300,7 @@ function display_data(query, data)
         });
 
         var boxdiv = $('<div class="box">').append(
-            $('<div class="score">').text(Number(item._score).toFixed(3)),
+            $('<div class="score">').text('score ' + Number(item._score).toFixed(3)),
             divimg,
             $('<div class="brand">').text(p.brand || ''),
             $('<div class="name">').append(a.text(p.name || '')),
@@ -251,57 +327,60 @@ function display_data(query, data)
         }
     });
     $('#results').show();
-    var url = location.protocol + '//' + location.host + location.pathname;
-    url += '?q=' + encodeURI(query);
-    history.pushState('data', '', url);
 }
 
 function es_cape(str) {
     return str.replace(/[/]/gi, function(c){ return "\\"+c; });
 }
 
-function search(str)
+function search(txtq)
 {
     // curl -X POST 'search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search' -d '{"query":{"bool":{"must":[{"match":{"brand":"VALENTINO GARAVANI"}},{"match":{"name":"pump"}}]}}}' | python -mjson.tool | less
+    start_loading();
     $.ajax({
         method: 'POST',
         url: es_url(),
         crossDomain: true,
         dataType: 'json',
         data: JSON.stringify({
-            'query': (is_url(str) ? url_query : text_query)(es_cape(str)),
+            'query': (is_url(txtq) ? url_query : text_query)(es_cape(txtq)),
             'from': 0,
             'size': 100
         })
     }).done(function(data) {
-        display_data(str, data);
+        display_data(txtq, data);
+        stop_loading();
     });
 }
 
-function do_search(q)
+function do_search(txtq)
 {
-    $('#q').val(q);
-    search(q);
+    search(txtq);
+}
+
+function start_loading()
+{
+    $('#spinner').show();
+}
+
+function stop_loading()
+{
+    $('#spinner').hide();
 }
 
 function on_page_load()
 {
     // form input
+
     $('form').submit(function(event) {
-        event.preventDefault();
-    });
-    $('#q').on('change paste', function() {
-        search($(this).val());
+        start_loading();
+        // event.preventDefault();
     });
 
-    // querystring
-    var q = $('#q').val()
-    if (!q && location.search.startsWith('?q=')) {
-        q = decodeURI(location.search.substr(3));
-    }
-    if (q) {
-        console.log('decoded url', q);
-        do_search(q);
+    var txtq = $('#q').val();
+    if (txtq) {
+        console.log('txtq', txtq);
+        do_search(txtq);
     }
 
     $('#q').droppable({
@@ -312,7 +391,14 @@ function on_page_load()
             var name = dropped.find('.name').text();
             var price = dropped.find('.price').text();
             var newq = brand + ' ' + name + ' ' + price;
+
             do_search(newq);
+
+            $('#q').val(newq);
+            var url = location.protocol + '//' + location.host + location.pathname;
+            url += '?q=' + encodeURI(newq);
+            history.pushState('data', '', url);
+
         }
     });
 }
@@ -327,6 +413,10 @@ function support_back_button()
 }
 
 $(document).ready(function() {
+    $('#clear').click(function() {
+        $('#q').val('');
+        $('form').submit();
+    });
     support_back_button();
     on_page_load();
 });

@@ -8,7 +8,7 @@ import time
 from collections import Counter
 from spider_frontend import spider_dynamo as spider
 from spider_backend.domain import domain_to_canonical
-from product_mapper import product2db
+from product_mapper import product2db, unknown
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urljoin
@@ -19,12 +19,30 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return do_query(q=request.args.get('q'))
+    url = None
+    q = request.args.get('q')
+    if q and (q.startswith('http://') or q.startswith('https://')):
+        url = q
+        q = search_by_url(q)
+    return do_query(q=q, url=url)
 
-def do_query(q=None):
+
+def search_by_url(url):
+    host = URL(url).host
+    if host in product2db.Host2Map:
+        # a host we know; assume it may be in our product db already!
+        search_by_url = url
+    else:
+        # treat as third-party url that we don't know; fetch a product out of it
+        search_by_url = url_to_product(url)
+    return search_by_url
+
+
+def do_query(q=None, url=None):
     t = time.time()
     return render_template('query.html',
                            q=q or '',
+                           url=url or '',
                            t=round(time.time()-t, 1))
 
 def url_to_product(url):
@@ -32,6 +50,7 @@ def url_to_product(url):
     resp = spider.url_fetch(url, referer=url)
     url2, (code, headers, body, canonical_url, mimetype) = resp
     if code < 0 or code >= 400 or 'html' not in mimetype or not body:
+        print 'url2 failed', url2, code
         return None
     soup = BeautifulSoup(body)
     ahrefs = soup.findAll('a', href=True)
@@ -62,30 +81,39 @@ def url_to_product(url):
     sorted_urls = sorted(cnt_url.iteritems(), key=lambda x: (x[0][0], x[1]), reverse=True)
     print sorted_urls
     if not sorted_urls:
+        print 'not sorted_urls'
         return None
-    best_url = sorted_urls[0]
+    best_url = sorted_urls[0][0]
     print 'best_url', best_url
-    return best_url[0]
+
+    # now fetch the best url, and try to parse a product out of it...
+
+    resp = spider.url_fetch(best_url, referer=url)
+    url3, (code, headers, html, canonical_url, mimetype) = resp
+    print url3, code
+    if code < 0 or code >= 400 or 'html' not in mimetype or not body:
+        print 'failed', url3, code
+        return None
+
+    ret = best_url
+    prods = unknown.ProductsUnknown.from_html(best_url, html, require_prodid=False)
+    if prods:
+        p = prods[0]
+        ret = u''
+        if p.brand and p.name:
+            ret = p.brand + u' ' + p.name
+        elif p.merchant_name and p.title:
+            ret = p.merchant_name + u' ' + p.title
+        elif p.title:
+            ret = p.title
+        elif p.name:
+            ret = p.name
+        if ret and p.price:
+            ret += u' %s' % p.price
+    return ret
+
 
 # http://0.0.0.0:9998/search/by/url?url=http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
-
-@app.route('/search/by/url/')
-def search_by_url():
-    url = request.args.get('q')
-    host = URL(url).host
-    if host in product2db.Host2Map:
-        # a host we know; assume it may be in our product db already!
-        search_by_url = url
-    else:
-        # treat as third-party url that we don't know; fetch a product out of it
-        search_by_url = url_to_product(url)
-    '''
-    go_to = '/'
-    if search_by_url:
-        go_to += '?q=' + search_by_url
-    return redirect(go_to)
-    '''
-    return do_query(q=search_by_url)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',

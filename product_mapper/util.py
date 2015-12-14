@@ -23,6 +23,8 @@ assert flatten([[1],[2]]) == [1,2]
 
 def nth(maybelist, index, val=None):
     try:
+        if isinstance(maybelist, basestring):
+            return val
         return maybelist[index]
     except:
         return val
