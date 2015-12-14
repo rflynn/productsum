@@ -227,6 +227,7 @@ Chloe:
         CHLOÉ:
         'CHLO\xc9':
         'Chlo&#233;':
+        'CHLOÃ\u0089':
     line:
         See By Chloé:
             aka:
@@ -281,6 +282,8 @@ VINCE CAMUTO:
         'Dolce & Gabbana Vintage':
         'DOLCE & GABBANA UNDERWEAR':
 Tory Burch:
+    aka:
+        TORY BURCH:
     line:
         Tory Burch Watches:
 Alexander Wang:
@@ -352,6 +355,7 @@ Rebecca Minkoff:
         'rag & bone/JEAN':
             aka:
                 'Rag & Bone/JEAN':
+                'RAG & BONE/JEAN':
 Diane von Furstenberg:
     aka:
         DIANE VON FURSTENBERG:
@@ -413,6 +417,7 @@ Eileen Fisher:
     line:
         EILEEN FISHER PLUS:
             aka:
+                'Eileen Fisher, Plus Size':
                 '"Eileen Fisher, Plus Size"':
 "Tod's":
     aka:
@@ -489,10 +494,12 @@ Helmut Lang:
 'Ray-Ban':
     aka:
         'RAY-BAN':
+        RAY BAN:
         RayBan:
     line:
         'Ray-Ban Junior':
         Rayban Junior:
+        'Ray-Ban Jr':
 SERGIO ROSSI:
     aka:
         Sergio Rossi:
@@ -536,6 +543,7 @@ HUGO BOSS:
         BOSS Kidswear:
         BOSS GREEN:
         BOSS Orange:
+        BOSS ORANGE:
 SAM EDELMAN:
     aka:
         Sam Edelman:
@@ -588,6 +596,7 @@ Victoria Beckham:
             type: diffusion
             aka:
                 Victoria by Victoria Beckham:
+                'VICTORIA, VICTORIA BECKHAM':
                 '"VICTORIA, VICTORIA BECKHAM"':
                 '"Victoria, Victoria Beckham"':
         Victoria Beckham Denim:
@@ -886,6 +895,7 @@ KARL LAGERFELD:
             aka:
                 KARL LAGERFELD PARIS:
                 KARL:
+        HOGAN by KARL LAGERFELD:
 Wyatt:
 BOBBI BROWN:
 Lancôme:
@@ -911,15 +921,18 @@ Versace:
         Gianni Versace:
         GIANNI VERSACE:
         Versace Vintage:
+        VERSACE COLLECTION:
         Versace Collection:
         Versace  Collection:
         Versace Jeans Couture:
+        VERSACE JEANS COUTURE:
         VERSACE CLASSIC:
     line:
         Versus:
             type: diffusion
             aka:
                 Versus by Versace:
+                VERSUS:
 Bugaboo:
 AEROSOLES:
     aka:
@@ -1240,6 +1253,7 @@ Clayton:
         CLAYTON:
 'Young Fabulous & Broke':
     aka:
+        'Young, Fabulous & Broke':
         '"Young, Fabulous & Broke"':
         Young Fabulous and Broke:
 SUNDRY:
@@ -1378,6 +1392,8 @@ True Religion:
         TRUE RELIGION:
         True Religion Brand Jeans:
 Jeffrey Campbell:
+    aka:
+        JEFFREY CAMPBELL:
 Gorski:
 Autumn Cashmere:
 Sperry:
@@ -1704,6 +1720,7 @@ BULOVA:
         Bulova:
     line:
         Accutron by Bulova:
+        Caravelle by Bulova:
 'VIKTOR & ROLF':
     aka:
         'Viktor & Rolf':
@@ -1883,6 +1900,8 @@ Brooks Brothers:
     line:
         BROOKS BROTHERS RED FLEECE:
 SEIKO:
+    aka:
+        Seiko:
 By Malene Birger:
     aka:
         BY MALENE BIRGER:
@@ -2540,6 +2559,8 @@ TABITHA SIMMONS:
 Retrosuperfuture:
     line:
         Super by Retrosuperfuture:
+            aka:
+                'SUPER by RETROSUPERFUTURE®':
 'Church''s':
 Tuleste:
 GAS Bijoux:
@@ -2599,6 +2620,7 @@ Aurélie Bidermann:
     aka:
         Aurelie Bidermann:
         AURÉLIE BIDERMANN:
+        'AURÃ\u0089LIE BIDERMANN':
     line:
         Aurélie Bidermann Fine:
             aka:
@@ -2666,6 +2688,8 @@ Brian Atwood:
         B BRIAN ATWOOD:
 Levtex:
 Patagonia:
+    aka:
+        PATAGONIA:
 LNA:
     aka:
         LnA:
@@ -2910,6 +2934,8 @@ Julien David:
         JULIEN DAVID:
 MJK Knits:
 Hoss Intropia:
+    aka:
+        HOSS INTROPIA:
 Pop Beauty:
 Christopher Fischer:
 KUT FROM THE KLOTH:
@@ -2978,6 +3004,8 @@ Svoboda:
 Ilike Organic Skin Care:
 Karin Herzog:
 Incotex:
+    aka:
+        INCOTEX:
 Red Flower:
 Storksak:
 'Penhaligon''s':
@@ -3414,6 +3442,8 @@ Charlie Charlie:
 Travelers Club Luggage:
 ISSEY MIYAKE:
 'Tiffany & Co.':
+    aka:
+        Tiffany:
 'Fitz & Floyd':
 DS Laboratories:
 MARCHESA:
@@ -4444,6 +4474,10 @@ GOLPIRA:
 MUD Cosmetics:
 CAMI NYC:
 BJØRG:
+    url: 'http://www.bjorgjewellery.com/'
+    aka:
+        Bjørg:
+        Bjorg:
 Mele:
 Lizzie Fortunato:
 Maya Brenner Designs:
@@ -5212,6 +5246,7 @@ LIU •JO:
         LIU •JO BEACHWEAR:
         LIU •JO ACCESSORIES:
         LIU •JO JEANS:
+        LIU •JO LUXURY:
 Zalto Glassware:
 Hooker Furniture:
 Myswear:
@@ -5669,7 +5704,9 @@ NUFACE:
 NuBrilliance:
 Macadamia Professional:
 Aila Blue:
-TAG HEUER:
+TAG Heuer:
+    aka:
+        TAG HEUER:
 Mori Lee:
 Sybilla:
 Skultuna:
@@ -5705,6 +5742,8 @@ MAD ENGINE:
 HAPPI BY DENA:
 KANGOL:
 FLYNN SKYE:
+    aka:
+        Flynn Skye:
 Tend Skin:
 iWoodesign:
 'Priscilla & Parker':
@@ -6087,6 +6126,8 @@ Mini Maniacs:
 Bertigo:
 Gladys Tamez Millinery:
 Casio:
+    aka:
+        CASIO:
 CHI:
 Bop Basics:
 SOPHIE THEALLET:
@@ -6486,7 +6527,9 @@ KAANAS:
 Thermalace:
 'O''Keeffe':
 Marco De Vincenzo:
-ANTONIO MARRAS IL MARE:
+ANTONIO MARRAS:
+    aka:
+        ANTONIO MARRAS IL MARE:
 Golden Edibles:
 Nicopanda:
 Anthropologie:
@@ -6614,9 +6657,10 @@ Orobos:
 MET:
 Hidesign:
 Titanium:
-POLLINI:
+Studio Pollini:
     aka:
-        Studio Pollini:
+        POLLINI:
+        STUDIO POLLINI:
 SUGAR AND DIAMONDS:
 ARIANA GRANDE:
     line:
@@ -6864,6 +6908,8 @@ Urge:
 Casarialto:
 Campomaggi:
 Matthew Williamson:
+    aka:
+        MATTHEW WILLIAMSON:
     line:
         MATTHEW WILLIAMSON ESCAPE:
         MW:
@@ -8563,3 +8609,41 @@ Sylvie Schimmel:
 DIANA ROSH:
 Lexus:
 PT01:
+XOXO:
+    aka:
+        xoxo:
+Braun:
+NADINE S:
+OBLIQUE:
+BYBLOS:
+MANUEL BOZZI:
+HTC:
+NANNI:
+ANGELO MARANI:
+JO NO FUI:
+GATTINONI:
+Olivia Pratt:
+VERONIQUE BRANQUINHO:
+LA FILLE des FLEURS:
+GAETANO NAVARRA:
+CADA:
+Ren Wil:
+REPLAY:
+Bertha:
+EXTE:
+iEnjoy Home:
+DIVINA:
+Red Line:
+LOROETU:
+LISA C BIJOUX:
+"I'M ISOLA MARRAS":
+'ROCCO P.':
+FOUR BUTTONS:
+Luminox:
+Omega:
+Breed:
+MORELLATO:
+a_line:
+Elini Barokas:
+Morphic:
+MADINA VISCONTI di MODRONE:
