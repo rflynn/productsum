@@ -13,25 +13,24 @@ def translate(brands):
     xl = {}
     for k, v in brands.iteritems():
         k = u(k)
+        xl[k] = k
         if v:
             aka = v.get('aka')
             if aka:
                 #pprint(aka)
                 for a in aka.keys():
                     a = u(a)
-                    if a != k:
-                        xl[a] = k
+                    xl[a] = k
             lines = v.get('line')
             if lines:
                 for kl, vl in lines.iteritems():
                     kl = u(kl)
-                    if kl != k:
-                        xl[kl] = k
-                    aka = v.get('aka')
-                    if aka:
-                        for a in aka.keys():
-                            a = u(a)
-                            if a != k:
+                    xl[kl] = k
+                    if vl:
+                        aka = vl.get('aka')
+                        if aka:
+                            for a in aka.keys():
+                                a = u(a)
                                 xl[a] = k
     return xl
 
