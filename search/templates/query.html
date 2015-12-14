@@ -10,7 +10,8 @@
         <style type="text/css">
             * {
                 font-family: GillSans,"Gill Sans MT",Calibri,sans-serif;
-                font-size: 16px;
+                font-size: 14px;
+                font-weight:100;
             }
             form {
                 margin: 0px;
@@ -95,6 +96,9 @@
                 cursor: pointer;
                 margin: 0.25em;
             }
+            a.search-by-me {
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -122,7 +126,7 @@
 
         <div style="width: 45%; display: inline-block">
 
-        <label for="goodlist">Example URLs</label>
+        <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
         <ol id="goodlist">
             <li><a href="/?q=http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1">http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1</a>
             <li><a href="/?q=http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/">http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/</a>
@@ -134,20 +138,26 @@
 
         <label for="goodlist">Example Products</label>
         <ol id="goodlist">
-            <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink 675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink 675</a>
-            <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown 1045">NVPS Leopard-Print Red Sole Pump, Brown 1045</a>
-            <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink 745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink 745</a>
+            <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
+            <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown $1045">NVPS Leopard-Print Red Sole Pump, Brown $1045</a>
+            <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745</a>
             <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
             <li><a href="/?q=Limited Edition In the Nude Compact for Eyes">Limited Edition In the Nude Compact for Eyes</a>
             <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
-            <li><a href="/?q=Powder Blush Case & Brush 40">Powder Blush Case & Brush 40</a>
+            <li><a href="/?q=Powder Blush Case & Brush $40">Powder Blush Case & Brush $40</a>
             <li><a href="/?q=Sonic System Purifying Cleansing Brush Head">Sonic System Purifying Cleansing Brush Head</a>
             <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
-            <li><a href="/?q=For Men Sonic System Deep Cleansing Brush 89.5">For Men Sonic System Deep Cleansing Brush 89.5</a>
-            <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 32">SHISEIDO Urban Environment UV Protection Cream SPF 40 32</a>
-            <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38</a>
-            <li><a href="/?q=UV Plus SPF 50, 1.7 oz. 42">UV Plus SPF 50, 1.7 oz. 42</a>
+            <li><a href="/?q=For Men Sonic System Deep Cleansing Brush $89.5">For Men Sonic System Deep Cleansing Brush $89.5</a>
+            <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
+            <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
+            <li><a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Foreo ISSA Brush Head $24.90">Foreo ISSA Brush Head $24.90</a>
+            <li><a href="/?q=TOM FORD Patent Pin-Heel Pump">TOM FORD Patent Pin-Heel Pump</a>
+            <li><a href="/?q=CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50">CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50</a>
+            <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a>
+            <li><a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black $843">Charlotte Olympia Orbital Pomeline Suede Pump, Black $843</a>
+            <li><a href="/?q=Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795">Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795</a>
+            <li><a href="/?q=Sisley Paris Botanical D-Tox, 30ml $245">Sisley Paris Botanical D-Tox, 30ml $245</a> -- first 2 should match but don't...
         </ol>
 
         </div>
@@ -158,8 +168,8 @@
             <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
             <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
             <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> &mdash; TODO: too broad
-            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; compare variations <a href="/?q=Nail Lacquer Trio">Nail Lacquer Trio</a>, <a href="/?q=Bal Masqué Nail Lacquer Trio 75">Bal Masqué Nail Lacquer Trio 75</a>
-            <li><a href="/?q=Clinique Blush Brush 29.5">Clinique Blush Brush 29.5</a> -- Clinique brand mixed into name for 1, but not the other...
+            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; compare variations <a href="/?q=Nail Lacquer Trio">Nail Lacquer Trio</a>, <a href="/?q=Bal Masqué Nail Lacquer Trio $75">Bal Masqué Nail Lacquer Trio $75</a>
+            <li><a href="/?q=Clinique Blush Brush $29.5">Clinique Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
             <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It 1">Deborah Lippmann Nail Lacquer in Whip It 18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
             <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
             <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015</a> &mdash; too specific, compare <a href="/?q=Alexander McQueen Leopard-Print Hair Envelope Clutch">Alexander McQueen Leopard-Print Hair Envelope Clutch</a>
@@ -174,6 +184,9 @@
                     <li>Coverstar Dress in Lipstick Red
                 </ol>
             <li>some names still have the brand as a suffix...
+            <li><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> results do not respect the brand...
+            <li><a href="/?q=Leather Kitten Heel Pumps">Leather Kitten Heel Pumps</a> &mdash; too broad
+            <li><a href="/?q=RALPH LAUREN Leather Large Hobo Bag $448">RALPH LAUREN Leather Large Hobo Bag $448</a> -- brands don't work, matching logic...
         </ol>
         </div>
 
@@ -194,36 +207,6 @@ function is_url(str)
     return s.startsWith('http://') || s.startsWith('https://');
 }
 
-function es_url()
-{
-    return 'http://search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search';
-}
-
-function text_query(str)
-{
-    return {
-        /*
-        'query_string': {
-            'query': str,
-        }*/
-        'multi_match' : {
-            'query': str,
-            'fields': [ 'name', 'brand', 'price'] 
-        }
-    };
-}
-
-function url_query(str)
-{
-    return {
-        'bool':{
-            'must':[
-                {'match':{'url':str}}
-            ]
-        }
-    };
-}
-
 SCORE_MIN_THRESHOLD = 1.0
 
 function match_threshold(scores)
@@ -232,7 +215,7 @@ function match_threshold(scores)
     if (scores.length) {
         var scores = scores.slice(0, 25);
         threshold = Math.max(SCORE_MIN_THRESHOLD,
-                            math.max(scores) - (math.std(scores) * 1.1));
+                            math.mean(scores) + (math.std(scores)));
     }
     return threshold;
 }
@@ -277,7 +260,7 @@ function display_price(p)
         d = Number(d).toFixed(2);
     if (!p.in_stock)
         return $('<div>').text('out-of-stock');
-    return $('<div>').append($('<sup>').text(c)).append(d);
+    return $('<div>').append($('<sup>').html(c)).append(d);
 }
 
 function display_data(query, data)
@@ -302,8 +285,7 @@ function display_data(query, data)
         a.attr('href', p.url);
         a.attr('target', '_blank');
 
-        var searchbyme = $('<a>');
-        searchbyme.attr('href', '?q=' + encodeURI(p.name));
+        var searchbyme = $('<a class="search-by-me">');
 
         var imgurl = p.img_urls ? p.img_urls[0] : '';
 
@@ -333,7 +315,7 @@ function display_data(query, data)
             $('<div class="name">').append(a.text(p.name || '')),
             //$('<div class="price">').text(p.price_min || (p.in_stock ? '' : 'out of stock')),
             $('<div class="price">').append(display_price(p)),
-            searchbyme.text('search by me'),
+            searchbyme.html('search by product &#128269;'),
             $('<div class="host">').text(p.url_host)
         );
         if (item._score >= score_threshold)
@@ -354,6 +336,11 @@ function display_data(query, data)
             return !event;
         }
     });
+
+    $('a.search-by-me').click(function() {
+        do_search_by_product($(this).closest('div.box'));
+    });
+
     $('#results').show();
 }
 
@@ -361,29 +348,124 @@ function es_cape(str) {
     return str.replace(/[/]/gi, function(c){ return "\\"+c; });
 }
 
-function search(txtq)
+function es_url()
+{
+    return 'http://search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search';
+}
+
+function text_query(str)
+{
+    var should = [
+        {
+            'multi_match' : {
+                'query': str,
+                'fields': [ 'name', 'brand', 'price'] 
+            }
+        }
+    ];
+    var m = str.match(/[$€£¥](\d+(?:\.\d+)?)/);
+    if (m) {
+        var price = Number(m[1]); // ["$40", "40"]
+        should.push({
+            'range': {
+                'price_min':{
+                    'gt': price * 0.5,
+                    'lt': price * 1.5,
+                    'boost': 2.0
+                }
+            }
+        });
+    }
+    return {
+        'bool': {
+            'should': should
+        }
+    };
+}
+
+function url_query(str)
+{
+    return {
+        'bool':{
+            'must':[
+                {'match':{'url':str}}
+            ]
+        }
+    };
+}
+
+function structured_query(params)
+{
+    var should = [];
+    var must = [];
+    if (params.brand) must.push(
+        {
+            match: {
+                'brand': params.brand
+            }
+        }
+    )
+    if (params.name) must.push({'match':{'name': params.name}})
+    if (params.price) {
+        must.push({
+            'range': {
+                'price_min':{
+                    'gt': params.price * 0.5,
+                    'lt': params.price * 1.5,
+                    'boost': 2.0
+                }
+            }
+        });
+    }
+    return {
+        'bool':{
+            'should': should,
+            'must': must
+        }
+    };
+}
+
+function search(txtq, params)
 {
     // curl -X POST 'search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search' -d '{"query":{"bool":{"must":[{"match":{"brand":"VALENTINO GARAVANI"}},{"match":{"name":"pump"}}]}}}' | python -mjson.tool | less
     start_loading();
+
+    var query = {};
+    if (params) {
+        query = {
+            query: {
+                filtered : {
+                    query: structured_query(params),
+                }
+            }
+        };
+    } else if (is_url(txtq)) {
+        query = {
+            query: url_query(es_cape(txtq))
+        };
+    } else {
+        query = {
+            query: text_query(es_cape(txtq))
+        };
+    }
+    query.from = 0;
+    query.size = 100;
+
     $.ajax({
         method: 'POST',
         url: es_url(),
         crossDomain: true,
         dataType: 'json',
-        data: JSON.stringify({
-            'query': (is_url(txtq) ? url_query : text_query)(es_cape(txtq)),
-            'from': 0,
-            'size': 100
-        })
+        data: JSON.stringify(query)
     }).done(function(data) {
         display_data(txtq, data);
         stop_loading();
     });
 }
 
-function do_search(txtq)
+function do_search(txtq, params)
 {
-    search(txtq);
+    search(txtq, params);
 }
 
 function start_loading()
@@ -401,6 +483,33 @@ function set_url(q)
     var url = location.protocol + '//' + location.host + location.pathname;
     url += '?q=' + encodeURI(q);
     history.pushState('data', '', url);
+}
+
+function do_search_by_product(boxdiv)
+{
+    var params = {
+        brand: null,
+        name: null,
+        price: null
+    };
+    var brand = boxdiv.find('.brand').text();
+    var name = boxdiv.find('.name').text();
+    var price = boxdiv.find('.price').text();
+    params.brand = brand || null;
+    params.name = name || null;
+    var newq = name;
+    newq = brand + ' ' + name; // argh, damned if we do, damned if we don't
+    if (price && price != 'out-of-stock') {
+        newq += ' ' + price;
+        params.price = Number(price.replace(/[$€£¥ ]/, ''));
+    }
+
+    do_search(newq, params);
+
+    $('#q').val(newq);
+    set_url(newq);
+
+    window.scrollTo(0, 0);
 }
 
 function on_page_load()
@@ -422,15 +531,7 @@ function on_page_load()
         tolerance: 'touch',
         drop: function(event, ui) {
             var dropped = ui.draggable;
-            var brand = dropped.find('.brand').text();
-            var name = dropped.find('.name').text();
-            var price = dropped.find('.price').text();
-            var newq = brand + ' ' + name + ' ' + price;
-
-            do_search(newq);
-
-            $('#q').val(newq);
-            set_url(newq);
+            do_search_by_product(dropped);
         }
     });
 }
