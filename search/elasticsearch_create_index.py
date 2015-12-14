@@ -14,24 +14,53 @@ from psycopg2.extras import RealDictCursor
 
 schema = \
 {
-  'properties': {
-    'updated':        { 'type': 'long'   },
-    'merchant_sku':   { 'type': 'string' },
-    'url_host':       { 'type': 'string' },
-    'url':            { 'type': 'string' },
-    'brand':          { 'type': 'string' },
-    'name':           { 'type': 'string' },
-    'descr':          { 'type': 'string', 'index': 'not_analyzed'},
-    'in_stock':       { 'type': 'boolean'},
-    'stock_level':    { 'type': 'int'    },
-    'currency':       { 'type': 'string', 'index': 'not_analyzed'},
-    'price_min':      { 'type': 'float'  },
-    'price_max':      { 'type': 'float'  },
-    'sale_price_min': { 'type': 'float'  },
-    'sale_price_max': { 'type': 'float'  },
-    #'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
-    'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
-  }
+    'settings': {
+        'analysis': {
+            'filter': {
+                'custom_stem': {
+                    'type': 'stemmer_override',
+                    'rules': [
+                        'pumps=>pump',
+                        'spiked=>spike',
+                        'spikes=>spike',
+                        'lacquer=>polish'
+                    ]
+                }
+            },
+        'analyzer': {
+            'my_english': {
+                'tokenizer': 'standard',
+                    'filter': [
+                        'lowercase',
+                        'custom_stem',
+                        'porter_stem'
+                    ]
+                }
+            }
+        }
+    },
+    'mappings': {
+        'product' {
+            'properties': {
+                'updated':        { 'type': 'long'   },
+                'merchant_sku':   { 'type': 'string' },
+                'url_host':       { 'type': 'string' },
+                'url':            { 'type': 'string' },
+                'brand':          { 'type': 'string' },
+                'name':           { 'type': 'string' },
+                'descr':          { 'type': 'string', 'index': 'not_analyzed'},
+                'in_stock':       { 'type': 'boolean'},
+                'stock_level':    { 'type': 'int'    },
+                'currency':       { 'type': 'string', 'index': 'not_analyzed'},
+                'price_min':      { 'type': 'float'  },
+                'price_max':      { 'type': 'float'  },
+                'sale_price_min': { 'type': 'float'  },
+                'sale_price_max': { 'type': 'float'  },
+                #'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
+                'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
+            }
+        }
+    }
 }
 
 def get_rows(conn):
