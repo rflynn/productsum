@@ -100,14 +100,14 @@ def url_to_product(url):
     if prods:
         p = prods[0]
         ret = u''
-        if p.brand and p.name:
+        if p.name:
+            ret = p.name
+        elif p.title:
+            ret = p.title
+        elif p.brand and p.name:
             ret = p.brand + u' ' + p.name
         elif p.merchant_name and p.title:
             ret = p.merchant_name + u' ' + p.title
-        elif p.title:
-            ret = p.title
-        elif p.name:
-            ret = p.name
         if ret and p.price:
             ret += u' %s' % p.price
     return ret

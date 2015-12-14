@@ -31,17 +31,23 @@
                 margin: 0px;
                 padding: 5px;
                 background-color: #fff;
+                text-align: center;
             }
             div.match {
-                border-right: 1px solid green;
                 border-bottom: 1px solid green;
+                border-right: 1px solid green;
             }
             div.img {
                 width: 200px;
-                height: 240px;
+                height: 200px;
+                margin: auto;
+                margin-bottom: 10px;
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
+            }
+            div.price sup {
+                font-size: x-small;
             }
             #sparkline {
             }
@@ -87,6 +93,7 @@
             #clear {
                 font-size: x-large;
                 cursor: pointer;
+                margin: 0.25em;
             }
         </style>
     </head>
@@ -95,7 +102,7 @@
 
         <div id="spinner"></div>
 
-        <div style="clear:both">{{ url }}</div>
+        <div id="url" style="clear:both">{{ url }}</div>
 
         <form method="get" action=".">
             <span id="clear">&times;</span>
@@ -120,8 +127,8 @@
             <li><a href="/?q=http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1">http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1</a>
             <li><a href="/?q=http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/">http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/</a>
             <li><a href="/?q=http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1">http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1</a>
-            <li><a href="/?q="></a>
-            <li><a href="/?q="></a>
+            <li><a href="/?q=http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/">http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/</a>
+            <li><a href="/?q=http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865">http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865</a>
             <li><a href="/?q="></a>
         </ol>
 
@@ -135,8 +142,12 @@
             <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
             <li><a href="/?q=Powder Blush Case & Brush 40">Powder Blush Case & Brush 40</a>
             <li><a href="/?q=Sonic System Purifying Cleansing Brush Head">Sonic System Purifying Cleansing Brush Head</a>
+            <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
             <li><a href="/?q=For Men Sonic System Deep Cleansing Brush 89.5">For Men Sonic System Deep Cleansing Brush 89.5</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 32">SHISEIDO Urban Environment UV Protection Cream SPF 40 32</a>
+            <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38</a>
+            <li><a href="/?q=UV Plus SPF 50, 1.7 oz. 42">UV Plus SPF 50, 1.7 oz. 42</a>
+            <li><a href="/?q=Foreo ISSA Brush Head $24.90">Foreo ISSA Brush Head $24.90</a>
         </ol>
 
         </div>
@@ -145,13 +156,11 @@
         <label for="badlist">FIXME</label>
         <ol id="badlist">
             <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
-            <li><a href="/?q=Christian Louboutin Follies Spikes Pumps 1295">Christian Louboutin Follies Spikes Pumps 1295</a> &mdash; fails to match NM '<a href="/?q=Follies Spiked Patent Red Sole Pump Black/Demi Lune">Follies Spiked Patent Red Sole Pump Black/Demi Lune</a>'
+            <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
             <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> &mdash; TODO: too broad
-            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; better w/o brand '<a href="/?q=Limited Edition Nail Lacquer Trio">Limited Edition Nail Lacquer Trio</a>'
+            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; compare variations <a href="/?q=Nail Lacquer Trio">Nail Lacquer Trio</a>, <a href="/?q=Bal Masqué Nail Lacquer Trio 75">Bal Masqué Nail Lacquer Trio 75</a>
             <li><a href="/?q=Clinique Blush Brush 29.5">Clinique Blush Brush 29.5</a> -- Clinique brand mixed into name for 1, but not the other...
-            <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. 38</a> &mdash; TODO: match images
             <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It 1">Deborah Lippmann Nail Lacquer in Whip It 18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
-            <li><a href="/?q=UV Plus SPF 50, 1.7 oz. 42">UV Plus SPF 50, 1.7 oz. 42</a>
             <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
             <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015</a> &mdash; too specific, compare <a href="/?q=Alexander McQueen Leopard-Print Hair Envelope Clutch">Alexander McQueen Leopard-Print Hair Envelope Clutch</a>
             <li><a href="/?q=Life is good Go-To Hoodie 48">Life is good Go-To Hoodie 48</a> &mdash; too many matches, brand overpowers
@@ -219,10 +228,12 @@ SCORE_MIN_THRESHOLD = 1.0
 
 function match_threshold(scores)
 {
-    var scores = scores.slice(0, 25);
-    var threshold = Math.max(SCORE_MIN_THRESHOLD,
-                             math.max(scores) - (math.std(scores) * 1.1));
-    console.log('threshold:', threshold);
+    var threshold = 0;
+    if (scores.length) {
+        var scores = scores.slice(0, 25);
+        threshold = Math.max(SCORE_MIN_THRESHOLD,
+                            math.max(scores) - (math.std(scores) * 1.1));
+    }
     return threshold;
 }
 
@@ -230,7 +241,7 @@ function analyze(scores)
 {
     var scores = scores.slice(0, 25);
     var h2 = {};
-    if (scores) {
+    if (scores.length) {
         console.log('mean:', math.mean(scores));
         console.log('median:', math.median(scores));
         console.log('mode:', math.mode(scores));
@@ -256,14 +267,30 @@ function do_sparkline(scores)
         });
 }
 
+function display_price(p)
+{
+    var c = p.currency == 'EUR' ? '&euro;' : '$';
+    var d = p.price_min;
+    if (d == Number(d).toFixed(0))
+        d = Number(d).toFixed(0);
+    else
+        d = Number(d).toFixed(2);
+    if (!p.in_stock)
+        return $('<div>').text('out-of-stock');
+    return $('<div>').append($('<sup>').text(c)).append(d);
+}
+
 function display_data(query, data)
 {
     $('xmp').text(JSON.stringify(data.hits, null, 4))
 
     var scores = data.hits.hits.map(function(hit){ return hit._score; });
 
-    do_sparkline(scores);
-    var score_threshold = match_threshold(scores);
+    var score_threshold = 0;
+    if (scores) {
+        do_sparkline(scores);
+        score_threshold = match_threshold(scores);
+    }
 
     $('#results').hide();
     $('#results').empty();
@@ -304,7 +331,8 @@ function display_data(query, data)
             divimg,
             $('<div class="brand">').text(p.brand || ''),
             $('<div class="name">').append(a.text(p.name || '')),
-            $('<div class="price">').text(p.price_min || (p.in_stock ? '' : 'out of stock')),
+            //$('<div class="price">').text(p.price_min || (p.in_stock ? '' : 'out of stock')),
+            $('<div class="price">').append(display_price(p)),
             searchbyme.text('search by me'),
             $('<div class="host">').text(p.url_host)
         );
@@ -368,6 +396,13 @@ function stop_loading()
     $('#spinner').hide();
 }
 
+function set_url(q)
+{
+    var url = location.protocol + '//' + location.host + location.pathname;
+    url += '?q=' + encodeURI(q);
+    history.pushState('data', '', url);
+}
+
 function on_page_load()
 {
     // form input
@@ -395,10 +430,7 @@ function on_page_load()
             do_search(newq);
 
             $('#q').val(newq);
-            var url = location.protocol + '//' + location.host + location.pathname;
-            url += '?q=' + encodeURI(newq);
-            history.pushState('data', '', url);
-
+            set_url(newq);
         }
     });
 }
@@ -414,8 +446,21 @@ function support_back_button()
 
 $(document).ready(function() {
     $('#clear').click(function() {
+        $('#url').empty();
         $('#q').val('');
-        $('form').submit();
+        $('#sparkline').empty();
+        $('#results').css('height', $(window).height());
+        $('#results').animate({
+            height: 0
+        }, 500,
+            function(){
+                $('#results').empty().show();
+            });
+        $('xmp').empty();
+        set_url('');
+    });
+    $('a').click(function() {
+        start_loading();
     });
     support_back_button();
     on_page_load();
