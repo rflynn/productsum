@@ -50,14 +50,14 @@ schema = \
                 'name':           { 'type': 'string' },
                 'descr':          { 'type': 'string', 'index': 'not_analyzed'},
                 'in_stock':       { 'type': 'boolean'},
-                'stock_level':    { 'type': 'int'    },
+                'stock_level':    { 'type': 'long'   },
                 'currency':       { 'type': 'string', 'index': 'not_analyzed'},
                 'price_min':      { 'type': 'float'  },
                 'price_max':      { 'type': 'float'  },
                 'sale_price_min': { 'type': 'float'  },
                 'sale_price_max': { 'type': 'float'  },
                 #'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
-                'img_urls':       { 'type': 'array', 'index': 'not_analyzed' },
+                #'img_urls':       { 'type': 'array', 'index': 'not_analyzed' }, # WTF?
             }
         }
     }
@@ -67,13 +67,13 @@ def get_rows(conn):
     with conn.cursor(cursor_factory=RealDictCursor) as cursor:
         cursor.execute('''
 select
-    up.updated as updated,
+    extract(epoch from up.updated) as updated,
     merchant_sku,
     url_host,
     url_canonical as url,
     coalesce(bt.brand_to, up.brand) as brand,
     name,
-    descr,
+    substr(descr, 0, 4096) as descr,
     in_stock,
     stock_level,
     currency,
@@ -116,9 +116,8 @@ if __name__ == '__main__':
 
     print es.info()
 
-    es.create(index='product',
-              doc_type='product',
-              body=schema)
+    es.indices.create(index='product',
+                      body=schema)
 
     cnt = 0
     for ok, result in streaming_bulk(es, get_rows(conn),
