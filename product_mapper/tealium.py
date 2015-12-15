@@ -3,6 +3,7 @@
 import json
 from pprint import pprint
 import re
+import traceback
 
 '''
 ref: http://tealium.com/blog/standard/what-is-universal-tag-part-4/
@@ -19,8 +20,11 @@ class Tealium(object):
         if utag_text:
             m = re.search('({.*})', utag_text[0])
             if m:
-                objstr = m.groups(0)[0]
-                j = json.loads(objstr)
+                try:
+                    objstr = m.groups(0)[0]
+                    j = json.loads(objstr)
+                except:
+                    traceback.print_exc()
 
         return j
 

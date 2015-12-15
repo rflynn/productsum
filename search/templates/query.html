@@ -132,9 +132,9 @@
 
         <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
         <ol id="goodlist">
+            <li><a href="/?q=http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1">http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1</a>
             <li><a href="/?q=http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1">http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1</a>
             <li><a href="/?q=http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/">http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/</a>
-            <li><a href="/?q=http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1">http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1</a>
             <li><a href="/?q=http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/">http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/</a>
             <li><a href="/?q=http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865">http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865</a>
             <li><a href="/?q="></a>
@@ -165,6 +165,11 @@
             <li><a href="/?q=brand:(Sisley Paris) Eye Contour Mask, 30ml">brand:(Sisley Paris) Eye Contour Mask, 30ml</a>
             <li><a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a>
             <li><a href="/?q=RVCA Stratta Dress">RVCA Stratta Dress</a>
+            <li><a href="/?q=brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695">brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695</a>
+            <li><a href="/?q=brand:(Nike) Roshe One sneakers €90">brand:(Nike) Roshe One sneakers €90</a>
+            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48">brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48</a>
+            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118">brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118</a>
+            <li><a href="/?q=brand:(Clinique) Blush Brush $29.5">brand:(Clinique) Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
         </ol>
 
         </div>
@@ -174,14 +179,13 @@
         <ol id="badlist">
             <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
             <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
-            <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> &mdash; TODO: too broad
-            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; compare variations <a href="/?q=Nail Lacquer Trio">Nail Lacquer Trio</a>, <a href="/?q=Bal Masqué Nail Lacquer Trio $75">Bal Masqué Nail Lacquer Trio $75</a>
-            <li><a href="/?q=Clinique Blush Brush $29.5">Clinique Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
-            <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It 1">Deborah Lippmann Nail Lacquer in Whip It 18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
+            <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a> &mdash; TODO: differentiate price/quantity
+            <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
+            <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
             <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
-            <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015</a> &mdash; too specific, compare <a href="/?q=Alexander McQueen Leopard-Print Hair Envelope Clutch">Alexander McQueen Leopard-Print Hair Envelope Clutch</a>
-            <li><a href="/?q=Life is good Go-To Hoodie 48">Life is good Go-To Hoodie 48</a> &mdash; too many matches, brand overpowers
-            <li><a href="/?q=STEVE MADDEN S5705 38">STEVE MADDEN S5705 38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
+            <li><a href="/?q=brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag 1015">brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag 1015</a>
+            <li><a href="/?q=brand:(Life is good) Go-To Hoodie $48">brand:(Life is good) Go-To Hoodie $48</a> &mdash; too many matches, brand overpowers
+            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
             <li>scoring accounts for price similarity
             <li>'<a href="/?q=red lipstick">red lipstick</a>' has problems with
                 <ol>
@@ -191,11 +195,11 @@
                     <li>Coverstar Dress in Lipstick Red
                 </ol>
             <li>some names still have the brand as a suffix...
-            <li><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> results do not respect the brand...
+            <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a> results do not respect the brand...
             <li><a href="/?q=Leather Kitten Heel Pumps">Leather Kitten Heel Pumps</a> &mdash; too broad
-            <li><a href="/?q=RALPH LAUREN Leather Large Hobo Bag $448">RALPH LAUREN Leather Large Hobo Bag $448</a> -- brands don't work, matching logic...
-            <li><a href="/?q=Ray-Ban Sunglasses $200">Ray-Ban Sunglasses $200</a> -- even brand + name + price can just be too vague...
-            <li><a href="/?q=SERGIO ROSSI Suede Pumps $605">SERGIO ROSSI Suede Pumps $605</a>
+            <li><a href="/?q=brand:(RALPH LAUREN) Leather Large Hobo Bag $448">brand:(RALPH LAUREN) Leather Large Hobo Bag $448</a> -- brands don't work, matching logic...
+            <li><a href="/?q=Ray-Ban Sunglasses $200">brand:(Ray-Ban) Sunglasses $200</a> -- even brand + name + price can just be too vague...
+            <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
             <li><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)
         </ol>
         </div>
