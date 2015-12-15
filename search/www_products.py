@@ -73,7 +73,9 @@ def url_to_product(url):
                 if (u.host != host
                     and u.host not in third_parties
                     and domain_to_canonical(u.host) not in third_parties_canon
-                    and u.scheme in ('http','https'))]
+                    and u.scheme in ('http','https')
+                    and (not u.path.endswith('.jpg'))
+                    and (u.path not in ('', '/')))]
     
     # in product2db.Host2Map
     cnt_url = Counter(best)
