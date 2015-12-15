@@ -137,10 +137,9 @@
             <li><a href="/?q=http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/">http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/</a>
             <li><a href="/?q=http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/">http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/</a>
             <li><a href="/?q=http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865">http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865</a>
-            <li><a href="/?q="></a>
         </ol>
 
-        <label for="goodlist">Example Products</label>
+        <label for="goodlist">Example Product Searches</label>
         <ol id="goodlist">
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
             <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown $1045">NVPS Leopard-Print Red Sole Pump, Brown $1045</a>
@@ -167,9 +166,15 @@
             <li><a href="/?q=RVCA Stratta Dress">RVCA Stratta Dress</a>
             <li><a href="/?q=brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695">brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695</a>
             <li><a href="/?q=brand:(Nike) Roshe One sneakers €90">brand:(Nike) Roshe One sneakers €90</a>
-            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48">brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48</a>
-            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118">brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118</a>
+            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118">brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118</a> &mdash; image recognition wouldn't work here
             <li><a href="/?q=brand:(Clinique) Blush Brush $29.5">brand:(Clinique) Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
+            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Tiny Metro Watch $175">brand:(KATE SPADE NEW YORK) Tiny Metro Watch $175</a> -- Clinique brand mixed into name for 1, but not the other...
+            <li><a href="/?q=brand:(RALPH LAUREN) Leather Large Hobo Bag $448">brand:(RALPH LAUREN) Leather Large Hobo Bag $448</a>
+            <li><a href="/?q=brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag $1015">brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag $1015</a>
+            <li><a href="/?q=brand:(Life is good) Go-To Hoodie $48">brand:(Life is good) Go-To Hoodie $48</a>
+            <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a>
+            <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
+            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
         </ol>
 
         </div>
@@ -177,30 +182,45 @@
         <div style="width: 55%; float:right">
         <label for="badlist">FIXME</label>
         <ol id="badlist">
-            <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
-            <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
-            <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a> &mdash; TODO: differentiate price/quantity
-            <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
-            <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
-            <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
-            <li><a href="/?q=brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag 1015">brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag 1015</a>
-            <li><a href="/?q=brand:(Life is good) Go-To Hoodie $48">brand:(Life is good) Go-To Hoodie $48</a> &mdash; too many matches, brand overpowers
-            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
-            <li>scoring accounts for price similarity
-            <li>'<a href="/?q=red lipstick">red lipstick</a>' has problems with
+            <li>stemming
                 <ol>
-                    <li>lipstick red leopard print suede slip-on sneakers
-                    <li>lipstick red stretch satin 'Lillie' strapless dress
-                    <li>Lipstick-Print Leather Ranger Boot, Black/Red
-                    <li>Coverstar Dress in Lipstick Red
+                    <li>'<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
+                    <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
                 </ol>
-            <li>some names still have the brand as a suffix...
-            <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a> results do not respect the brand...
-            <li><a href="/?q=Leather Kitten Heel Pumps">Leather Kitten Heel Pumps</a> &mdash; too broad
-            <li><a href="/?q=brand:(RALPH LAUREN) Leather Large Hobo Bag $448">brand:(RALPH LAUREN) Leather Large Hobo Bag $448</a> -- brands don't work, matching logic...
-            <li><a href="/?q=Ray-Ban Sunglasses $200">brand:(Ray-Ban) Sunglasses $200</a> -- even brand + name + price can just be too vague...
-            <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
-            <li><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)
+            <li>product dupes
+                <ol>
+                    <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
+                </ol>
+            <li>size/quantity
+                <ol>
+                    <li> are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"
+                </ol>
+            <li>brand
+                <ol>
+                    <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a><a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
+                    <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically
+                </ol>
+            <li>non-normalized language
+                <ol>
+                    <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color
+                </ol>
+            <li>matching/grouping doesn't respect brand
+                <ol>
+                    <li><a href="/?q=Leather Kitten Heel Pumps">Leather Kitten Heel Pumps</a> &mdash; too broad
+                </ol>
+            <li>specificity
+                <ol>
+                    <li><a href="/?q=Ray-Ban Sunglasses $200">brand:(Ray-Ban) Sunglasses $200</a> -- even brand + name + price can just be too vague...
+                </ol>
+            <li>color
+                <ol>
+                    <li><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)
+                    <li><a href="/?q=brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48">brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48</a> &mdash; ignores silver vs. gold vs. none
+                </ol>
+            <li>key product attributes
+                <ol>
+                    <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a> SPF 30 and SPF 50 are both same price, same image, but are not the same product
+                </ol>
         </ol>
         </div>
 
@@ -291,6 +311,7 @@ function display_data(query, data)
 
     $('#results').hide();
     $('#results').empty();
+    $('#results').show();
 
     $.each(data.hits.hits, function(i, item) {
 
@@ -384,8 +405,8 @@ function text_query(str)
         should.push({
             'range': {
                 'price_min':{
-                    'gt': price * 0.5,
-                    'lt': price * 1.5,
+                    'gt': price - 2,
+                    'lt': price + 2,
                     'boost': 2.0
                 }
             }
@@ -425,8 +446,8 @@ function structured_query(params)
         must.push({
             'range': {
                 'price_min':{
-                    'gt': params.price * 0.5,
-                    'lt': params.price * 1.5,
+                    'gt': params.price - 2,
+                    'lt': params.price + 2,
                     'boost': 2.0
                 }
             }
