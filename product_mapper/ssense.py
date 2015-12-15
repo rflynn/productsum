@@ -9,6 +9,7 @@ import json
 from pprint import pprint
 import re
 import time
+import traceback
 
 from htmlmetadata import HTMLMetadata
 from og import OG
@@ -166,7 +167,7 @@ class ProductsSsense(object):
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
-        twit = get_meta_twitter(soup)
+        tw = get_meta_twitter(soup)
         mp = {t['property']: t['content']
                     for t in soup.findAll('meta', content=True,
                                           property=re.compile('^product:'))}
@@ -174,9 +175,12 @@ class ProductsSsense(object):
         sel_size = soup.find('select', id='size')
         sizes = None
         if sel_size:
-            sizes = sorted(normstring(re.sub('_.*', '', o['value'])) for o in
-                            sel_size.findAll('option', value=True)
-                                if o['value']) or None
+            try:
+                sizes = sorted(normstring(re.sub('_.*', '', o['value'])) for o in
+                                sel_size.findAll('option', value=True)
+                                    if o['value']) or None
+            except:
+                traceback.print_exc()
 
         sp = sp[0] if sp else {}
 
@@ -185,7 +189,7 @@ class ProductsSsense(object):
             'og':  og,
             'meta':meta,
             'mp':  mp,
-            'tw':  twit,
+            'tw':  tw,
         }
 
         '''
