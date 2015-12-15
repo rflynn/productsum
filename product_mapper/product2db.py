@@ -80,7 +80,8 @@ def each_link(url_host=None, since_ts=0):
         resp = table.scan(
             FilterExpression=fe,
             ProjectionExpression=pe,
-            ExpressionAttributeNames=ean
+            ExpressionAttributeNames=ean,
+            Select='SPECIFIC_ATTRIBUTES'
         )
         for item in resp['Items']:
             yield item
@@ -88,7 +89,8 @@ def each_link(url_host=None, since_ts=0):
             resp = table.scan(
                 ExclusiveStartKey=resp['LastEvaluatedKey'],
                 ProjectionExpression=pe,
-                ExpressionAttributeNames=ean
+                ExpressionAttributeNames=ean,
+                Select='SPECIFIC_ATTRIBUTES'
             )
             for item in resp['Items']:
                 yield item
@@ -104,7 +106,9 @@ def each_link(url_host=None, since_ts=0):
                     KeyConditionExpression=Key('host').eq(url_host),
                     FilterExpression=fe,
                     ProjectionExpression=pe,
-                    ExpressionAttributeNames=ean
+                    ExpressionAttributeNames=ean,
+                    Select='SPECIFIC_ATTRIBUTES',
+                    Limit=10
                 )
             except botocore.exceptions.ClientError as e:
                 print e
@@ -123,7 +127,9 @@ def each_link(url_host=None, since_ts=0):
                         KeyConditionExpression=Key('host').eq(url_host),
                         FilterExpression=fe,
                         ProjectionExpression=pe,
-                        ExpressionAttributeNames=ean
+                        ExpressionAttributeNames=ean,
+                        Select='SPECIFIC_ATTRIBUTES',
+                        Limit=10
                     )
                     resp = r
                 except botocore.exceptions.ClientError as e:
