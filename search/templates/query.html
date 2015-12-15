@@ -26,24 +26,24 @@
                 height: 380px;
                 float: left;
                 display: inline-block;
-                border-right: 1px solid #eee;
-                border-bottom: 1px solid #eee;
+                border: 1px solid #eee;
                 border-radius: 0px;
-                margin: 0px;
+                margin: 0 -1px -1px 0;
                 padding: 5px;
                 background-color: #fff;
                 text-align: center;
             }
             div.match {
-                border-bottom: 1px solid green;
-                border-right: 1px solid green;
+                border: 1px solid green;
+                /*border-bottom: 1px solid green;
+                border-right: 1px solid green;*/
             }
             div.img {
                 width: 200px;
                 height: 200px;
                 margin: auto;
                 margin-bottom: 10px;
-                background-size: contain;
+                background-size: cover /*contain*/;
                 background-position: center;
                 background-repeat: no-repeat;
             }
@@ -51,6 +51,8 @@
                 font-size: x-small;
             }
             #sparkline {
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
             }
             ol {
                 margin-top: 0;
@@ -72,7 +74,7 @@
                 border-bottom:50px solid rgba(0,174,239,.15);
                 border-top:50px solid rgba(0,174,239,.8);
                 border-radius:100%;
-                z-index: 9999;
+                z-index: 99999;
                 display: none; /* hide initially */
             }
             @-webkit-keyframes rotation {
@@ -108,14 +110,16 @@
 
         <div id="url" style="clear:both">{{ url }}</div>
 
-        <form method="get" action=".">
-            <span id="clear">&times;</span>
-            <input id="q" name="q" size="90" value="{{ q }}">
-        </form>
+        <div style="white-space: nowrap">
+            <form method="get" action=".">
+                <span id="clear">&times;</span>
+                <input id="q" name="q" size="90" value="{{ q }}">
+            </form>
+        </div>
 
-        <div id="sparkline"></div>
-
-        <div id="results">
+        <div style="margin-left:2.18em">
+            <div id="sparkline"></div>
+            <div id="results"></div>
         </div>
 
         <br style="clear:both">
@@ -128,9 +132,9 @@
 
         <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
         <ol id="goodlist">
+            <li><a href="/?q=http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1">http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1</a>
             <li><a href="/?q=http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1">http://www.elle.com/fashion/news/g27407/flat-party-shoes-for-the-holidays/?slide=1</a>
             <li><a href="/?q=http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/">http://www.cnet.com/products/belkin-qode-ultimate-pro-keyboard-case-for-ipad-air-2/</a>
-            <li><a href="/?q=http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1">http://www.harpersbazaar.com/beauty/g5029/todays-beauty-secret/?slide=1</a>
             <li><a href="/?q=http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/">http://nymag.com/thecut/2015/12/mens-holiday-gift-guide/slideshow/</a>
             <li><a href="/?q=http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865">http://www.polyvore.com/roland_mouret_saxby_cutout_jumpsuit/thing?id=155948865</a>
             <li><a href="/?q="></a>
@@ -152,12 +156,20 @@
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
             <li><a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Foreo ISSA Brush Head $24.90">Foreo ISSA Brush Head $24.90</a>
-            <li><a href="/?q=TOM FORD Patent Pin-Heel Pump">TOM FORD Patent Pin-Heel Pump</a>
+            <li><a href="/?q=brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890">brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890</a>
             <li><a href="/?q=CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50">CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50</a>
             <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a>
-            <li><a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black $843">Charlotte Olympia Orbital Pomeline Suede Pump, Black $843</a>
+            <li><a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843</a>
             <li><a href="/?q=Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795">Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795</a>
-            <li><a href="/?q=Sisley Paris Botanical D-Tox, 30ml $245">Sisley Paris Botanical D-Tox, 30ml $245</a> -- first 2 should match but don't...
+            <li><a href="/?q=brand:(Sisley Paris) Botanical D-Tox, 30ml $245">brand:(Sisley Paris) Botanical D-Tox, 30ml $245</a>
+            <li><a href="/?q=brand:(Sisley Paris) Eye Contour Mask, 30ml">brand:(Sisley Paris) Eye Contour Mask, 30ml</a>
+            <li><a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a>
+            <li><a href="/?q=RVCA Stratta Dress">RVCA Stratta Dress</a>
+            <li><a href="/?q=brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695">brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695</a>
+            <li><a href="/?q=brand:(Nike) Roshe One sneakers €90">brand:(Nike) Roshe One sneakers €90</a>
+            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48">brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48</a>
+            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118">brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118</a>
+            <li><a href="/?q=brand:(Clinique) Blush Brush $29.5">brand:(Clinique) Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
         </ol>
 
         </div>
@@ -167,14 +179,13 @@
         <ol id="badlist">
             <li>TODO: stemming, see '<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
             <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
-            <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> &mdash; TODO: too broad
-            <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a> &mdash; compare variations <a href="/?q=Nail Lacquer Trio">Nail Lacquer Trio</a>, <a href="/?q=Bal Masqué Nail Lacquer Trio $75">Bal Masqué Nail Lacquer Trio $75</a>
-            <li><a href="/?q=Clinique Blush Brush $29.5">Clinique Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
-            <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It 1">Deborah Lippmann Nail Lacquer in Whip It 18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
+            <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a> &mdash; TODO: differentiate price/quantity
+            <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
+            <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color 
             <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: too broad
-            <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag 1015</a> &mdash; too specific, compare <a href="/?q=Alexander McQueen Leopard-Print Hair Envelope Clutch">Alexander McQueen Leopard-Print Hair Envelope Clutch</a>
-            <li><a href="/?q=Life is good Go-To Hoodie 48">Life is good Go-To Hoodie 48</a> &mdash; too many matches, brand overpowers
-            <li><a href="/?q=STEVE MADDEN S5705 38">STEVE MADDEN S5705 38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
+            <li><a href="/?q=brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag 1015">brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag 1015</a>
+            <li><a href="/?q=brand:(Life is good) Go-To Hoodie $48">brand:(Life is good) Go-To Hoodie $48</a> &mdash; too many matches, brand overpowers
+            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
             <li>scoring accounts for price similarity
             <li>'<a href="/?q=red lipstick">red lipstick</a>' has problems with
                 <ol>
@@ -184,9 +195,12 @@
                     <li>Coverstar Dress in Lipstick Red
                 </ol>
             <li>some names still have the brand as a suffix...
-            <li><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> results do not respect the brand...
+            <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a> results do not respect the brand...
             <li><a href="/?q=Leather Kitten Heel Pumps">Leather Kitten Heel Pumps</a> &mdash; too broad
-            <li><a href="/?q=RALPH LAUREN Leather Large Hobo Bag $448">RALPH LAUREN Leather Large Hobo Bag $448</a> -- brands don't work, matching logic...
+            <li><a href="/?q=brand:(RALPH LAUREN) Leather Large Hobo Bag $448">brand:(RALPH LAUREN) Leather Large Hobo Bag $448</a> -- brands don't work, matching logic...
+            <li><a href="/?q=Ray-Ban Sunglasses $200">brand:(Ray-Ban) Sunglasses $200</a> -- even brand + name + price can just be too vague...
+            <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
+            <li><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)
         </ol>
         </div>
 
@@ -320,6 +334,7 @@ function display_data(query, data)
         );
         if (item._score >= score_threshold)
             boxdiv.addClass('match');
+        boxdiv.css('z-index', (10000-i).toString());
         boxdiv.appendTo('#results');
     });
     $('div.box').draggable({
@@ -465,7 +480,21 @@ function search(txtq, params)
 
 function do_search(txtq, params)
 {
-    search(txtq, params);
+    var otxtq = txtq;
+    var m = txtq.match(/brand:\(([^)]*)\)/);
+    if (m) {
+        params = params || {};
+        params.brand = m[1];
+        txtq = txtq.replace(m[0], '');
+        m = txtq.match(/[$€£¥](\d+(?:\.\d+)?)/)
+        if (m) {
+            params.price = Number(m[1]);
+            txtq = txtq.replace(m[0], '');
+        }
+        params.name = txtq.trim();
+    }
+    console.log('otxtq', otxtq, 'params', params);
+    search(otxtq, params);
 }
 
 function start_loading()
@@ -497,8 +526,7 @@ function do_search_by_product(boxdiv)
     var price = boxdiv.find('.price').text();
     params.brand = brand || null;
     params.name = name || null;
-    var newq = name;
-    newq = brand + ' ' + name; // argh, damned if we do, damned if we don't
+    var newq = 'brand:(' + brand + ') ' + name;
     if (price && price != 'out-of-stock') {
         newq += ' ' + price;
         params.price = Number(price.replace(/[$€£¥ ]/, ''));

@@ -73,7 +73,9 @@ def url_to_product(url):
                 if (u.host != host
                     and u.host not in third_parties
                     and domain_to_canonical(u.host) not in third_parties_canon
-                    and u.scheme in ('http','https'))]
+                    and u.scheme in ('http','https')
+                    and (not u.path.endswith('.jpg'))
+                    and (u.path not in ('', '/')))]
     
     # in product2db.Host2Map
     cnt_url = Counter(best)
@@ -100,17 +102,25 @@ def url_to_product(url):
     if prods:
         p = prods[0]
         ret = u''
+        if p.brand:
+            brand = p.brand
+            if brand.startswith('www.') and brand.endswith('.com'):
+                brand = brand[4:-4]
+            ret = 'brand:(%s) ' % brand.encode('utf8')
+        elif p.merchant_name:
+            brand = p.merchant_name
+            if brand.startswith('www.') and brand.endswith('.com'):
+                brand = brand[4:-4]
+            if brand == 'ralphlauren':
+                brand = 'ralpha lauren'
+            ret = 'brand:(%s) ' % brand.encode('utf8')
         if p.name:
-            ret = p.name
+            ret += p.name
         elif p.title:
-            ret = p.title
-        elif p.brand and p.name:
-            ret = p.brand + u' ' + p.name
-        elif p.merchant_name and p.title:
-            ret = p.merchant_name + u' ' + p.title
-        if ret and p.price:
-            ret += u' %s' % p.price
-    return ret
+            ret += p.title
+        if p.price:
+            ret += u' %s%s' % ('$', str(p.price).replace('$',''))
+    return ret.strip()
 
 
 # http://0.0.0.0:9998/search/by/url?url=http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
