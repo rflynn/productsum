@@ -643,10 +643,11 @@ def prefix_matches(path, prefix):
         return bool(re.search(pattern, path))
     return (
         path.startswith(prefix)
-        or prefix[-1] == '/' and path == prefix[:-1] # "/en/" ~= "/en"
+        or (prefix[-1] == '/' and path == prefix[:-1]) # "/en/" ~= "/en"
     )
 
 assert prefix_matches('/foo/bar?baz', '/*bar')
+assert prefix_matches('/fr-fr/femmes', '/fr-fr/')
 assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
 
 def ok_to_spider(url, fqdn, settings):
