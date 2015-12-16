@@ -593,6 +593,9 @@ function support_back_button()
 {
     if (window.history && window.history.pushState) {
         $(window).on('popstate', function() {
+            if (location.search.startsWith('?q=')) {
+                $('#q').val(decodeURI(location.search.substr(3)));
+            }
             on_page_load();
         });
     }
