@@ -123,6 +123,7 @@
 
         <div style="margin-left:2.18em">
             <div id="sparkline"></div>
+            <div id="totalproducts"></div>
             <div id="results"></div>
         </div>
 
@@ -332,7 +333,7 @@ function display_data(query, data)
         a.attr('href', p.url);
         a.attr('target', '_blank');
 
-        var searchbyme = $('<a class="search-by-me">');
+        var searchbyme = $('<a class="search-by-me" href="#">');
 
         var imgurl = p.img_urls ? p.img_urls[0] : '';
 
@@ -357,12 +358,12 @@ function display_data(query, data)
 
         var boxdiv = $('<div class="box">').append(
             $('<div class="score">').text('score ' + Number(item._score).toFixed(3)),
+            searchbyme.html('search by product &#128269;'),
             divimg,
             $('<div class="brand">').text(p.brand || ''),
             $('<div class="name">').append(a.text(p.name || '')),
             //$('<div class="price">').text(p.price_min || (p.in_stock ? '' : 'out of stock')),
             $('<div class="price">').append(display_price(p)),
-            searchbyme.html('search by product &#128269;'),
             $('<div class="host">').text(p.url_host)
         );
         if (item._score >= score_threshold)
@@ -385,8 +386,9 @@ function display_data(query, data)
         }
     });
 
-    $('a.search-by-me').click(function() {
+    $('a.search-by-me').click(function(event) {
         do_search_by_product($(this).closest('div.box'));
+        event.preventDefault();
     });
 
     $('#results').show();
@@ -396,9 +398,9 @@ function es_cape(str) {
     return str.replace(/[/]/gi, function(c){ return "\\"+c; });
 }
 
-function es_url()
+function es_index()
 {
-    return 'http://search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search';
+    return 'http://search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/';
 }
 
 function text_query(str)
@@ -501,7 +503,7 @@ function search(txtq, params)
 
     $.ajax({
         method: 'POST',
-        url: es_url(),
+        url: es_index() + '_search',
         crossDomain: true,
         dataType: 'json',
         data: JSON.stringify(query)
@@ -576,6 +578,17 @@ function do_search_by_product(boxdiv)
 function on_page_load()
 {
     // form input
+
+    $.ajax({
+        dataType: 'json',
+        url: es_index() + '_count',
+        success: function(data) {
+            var cnt = data.count;
+            var kcnt = Math.round(data.count / 1000);
+            console.log('count', '' + kcnt + 'k');
+            $('#totalproducts').text('' + kcnt + 'k products');
+        }
+    });
 
     $('form').submit(function(event) {
         start_loading();
