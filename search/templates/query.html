@@ -69,10 +69,18 @@
                 -o-animation: rotation .6s infinite linear;
                 animation: rotation .6s infinite linear;
                 /*background-color: #fff;*/
+
+                /*
                 border-left:50px solid rgba(0,174,239,.15);
                 border-right:50px solid rgba(0,174,239,.15);
                 border-bottom:50px solid rgba(0,174,239,.15);
                 border-top:50px solid rgba(0,174,239,.8);
+                */
+                border-left:10px solid rgba(0,0,0,.3);
+                border-right:10px solid rgba(0,0,0,.3);
+                border-bottom:10px solid rgba(0,0,0,.3);
+                border-top:10px solid rgba(0,0,0,.9);
+
                 border-radius:100%;
                 z-index: 99999;
                 display: none; /* hide initially */
@@ -105,6 +113,29 @@
                 max-width: 100%;
                 overflow: scroll;
             }
+            #totalproducts {
+                display: inline-block;
+            }
+            #merchant-slugs div {
+                display: inline-block;
+                background-color: #F5D0A9;
+                border-radius: 3px;
+                padding: 0 3px 0 3px;
+                margin: 1px 2px 1px 0;
+            }
+            #brand-slugs span {
+                display: inline-flex;
+                /*background-color: #CEE3F6;*/
+                /* background-color: #F5D0A9; */
+                background-color: #E0F2F7;
+                border-radius: 3px;
+                padding: 0 3px 0 3px;
+                margin: 1px 2px 1px 0;
+            }
+            #brand-slugs div a:link, a:visited {
+                color: black;
+                text-decoration: none;
+            }
         </style>
     </head>
 
@@ -123,8 +154,14 @@
 
         <div style="margin-left:2.18em">
             <div id="sparkline"></div>
-            <div id="totalproducts"></div>
+            <div id="metadata">
+                <div id="totalproducts"></div>
+                <div id="merchant-slugs"></div>
+            </div>
             <div id="results"></div>
+            <div>
+                <div id="brand-slugs"></div>
+            </div>
         </div>
 
         <br style="clear:both">
@@ -188,9 +225,6 @@
         <div style="width: 50%; float:right">
         <label for="badlist">FIXME</label>
         <ol id="badlist">
-            <li>stemming
-                <ol>
-                </ol>
             <li>product dupes
                 <ol>
                     <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
@@ -230,6 +264,7 @@
                 <ol>
                     <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a> SPF 30 and SPF 50 are both same price, same image, but are not the same product
                     <li>cream vs. lotion should differ here: <a href="/?q=brand:(Elizabeth Arden) Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">brand:(Elizabeth Arden) Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a>
+                    <li><a href="/?q=brand:(DIOR) Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">brand:(DIOR) Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a> &mdash; product should match but doesn't: '<a href="/?q=brand:(DIOR) Hypnotic Poison Eau Secrete by Christian Dior for Women $78">brand:(DIOR) Hypnotic Poison Eau Secrete by Christian Dior for Women $78</a>
                 </ol>
         </ol>
         </div>
@@ -575,20 +610,94 @@ function do_search_by_product(boxdiv)
     window.scrollTo(0, 0);
 }
 
+function load_brand_tags()
+{
+    // load brands
+    $.ajax({
+        url: es_index() + '_search',
+        type: 'POST',
+        data: JSON.stringify({
+            'aggs': {
+                'host': {
+                    'terms': {
+                        'field' : 'brand_raw',
+                        'size': 1000,
+                    }
+                }
+            }
+        }),
+        success: function(data) {
+            console.log('data', data);
+            var buckets = data.aggregations.host.buckets;
+            buckets.sort(function(a, b){ return b.doc_count - a.doc_count; });
+            var hosts = buckets.map(function(x){ return x.key; });
+            hosts.sort(function(a, b){
+                a = a.toLowerCase();
+                b = b.toLowerCase();
+                return (a > b) - (b > a);
+            });
+            console.log('hosts', hosts);
+            $('brand-slugs').hide();
+            hosts.forEach(function(x){
+                var tag = $('<span>').append($('<a href="#">').text(x));
+                $(tag).click(function(event){
+                    var txtq = 'brand:(' + x + ')';
+                    $('#q').val(txtq);
+                    $('form').submit();
+                    event.preventDefault();
+                });
+                $('#brand-slugs').append(tag);
+            });
+            $('brand-slugs').show();
+        }
+    });
+}
+
+function load_merchant_slugs()
+{
+    $.ajax({
+        url: es_index() + '_search',
+        type: 'POST',
+        data: JSON.stringify({
+            'aggs': {
+                'host': {
+                    'terms': {
+                        'field' : 'merchant_slug',
+                        'size': 100,
+                    }
+                }
+            }
+        }),
+        success: function(data) {
+            console.log('data', data);
+            var buckets = data.aggregations.host.buckets;
+            buckets.sort(function(a, b){ return b.doc_count - a.doc_count; });
+            var hosts = buckets.map(function(x){ return x.key; });
+            hosts.sort();
+            console.log('hosts', hosts);
+            hosts.forEach(function(x){
+                $('#merchant-slugs').append($('<div>').text(x));
+            });
+        }
+    });
+}
+
 function on_page_load()
 {
     // form input
 
-    $.ajax({
-        dataType: 'json',
-        url: es_index() + '_count',
-        success: function(data) {
-            var cnt = data.count;
+    //load_merchant_slugs()
+
+    load_brand_tags();
+
+    // load product count
+    $.getJSON(
+        es_index() + '_count',
+        function(data) {
             var kcnt = Math.round(data.count / 1000);
-            console.log('count', '' + kcnt + 'k');
             $('#totalproducts').text('' + kcnt + 'k products');
         }
-    });
+    );
 
     $('form').submit(function(event) {
         start_loading();
@@ -626,6 +735,7 @@ $(document).ready(function() {
     $('#clear').click(function() {
         $('#url').empty();
         $('#q').val('');
+        $('#merchant-slugs').empty();
         $('#sparkline').empty();
         $('#results').css('height', $(window).height());
         $('#results').animate({
