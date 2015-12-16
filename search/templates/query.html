@@ -148,7 +148,8 @@
             <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745</a>
             <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
             <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
-            <li><a href="/?q=Sonic System Purifying Cleansing Brush Head">Sonic System Purifying Cleansing Brush Head</a>
+            <li><a href="/?q=brand:(Clinique) Sonic System Purifying Cleansing Brush Head $26">brand:(Clinique) Sonic System Purifying Cleansing Brush Head $26</a>
+            <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
             <li><a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Foreo ISSA Brush Head $24.90">Foreo ISSA Brush Head $24.90</a>
             <li><a href="/?q=brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890">brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890</a>
@@ -258,6 +259,8 @@ function match_threshold(scores)
         var scores = scores.slice(0, 25);
         threshold = Math.max(SCORE_MIN_THRESHOLD,
                             math.mean(scores) + (math.std(scores)));
+        if (threshold >= scores[0])
+            threshold = math.mean(scores);
     }
     return threshold;
 }
@@ -274,6 +277,7 @@ function analyze(scores)
         console.log('var:', math.var(scores));
         console.log('max:', math.max(scores));
         var threshold = match_threshold(scores);
+        console.log('threshold', threshold);
         var k1 = '' + threshold.toFixed(2) + ':100';
         var k2 = '0:' + threshold.toFixed(2);
         h2[k1] = 'green';
