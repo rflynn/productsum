@@ -17,6 +17,10 @@ schema = \
     'settings': {
         'analysis': {
             'filter': {
+                'snowball': {
+                    'type': 'snowball',
+                    'language': 'English',
+                },
                 'custom_stem': {
                     'type': 'stemmer_override',
                     'rules': [
@@ -25,15 +29,16 @@ schema = \
                         'spikes=>spike',
                         'lacquer=>polish'
                     ]
-                }
+                },
             },
         'analyzer': {
             'my_english': {
                 'tokenizer': 'standard',
                     'filter': [
                         'lowercase',
-                        'custom_stem',
-                        'porter_stem'
+                        #'custom_stem',
+                        #'porter_stem'
+                        'snowball',
                     ]
                 }
             }
