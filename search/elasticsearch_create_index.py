@@ -17,6 +17,14 @@ schema = \
     'settings': {
         'analysis': {
             'filter': {
+                'eng_stem': {
+                    'type': 'stemmer',
+                    'language': 'english',
+                },
+                'pos_stem': {
+                    'type': 'stemmer',
+                    'language': 'possessive_english',
+                },
                 'snowball': {
                     'type': 'snowball',
                     'language': 'English',
@@ -27,7 +35,7 @@ schema = \
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
-                        'lacquer=>polish'
+                        'lacquer=>polish', # nail polish
                     ]
                 },
             },
@@ -36,9 +44,11 @@ schema = \
                 'tokenizer': 'standard',
                     'filter': [
                         'lowercase',
-                        #'custom_stem',
                         #'porter_stem'
-                        'snowball',
+                        #'snowball',
+                        'eng_stem',
+                        'pos_stem',
+                        'custom_stem',
                     ]
                 }
             }
@@ -52,7 +62,7 @@ schema = \
                 'url_host':       { 'type': 'string' },
                 'url':            { 'type': 'string' },
                 'brand':          { 'type': 'string' },
-                'name':           { 'type': 'string' },
+                'name':           { 'type': 'string', 'analyzer': 'my_english' },
                 'descr':          { 'type': 'string', 'index': 'not_analyzed'},
                 'in_stock':       { 'type': 'boolean'},
                 'stock_level':    { 'type': 'long'   },
