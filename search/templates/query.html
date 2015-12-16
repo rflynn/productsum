@@ -170,6 +170,7 @@
             <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a>
             <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
             <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
+           <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> matches <a href="/?q=Follies Spikes Pumps">Follies Spikes Pumps</a> (stemming)
         </ol>
 
         <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
@@ -188,8 +189,6 @@
         <ol id="badlist">
             <li>stemming
                 <ol>
-                    <li>'<a href="/?q=spiked pumps">spiked pumps</a>' spikes vs. spiked; pump vs. pumps
-                    <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> &mdash; fails to match NM '<a href="/?q=Follies Spikes Pump">Follies Spikes Pump</a>'
                 </ol>
             <li>product dupes
                 <ol>
@@ -201,12 +200,12 @@
                 </ol>
             <li>brand
                 <ol>
-                    <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a><a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
+                    <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
                     <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically
                 </ol>
             <li>non-normalized language
                 <ol>
-                    <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> &mdash; TODO: nail polish vs. nail lacquer vs. nail color
+                    <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> (nail polish vs. nail lacquer)
                 </ol>
             <li>matching/grouping doesn't respect brand
                 <ol>
