@@ -50,8 +50,12 @@ schema = \
                         'pos_stem',
                         'custom_stem',
                     ]
-                }
-            }
+                },
+                'keyw': {
+                    'tokenizer': 'keyword',
+                    'filter': [],
+                },
+            },
         }
     },
     'mappings': {
@@ -59,7 +63,8 @@ schema = \
             'properties': {
                 'updated':        { 'type': 'long'   },
                 'merchant_sku':   { 'type': 'string' },
-                'url_host':       { 'type': 'string' },
+                'merchant_slug':  { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
+                'url_host':       { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url':            { 'type': 'string' },
                 'brand':          { 'type': 'string' },
                 'name':           { 'type': 'string', 'analyzer': 'my_english' },
@@ -84,6 +89,7 @@ def get_rows(conn):
 select
     extract(epoch from up.updated) as updated,
     merchant_sku,
+    merchant_slug,
     url_host,
     url_canonical as url,
     coalesce(bt.brand_to, up.brand) as brand,
