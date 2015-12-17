@@ -1,4 +1,18 @@
 
+-- sumarize progress per merchant
+select merchant_slug, count(distinct merchant_sku) as dsku, count(merchant_sku) as sku, count(brand) as brand, count(distinct brand) as dbrand, count(distinct bt.brand_to) as dbrand2, count(img_url), max(up.updated), min(up.updated) from url_product up left join brand_translate bt on bt.brand_from = up.brand group by merchant_slug order by dsku desc;
+
+-- most popular brands not translated
+select distinct brand, count(*) as cnt from url_product where brand not in (select brand_from from brand_translate) group by brand order by cnt desc;
+
+
+truncate brand_translate;
+\copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' delimiter ',' csv;
+
+
+\copy (select brand from (select brand, count(*) as cnt from url_product group by brand order by cnt desc) as x) to '/tmp/brands.csv' with csv;
+\copy (select brand, count(*) as cnt from url_product group by brand order by cnt desc) to '/tmp/brands.csv' with csv;
+
 select distinct brand, count(*) as cnt from url_product group by brand order by cnt desc;
 select distinct brand, count(*) as cnt from url_product group by brand order by brand asc;
 
@@ -28,9 +42,6 @@ productmap=> select count(*), round(sum(size)::numeric / (1024*1024*1024), 3) fr
 (1 row)
 
 select price_min::integer - (price_min::integer % 25) as p, count(*) as cnt from url_product group by p order by p asc;
-
-\copy (select brand from (select brand, count(*) as cnt from url_product group by brand order by cnt desc) as x) to '/tmp/brands.csv' with csv;
-\copy (select brand, count(*) as cnt from url_product group by brand order by cnt desc) to '/tmp/brands.csv' with csv;
 
 \copy (select lower(name) as namelo, count(*) as cnt from url_product group by name order by cnt desc) to '/tmp/productname.csv' with csv;
 

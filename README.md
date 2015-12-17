@@ -12,6 +12,12 @@ productsum.com
 8. Docker?
 
 
+## How To Do Stuff
+1. `/bin/bash spider.sh http://www.example.com/`
+2. `time AWS_ACCESS_KEY_ID=AKIAIJSFBGWDARVXQBSA AWS_SECRET_ACCESS_KEY=KaaKt1ZoBzyhDtmMFKtVxp0ei/heAg3dNAPNJ+Qr AWS_DEFAULT_REGION=us-east-1 python product2db.py www.foobar.com 2>&1`
+3. `time PYTHONPATH=product_mapper/ python search/elasticsearch_create_index.py`
+
+
 ## API Calls
 
 1. `/prod/by/query/?q=gianvito+rossi+pink+leather+pump`

@@ -1921,7 +1921,6 @@ Sisley Paris:
         'Sisley-Paris':
 Skin:
 Southern Enterprises:
-'STONE_COLD_FOX':
 Stance:
     aka:
         STANCE:
@@ -3030,6 +3029,8 @@ Sigma Beauty:
 'Halogen®':
 ROGUE STATE:
 Yeezy:
+    line:
+        YEEZY Season 1:
 'Deakin & Francis':
 Barielle:
 Maileg:
@@ -3046,7 +3047,7 @@ Christopher Fischer:
 KUT FROM THE KLOTH:
     aka:
         KUT from the Kloth:
-Twin Sister:
+Twin Sister:',
 Iphoria:
 Phyto:
 emerginC:
@@ -3875,6 +3876,9 @@ Gray Malin:
 Yardley:
 Pisu Bazaar:
 'TWIN-SET Simona Barbieri':
+    url: 'http://www.twinset.com/'
+    line:
+        'LE COEUR de TWIN-SET SIMONA BARBIERI':
 DORISSA:
 Stetson:
 Deux Lux:
@@ -3883,7 +3887,9 @@ Jane Tran:
 Fjällräven:
     aka:
         Fjällräven Kids:
-ZARA TEREZ:
+Zara Terez:
+    aka:
+        ZARA TEREZ:
 Arteriors:
     aka:
         ARTERIORS:
@@ -4814,6 +4820,8 @@ själ:
         Sjal:
 'Torino Leather Co.':
 Swedish Hasbeens:
+    aka:
+        SWEDISH HASBEENS:
 Ruffwear:
 Masqueology:
 Heschung:
@@ -4996,7 +5004,6 @@ Iluxe Organics:
 Quay Australia:
     aka:
         QUAY AUSTRALIA:
-Zara Terez:
 Kate Sylvester:
 Sincerely Jules:
 Matt Bernson:
@@ -6444,7 +6451,6 @@ Dee Berkley:
 APEPAZZA:
 Edgardo Osorio for Ferragamo:
 PLANET LONDON:
-SWEDISH HASBEENS:
 Kid Made Modern:
 Streets Ahead:
 Primigi:
@@ -7503,7 +7509,6 @@ Giro:
 ANOTHER LINE:
 Gemco:
 zestt:
-'LE COEUR de TWIN-SET SIMONA BARBIERI':
 MY LITTLE PONY:
 Cosatto:
 TATTLY:
@@ -9068,6 +9073,8 @@ Rrl:
 Sara Designs:
 Sealy:
 Stone Cold Fox:
+    aka:
+        'STONE_COLD_FOX':
 SUN 68:
 Sweet Virtues:
 'Thames & Kosmos':
@@ -9145,7 +9152,6 @@ Belle Fleur Maison:
 BORBONESE:
 Claudia Szerer Home Collection:
 Corum:
-YEEZY Season 1:
 'Maison Kitsuné':
 Visvim:
 'D.Gnak by Kang.D':
@@ -9179,4 +9185,6 @@ Beach Bunny:
         Love Haus by Beach Bunny:
 DermaQuest:
 'Société Anonyme':
-'LEGO®':
+LEGO:
+    aka:
+        'LEGO®':

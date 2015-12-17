@@ -302,6 +302,48 @@ _Seeds = {
     },
     'http://www.toryburch.com/': {},
     'http://www.thecorner.com/us': {'ok':{'/us/'}},
+    'http://www.snapdeal.com/': {
+        'ok': {
+            '/products/perfumes-beauty-cosmetics',
+            '/products/make-up-eyes',
+            '/products/make-up-face',
+            '/products/make-up-nails',
+            '/products/make-up-removers',
+            '/products/makeup-tools-accessories',
+            '/products/makeup-kits',
+            # avoid other top-level directories, but follow individual product links
+            '/products/*/*',
+        },
+        'skip': {
+            # avoid anything other than individual products from the top-levels we want...
+            '/products/*/*?',
+        },
+    },
+    'http://www.ulta.com/': {
+        'skip': {
+            '/browse/inc/addToFavorites.jsp',
+            '/browse/inc/productDetail_crossSell.jsp',
+            '/image-server/',
+            '/ulta/cart/',
+            '/ulta/checkout/',
+            '/ulta/common/productRecommendations.jsp',
+            '/ulta/common/recommendedProduct.jsp',
+            '/ulta/external/',
+            '/ulta/integrations/',
+            '/ulta/myaccount/addressbook.jsp',
+            '/ulta/myaccount/learnmore_template.jsp',
+            '/ulta/myaccount/login.jsp',
+            '/ulta/myaccount/order.jsp',
+            '/ulta/myaccount/pages/order_status_anonymous.jsp',
+            '/ulta/myaccount/preferences.jsp',
+            '/ulta/myaccount/register.jsp',
+            '/ulta/myaccount/reset_password.jsp',
+            '/ulta/myaccount/rewards.jsp',
+            '/ulta/myaccount/rewards_template.jsp',
+            '/ulta/myaccount/template.jsp',
+            '/ulta/reminder/',
+        }
+    },
     'http://www.violetgrey.com/': {
         'skip': {
             '/account',

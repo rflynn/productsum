@@ -179,6 +179,7 @@
             <li><a href="/?q=CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50">CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50</a>
             <li><a href="/?q=For Men Sonic System Deep Cleansing Brush $89.5">For Men Sonic System Deep Cleansing Brush $89.5</a>
             <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown $1045">NVPS Leopard-Print Red Sole Pump, Brown $1045</a>
+            <li><a href="/?q=brand:(Burberry) 'My Burberry' Eau de Parfum $95">brand:(Burberry) 'My Burberry' Eau de Parfum $95</a>
             <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745</a>
             <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
             <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
@@ -203,7 +204,7 @@
             <li><a href="/?q=brand:(Life is good) Go-To Hoodie $48">brand:(Life is good) Go-To Hoodie $48</a>
             <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a>
             <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
-            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs much less common product name, compare <a href="/?q=S5705 38">S5705 38</a>
+            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs less common name, compare <a href="/?q=S5705 38">S5705 38</a>
            <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> matches <a href="/?q=Follies Spikes Pumps">Follies Spikes Pumps</a> (stemming)
         </ol>
 
@@ -233,14 +234,19 @@
                 <ol>
                     <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
                     <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically
+                    <li><a href="/?q=brand:() Lucky Brand Women's Nightt Booties $129">brand:() Lucky Brand Women's Nightt Booties $129</a> &mdash; Macy's brands missing
                 </ol>
-            <li>price differences
+            <li>price
                 <ol>
-                    <li>compare <a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843</a> vs. <a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black</a>
+                    <li>price difference: compare <a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843</a> vs. <a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black</a>
+                    <li>price n/a <a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a>
+                    <li>&euro; vs $ conversion
                 </ol>
             <li>non-normalized language
                 <ol>
                     <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> (nail polish vs. nail lacquer)
+                    <li><a href="brand:(Clé de Peau Beauté) Limited Edition Makeup Coffret $210">brand:(Clé de Peau Beauté) Limited Edition Makeup Coffret $210</a>
+                    <li><a href="brand:(Stuart Weitzman) Nudist song Sandals $415">brand:(Stuart Weitzman) Nudist song Sandals $415</a>
                 </ol>
             <li>matching/grouping doesn't respect brand
                 <ol>
@@ -725,7 +731,7 @@ function support_back_button()
     if (window.history && window.history.pushState) {
         $(window).on('popstate', function() {
             if (location.search.startsWith('?q=')) {
-                $('#q').val(decodeURI(location.search.substr(3)));
+                $('#q').val(decodeURIComponent(location.search.substr(3)));
             }
             on_page_load();
         });
