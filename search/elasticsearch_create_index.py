@@ -17,26 +17,45 @@ schema = \
     'settings': {
         'analysis': {
             'filter': {
+                'eng_stem': {
+                    'type': 'stemmer',
+                    'language': 'english',
+                },
+                'pos_stem': {
+                    'type': 'stemmer',
+                    'language': 'possessive_english',
+                },
+                'snowball': {
+                    'type': 'snowball',
+                    'language': 'English',
+                },
                 'custom_stem': {
                     'type': 'stemmer_override',
                     'rules': [
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
-                        'lacquer=>polish'
+                        'lacquer=>polish', # nail polish
                     ]
-                }
+                },
             },
         'analyzer': {
             'my_english': {
                 'tokenizer': 'standard',
                     'filter': [
                         'lowercase',
+                        #'porter_stem'
+                        #'snowball',
+                        'eng_stem',
+                        'pos_stem',
                         'custom_stem',
-                        'porter_stem'
                     ]
-                }
-            }
+                },
+                'keyw': {
+                    'tokenizer': 'keyword',
+                    'filter': [],
+                },
+            },
         }
     },
     'mappings': {
@@ -44,10 +63,11 @@ schema = \
             'properties': {
                 'updated':        { 'type': 'long'   },
                 'merchant_sku':   { 'type': 'string' },
-                'url_host':       { 'type': 'string' },
+                'merchant_slug':  { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
+                'url_host':       { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url':            { 'type': 'string' },
                 'brand':          { 'type': 'string' },
-                'name':           { 'type': 'string' },
+                'name':           { 'type': 'string', 'analyzer': 'my_english' },
                 'descr':          { 'type': 'string', 'index': 'not_analyzed'},
                 'in_stock':       { 'type': 'boolean'},
                 'stock_level':    { 'type': 'long'   },
@@ -69,6 +89,7 @@ def get_rows(conn):
 select
     extract(epoch from up.updated) as updated,
     merchant_sku,
+    merchant_slug,
     url_host,
     url_canonical as url,
     coalesce(bt.brand_to, up.brand) as brand,
