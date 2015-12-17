@@ -70,8 +70,13 @@ class ProductTradesy(object):
         self.category_id = category_id
         self.department = department
 
-        if self.title and self.title.endswith(' | SHOPBOP'):
-            self.title = self.title[:-11]
+        self.brand = normstring(self.brand)
+        if self.brand:
+            if self.brand.lower() == 'other':
+                # tradesy.com "Other" brand is really null
+                # If the designer of your item is not available in our drop-down, please select "Other".
+                # ref: http://help.tradesy.com/article/30-what-you-can-sell
+                self.brand = None
 
     def __repr__(self):
         return '''ProductTradesy:
