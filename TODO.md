@@ -58,9 +58,28 @@ TODO:
     24. ✔ one-time import of url_product + normalized brand to elasticsearch
     25. ✔ www frontend for elasticsearch
     26. ✔ research efficacy of LCD search
-
-    27. test url -> content -> product extraction -> search by url -> search by product
+    27. ✔ test url -> content -> product extraction -> search by url -> search by product
         e.g. http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
+    28. ✔ get a non-trivial opencv demo script running
+    29. ✔ enumerate all mapped brands, and calculate "missing" brands from new product2db runs
+    30. ✔ reduce ridiculous flask debug cpu usage
+            ref: http://stackoverflow.com/questions/28241989/flask-app-restarting-with-stat
+    31. ✔ get ES custom stemming working
+
+    32. ...parse product tags/ngrams
+    33. query by multi-term ngrams in elasticsearch
+        ref: https://www.elastic.co/guide/en/elasticsearch/guide/current/phrase-matching.html
+
+    32. normalize product url - use canonical:
+            * nordstrom
+            * barneys (e.g. 504143194)
+            * fwrd (e.g. http://localhost:9998/?q=brand:(Charlotte%20Olympia)%20Aranea%20Suede%20Heels%20$895)
+            * ssense /fr-fr/ products...
+    33. normalize product name -- remove brand prefix/suffix
+
+
+    ...
+    ref: https://lucidworks.com/blog/2014/07/12/solution-for-multi-term-synonyms-in-lucenesolr-using-the-auto-phrasing-tokenfilter/
 
     23. hook up a script to listen to a process product pages off an SQS queue based on host
     24. set up AWS Lambda on Dynamo to enqueue page metadata to SQS when a page is spidered

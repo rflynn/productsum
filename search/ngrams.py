@@ -2,28 +2,35 @@
 # -*- coding: utf-8 -*-
 
 from collections import Counter
-#import nltk
-from nltk.util import ngrams
 from pprint import pprint
 import re
 
+import tag_name
 
-def flatten(l):
-    return [item for sublist in l for item in sublist]
 
+def nngram(ngram, n):
+    if len(ngram) < n:
+        return None
+    return [ngram[i:i+n] for i in xrange(len(ngram) - n + 1)]
+
+assert nngram([1], 2) is None
+assert nngram([1], 1) == [[1]]
+assert nngram([1,2,3], 1) == [[1],[2],[3]]
+assert nngram([1,2,3], 2) == [[1,2],[2,3]]
 
 if __name__ == '__main__':
 
-    with open('/tmp/url_product_name.csv', 'rb') as f:
-        names = [line for line in f]
-
-    cleannames = [re.sub('[|()]', '', name) for name in names]
-
-    tokens = [nltk.word_tokenize(name) for name in cleannames]
+    import sys
 
     n = 2
-    ngrams = flatten([list(ngrams(toks, n)) for toks in tokens])
+    if len(sys.argv) > 1:
+        n = int(sys.argv[1])
 
-    cnt = Counter(ngrams)
-    pprint(sorted(cnt.iteritems(), key=lambda x: x[1], reverse=True))
+    lines = [unicode(line, 'utf8') for line in sys.stdin]
+    ngrams = [nngram(tag_name.tokenize(l), n) for l in lines]
+    nng = tag_name.flatten(ng for ng in ngrams if ng)
+    cnt = Counter(map(tuple, nng))
+
+    for ng, c in sorted(cnt.items(), key=lambda x: x[1], reverse=True):
+        print u' '.join(ng).encode('utf8')
 

@@ -1,0 +1,178 @@
+# vim: set ts=4 et:
+
+import codecs
+from collections import defaultdict
+from pprint import pprint, pformat
+import re
+import string
+from watchdog.observers import Observer
+
+
+def flatten(l):
+    return [item for sublist in l for item in sublist]
+
+def tokenize(s):
+    assert isinstance(s, unicode)
+    return re.findall(ur"(\d+|\w+|[&'+$])", s.lower(), re.UNICODE)
+
+def tags_load(filepath, tag):
+    with codecs.open(filepath, encoding='utf-8') as f:
+        return [(tag, tokenize(line)) for line in f if line]
+
+def reverse_index(l):
+    index = defaultdict(list)
+    for tag, tokens in l:
+        index[tokens[0]].append((tag, tokens))
+    return index
+
+def build_tag_reverse_index():
+    tags = [tags_load('./data/tag.%s.csv' % tag, tag)
+                for tag in ['adj',
+                            'brand',
+                            'color',
+                            'material',
+                            'ngram2',
+                            'pattern',
+                            'product',
+                            'quantity',
+                            'size']]
+    return reverse_index(flatten(tags))
+
+# decide how well a [(tag, [token,...]),...] has performed
+# all tokens in the search appear in perm; if unmatched then tag is None
+# we have to be careful not to include too many business rules here (hopefully);
+# instead, reward a match that covers more tokens with fewer tags, includes multiple tags, etc.
+def score_match_perm(perm):
+    tags = set(tag for tag, _ in perm)
+    # favor longer successful matches
+    num = sum(int(tag is not None) + len(tokens)
+                for tag, tokens in perm)
+    # favor more varied tags
+    num += len(tags)
+    return float(num) / max(1, len(perm))
+
+def match_tree_flatten(mt, state=None, done=None):
+    if state is None:
+        state = []
+        done = []
+    for tag, child in mt:
+        if child:
+            match_tree_flatten(child, state + [tag], done)
+        else:
+            done.append(state + [tag])
+    return done
+
+def match_tree2(qtoks, ri):
+    return [
+        ((tag,p),
+         match_tree2(qtoks[len(p):], ri)
+                 if qtoks > p else None)
+             for tag, p in ri.get(qtoks[0], [])
+                 if qtoks[:len(p)] == p] + \
+         [((None, qtoks[:1]), # account for no match
+             match_tree2(qtoks[1:], ri)
+                if len(qtoks) > 1 else None)]
+
+def match_best(q, ri):
+    if not q:
+        return []
+    #print repr(q)
+    assert isinstance(q, unicode)
+    #qtoks = tokenize(q[:80]) # FIXME: chop for performance
+    qtoks = tokenize(q)
+    mt = match_tree2(qtoks, ri)
+    #pprint(mt)
+    permutations = match_tree_flatten(mt)
+    #print '%d permutations: %s' % (len(permutations), permutations)
+    #print len(permutations)
+    scoredperm = [(score_match_perm(perm), perm) for perm in permutations]
+    #pprint(sorted(scoredperm, reverse=True)[:3], width=240)
+    bestscore, bestperm = max(scoredperm) if scoredperm else (None, None)
+    return bestperm
+
+ri = None
+
+def get_reverse_index(force=False):
+    global ri
+    if (not ri) or force:
+        print 'building reverse index (force=%s)...' % force
+        ri = build_tag_reverse_index()
+    return ri
+
+def tag_query(qstr):
+    tokens = tokenize(qstr)
+    #print 'tokens:', tokens
+    ri = get_reverse_index()
+    bestperm = match_best(qstr, ri)
+    return bestperm
+
+# watch our tag files, and if they change, re-load the reverse index
+
+observer = None
+
+class Handler(object):
+    def dispatch(self, event):
+        #print event
+        #print event.event_type, event.is_directory
+        if event.event_type in ('created', 'modified'):
+            if not event.is_directory:
+                if event.src_path.endswith('.csv'):
+                    print 'reloading index... (%s)' % event.src_path
+                    get_reverse_index(True)
+    def on_created(self, event):
+        pass
+    def on_modified(self, event):
+        pass
+    def on_moved(self, event):
+        pass
+    def on_deleted(self, event):
+        pass
+
+def init():
+    # initial ri
+    get_reverse_index()
+    global observer
+    observer = Observer()
+    observer.schedule(Handler(), './data/', recursive=True)
+    observer.start()
+
+def shutdown():
+    observer.stop()
+    observer.join()
+
+def run_tests():
+    ri = get_reverse_index()
+    tests = [
+        u'Ike Behar Check Dress Shirt, Brown/Blue',
+        u'RED VALENTINO flower print sheer shirt',
+        u'VINTAGE by Jessica Liebeskind Leather Hobo Messenger Bag',
+        u'Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag',
+        u'Deborah Lippmann Luxurious Nail Color - Whip It (0.5 fl oz.)',
+        u'Cashmere Cleanse Facial Brush Head',
+        u'Clarisonic Luxe Cashmere Cleanse Facial Brush Head Clarisonic 1 Pc Brush Head Facial Brush Head Women',
+        u'Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal',
+        u'Christian Louboutin Cataclou Studded Suede Red Sole Wedge Sandal, Capucine/Gold',
+        u'BLACK BROWN 1826 Classic-Fit Dress Shirt',
+        u'Le Creuset 2 1/4 Qt. Saucier Pan - Soleil',
+        u'Flight 001 Cateye Sunglasses Eye Mask',
+        u'Laura Mercier Tinted Moisturizer SPF20 - Mocha, 40ml',
+        u'Lucien Piccard Carina Rose Tone Stainless Steel Rose Tone Dial', # it's a watch, but doesn't say so
+        u'SAM EDELMAN Nixon Heel in Black',
+        u'Christian Louboutin Tucskick GIittered Red Sole Pump, White/Gold', # typo "GIittered"
+        u'SHISEIDO Extra-Smooth Sun Protection Cream SPF 38/2 oz. $32',
+        u'LOUISE ET CIE Gold-Plated Glass Pearl Stud Earrings',
+        u'SWAROVSKI Solitaire Swarovski Crystal Stud Earrings $69', # when 2 instances of brand appear, we should favor the prefix
+    ]
+    for t in tests:
+        tq = tag_query(t)
+        #print 'bestperm:', pformat(tq, width=200)
+        print tq
+
+if __name__ == '__main__':
+
+    run_tests()
+
+    #import sys
+    #for line in sys.stdin:
+    #    print tag_query(unicode(line, 'utf8'), ri)
+

@@ -12,14 +12,54 @@ productsum.com
 8. Docker?
 
 
-## API Calls
+## How To Do Stuff
 
-1. `/prod/by/query/?q=gianvito+rossi+pink+leather+pump`
-2. `/prod/by/facets/?brand=gianvito+rossi&thing=pump&material=leather&color=pink`
-3. `/prod/by/gtin/?gtin=$GTIN`
-4. `/prod/by/prod/?guid=$GUID`
-5. `/prod/by/image/?url=$URL`
-6. `/prod/by/url/?url=$URL`
+### Run a Spider
+
+```sh
+/bin/bash spider.sh http://www.example.com/
+```
+
+
+### Spider Archive -> products in SQL
+
+```sh
+time AWS_ACCESS_KEY_ID=AKIAIJSFBGWDARVXQBSA AWS_SECRET_ACCESS_KEY=KaaKt1ZoBzyhDtmMFKtVxp0ei/heAg3dNAPNJ+Qr AWS_DEFAULT_REGION=us-east-1 python product2db.py www.foobar.com 2>&1
+```
+
+### Load Brands
+
+from search/
+
+#### flatten manually-curated brand mapping to something sql can handle.
+
+brands.yml -> brands.csv
+
+```sh
+PYTHONPATH=.. python brandload.py > /tmp/brands.csv
+```
+
+#### elasticsearch index brand normalization
+
+brands.csv -> brand translate table
+
+```sql
+delete from brand_translate;
+\copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' delimiter ',' csv
+```
+
+brand translate table -> tag.brands.csv for parser
+```
+\copy (select brand_from from brand_translate order by brand_from) to '/tmp/brandfrom.csv'
+mv /tmp/brandfrom.csv ./data/tag.brand.csv
+```
+
+### Load url products from SQL into ES for searching
+
+```sh
+time PYTHONPATH=product_mapper/ python search/elasticsearch_create_index.py
+```
+
 
 ## Install
 

@@ -39,7 +39,7 @@ def handle_color(c):
             return c[0].title() + u' and ' + c[1].title()
         if len(c) >= 3:
             return u', '.join([x.title() for x in c])
-    raise Exception(str(c))
+    return None
 
 
 class ProductMyTheresa(object):

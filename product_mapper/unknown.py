@@ -287,8 +287,8 @@ class ProductsUnknown(object):
                             or sp.get('name')
                             or nth(utag.get('product_name'), 0)
                             or None),
-                title=(meta.get('title')
-                            or og.get('title')
+                title=(og.get('title')
+                            or meta.get('title')
                             or None),
                 descr=(og.get('description')
                             or sp.get('description')
