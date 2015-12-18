@@ -59,7 +59,7 @@
             }
             #spinner {
                 position: absolute;
-                left: 30%;
+                left: 35%;
                 top: 25%;
                 margin:0px auto;
                 height: 250px;
@@ -125,8 +125,6 @@
             }
             #brand-slugs span {
                 display: inline-flex;
-                /*background-color: #CEE3F6;*/
-                /* background-color: #F5D0A9; */
                 background-color: #E0F2F7;
                 border-radius: 3px;
                 padding: 0 3px 0 3px;
@@ -135,6 +133,39 @@
             #brand-slugs div a:link, a:visited {
                 color: black;
                 text-decoration: none;
+            }
+            #parse-qstr div {
+                display: inline-block;
+                margin-left: 2px;
+                padding: 2px;
+                border-radius: 2px;
+            }
+            #parse-qstr .brand {
+                background-color: LightGreen;
+            }
+            #parse-qstr .product {
+                background-color: LightSkyBlue;
+            }
+            #parse-qstr .material {
+                background-color: LightCoral;
+            }
+            #parse-qstr .color {
+                background-color: PaleGoldenRod;
+            }
+            #parse-qstr .pattern {
+                background-color: DarkGoldenRod;
+            }
+            #parse-qstr .quantity {
+                background-color: purple;
+            }
+            #parse-qstr .size {
+                background-color: pink;
+            }
+            #parse-qstr .ngram2 {
+                background-color: #ccc;
+            }
+            #parse-qstr .null {
+                border: 1px dotted #ccc;
             }
         </style>
     </head>
@@ -153,6 +184,7 @@
         </div>
 
         <div style="margin-left:2.18em">
+            <div id="parse-qstr"></div>
             <div id="sparkline"></div>
             <div id="metadata">
                 <div id="totalproducts"></div>
@@ -172,30 +204,29 @@
         <ol id="goodlist">
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
-            <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
-            <li><a href="/?q=Limited Edition In the Nude Compact for Eyes">Limited Edition In the Nude Compact for Eyes</a>
-            <li><a href="/?q=Powder Blush Case & Brush $40">Powder Blush Case & Brush $40</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
+            <li><a href="/?q=brand:(Burberry) 'My Burberry' Eau de Parfum $95">brand:(Burberry) 'My Burberry' Eau de Parfum $95</a>
+            <li><a href="/?q=Limited Edition In the Nude Compact for Eyes">Limited Edition In the Nude Compact for Eyes</a>
+            <li><a href="/?q=brand:(CLINIQUE) Sonic System Acne Solutions Deep Cleansing Brush Head $26">brand:(CLINIQUE) Sonic System Acne Solutions Deep Cleansing Brush Head $26</a>
             <li><a href="/?q=CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50">CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50</a>
             <li><a href="/?q=For Men Sonic System Deep Cleansing Brush $89.5">For Men Sonic System Deep Cleansing Brush $89.5</a>
             <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown $1045">NVPS Leopard-Print Red Sole Pump, Brown $1045</a>
-            <li><a href="/?q=brand:(Burberry) 'My Burberry' Eau de Parfum $95">brand:(Burberry) 'My Burberry' Eau de Parfum $95</a>
+            <li><a href="/?q=brand:() Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36">brand:() Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
             <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745</a>
-            <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
+            <li><a href="/?q=brand:(Sisley Paris) Botanical D-Tox, 30ml $245">brand:(Sisley Paris) Botanical D-Tox, 30ml $245</a>
+            <li><a href="/?q=brand:(Sisley Paris) Eye Contour Mask, 30ml">brand:(Sisley Paris) Eye Contour Mask, 30ml</a>
             <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
-            <li><a href="/?q=brand:(Clinique) Sonic System Purifying Cleansing Brush Head $26">brand:(Clinique) Sonic System Purifying Cleansing Brush Head $26</a>
             <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
             <li><a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Foreo ISSA Brush Head $24.90">Foreo ISSA Brush Head $24.90</a>
             <li><a href="/?q=brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890">brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890</a>
             <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a>
             <li><a href="/?q=Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795">Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795</a>
-            <li><a href="/?q=brand:(Sisley Paris) Botanical D-Tox, 30ml $245">brand:(Sisley Paris) Botanical D-Tox, 30ml $245</a>
-            <li><a href="/?q=brand:(Sisley Paris) Eye Contour Mask, 30ml">brand:(Sisley Paris) Eye Contour Mask, 30ml</a>
+            <li><a href="/?q=Powder Blush Case & Brush $40">Powder Blush Case & Brush $40</a>
             <li><a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a>
             <li><a href="/?q=RVCA Stratta Dress">RVCA Stratta Dress</a>
-            <li><a href="/?q=brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695">brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695</a>
             <li><a href="/?q=brand:(Nike) Roshe One sneakers €90">brand:(Nike) Roshe One sneakers €90</a>
+            <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
             <li><a href="/?q=brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118">brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118</a> &mdash; image recognition wouldn't work here
             <li><a href="/?q=brand:(Clinique) Blush Brush $29.5">brand:(Clinique) Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
             <li><a href="/?q=brand:(KATE SPADE NEW YORK) Tiny Metro Watch $175">brand:(KATE SPADE NEW YORK) Tiny Metro Watch $175</a> -- Clinique brand mixed into name for 1, but not the other...
@@ -225,10 +256,16 @@
             <li>product dupes
                 <ol>
                     <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
+                    <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
+                </ol>
+            <li>tons of legitimate matches
+                <ol>
+                    <li><a href="brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695">brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695</a> -- dozens of legit matches, algorithm doesn't handle it well
                 </ol>
             <li>size/quantity
                 <ol>
-                    <li> are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"
+                    <li>TODO: normalize "1.7oz" to "1.7 oz" in ES
+                    <li>are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"
                 </ol>
             <li>brand
                 <ol>
@@ -517,10 +554,36 @@ function structured_query(params)
     };
 }
 
+function parse_qstr(qstr)
+{
+    $('#parse-qstr').empty();
+    $.getJSON(
+        '/parse?q=' + encodeURIComponent(qstr || ''),
+        function(data) {
+            console.log(data.result);
+            var qstrlow = qstr.toLowerCase();
+            var qi = 0;
+            for (var i = 0; i < data.result.length; i++)
+            {
+                var item = data.result[i];
+                var type_ = item[0];
+                var toks = item[1];
+                var qi2s = qstrlow.indexOf(toks[0], qi);
+                var qi2e = qstrlow.indexOf(toks[toks.length-1], qi2s) + toks[toks.length-1].length;
+                var substr = qstr.substr(qi2s, qi2e - qi2s);
+                $('#parse-qstr').append($('<div class="'+type_+'">').text(substr));
+                qi = qi2e;
+            }
+        }
+    );
+}
+
 function search(txtq, params)
 {
     // curl -X POST 'search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search' -d '{"query":{"bool":{"must":[{"match":{"brand":"VALENTINO GARAVANI"}},{"match":{"name":"pump"}}]}}}' | python -mjson.tool | less
     start_loading();
+
+    parse_qstr(txtq);
 
     var query = {};
     if (params) {
@@ -547,11 +610,15 @@ function search(txtq, params)
         method: 'POST',
         url: es_index() + '_search',
         crossDomain: true,
+        timeout: 5000,
         dataType: 'json',
         data: JSON.stringify(query)
     }).done(function(data) {
         display_data(txtq, data);
         stop_loading();
+    }).error(function(err) {
+        stop_loading();
+        alert('fuck...');
     });
 }
 
@@ -609,12 +676,12 @@ function do_search_by_product(boxdiv)
         params.price = Number(price.replace(/[$€£¥ ]/, ''));
     }
 
+    window.scrollTo(0, 0);
+
     do_search(newq, params);
 
     $('#q').val(newq);
     set_url(newq);
-
-    window.scrollTo(0, 0);
 }
 
 function load_brand_tags()
@@ -742,6 +809,7 @@ $(document).ready(function() {
     $('#clear').click(function() {
         $('#url').empty();
         $('#q').val('');
+        $('#parse-qstr').empty();
         $('#merchant-slugs').empty();
         $('#sparkline').empty();
         $('#results').css('height', $(window).height());

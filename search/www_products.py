@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 # vim: set ts=4 et:
 
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, jsonify
 import time
 
 from collections import Counter
 from spider_frontend import spider_dynamo as spider
 from spider_backend.domain import domain_to_canonical
 from product_mapper import product2db, unknown
+from search import tag_name
 from bs4 import BeautifulSoup
 import urllib
 from urlparse import urljoin
@@ -123,10 +124,17 @@ def url_to_product(url):
     return ret.strip()
 
 
+@app.route('/parse')
+def parse():
+    q = request.args.get('q')
+    j = tag_name.tag_query(q)
+    return jsonify(result=j)
+
 # http://0.0.0.0:9998/search/by/url?url=http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
 
 if __name__ == '__main__':
+    tag_name.init()
     app.run(host='0.0.0.0',
             port=9998,
             debug=True)
-
+    tag_name.shutdown()
