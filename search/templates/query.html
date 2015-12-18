@@ -6,9 +6,8 @@
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js"></script>
         <script src="http://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.min.js"></script>
-        <!--script src="http://cdn.rawgit.com/lokesh/color-thief/master/dist/color-thief.min.js"></script-->
         <style type="text/css">
-            * {
+            body {
                 font-family: GillSans,"Gill Sans MT",Calibri,sans-serif;
                 font-size: 14px;
                 font-weight:100;
@@ -136,12 +135,12 @@
             }
             #parse-qstr div {
                 display: inline-block;
-                margin-left: 2px;
+                margin-right: 2px;
                 padding: 2px;
                 border-radius: 2px;
             }
             #parse-qstr .brand {
-                background-color: LightGreen;
+                background-color: LightBlue;
             }
             #parse-qstr .product {
                 background-color: LightSkyBlue;
@@ -163,6 +162,9 @@
             }
             #parse-qstr .ngram2 {
                 background-color: #ccc;
+            }
+            #parse-qstr .price {
+                background-color: LightGreen;
             }
             #parse-qstr .null {
                 border: 1px dotted #ccc;
@@ -203,40 +205,39 @@
         <label for="goodlist">Example Product Searches</label>
         <ol id="goodlist">
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
+            <li><a href="/?q=Clarisonic Cashmere Cleanse Facial Brush Head $30">Clarisonic Cashmere Cleanse Facial Brush Head $30</a>
+            <li><a href="/?q= Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36"> Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
-            <li><a href="/?q=brand:(Burberry) 'My Burberry' Eau de Parfum $95">brand:(Burberry) 'My Burberry' Eau de Parfum $95</a>
+            <li><a href="/?q=Burberry 'My Burberry' Eau de Parfum $95">Burberry 'My Burberry' Eau de Parfum $95</a>
+            <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
             <li><a href="/?q=Limited Edition In the Nude Compact for Eyes">Limited Edition In the Nude Compact for Eyes</a>
-            <li><a href="/?q=brand:(CLINIQUE) Sonic System Acne Solutions Deep Cleansing Brush Head $26">brand:(CLINIQUE) Sonic System Acne Solutions Deep Cleansing Brush Head $26</a>
+            <li><a href="/?q=CLINIQUE Sonic System Acne Solutions Deep Cleansing Brush Head $26">CLINIQUE Sonic System Acne Solutions Deep Cleansing Brush Head $26</a>
             <li><a href="/?q=CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50">CLINIQUE Skinny Meets Chubby Set- 45.00 Value $27.50</a>
             <li><a href="/?q=For Men Sonic System Deep Cleansing Brush $89.5">For Men Sonic System Deep Cleansing Brush $89.5</a>
             <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown $1045">NVPS Leopard-Print Red Sole Pump, Brown $1045</a>
-            <li><a href="/?q=brand:() Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36">brand:() Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
             <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745</a>
-            <li><a href="/?q=brand:(Sisley Paris) Botanical D-Tox, 30ml $245">brand:(Sisley Paris) Botanical D-Tox, 30ml $245</a>
-            <li><a href="/?q=brand:(Sisley Paris) Eye Contour Mask, 30ml">brand:(Sisley Paris) Eye Contour Mask, 30ml</a>
-            <li><a href="/?q=Glam-To-Go Cheek, Eye & Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a>
-            <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
-            <li><a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>
+            <li><a href="/?q=Sisley Paris Botanical D-Tox, 30ml $245">Sisley Paris Botanical D-Tox, 30ml $245</a>
+            <li><a href="/?q=Sisley Paris Eye Contour Mask, 30ml">Sisley Paris Eye Contour Mask, 30ml</a>
+            <li><a href="/?q=Clarins UV Plus SPF 50, 1.7 oz. $42">Clarins UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Foreo ISSA Brush Head $24.90">Foreo ISSA Brush Head $24.90</a>
-            <li><a href="/?q=brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890">brand:(TOM FORD) Patent Leather Pin-Heel Pump, Nude $890</a>
+            <li><a href="/?q=TOM FORD Patent Leather Pin-Heel Pump, Nude $890">TOM FORD Patent Leather Pin-Heel Pump, Nude $890</a>
             <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a>
             <li><a href="/?q=Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795">Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795</a>
             <li><a href="/?q=Powder Blush Case & Brush $40">Powder Blush Case & Brush $40</a>
-            <li><a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a>
+            <li><a href="/?q=Chloé Black Leather Mini Georgia Bag $1090">Chloé Black Leather Mini Georgia Bag $1090</a>
             <li><a href="/?q=RVCA Stratta Dress">RVCA Stratta Dress</a>
-            <li><a href="/?q=brand:(Nike) Roshe One sneakers €90">brand:(Nike) Roshe One sneakers €90</a>
-            <li><a href="/?q=Cashmere Cleanse Facial Brush Head">Cashmere Cleanse Facial Brush Head</a>
-            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118">brand:(KATE SPADE NEW YORK) Dorothy Bucket Hat $118</a> &mdash; image recognition wouldn't work here
-            <li><a href="/?q=brand:(Clinique) Blush Brush $29.5">brand:(Clinique) Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
-            <li><a href="/?q=brand:(KATE SPADE NEW YORK) Tiny Metro Watch $175">brand:(KATE SPADE NEW YORK) Tiny Metro Watch $175</a> -- Clinique brand mixed into name for 1, but not the other...
-            <li><a href="/?q=brand:(RALPH LAUREN) Leather Large Hobo Bag $448">brand:(RALPH LAUREN) Leather Large Hobo Bag $448</a>
-            <li><a href="/?q=brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag $1015">brand:(Alexander McQueen) Leopard-Print Pony Hair Envelope Clutch Bag $1015</a>
-            <li><a href="/?q=brand:(Life is good) Go-To Hoodie $48">brand:(Life is good) Go-To Hoodie $48</a>
-            <li><a href="/?q=brand:(RED Valentino) Elastic Waist Pants $350">brand:(RED Valentino) Elastic Waist Pants $350</a>
-            <li><a href="/?q=brand:(SERGIO ROSSI) Suede Pumps $605">brand:(SERGIO ROSSI) Suede Pumps $605</a>
-            <li><a href="/?q=brand:(STEVE MADDEN) S5705 $38">brand:(STEVE MADDEN) S5705 $38</a> &mdash; brand name outweighs less common name, compare <a href="/?q=S5705 38">S5705 38</a>
+            <li><a href="/?q=Nike Roshe One sneakers €90">Nike Roshe One sneakers €90</a>
+            <li><a href="/?q=KATE SPADE NEW YORK Dorothy Bucket Hat $118">KATE SPADE NEW YORK Dorothy Bucket Hat $118</a> &mdash; image recognition wouldn't work here
+            <li><a href="/?q=Clinique Blush Brush $29.5">Clinique Blush Brush $29.5</a> -- Clinique brand mixed into name for 1, but not the other...
+            <li><a href="/?q=KATE SPADE NEW YORK Tiny Metro Watch $175">KATE SPADE NEW YORK Tiny Metro Watch $175</a> -- Clinique brand mixed into name for 1, but not the other...
+            <li><a href="/?q=RALPH LAUREN Leather Large Hobo Bag $448">RALPH LAUREN Leather Large Hobo Bag $448</a>
+            <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag $1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag $1015</a>
+            <li><a href="/?q=Life is good Go-To Hoodie $48">Life is good Go-To Hoodie $48</a>
+            <li><a href="/?q=SERGIO ROSSI Suede Pumps $605">SERGIO ROSSI Suede Pumps $605</a>
+            <li><a href="/?q=STEVE MADDEN S5705 $38">STEVE MADDEN S5705 $38</a> &mdash; brand name outweighs less common name, compare <a href="/?q=S5705 38">S5705 38</a>
            <li><a href="/?q=Follies Spiked Pump">Follies Spiked Pump</a> matches <a href="/?q=Follies Spikes Pumps">Follies Spikes Pumps</a> (stemming)
+           <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It $18">Deborah Lippmann Nail Lacquer in Whip It $18</a> (nail polish vs. nail lacquer)
         </ol>
 
         <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
@@ -253,37 +254,48 @@
         <div style="width: 50%; float:right">
         <label for="badlist">FIXME</label>
         <ol id="badlist">
+            <li>triage...
+                <ol>
+                    <li><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> red valentino brand doesn't match?! wtf...
+                </ol>
+            <li>should match...
+                <ol>
+                    <li><a href="/?q=Foreo ISSA Mini Brush Head - Enchanted Violet (1 piece) $24.90">Foreo ISSA Mini Brush Head - Enchanted Violet (1 piece) $24.90</a>
+                </ol>
             <li>product dupes
                 <ol>
-                    <li><a href="/?q=brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio">brand:(Clé de Peau Beauté) Limited Edition Nail Lacquer Trio</a>
+                    <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a>
                     <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
+                </ol>
+            <li>elasticsearch weirdness...
+                <ol>
+                    <li><a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48</a> &mdash; ES produces significantly different scores for products with exactly the same brand, name and price...
                 </ol>
             <li>tons of legitimate matches
                 <ol>
-                    <li><a href="brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695">brand:(3.1 Phillip Lim) 'Pashli Mini' Leather Satchel $695</a> -- dozens of legit matches, algorithm doesn't handle it well
+                    <li><a href="/?q=3.1 Phillip Lim 'Pashli Mini' Leather Satchel $695">3.1 Phillip Lim 'Pashli Mini' Leather Satchel $695</a> -- dozens of legit matches, algorithm doesn't handle it well
                 </ol>
             <li>size/quantity
                 <ol>
-                    <li>TODO: normalize "1.7oz" to "1.7 oz" in ES
-                    <li>are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"
+                    <li><strike>TODO: normalize "1.7oz" to "1.7 oz" in ES (e.g. <a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>)</strike>
+                    <li><strike>are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"</strike>
                 </ol>
             <li>brand
                 <ol>
-                    <li><a href="/?q=brand:(Clé de Peau Beauté) Brightening Mask">brand:(Clé de Peau Beauté) Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
-                    <li><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically
-                    <li><a href="/?q=brand:() Lucky Brand Women's Nightt Booties $129">brand:() Lucky Brand Women's Nightt Booties $129</a> &mdash; Macy's brands missing
+                    <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
+                    <li><strike><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically</strike>
+                    <li><strike><a href="/?q=Lucky Brand Women's Nightt Booties $129">Lucky Brand Women's Nightt Booties $129</a> &mdash; Macy's brands missing</strike>
                 </ol>
             <li>price
                 <ol>
-                    <li>price difference: compare <a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black $843</a> vs. <a href="/?q=brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black">brand:(Charlotte Olympia) Orbital Pomeline Suede Pump, Black</a>
-                    <li>price n/a <a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a>
+                    <li>price difference: compare <a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black $843">Charlotte Olympia Orbital Pomeline Suede Pump, Black $843</a> vs. <a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black">Charlotte Olympia Orbital Pomeline Suede Pump, Black</a>
+                    <li><strike>price n/a <a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a></strike>
                     <li>&euro; vs $ conversion
                 </ol>
             <li>non-normalized language
                 <ol>
-                    <li><a href="/?q=brand:(Deborah Lippmann) Nail Lacquer in Whip It $18">brand:(Deborah Lippmann) Nail Lacquer in Whip It $18</a> (nail polish vs. nail lacquer)
-                    <li><a href="brand:(Clé de Peau Beauté) Limited Edition Makeup Coffret $210">brand:(Clé de Peau Beauté) Limited Edition Makeup Coffret $210</a>
-                    <li><a href="brand:(Stuart Weitzman) Nudist song Sandals $415">brand:(Stuart Weitzman) Nudist song Sandals $415</a>
+                    <li><a href="/?q=Clé de Peau Beauté Limited Edition Makeup Coffret $210">Clé de Peau Beauté Limited Edition Makeup Coffret $210</a> &mdash; product name only shares one word?!
+                    <li><a href="/?q=Stuart Weitzman Nudist song Sandals $415">Stuart Weitzman Nudist song Sandals $415</a>
                 </ol>
             <li>matching/grouping doesn't respect brand
                 <ol>
@@ -291,19 +303,18 @@
                 </ol>
             <li>specificity
                 <ol>
-                    <li><a href="/?q=Ray-Ban Sunglasses $200">brand:(Ray-Ban) Sunglasses $200</a> -- even brand + name + price can just be too vague...
+                    <li><a href="/?q=Ray-Ban Sunglasses $200">Ray-Ban Sunglasses $200</a> -- even brand + name + price can just be too vague...
                 </ol>
             <li>color
                 <ol>
-                    <li><a href="/?q=brand:(Michael Stars) Long Sleeve Turtleneck in Pinot $88">brand:(Michael Stars) Long Sleeve Turtleneck in Pinot $88</a> colors "Pinot" vs. "Quicksand"
-                    <li><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)
-                    <li><a href="/?q=brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48">brand:(KATE SPADE NEW YORK) Sailor's Knot Stud Earrings, Silver $48</a> &mdash; ignores silver vs. gold vs. none
+                    <li><strike><a href="/?q=Michael Stars Long Sleeve Turtleneck in Pinot $88">Michael Stars Long Sleeve Turtleneck in Pinot $88</a> colors "Pinot" vs. "Quicksand"</strike>
+                    <li><strike><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)</strike>
                 </ol>
             <li>other product attributes
                 <ol>
                     <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a> SPF 30 and SPF 50 are both same price, same image, but are not the same product
-                    <li>cream vs. lotion should differ here: <a href="/?q=brand:(Elizabeth Arden) Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">brand:(Elizabeth Arden) Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a>
-                    <li><a href="/?q=brand:(DIOR) Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">brand:(DIOR) Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a> &mdash; product should match but doesn't: '<a href="/?q=brand:(DIOR) Hypnotic Poison Eau Secrete by Christian Dior for Women $78">brand:(DIOR) Hypnotic Poison Eau Secrete by Christian Dior for Women $78</a>
+                    <li>cream vs. lotion should differ here: <a href="/?q=Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a>
+                    <li><a href="/?q=DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a> &mdash; product should match but doesn't: '<a href="/?q=DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78">DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78</a>
                 </ol>
         </ol>
         </div>
@@ -560,9 +571,12 @@ function parse_qstr(qstr)
     $.getJSON(
         '/parse?q=' + encodeURIComponent(qstr || ''),
         function(data) {
+            var must = [];
+            var should = [];
             console.log(data.result);
             var qstrlow = qstr.toLowerCase();
             var qi = 0;
+            var seen_brand = false;
             for (var i = 0; i < data.result.length; i++)
             {
                 var item = data.result[i];
@@ -571,22 +585,56 @@ function parse_qstr(qstr)
                 var qi2s = qstrlow.indexOf(toks[0], qi);
                 var qi2e = qstrlow.indexOf(toks[toks.length-1], qi2s) + toks[toks.length-1].length;
                 var substr = qstr.substr(qi2s, qi2e - qi2s);
-                $('#parse-qstr').append($('<div class="'+type_+'">').text(substr));
+                /*
+                if (toks.join(' ').length > substr.length && toks.length <= 2) {
+                    // e.g. "1.7oz" is parsed more accurately to ["1.7","oz"]; use parsed version...
+                    // NOTE: breaks down with fucking apostrophoes...
+                    substr = toks.join(' ');
+                }*/
                 qi = qi2e;
+                $('#parse-qstr').append($('<div class="'+type_+'">').text(substr));
+                if (type_ === 'brand' && !seen_brand) {
+                    must.push({match_phrase:{brand: substr}});
+                } else if (type_ === 'price') {
+                    var p = Number(toks[0].substr(1));
+                    must.push({
+                        'range': {
+                            'price_min':{
+                                'gt': p * 0.9,
+                                'lt': p * 1.1
+                            }
+                        }
+                    });
+                } else if (type_ == 'product' || type_ == 'color') {
+                    must.push({match_phrase:{name: substr}});
+                } else {
+                    should.push({match_phrase:{name:substr}});
+                }
+                seen_brand = seen_brand || type_ === 'brand';
             }
+            console.log('match', must, should);
+            search(undefined, undefined, {must: must, should: should});
         }
     );
 }
 
-function search(txtq, params)
+function search(txtq, params, phrases_yall)
 {
     // curl -X POST 'search-es0-qjusld7s4jpxxcsy2ktlkfr42m.us-east-1.es.amazonaws.com/product/_search' -d '{"query":{"bool":{"must":[{"match":{"brand":"VALENTINO GARAVANI"}},{"match":{"name":"pump"}}]}}}' | python -mjson.tool | less
     start_loading();
 
-    parse_qstr(txtq);
-
     var query = {};
-    if (params) {
+    if (phrases_yall) {
+        query = {
+            query: {
+                filtered : {
+                    query: {
+                        bool: phrases_yall
+                    }
+                }
+            }
+        };
+    } else if (params) {
         query = {
             query: {
                 filtered : {
@@ -638,7 +686,9 @@ function do_search(txtq, params)
         params.name = txtq.trim();
     }
     console.log('otxtq', otxtq, 'params', params);
-    search(otxtq, params);
+
+    parse_qstr(txtq);
+    //search(otxtq, params); // called by parse_qstr
 }
 
 function start_loading()
@@ -670,7 +720,7 @@ function do_search_by_product(boxdiv)
     var price = boxdiv.find('.price').text();
     params.brand = brand || null;
     params.name = name || null;
-    var newq = 'brand:(' + brand + ') ' + name;
+    var newq = '' + brand + ' ' + name;
     if (price && price != 'out-of-stock') {
         newq += ' ' + price;
         params.price = Number(price.replace(/[$€£¥ ]/, ''));
@@ -710,12 +760,12 @@ function load_brand_tags()
                 b = b.toLowerCase();
                 return (a > b) - (b > a);
             });
-            console.log('hosts', hosts);
+            //console.log('hosts', hosts);
             $('brand-slugs').hide();
             hosts.forEach(function(x){
                 var tag = $('<span>').append($('<a href="#">').text(x));
                 $(tag).click(function(event){
-                    var txtq = 'brand:(' + x + ')';
+                    var txtq = '' + x + '';
                     $('#q').val(txtq);
                     $('form').submit();
                     event.preventDefault();
