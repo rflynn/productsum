@@ -35,28 +35,36 @@ schema = \
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
+                        # TODO: use synonyms for the following
                         'lacquer=>polish', # nail polish
                     ]
                 },
             },
-        'analyzer': {
-            'my_english': {
-                'tokenizer': 'standard',
-                    'filter': [
-                        'lowercase',
-                        #'porter_stem'
-                        #'snowball',
-                        'eng_stem',
-                        'pos_stem',
-                        'custom_stem',
-                    ]
+            'tokenizer': {
+                'word_only': {
+                    'type': 'pattern',
+                    'pattern': r"(\d+(?:\.\d+)?|\w+|[&'+$])",
+                    'group': '1',
+                },
+            },
+            'analyzer': {
+                'my_english': {
+                    'tokenizer': 'standard',
+                        'filter': [
+                            'lowercase',
+                            #'porter_stem'
+                            #'snowball',
+                            'eng_stem',
+                            'pos_stem',
+                            'custom_stem',
+                        ]
                 },
                 'keyw': {
                     'tokenizer': 'keyword',
                     'filter': [],
                 },
             },
-        }
+        },
     },
     'mappings': {
         'product': {
