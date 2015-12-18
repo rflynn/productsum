@@ -1,4 +1,5 @@
 # vim: set ts=4 et:
+# -*- coding: utf-8 -*-
 
 import codecs
 from collections import defaultdict
@@ -13,7 +14,7 @@ def flatten(l):
 
 def tokenize(s):
     assert isinstance(s, unicode)
-    return re.findall(ur"(\d+|\w+|[&'+$])", s.lower(), re.UNICODE)
+    return re.findall(ur"(\d+(?:\.\d+)?|\w+|[&'+$])", s.lower(), re.UNICODE)
 
 def tags_load(filepath, tag):
     with codecs.open(filepath, encoding='utf-8') as f:
@@ -100,10 +101,18 @@ def get_reverse_index(force=False):
     return ri
 
 def tag_query(qstr):
+    price = None
+    m = re.search(ur'(([$€£¥])\s?(\d+(?:\.\d+)?))$', qstr, re.UNICODE)
+    if m:
+        raw, sign, amount = m.groups()
+        price = ('price', [sign + amount])
+        qstr = qstr[:-len(raw)].rstrip()
     tokens = tokenize(qstr)
     #print 'tokens:', tokens
     ri = get_reverse_index()
     bestperm = match_best(qstr, ri)
+    if price:
+        bestperm.append(price)
     return bestperm
 
 # watch our tag files, and if they change, re-load the reverse index
@@ -112,8 +121,6 @@ observer = None
 
 class Handler(object):
     def dispatch(self, event):
-        #print event
-        #print event.event_type, event.is_directory
         if event.event_type in ('created', 'modified'):
             if not event.is_directory:
                 if event.src_path.endswith('.csv'):

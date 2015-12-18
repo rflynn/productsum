@@ -75,6 +75,7 @@ schema = \
                 'url_host':       { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url':            { 'type': 'string' },
                 'brand':          { 'type': 'string' },
+                'brand_orig':     { 'type': 'string' },
                 'brand_raw':      { 'type': 'string', 'analyzer': 'keyw' },
                 'name':           { 'type': 'string', 'analyzer': 'my_english' },
                 'descr':          { 'type': 'string', 'index': 'not_analyzed'},
@@ -102,6 +103,7 @@ select
     url_host,
     url_canonical as url,
     coalesce(bt.brand_to, up.brand) as brand,
+    up.brand                        as brand_orig,
     coalesce(bt.brand_to, up.brand) as brand_raw,
     name,
     substr(descr, 0, 4096) as descr,
