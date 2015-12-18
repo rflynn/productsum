@@ -155,7 +155,7 @@ if __name__ == '__main__':
     cnt = 0
     for ok, result in streaming_bulk(es, get_rows(conn),
                                      doc_type='product', index='product',
-                                     chunk_size=1000, max_chunk_bytes=8*1024*1024):
+                                     chunk_size=2000, max_chunk_bytes=16*1024*1024):
         cnt += 1
         if cnt % 1000 == 0:
             print cnt,
