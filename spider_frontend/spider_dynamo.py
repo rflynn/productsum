@@ -1,4 +1,4 @@
-# ex: set ts=4 et:
+# vim: set ts=4 et:
 
 from BeautifulSoup import BeautifulSoup
 from datetime import datetime
@@ -25,6 +25,18 @@ _Seeds = {
     'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
     'http://us.topshop.com/en': {'ok':{'/en/'}},
     'http://www.barneys.com/': {'skip':{'/on/'}},
+    'http://www.bathandbodyworks.com/': {
+        'skip': {
+            '/cart/',
+            '/checkout/',
+            '/emailFriend/',
+            '/gcoreg/',
+            '/helpdesk/',
+            '/include/',
+            '/largeImage/',
+            '/prodEmailHandler/',
+        }
+    },
     'http://www.bergdorfgoodman.com/': {
         'skip': {
             '/account/',
@@ -718,7 +730,7 @@ def traverse(url, fqdn): # breadth-first traversal
     settings = _Seeds[url]
     # fetch seed url w/o checking whitelist/blacklist
     _canon, urls_ = get_links(python_sucks(url), referer=url)
-    urls = OrderedSet(urls_)
+    urls = OrderedSet([_canon] + urls_)
     while urls:
         next_url = page_links.canonicalize_url(urls.pop(0))
         if ok_to_spider(next_url, fqdn, settings):
