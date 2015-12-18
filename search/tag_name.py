@@ -102,7 +102,7 @@ def get_reverse_index(force=False):
 
 def tag_query(qstr):
     price = None
-    m = re.search(r'(([$€£¥])\s?(\d+(?:\.\d+)?))$', qstr)
+    m = re.search(ur'(([$€£¥])\s?(\d+(?:\.\d+)?))$', qstr, re.UNICODE)
     if m:
         raw, sign, amount = m.groups()
         price = ('price', [sign + amount])
