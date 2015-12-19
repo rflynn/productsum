@@ -37,6 +37,7 @@ schema = \
                         'spikes=>spike',
                         # TODO: use synonyms for the following
                         'lacquer=>polish', # nail polish
+                        # + == plus
                     ]
                 },
             },

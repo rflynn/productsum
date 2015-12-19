@@ -17,8 +17,12 @@ def tokenize(s):
     return re.findall(ur"(\d+(?:\.\d+)?|\w+|[&'+$])", s.lower(), re.UNICODE)
 
 def tags_load(filepath, tag):
-    with codecs.open(filepath, encoding='utf-8') as f:
-        return [(tag, tokenize(line)) for line in f if line]
+    try:
+        with codecs.open(filepath, encoding='utf-8') as f:
+            return [(tag, tokenize(line)) for line in f if line]
+    except Exception as e:
+        print e
+        return []
 
 def reverse_index(l):
     index = defaultdict(list)
@@ -28,8 +32,7 @@ def reverse_index(l):
 
 def build_tag_reverse_index():
     tags = [tags_load('./data/tag.%s.csv' % tag, tag)
-                for tag in ['adj',
-                            'brand',
+                for tag in ['brand',
                             'color',
                             'material',
                             'ngram2',

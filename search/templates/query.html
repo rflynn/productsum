@@ -206,7 +206,7 @@
         <ol id="goodlist">
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
             <li><a href="/?q=Clarisonic Cashmere Cleanse Facial Brush Head $30">Clarisonic Cashmere Cleanse Facial Brush Head $30</a>
-            <li><a href="/?q= Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36"> Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
+            <li><a href="/?q=Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36">Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
             <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It $18">Deborah Lippmann Nail Lacquer in Whip It $18</a> (nail polish vs. nail lacquer)
@@ -257,10 +257,17 @@
             <li>triage...
                 <ol>
                     <li><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> red valentino brand doesn't match?! wtf...
+                    <li>"SPF 34" vs. "SPF34" <a href="/?q=SHISEIDO Sun Protection Eye Cream SPF34, 15ml $35.50">SHISEIDO Sun Protection Eye Cream SPF34, 15ml $35.50</a>
                 </ol>
             <li>should match...
                 <ol>
                     <li><a href="/?q=Foreo ISSA Mini Brush Head - Enchanted Violet (1 piece) $24.90">Foreo ISSA Mini Brush Head - Enchanted Violet (1 piece) $24.90</a>
+                    <li><a href="/?q=Clé de Peau Beauté Intensifying Cream Eyeliner $60">Clé de Peau Beauté Intensifying Cream Eyeliner $60</a>
+                </ol>
+            <li>unit conversions
+                <ol>
+                    <li>&euro; &hArr; $ conversion <a href="/?q=Nike Roshe One sneakers €90">Nike Roshe One sneakers €90</a>
+                    <li>ml &hArr; oz conversion <a href="/?q=Sisley Paris Eye Contour Mask, 30ml">Sisley Paris Eye Contour Mask, 30ml</a>
                 </ol>
             <li>product dupes
                 <ol>
@@ -290,7 +297,6 @@
                 <ol>
                     <li>price difference: compare <a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black $843">Charlotte Olympia Orbital Pomeline Suede Pump, Black $843</a> vs. <a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black">Charlotte Olympia Orbital Pomeline Suede Pump, Black</a>
                     <li><strike>price n/a <a href="/?q=Chloe Black Leather Mini Georgia Bag $1090">Chloe Black Leather Mini Georgia Bag $1090</a></strike>
-                    <li>&euro; vs $ conversion
                 </ol>
             <li>non-normalized language
                 <ol>
@@ -313,7 +319,9 @@
             <li>other product attributes
                 <ol>
                     <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a> SPF 30 and SPF 50 are both same price, same image, but are not the same product
-                    <li>TODO: synonym between lotion/subscreen <a href="/?q=Elizabeth Arden Ceramide Lift and Firm Day Broad Spectrum Sunscreen SPF 30 (1.7 oz.)">Elizabeth Arden Ceramide Lift and Firm Day Broad Spectrum Sunscreen SPF 30 (1.7 oz.)</a>
+                    <li>TODO: synonym between lotion/sunscreen <a href="/?q=Elizabeth Arden Ceramide Lift and Firm Day Broad Spectrum Sunscreen SPF 30 (1.7 oz.)">Elizabeth Arden Ceramide Lift and Firm Day Broad Spectrum Sunscreen SPF 30 (1.7 oz.)</a>
+                    <li>TODO: "1 piece" should match anything not stating another amount; but the textual difference when not stated reduces the match score: <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90">Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90</a> vs. <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue $24.90">Foreo ISSA Brush Head - Cobalt Blue $24.90</a>
+                    <li>TODO: explicit color vs. unstated <a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48</a> vs. <a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, $48</a>
                     <li><a href="/?q=DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a> &mdash; product should match but doesn't: '<a href="/?q=DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78">DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78</a>
                 </ol>
         </ol>
@@ -569,10 +577,11 @@ function parse_qstr(qstr)
 {
     $('#parse-qstr').empty();
     $.getJSON(
-        '/parse?q=' + encodeURIComponent(qstr || ''),
+        '/parse?q=' + encodeURI(qstr || ''),
         function(data) {
             var must = [];
             var should = [];
+            var or = [];
             console.log(data.result);
             var qstrlow = qstr.toLowerCase();
             var qi = 0;
@@ -594,7 +603,9 @@ function parse_qstr(qstr)
                 qi = qi2e;
                 $('#parse-qstr').append($('<div class="'+type_+'">').text(substr));
                 if (type_ === 'brand' && !seen_brand) {
-                    must.push({match_phrase:{brand: substr}});
+                    //must.push({match_phrase:{brand: substr}})
+                    should.push({match_phrase:{brand: substr}});
+                    must.push({match_phrase:{brand_orig: substr}});
                 } else if (type_ === 'price') {
                     var p = Number(toks[0].substr(1));
                     must.push({
@@ -613,7 +624,11 @@ function parse_qstr(qstr)
                 seen_brand = seen_brand || type_ === 'brand';
             }
             console.log('match', must, should);
-            search(undefined, undefined, {must: must, should: should});
+            search(undefined, undefined,
+                {
+                    query: {must: must, should: should}
+                    //filter: {or: []}
+                });
         }
     );
 }
@@ -629,8 +644,9 @@ function search(txtq, params, phrases_yall)
             query: {
                 filtered : {
                     query: {
-                        bool: phrases_yall
-                    }
+                        bool: phrases_yall.query
+                    },
+                    filter: phrases_yall.filter
                 }
             }
         };
@@ -848,7 +864,7 @@ function support_back_button()
     if (window.history && window.history.pushState) {
         $(window).on('popstate', function() {
             if (location.search.startsWith('?q=')) {
-                $('#q').val(decodeURIComponent(location.search.substr(3)));
+                $('#q').val(decodeURI(location.search.substr(3)));
             }
         });
     }
