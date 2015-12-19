@@ -850,7 +850,6 @@ function support_back_button()
             if (location.search.startsWith('?q=')) {
                 $('#q').val(decodeURIComponent(location.search.substr(3)));
             }
-            on_page_load();
         });
     }
 }
