@@ -577,7 +577,7 @@ function parse_qstr(qstr)
 {
     $('#parse-qstr').empty();
     $.getJSON(
-        '/parse?q=' + encodeURI(qstr || ''),
+        '/parse?q=' + (qstr || ''),
         function(data) {
             var must = [];
             var should = [];
@@ -720,7 +720,7 @@ function stop_loading()
 function set_url(q)
 {
     var url = location.protocol + '//' + location.host + location.pathname;
-    url += '?q=' + encodeURI(q);
+    url += '?q=' + q;
     history.pushState('data', '', url);
 }
 
@@ -864,7 +864,9 @@ function support_back_button()
     if (window.history && window.history.pushState) {
         $(window).on('popstate', function() {
             if (location.search.startsWith('?q=')) {
-                $('#q').val(decodeURI(location.search.substr(3)));
+                var q = location.search.substr(3);
+                console.log('q', q);
+                $('#q').val(decodeURI(q));
             }
         });
     }

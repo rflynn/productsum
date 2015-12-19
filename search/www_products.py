@@ -42,7 +42,7 @@ def search_by_url(url):
 def do_query(q=None, url=None):
     t = time.time()
     return render_template('query.html',
-                           q=q or '',
+                           q=urllib.unquote(q or ''),
                            url=url or '',
                            t=round(time.time()-t, 1))
 
