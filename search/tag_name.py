@@ -172,6 +172,7 @@ def run_tests():
         u'SHISEIDO Extra-Smooth Sun Protection Cream SPF 38/2 oz. $32',
         u'LOUISE ET CIE Gold-Plated Glass Pearl Stud Earrings',
         u'SWAROVSKI Solitaire Swarovski Crystal Stud Earrings $69', # when 2 instances of brand appear, we should favor the prefix
+        u'Glam-To-Go Cheek, Eye & Lip Travel Case', # ampersand...
     ]
     for t in tests:
         tq = tag_query(t)
