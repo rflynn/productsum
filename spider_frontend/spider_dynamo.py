@@ -554,6 +554,23 @@ def parse_canonical_url(body, url):
         print e
     return canonical_url
 
+'''
+TODO: consider:
+<link rel="alternate" href="http://www.stylebop.com" hreflang="x-default" >
+'''
+
+def get_language(headers, body):
+    '''
+    Content-Language: en
+    Content-Language: mi, en
+    <html lang="en_US">
+    <html prefix="og: http://ogp.me/ns#" xmlns="http://www.apple.com/itms/" lang="en">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" >
+    <meta name="language" content="fr">
+    '''
+    lang = None
+    return lang
+
 def get_mimetype(headers):
     # TODO: use a lib or smthn
     if not headers:
