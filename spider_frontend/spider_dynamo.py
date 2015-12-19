@@ -43,6 +43,16 @@ _Seeds = {
             '/assistance/',
         }
     },
+    'https://www.birchbox.com/': {
+        'skip': {
+            # all custom, their robots.txt is wide open
+            '/about/',
+            '/mobile/',
+            '/stores/',
+            '/shop/checkout/',
+            '/subscribe/',
+        }
+    },
     'http://www.bluefly.com/': {
         'skip': {
             #'/*exclusives.fly',
@@ -101,6 +111,13 @@ _Seeds = {
             '*/searchsite.php?*',
             '/*source=igodigital*',
             '/reviews/',
+        },
+    },
+    'http://www.dillards.com/': {
+        'skip': {
+            '/html/',
+            '/webapp/wcs/stores/servlet/OrderItemDisplay', # cart
+            '/webapp/wcs/stores/servlet/LogonForm',
         },
     },
     'http://www.drugstore.com': {
