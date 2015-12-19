@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-This is a special product mapper, the unknown/default/fallback one
-It is used when the host is not directly known or supported
-It must work as well as possible in a generic way across as many sites as possible
+map a document archived from drugstore.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -207,7 +205,7 @@ class ProductsDrugstoreCom(object):
         except:
             descr = None
         try:
-            breadcrumbs = [tag.text for tag in soup.findAll('a', {'class': 'breadcrumb'})]
+            breadcrumbs = [tag.text for tag in soup.findAll('a', {'class': 'breadcrumb'})] or None
         except:
             breadcrumbs = None
         colors = sorted(tag.get('alt') for tag in soup.select('#divAvailDistinction img[alt]')) or None
@@ -223,7 +221,7 @@ class ProductsDrugstoreCom(object):
         }
 
     @classmethod
-    def from_html(cls, url, html, require_prodid=True):
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -266,7 +264,7 @@ class ProductsDrugstoreCom(object):
 
         products = []
 
-        if prodid or not require_prodid:
+        if prodid:
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -389,7 +387,7 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsDrugstoreCom.from_html(url, html, require_prodid=False)
+    return ProductsDrugstoreCom.from_html(url, html)
 
 if __name__ == '__main__':
 
