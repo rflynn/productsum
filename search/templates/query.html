@@ -250,14 +250,23 @@
         <div style="width: 50%; float:right">
         <label for="badlist">FIXME</label>
         <ol id="badlist">
-            <li>triage...
+
+            <li>brand
                 <ol>
-                    <li>"SPF 34" vs. "SPF34" <a href="/?q=SHISEIDO Sun Protection Eye Cream SPF34, 15ml $35.50">SHISEIDO Sun Protection Eye Cream SPF34, 15ml $35.50</a>
+                    <li><a href="/?q=Clé de Peau Beauté Intensifying Cream Eyeliner $60">Clé de Peau Beauté Intensifying Cream Eyeliner $60</a> &mdash; different brand_orig values, we need to fix elasticsearch queries to handle original brand and normalized brand...
+                    <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
+                    <li><a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48</a> &mdash; ES produces significantly different scores for products with exactly the same brand, name and price...
+                    <li><strike><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically</strike>
+                    <li><strike><a href="/?q=Lucky Brand Women's Nightt Booties $129">Lucky Brand Women's Nightt Booties $129</a> &mdash; Macy's brands missing</strike>
+                    <li>compare <a href="/?q=Lancome">Lancome</a> to <a href="/?q=Lancôme">Lancôme</a>
+                    <li><strike><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> red valentino brand doesn't match?! wtf...</strike>
                 </ol>
-            <li>should match...
+
+            <li>non-commutative results: searching by product A &rarr; [B] &ne; B &rarr; [A]
                 <ol>
-                    <li><a href="/?q=Foreo ISSA Mini Brush Head - Enchanted Violet (1 piece) $24.90">Foreo ISSA Mini Brush Head - Enchanted Violet (1 piece) $24.90</a>
+                    <li><a href="/?q=Super Fluid UV Defense Ultra Light Sunscreen SPF 50 , 1.7 oz. $38">Super Fluid UV Defense Ultra Light Sunscreen SPF 50 , 1.7 oz. $38</a> yields 3 matches, including "Kiehl's Since 1851 Super Fluid UV Defense Ultra Light Sunscreen SPF 50+, 1.7 oz. $38", but <a href="/?q=Kiehl's Since 1851 Super Fluid UV Defense Ultra Light Sunscreen SPF 50+, 1.7 oz. $38">Kiehl's Since 1851 Super Fluid UV Defense Ultra Light Sunscreen SPF 50+, 1.7 oz. $38</a> yields 2, not containing the first
                 </ol>
+
             <li>unit conversions
                 <ol>
                     <li>&euro; &hArr; $ conversion <a href="/?q=Nike Roshe One sneakers €90">Nike Roshe One sneakers €90</a>
@@ -266,34 +275,11 @@
                             <li>30ml vs. 1.16 oz <a href="/?q=Sisley Paris Eye Contour Mask, 30ml">Sisley Paris Eye Contour Mask, 30ml</a>
                             <li>50ml vs 1.6 oz <a href="/?q=Burberry Eau de Parfum - My Burberry, 50ml $95">Burberry Eau de Parfum - My Burberry, 50ml $95</a>
                         </ol>
-                </ol>
-            <li>product dupes
-                <ol>
-                    <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a>
-                    <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
-                </ol>
-            <li>elasticsearch weirdness...
-                <ol>
-                    <li><a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48</a> &mdash; ES produces significantly different scores for products with exactly the same brand, name and price...
-                </ol>
-            <li>tons of legitimate matches
-                <ol>
-                    <li><a href="/?q=3.1 Phillip Lim 'Pashli Mini' Leather Satchel $695">3.1 Phillip Lim 'Pashli Mini' Leather Satchel $695</a> -- dozens of legit matches, algorithm doesn't handle it well
-                </ol>
-            <li>size/quantity
-                <ol>
+                    <li>TODO: "1 piece" should match anything not stating another amount; but the textual difference when not stated reduces the match score: <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90">Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90</a> vs. <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue $24.90">Foreo ISSA Brush Head - Cobalt Blue $24.90</a>
                     <li><strike>TODO: normalize "1.7oz" to "1.7 oz" in ES (e.g. <a href="/?q=UV Plus SPF 50, 1.7 oz. $42">UV Plus SPF 50, 1.7 oz. $42</a>)</strike>
                     <li><strike>are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"</strike>
                 </ol>
-            <li>brand
-                <ol>
-                    <li><a href="/?q=Clé de Peau Beauté Intensifying Cream Eyeliner $60">Clé de Peau Beauté Intensifying Cream Eyeliner $60</a> &mdash; different brand_orig values, we need to fix elasticsearch queries to handle original brand and normalized brand...
-                    <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
-                    <li><strike><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically</strike>
-                    <li><strike><a href="/?q=Lucky Brand Women's Nightt Booties $129">Lucky Brand Women's Nightt Booties $129</a> &mdash; Macy's brands missing</strike>
-                    <li>compare <a href="/?q=Lancome">Lancome</a> to <a href="/?q=Lancôme">Lancôme</a>
-                    <li><strike><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> red valentino brand doesn't match?! wtf...</strike>
-                </ol>
+
             <li>price
                 <ol>
                     <li>price difference: compare <a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black $843">Charlotte Olympia Orbital Pomeline Suede Pump, Black $843</a> vs. <a href="/?q=Charlotte Olympia Orbital Pomeline Suede Pump, Black">Charlotte Olympia Orbital Pomeline Suede Pump, Black</a>
@@ -318,15 +304,27 @@
                 </ol>
             <li>color
                 <ol>
+                    <li>TODO: explicit color vs. unstated <a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48</a> vs. <a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, $48</a>
                     <li><strike><a href="/?q=Michael Stars Long Sleeve Turtleneck in Pinot $88">Michael Stars Long Sleeve Turtleneck in Pinot $88</a> colors "Pinot" vs. "Quicksand"</strike>
                     <li><strike><a href="/?q=miharayasuhiro/white-calf-hair-sneakers">miharayasuhiro/white-calf-hair-sneakers</a> match on 3/4 words ignores most important -- color (photos are drastically different)</strike>
                 </ol>
+            <li>product dupes
+                <ol>
+                    <li><a href="/?q=Clé de Peau Beauté Limited Edition Nail Lacquer Trio">Clé de Peau Beauté Limited Edition Nail Lacquer Trio</a>
+                    <li><a href="/?q=Same Swim Babe Bandeau Bikini Top">Same Swim Babe Bandeau Bikini Top</a>
+                </ol>
+            <li>many legitimate matches
+                <ol>
+                    <li><a href="/?q=3.1 Phillip Lim 'Pashli Mini' Leather Satchel $695">3.1 Phillip Lim 'Pashli Mini' Leather Satchel $695</a> -- dozens of legit matches, algorithm doesn't handle it well
+                </ol>
             <li>other product attributes
                 <ol>
-                    <li><strike>TODO: synonym between lotion/sunscreen <a href="Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a></strike>
-                    <li>TODO: "1 piece" should match anything not stating another amount; but the textual difference when not stated reduces the match score: <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90">Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90</a> vs. <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue $24.90">Foreo ISSA Brush Head - Cobalt Blue $24.90</a>
-                    <li>TODO: explicit color vs. unstated <a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, Silver $48</a> vs. <a href="/?q=KATE SPADE NEW YORK Sailor's Knot Stud Earrings, $48">KATE SPADE NEW YORK Sailor's Knot Stud Earrings, $48</a>
                     <li><a href="/?q=DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a> &mdash; product should match but doesn't: '<a href="/?q=DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78">DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78</a>
+                    <li><strike>TODO: synonym between lotion/sunscreen <a href="Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a></strike>
+                </ol>
+            <li>tokenizing
+                <ol>
+                    <li><strike>"SPF 34" vs. "SPF34" <a href="/?q=SHISEIDO Sun Protection Eye Cream SPF34, 15ml $35.50">SHISEIDO Sun Protection Eye Cream SPF34, 15ml $35.50</a></strike>
                 </ol>
         </ol>
         </div>
@@ -360,6 +358,8 @@ function match_threshold(scores)
     var threshold = 0;
     if (scores.length) {
         var scores = scores.slice(0, 25);
+        while (scores.length < 25)
+            scores.push(0);
         threshold = Math.max(SCORE_MIN_THRESHOLD,
                             math.mean(scores) + (math.std(scores)));
         if (threshold >= scores[0])
