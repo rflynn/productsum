@@ -221,7 +221,7 @@ class ProductsUlta(object):
         if blz:
             try:
                 code = re.search('({.*})', blz.text, re.DOTALL).groups(0)[0]
-                print code
+                #print code
                 js = json.loads(code)
                 prod = js['product']
                 brand = brand or prod.get('brand')
@@ -234,7 +234,7 @@ class ProductsUlta(object):
                 url = prod.get('url', url)
             except:
                 pass
-        pprint(js)
+        #pprint(js)
 
         return {
             'sku': sku,
@@ -276,7 +276,7 @@ class ProductsUlta(object):
             'utag': utag,
             'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         # TODO: tokenize and attempt to parse url itself for hints on brand and product
         # use everything at our disposal

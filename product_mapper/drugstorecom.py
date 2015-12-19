@@ -248,7 +248,7 @@ class ProductsDrugstoreCom(object):
             'utag': utag,
             'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         # TODO: tokenize and attempt to parse url itself for hints on brand and product
         # use everything at our disposal
