@@ -382,6 +382,7 @@ _Seeds = {
     },
     'http://www.ulta.com/': {
         'skip': {
+            '*_dynSessConf=',
             '/browse/inc/addToFavorites.jsp',
             '/browse/inc/productDetail_crossSell.jsp',
             '/image-server/',
