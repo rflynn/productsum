@@ -74,7 +74,6 @@ _Seeds = {
             '/pages/',
             '/removeFavoriteProduct.jsp', # Bad
             '/sl/',
-
         },
     },
     'http://www.brownsfashion.com/': {},
@@ -103,6 +102,39 @@ _Seeds = {
             '/*source=igodigital*',
             '/reviews/',
         },
+    },
+    'http://www.drugstore.com': {
+        'skip': {
+            # my app-specific, might change in the futrue
+            '/household-food-and-pets/',
+            '/medicine-and-health/',
+            '/walgreens-pharmacy/',
+            '/personal-care/',
+            # their robots.txt
+            '/4213/edh',
+            '/500.htm',
+            '/affiliate/content.asp',
+            '/cart.asp',
+            '/checkout/',
+            '/checkout/default.asp',
+            '/la/account/',
+            '/la/order/',
+            '/list.asp',
+            '/LookAheadSuggestions.aspx',
+            '/onorder.asp',
+            '/popups/largerphoto/default.asp',
+            '/pricing.asp',
+            '/products/email_product.asp',
+            '/products/writereview.asp',
+            '/reorders/',
+            '/shoppingbag.asp',
+            '/templates/events/circular.asp',
+            '/templates/evgrndept/default.asp',
+            '/templates/HIPAA/info.asp',
+            '/templates/stdcat/default.asp',
+            '/templates/stdplist/default.asp',
+            '/user/',
+        }
     },
     'http://www.dsw.com/': {
         'skip': {
