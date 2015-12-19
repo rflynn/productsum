@@ -29,28 +29,33 @@ schema = \
                     'type': 'snowball',
                     'language': 'English',
                 },
+                'my_synonym_filter': {
+                    'type': 'synonym', 
+                    'synonyms': [ 
+                        '+,plus',
+                        'lacquer,polish', # e.g. nail polish
+                        'lotion,cream,creme,sunscreen',
+                    ]
+                },
                 'custom_stem': {
                     'type': 'stemmer_override',
                     'rules': [
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
-                        # TODO: use synonyms for the following
-                        'lacquer=>polish', # nail polish
-                        # + == plus
                     ]
                 },
             },
             'tokenizer': {
                 'word_only': {
                     'type': 'pattern',
-                    'pattern': r"(\d+(?:\.\d+)?|\w+|[&'+$])",
+                    'pattern': r"(\d+(?:\.\d+)?|\p{L}+|[&'+$])",
                     'group': '1',
                 },
             },
             'analyzer': {
                 'my_english': {
-                    'tokenizer': 'standard',
+                    'tokenizer': 'word_only',
                         'filter': [
                             'lowercase',
                             #'porter_stem'
@@ -58,6 +63,7 @@ schema = \
                             'eng_stem',
                             'pos_stem',
                             'custom_stem',
+                            'my_synonym_filter',
                         ]
                 },
                 'keyw': {
