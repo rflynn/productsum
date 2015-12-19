@@ -294,9 +294,10 @@ class ProductsUnknown(object):
                             or sp.get('description')
                             or meta.get('description')
                             or None),
-                in_stock=(((og.get('product:availability')
+                in_stock=((nth(spoffer.get('availability'), 0) == u'http://schema.org/InStock')
+                            or (((og.get('product:availability')
                             or og.get('availability')) in ('instock', 'in stock'))
-                            or xboolstr(nth(utag.get('product_available'), 0))
+                            or xboolstr(nth(utag.get('product_available'), 0)))
                             or None),
                 stock_level=(nth(utag.get('stock_level'), 0)
                             or None),
