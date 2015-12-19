@@ -101,9 +101,9 @@
                 to {transform: rotate(359deg);}
             }
             #clear {
-                font-size: x-large;
+                font-size: xx-large;
                 cursor: pointer;
-                margin: 0.25em;
+                margin: 0.2em;
             }
             a.search-by-me {
                 cursor: pointer;
@@ -185,7 +185,7 @@
             </form>
         </div>
 
-        <div style="margin-left:2.18em">
+        <div style="margin-left:2.50em">
             <div id="parse-qstr"></div>
             <div id="sparkline"></div>
             <div id="metadata">
@@ -209,7 +209,7 @@
             <li><a href="/?q=Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36">Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
-            <li><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It $18">Deborah Lippmann Nail Lacquer in Whip It $18</a> &mdash; synonym (nail polish vs. nail lacquer)
+            <li><a href="/?q=Deborah Lippmann Nail Lacquer in Respect $18">Deborah Lippmann Nail Lacquer in Respect $18</a>
             <li><a href="/?q=Burberry 'My Burberry' Eau de Parfum $95">Burberry 'My Burberry' Eau de Parfum $95</a>
             <li><a href="/?q=Glam-To-Go Cheek, Eye %26 Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a> &mdash; test ampersand handling
             <li><a href="/?q=Limited Edition In the Nude Compact for Eyes">Limited Edition In the Nude Compact for Eyes</a>
@@ -291,6 +291,7 @@
                     <li><a href="/?q=Clé de Peau Beauté Brightening Mask">Clé de Peau Beauté Brightening Mask</a> vs. non-brand <a href="/?q=Brightening Mask $30">Brightening Mask $30</a>
                     <li><strike><a href="/?q=TIBI Blouse">TIBI Blouse</a> &mdash; TODO: extract brand algorithmically</strike>
                     <li><strike><a href="/?q=Lucky Brand Women's Nightt Booties $129">Lucky Brand Women's Nightt Booties $129</a> &mdash; Macy's brands missing</strike>
+                    <li>compare <a href="/?q=Lancome">Lancome</a> to <a href="/?q=Lancôme">Lancôme</a>
                     <li><strike><a href="/?q=RED Valentino Elastic Waist Pants $350">RED Valentino Elastic Waist Pants $350</a> red valentino brand doesn't match?! wtf...</strike>
                 </ol>
             <li>price
@@ -302,6 +303,8 @@
                 <ol>
                     <li><a href="/?q=Clé de Peau Beauté Limited Edition Makeup Coffret $210">Clé de Peau Beauté Limited Edition Makeup Coffret $210</a> &mdash; product name only shares one word?!
                     <li><a href="/?q=Stuart Weitzman Nudist song Sandals $415">Stuart Weitzman Nudist song Sandals $415</a>
+                    <li><a href="/?q=Cushnie et Ochs Sequin Samantha Dress $1795">Cushnie et Ochs Sequin Samantha Dress $1795</a> fwrd "sequin samantha dress" vs. shopbop "sequin strapless dress" ... the 2nd shopbop img is very close to first fwrd image...
+                    <li><strike><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It $18">Deborah Lippmann Nail Lacquer in Whip It $18</a> &mdash; synonym (nail polish vs. nail lacquer)</strike>
                 </ol>
             <li>matching/grouping doesn't respect brand
                 <ol>
@@ -835,8 +838,8 @@ function on_page_load()
     $.getJSON(
         es_index() + '_count',
         function(data) {
-            var kcnt = Math.round(data.count / 1000);
-            $('#totalproducts').text('' + kcnt + 'k products');
+            var kcnt = (data.count / 1e6).toFixed(2);
+            $('#totalproducts').text('' + kcnt + 'M products');
         }
     );
 
@@ -868,6 +871,7 @@ function support_back_button()
                 var q = location.search.substr(3);
                 console.log('q', q);
                 $('#q').val(decodeURI(q));
+                //$('#q').closest('form').submit();
             }
         });
     }
