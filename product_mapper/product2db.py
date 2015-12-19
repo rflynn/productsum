@@ -28,6 +28,7 @@ from barneys import ProductsBarneys
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bluefly import ProductsBluefly
 from dermstore import ProductsDermstore
+from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
 from lordandtaylor import ProductsLordandTaylor
@@ -159,6 +160,7 @@ Host2Map = {
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www.bluefly.com':      ProductsBluefly,
     'www.dermstore.com':    ProductsDermstore,
+    'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
     'www.lordandtaylor.com': ProductsLordandTaylor,
