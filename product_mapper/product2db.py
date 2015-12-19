@@ -43,6 +43,7 @@ from shopbop import ProductsShopbop
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from tradesy import ProductsTradesy
+from ulta import ProductsUlta
 from yoox import ProductsYoox
 from zappos import ProductsZappos
 
@@ -174,6 +175,7 @@ Host2Map = {
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
     'www.tradesy.com':      ProductsTradesy,
+    'www.ulta.com':         ProductsUlta,
     'www.yoox.com':         ProductsYoox,
     'www.zappos.com':       ProductsZappos,
 }
