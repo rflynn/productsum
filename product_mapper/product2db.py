@@ -73,6 +73,7 @@ def each_link(url_host=None, since_ts=0):
     table = dynamodb.Table('link')
 
     fe = Attr('updated').gt(since_ts) & Attr('body').ne(None)
+    #fe = Attr('body').ne(None) # FIXME: temporary for ssense, which was fucking up...
     pe = '#u,updated,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
 
