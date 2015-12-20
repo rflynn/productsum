@@ -223,6 +223,7 @@ class ProductsVioletgrey(object):
                 size = tag.text
 
         return {
+            'url': url,
             'sku': sku,
             'slug': slug,
             'brand': brand,
@@ -305,7 +306,8 @@ class ProductsVioletgrey(object):
 
             p = ProductVioletgrey(
                 id=prodid,
-                url=(og.get('url')
+                url=(custom.get('url')
+                            or og.get('url')
                             or sp.get('url')
                             or url
                             or None),
