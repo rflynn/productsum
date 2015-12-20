@@ -15,7 +15,6 @@ import gc
 import multiprocessing
 import psycopg2
 import psycopg2.extensions
-import sys
 import time
 import traceback
 from yurl import URL
@@ -25,13 +24,16 @@ from spider_backend import s3wrap
 from dbconn import get_psql_conn
 
 from barneys import ProductsBarneys
+from bathandbodyworks import ProductsBathandBodyWorks
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bluefly import ProductsBluefly
 from dermstore import ProductsDermstore
+from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
+from modaoperandi import ProductsModaoperandi
 from mytheresa import ProductsMyTheresa
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
@@ -42,6 +44,8 @@ from shopbop import ProductsShopbop
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from tradesy import ProductsTradesy
+from ulta import ProductsUlta
+from violetgrey import ProductsVioletgrey
 from yoox import ProductsYoox
 from zappos import ProductsZappos
 
@@ -70,6 +74,7 @@ def each_link(url_host=None, since_ts=0):
     table = dynamodb.Table('link')
 
     fe = Attr('updated').gt(since_ts) & Attr('body').ne(None)
+    #fe = Attr('body').ne(None) # FIXME: temporary for ssense, which was fucking up...
     pe = '#u,updated,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
 
@@ -156,13 +161,16 @@ def decompress_body(body):
 Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
     'www.barneys.com':      ProductsBarneys,
+    'www.bathandbodyworks.com': ProductsBathandBodyWorks,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www.bluefly.com':      ProductsBluefly,
     'www.dermstore.com':    ProductsDermstore,
+    'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
+    'www.modaoperandi.com': ProductsModaoperandi,
     'www.mytheresa.com':    ProductsMyTheresa,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
@@ -172,6 +180,8 @@ Host2Map = {
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
     'www.tradesy.com':      ProductsTradesy,
+    'www.ulta.com':         ProductsUlta,
+    'www.violetgrey.com':   ProductsVioletgrey,
     'www.yoox.com':         ProductsYoox,
     'www.zappos.com':       ProductsZappos,
 }
@@ -243,7 +253,8 @@ def handle_responses(q2, min_handle=0):
         traceback.print_exc()
     return recv
 
-if __name__ == '__main__':
+
+def map_products(url_host):
 
     starttime = time.time()
 
@@ -253,15 +264,6 @@ if __name__ == '__main__':
         recvrate = recv / max(1.0, elapsed)
         print 'progress: %.1f sec, %d sent, %d recv (%.1f/sec)' % (
             elapsed, sent, recv, recvrate)
-
-    url_host = None
-
-    if len(sys.argv) > 1:
-        url_host = sys.argv[1]
-        print 'url_host:', url_host
-        if url_host not in Host2Map:
-            print 'url host not in ', sorted(Host2Map.keys())
-            sys.exit(1)
 
     man = multiprocessing.Manager()
     q1 = man.Queue()
@@ -321,5 +323,16 @@ if __name__ == '__main__':
             pass
 
     show_progress(sent, recv)
+
+if __name__ == '__main__':
+
+    url_hosts = sys.argv[1:]
+    while url_hosts:
+        url_host = url_hosts.pop(0)
+        print 'url_host:', url_host
+        if url_host not in Host2Map:
+            print 'url host not in ', sorted(Host2Map.keys())
+            sys.exit(1)
+        map_products(url_host)
 
     print 'done'

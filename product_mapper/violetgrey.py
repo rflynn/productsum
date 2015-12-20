@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 '''
-This is a special product mapper, the unknown/default/fallback one
-It is used when the host is not directly known or supported
-It must work as well as possible in a generic way across as many sites as possible
+map a document archived from violetgrey.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
+import execjs
 import gzip
 import json
 from pprint import pprint
@@ -22,15 +21,16 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr
 
-MERCHANT_SLUG = 'unknown'
+
+MERCHANT_SLUG = 'violetgrey'
 
 
-class ProductUnknown(object):
+class ProductVioletgrey(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
                  currency=None, sale_price=None, price=None,
-                 brand=None, breadcrumb=None,
+                 brand=None, category=None, breadcrumb=None,
                  in_stock=None, stock_level=None,
                  name=None, title=None, descr=None,
                  material=None, features=None,
@@ -50,6 +50,7 @@ class ProductUnknown(object):
         self.sale_price = sale_price
         self.price = price
         self.brand = brand
+        self.category = category
         self.breadcrumb = breadcrumb
         self.in_stock = in_stock
         self.stock_level = stock_level
@@ -85,7 +86,7 @@ class ProductUnknown(object):
             self.features = [dehtmlify(f) for f in self.features]
 
     def __repr__(self):
-        return ('''ProductUnknown:
+        return ('''ProductVioletgrey:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -98,6 +99,7 @@ class ProductUnknown(object):
     sale_price....... %s
     price............ %s
     brand............ %s
+    category......... %s
     breadcrumb....... %s
     in_stock......... %s
     stock_level...... %s
@@ -108,6 +110,7 @@ class ProductUnknown(object):
     features......... %s
     color............ %s
     colors........... %s
+    size............. %s
     sizes............ %s
     img_url.......... %s
     img_urls......... %s''' % (
@@ -123,6 +126,7 @@ class ProductUnknown(object):
        self.sale_price,
        self.price,
        self.brand,
+       self.category,
        self.breadcrumb,
        self.in_stock,
        self.stock_level,
@@ -133,6 +137,7 @@ class ProductUnknown(object):
        self.features,
        self.color,
        self.colors,
+       self.size,
        self.sizes,
        self.img_url,
        self.img_urls)).encode('utf8')
@@ -148,7 +153,7 @@ class ProductUnknown(object):
 
         if not self.sizes:
             available_sizes = None
-        elif self.sizes == [None]:
+        elif self.sizes == ['NO SIZE']:
             available_sizes = []
         else:
             available_sizes = [s for s in self.sizes if s]
@@ -162,6 +167,8 @@ class ProductUnknown(object):
             sale_price=self.sale_price,
             currency=self.currency,
             brand=self.brand,
+            category=self.category,
+            bread_crumb=self.breadcrumb,
             in_stock=self.in_stock,
             stock_level=None,
             name=self.name,
@@ -170,19 +177,71 @@ class ProductUnknown(object):
             features=self.features,
             color=self.color,
             available_colors=available_colors,
-            size=None,
+            size=self.size,
             available_sizes=available_sizes,
-            img_url=list(self.img_urls)[0] if self.img_urls else None,
+            img_url=self.img_url,
             img_urls=sorted(self.img_urls) if self.img_urls is not None else None
         )
 
 
-class ProductsUnknown(object):
+class ProductsVioletgrey(object):
 
     VERSION = 0
 
+    @staticmethod
+    def get_custom(soup, url, og):
+
+        sku = None
+        productid = None
+        brand = None
+        category = None
+        breadcrumbs = None
+        name = None
+        title = None
+        descr = None
+        features = None
+        in_stock = None
+        slug = None
+        price = None
+        sale_price = None
+        color = None
+        colors = None
+        size = None
+        sizes = None
+        img_url = None
+
+        try:
+            url_canonical = soup.find('link', rel='canonical').get('href')
+        except:
+            url_canonical = url
+
+        # <select class="custom-selector cart_variant_id" data-selector=".cart_variant_id" id="sizes" name="sizes"><option data-sku="TAT-PC-OIL" price="48" selected="selected" stock="1" value="2244">5.1 oz</option></select>
+        tag = soup.find('select', {'name': 'sizes'})
+        if tag:
+            tag = tag.find('option', selected=True)
+            if tag:
+                size = tag.text
+
+        return {
+            'url': url_canonical,
+            'sku': sku,
+            'slug': slug,
+            'brand': brand,
+            'category': category,
+            'name': name,
+            'in_stock': in_stock,
+            'descr': descr,
+            'features': features,
+            'price': price,
+            'breadcrumbs': breadcrumbs,
+            'color': color,
+            'colors': colors,
+            'size': size,
+            'sizes': sizes,
+        }
+
     @classmethod
-    def from_html(cls, url, html, require_prodid=True):
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -192,6 +251,11 @@ class ProductsUnknown(object):
         meta = HTMLMetadata.do_html_metadata(soup)
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
+        metaprod = {tag['property'][8:]: tag['content']
+                        for tag in soup.findAll('meta',
+                                        {'property': re.compile('^product:'),
+                                         'content':True})}
+        custom = cls.get_custom(soup, url, og)
         utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
@@ -200,27 +264,27 @@ class ProductsUnknown(object):
             'meta': meta,
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
+            'metaprod': metaprod,
             'utag': utag,
+            'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         # TODO: tokenize and attempt to parse url itself for hints on brand and product
         # use everything at our disposal
 
-        # TODO: don't forget about img_url as well, it's often there in og
-
-
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
-                    or og.get('product_id') # XXX: non-standard but it's out there
+                    or og.get('product_id')
+                    or custom.get('sku') # this one is expected for drugstore.com
+                    or nth(sp.get('sku'), 0)
                     or nth(utag.get('product_id'), 0)
                     or nth(utag.get('productID'), 0)
-                    or nth(sp.get('sku'), 0)
                     or None)
 
         products = []
 
-        if prodid or not require_prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -240,15 +304,14 @@ class ProductsUnknown(object):
             except:
                 spbrand = None
 
-            p = ProductUnknown(
+            p = ProductVioletgrey(
                 id=prodid,
-                url=(og.get('url')
+                url=(custom.get('url')
+                            or og.get('url')
                             or sp.get('url')
                             or url
                             or None),
-                merchant_sku=(og.get('product:retailer_part_no')
-                            or None),
-                slug=None,
+                slug=custom.get('slug') or None,
                 merchant_name=(og.get('product:retailer_title')
                             or og.get('retailer_title')
                             or og.get('site_name')
@@ -262,55 +325,67 @@ class ProductsUnknown(object):
                             or og.get('price:currency')
                             or og.get('currency')
                             or og.get('currency:currency')
+                            or metaprod.get('price:currency')
                             or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
                             or None),
                 price=(og.get('product:original_price:amount')
                             or og.get('price:amount')
                             or nth(spoffer.get('price'), 0)
+                            or custom.get('price') # expected
                             or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(og.get('product:sale_price:amount')
                             or og.get('sale_price:amount')
                             or og.get('product:price:amount')
                             or og.get('price:amount')
+                            or custom.get('sale_price') # expected
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=(og.get('product:brand')
+                brand=(custom.get('brand')
+                            or og.get('product:brand')
                             or og.get('brand')
                             or spbrand
                             or None),
-                breadcrumb=(utag.get('bread_crumb')
+                category=custom.get('category') or None,
+                breadcrumb=(custom.get('breadcrumbs')
+                            or utag.get('bread_crumb')
                             or None),
-                name=(og.get('name') # NOTE: non-standard but exists in the wild
+                name=(custom.get('name')
                             or og.get('title')
                             or sp.get('name')
                             or nth(utag.get('product_name'), 0)
                             or None),
-                title=(og.get('title')
+                title=(custom.get('title')
+                            or og.get('title')
                             or meta.get('title')
                             or None),
-                descr=(og.get('description')
+                descr=(custom.get('descr')
+                            or og.get('description')
                             or sp.get('description')
                             or meta.get('description')
                             or None),
-                in_stock=((nth(spoffer.get('availability'), 0) == u'http://schema.org/InStock')
+                in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
                             or og.get('availability')) in ('instock', 'in stock'))
                             or xboolstr(nth(utag.get('product_available'), 0)))
+                            or custom.get('in_stock')
                             or None),
                 stock_level=(nth(utag.get('stock_level'), 0)
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
                             or None),
-                features=None,
-                color=(og.get('product:color')
+                features=custom.get('features') or None,
+                color=(custom.get('color')
+                            or og.get('product:color')
                             or og.get('color')
+                            or metaprod.get('color')
                             or nth(sp.get('color'), 0)
                             or None),
-                colors=None,
-                sizes=None,
+                colors=custom.get('colors'),
+                size=custom.get('size') or None,
+                sizes=custom.get('sizes'),
                 img_url=(og.get('image')
                             or nth(sp.get('image'), 0)
                             or None),
@@ -318,11 +393,7 @@ class ProductsUnknown(object):
             )
             products.append(p)
 
-        # FIXME:
-        return products
-
-        #realproducts = [p.to_product() for p in products]
-        realproducts = [p for p in products]
+        realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
                     version=cls.VERSION,
@@ -340,14 +411,22 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsUnknown.from_html(url, html, require_prodid=False)
+    return ProductsVioletgrey.from_html(url, html)
+
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'https://shop.harpersbazaar.com/designers/d/dolce-and-gabbana/gray-sequined-pointed-toe-flats-4916.html'
-    filepath = 'shop.harpersbazaar.com-designers-d-dolce-and-gabbana-gray-sequined-pointed-toe-flats-4916.html.gz'
+    url = 'http://www.violetgrey.com/product/one-step-camellia-cleansing-oil/TAT-PC-OIL'
+    filepath = 'test/www.violetgrey.com-product-one-step-camellia-cleansing-oil-TAT-PC-OIL.gz'
+
+    url = 'http://www.violetgrey.com/product/rouge-allure-velvet-intense-long-wear-lip-colour/CHN-162380'
+    filepath = 'test/www.violetgrey.com-product-rouge-allure-velvet-intense-long-wear-lip-colour-CHN-162380.gz'
+
+    # test no-op
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
+    #filepath = 'www.bathandbodyworks.com-category-index.jsp-categoryId-36355536.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:

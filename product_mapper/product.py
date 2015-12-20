@@ -116,8 +116,12 @@ class Product(object):
         self.fixup_prices_and_currency()
         self.fixup_img_urls()
 
+        if self.category:
+            self.category = dehtmlify(normstring(self.category))
+
         if self.brand:
-            self.brand = unquote(normstring(self.brand))
+            self.brand = unquote(dehtmlify(normstring(self.brand)))
+            assert '&#39;' not in self.brand
 
         if self.brand and self.name:
             if self.name.lower().startswith(self.brand.lower()):
@@ -133,6 +137,12 @@ class Product(object):
             assert '<br>' not in self.name
             assert '<strong>' not in self.name
             assert '&amp;' not in self.name
+
+        if self.title:
+            self.title = normstring(dehtmlify(self.title))
+
+        if self.descr:
+            self.descr= normstring(dehtmlify(self.descr))
 
     def fixup_img_urls(self):
         # canonicalize; no protocol-less "//foo.bar/..."

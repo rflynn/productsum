@@ -475,7 +475,18 @@ _Seeds = {
     },
     'https://us.burberry.com/': {},
     'https://www.italist.com/en': {'ok':{'/en/'}},
-    'https://www.modaoperandi.com/': {},
+    'https://www.modaoperandi.com/': {
+        'skip': {
+            '/about'
+            '/careers'
+            '/contact'
+            '/app'
+            '/terms'
+            '/affiiates'
+            '/signin'
+            '/shopping-bag'
+        },
+    },
     'https://www.shopbop.com/': {
         'skip': {
             '/actions/',

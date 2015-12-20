@@ -5,7 +5,7 @@
 map a document archived from bergdorfgoodman.com to zero or more products
 '''
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 import base64
 import gzip
 import json
@@ -159,6 +159,27 @@ class ProductsBergdorfGoodman(object):
         tag = soup.find('a', itemprop='brand')
         if tag:
             brand = normstring(tag.text)
+
+        # <span id="lbl_DesignerSingleItem" class="product-designer">Tata Harper</span>
+        tag = soup.find('span', {'id': 'lbl_DesignerSingleItem',
+                                 'class': 'product-designer'}, text=True)
+        if tag and hasattr(tag, 'text') and tag.text:
+            brand = brand or normstring(tag.text)
+
+        # <input class="cmDesignerName" type="hidden" disabled="disabled" value="Tata Harper" />
+        tag = soup.find('input', {'class': 'cmDesignerName'}, value=True)
+        if tag and tag.get('value'):
+            brand = brand or normstring(tag.get('value'))
+
+        tag = soup.find('h1', itemprop='name')
+        if tag:
+            try:
+                tag = tag.contents[0]
+                if isinstance(tag, NavigableString):
+                    # ensure this is a bare piece of text within the name tag; we don't want the whole name, just the brand prefix
+                    brand = brand or normstring(tag)
+            except Exception as e:
+                print e
         # name
         '''
         <span class="product-displayname">Apostrophy Pointed Red-Sole Pump, Black</span>
@@ -274,6 +295,8 @@ if __name__ == '__main__':
 
     # test 1 product
     filepath = 'test/www.bergdorfgoodman.com-Christian-Louboutin-So-Kate-Patent-Red-Sole-Pump-Nude-Pumps-prod109600142_cat379623__-p.prod.gz'
+
+    #filepath = 'www.bergdorfgoodman.com-Tata-Harper-Boosted-Contouring-Eye-Mask-1-0-oz-prod111290137-p.prod.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()

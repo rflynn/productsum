@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-This is a special product mapper, the unknown/default/fallback one
-It is used when the host is not directly known or supported
-It must work as well as possible in a generic way across as many sites as possible
+map a document archived from drugstore.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -22,10 +20,10 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr
 
-MERCHANT_SLUG = 'unknown'
+MERCHANT_SLUG = 'drugstorecom'
 
 
-class ProductUnknown(object):
+class ProductDrugstoreCom(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -85,7 +83,7 @@ class ProductUnknown(object):
             self.features = [dehtmlify(f) for f in self.features]
 
     def __repr__(self):
-        return ('''ProductUnknown:
+        return ('''ProductDrugstoreCom:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -172,17 +170,58 @@ class ProductUnknown(object):
             available_colors=available_colors,
             size=None,
             available_sizes=available_sizes,
-            img_url=list(self.img_urls)[0] if self.img_urls else None,
+            img_url=self.img_url,
             img_urls=sorted(self.img_urls) if self.img_urls is not None else None
         )
 
 
-class ProductsUnknown(object):
+class ProductsDrugstoreCom(object):
 
     VERSION = 0
 
+    @staticmethod
+    def get_custom(soup, url):
+        sku = None
+        slug = None
+        try:
+            canonical_url = soup.find('link', rel='canonical').get('href')
+        except:
+            canonical_url = url
+        m = re.search(r'\b(qxp\w+)', canonical_url)
+        if m:
+            sku = m.group(1)
+        m = re.search(r'/([a-zA-Z]{1,32}[-][a-zA-Z0-9-]{3,96})/', canonical_url)
+        if m:
+            slug = m.group(1)
+        brand = None
+        try:
+            seemore = soup.find('a', {'class': 'brandstore'}).get_text()
+            if seemore and seemore.startswith('see more from '):
+                brand = seemore[14:]
+        except:
+            brand = None
+        try:
+            descr = soup.find(id='divPromosPDetail').get_text()
+        except:
+            descr = None
+        try:
+            breadcrumbs = [tag.text for tag in soup.findAll('a', {'class': 'breadcrumb'})] or None
+        except:
+            breadcrumbs = None
+        colors = sorted(tag.get('alt') for tag in soup.select('#divAvailDistinction img[alt]')) or None
+        sizes = None
+        return {
+            'sku': sku,
+            'slug': slug,
+            'brand': brand,
+            'descr': descr,
+            'breadcrumbs': breadcrumbs,
+            'colors': colors,
+            'sizes': sizes,
+        }
+
     @classmethod
-    def from_html(cls, url, html, require_prodid=True):
+    def from_html(cls, url, html):
 
         starttime = time.time()
 
@@ -192,6 +231,11 @@ class ProductsUnknown(object):
         meta = HTMLMetadata.do_html_metadata(soup)
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
+        tw = {tag['name'][8:]: tag['content']
+                for tag in soup.findAll('meta',
+                                        {'name': re.compile('^twitter:'),
+                                         'content':True})}
+        custom = cls.get_custom(soup, url)
         utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
@@ -200,27 +244,27 @@ class ProductsUnknown(object):
             'meta': meta,
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
+            'tw':   tw,
             'utag': utag,
+            'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         # TODO: tokenize and attempt to parse url itself for hints on brand and product
         # use everything at our disposal
 
-        # TODO: don't forget about img_url as well, it's often there in og
-
-
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
-                    or og.get('product_id') # XXX: non-standard but it's out there
+                    or og.get('product_id')
+                    or custom.get('sku') # this one is expected for drugstore.com
+                    or nth(sp.get('sku'), 0)
                     or nth(utag.get('product_id'), 0)
                     or nth(utag.get('productID'), 0)
-                    or nth(sp.get('sku'), 0)
                     or None)
 
         products = []
 
-        if prodid or not require_prodid:
+        if prodid:
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -240,15 +284,16 @@ class ProductsUnknown(object):
             except:
                 spbrand = None
 
-            p = ProductUnknown(
+            p = ProductDrugstoreCom(
                 id=prodid,
                 url=(og.get('url')
                             or sp.get('url')
                             or url
                             or None),
-                merchant_sku=(og.get('product:retailer_part_no')
+                merchant_sku=(custom.get('sku')
+                            or og.get('product:retailer_part_no')
                             or None),
-                slug=None,
+                slug=custom.get('slug') or None,
                 merchant_name=(og.get('product:retailer_title')
                             or og.get('retailer_title')
                             or og.get('site_name')
@@ -268,6 +313,7 @@ class ProductsUnknown(object):
                 price=(og.get('product:original_price:amount')
                             or og.get('price:amount')
                             or nth(spoffer.get('price'), 0)
+                            or (tw.get('data2') if tw.get('label2') == 'PRICE' else None)
                             or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(og.get('product:sale_price:amount')
@@ -276,25 +322,30 @@ class ProductsUnknown(object):
                             or og.get('price:amount')
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=(og.get('product:brand')
+                brand=(custom.get('brand')
+                            or og.get('product:brand')
                             or og.get('brand')
                             or spbrand
                             or None),
-                breadcrumb=(utag.get('bread_crumb')
+                breadcrumb=(custom.get('breadcrumbs')
+                            or utag.get('bread_crumb')
                             or None),
-                name=(og.get('name') # NOTE: non-standard but exists in the wild
-                            or og.get('title')
+                name=(og.get('title')
+                            or tw.get('name')
                             or sp.get('name')
                             or nth(utag.get('product_name'), 0)
                             or None),
                 title=(og.get('title')
                             or meta.get('title')
                             or None),
-                descr=(og.get('description')
+                descr=(custom.get('descr')
+                            or og.get('description')
                             or sp.get('description')
+                            or tw.get('description')
                             or meta.get('description')
                             or None),
-                in_stock=((nth(spoffer.get('availability'), 0) == u'http://schema.org/InStock')
+                in_stock=((tw.get('data1') == 'in stock' if tw.get('label1') == 'AVAILABILITY' else None)
+                            or (spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
                             or og.get('availability')) in ('instock', 'in stock'))
                             or xboolstr(nth(utag.get('product_available'), 0)))
@@ -309,7 +360,7 @@ class ProductsUnknown(object):
                             or og.get('color')
                             or nth(sp.get('color'), 0)
                             or None),
-                colors=None,
+                colors=custom.get('colors'),
                 sizes=None,
                 img_url=(og.get('image')
                             or nth(sp.get('image'), 0)
@@ -318,11 +369,7 @@ class ProductsUnknown(object):
             )
             products.append(p)
 
-        # FIXME:
-        return products
-
-        #realproducts = [p.to_product() for p in products]
-        realproducts = [p for p in products]
+        realproducts = [p.to_product() for p in products]
 
         page = ProductMapResultPage(
                     version=cls.VERSION,
@@ -340,14 +387,14 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsUnknown.from_html(url, html, require_prodid=False)
+    return ProductsDrugstoreCom.from_html(url, html)
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'https://shop.harpersbazaar.com/designers/d/dolce-and-gabbana/gray-sequined-pointed-toe-flats-4916.html'
-    filepath = 'shop.harpersbazaar.com-designers-d-dolce-and-gabbana-gray-sequined-pointed-toe-flats-4916.html.gz'
+    url = 'http://www.drugstore.com/maybelline-color-sensation-lipcolor-buffs-bare-all/qxp513203?catid=183590&aid=333840&aparam=ty8NUtOSnl0-qL1aNgZbiZlw4T8Al1KBMg'
+    filepath = 'test/www.drugstore.com-maybelline-color-sensation-lipcolor-buffs-bare-all.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
