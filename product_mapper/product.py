@@ -116,6 +116,9 @@ class Product(object):
         self.fixup_prices_and_currency()
         self.fixup_img_urls()
 
+        if self.category:
+            self.category = dehtmlify(normstring(self.category))
+
         if self.brand:
             self.brand = unquote(dehtmlify(normstring(self.brand)))
             assert '&#39;' not in self.brand

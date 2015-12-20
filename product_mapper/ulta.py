@@ -18,7 +18,7 @@ from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
-from util import nth, normstring, dehtmlify, xboolstr
+from util import nth, normstring, dehtmlify, xboolstr, xstrip
 
 
 MERCHANT_SLUG = 'ulta'
@@ -83,6 +83,14 @@ class ProductUlta(object):
         self.descr = dehtmlify(normstring(self.descr))
         if self.features:
             self.features = [dehtmlify(f) for f in self.features]
+
+        if self.name:
+            if 'Ulta.com - ' in self.name:
+                self.name = xstrip(self.name[:self.name.index('Ulta.com - ')])
+
+        if self.title:
+            if 'Ulta.com - ' in self.title:
+                self.title = xstrip(self.title[:self.title.index('Ulta.com - ')])
 
     def __repr__(self):
         return ('''ProductUlta:

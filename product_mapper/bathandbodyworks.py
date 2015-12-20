@@ -189,7 +189,7 @@ class ProductsBathandBodyWorks(object):
     VERSION = 0
 
     @staticmethod
-    def get_custom(soup, url):
+    def get_custom(soup, url, og):
 
         sku = None
         productid = None
@@ -218,11 +218,13 @@ class ProductsBathandBodyWorks(object):
         breadcrumbs = [normstring(b.get_text())
                         for b in soup.select('div#breadcrumbs li.breadcrumb')] or None
 
-        tag = soup.find('input', {'name': 'prod_id',
-                                  'type': 'hidden',
-                                  'value': True})
-        if tag and tag.get('value'):
-            sku = tag['value']
+        if og.get('type') == 'product':
+            # this appears on some non-product pages, so ignore those...
+            tag = soup.find('input', {'name': 'prod_id',
+                                      'type': 'hidden',
+                                      'value': True})
+            if tag and tag.get('value'):
+                sku = tag['value']
 
         tag = soup.find('span', {'class': 'availability-status'})
         if tag:
@@ -331,7 +333,7 @@ class ProductsBathandBodyWorks(object):
                         for tag in soup.findAll('meta',
                                         {'property': re.compile('^product:'),
                                          'content':True})}
-        custom = cls.get_custom(soup, url)
+        custom = cls.get_custom(soup, url, og)
         utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
@@ -360,7 +362,7 @@ class ProductsBathandBodyWorks(object):
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -498,6 +500,7 @@ if __name__ == '__main__':
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
+    #filepath = 'www.bathandbodyworks.com-category-index.jsp-categoryId-36355536.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
