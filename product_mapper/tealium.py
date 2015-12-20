@@ -18,13 +18,13 @@ class Tealium(object):
                         if 'utag_data' in s.text]
         j = {}
         if utag_text:
-            m = re.search('({.*})', utag_text[0])
+            m = re.search('utag_data\s*=\s*({[^;]*})', utag_text[0], re.DOTALL)
             if m:
                 try:
                     objstr = m.groups(0)[0]
                     j = json.loads(objstr)
-                except:
-                    traceback.print_exc()
+                except Exception as e:
+                    print 'tealium', e
 
         return j
 

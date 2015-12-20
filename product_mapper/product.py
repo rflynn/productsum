@@ -138,6 +138,12 @@ class Product(object):
             assert '<strong>' not in self.name
             assert '&amp;' not in self.name
 
+        if self.title:
+            self.title = normstring(dehtmlify(self.title))
+
+        if self.descr:
+            self.descr= normstring(dehtmlify(self.descr))
+
     def fixup_img_urls(self):
         # canonicalize; no protocol-less "//foo.bar/..."
         if self.img_url:

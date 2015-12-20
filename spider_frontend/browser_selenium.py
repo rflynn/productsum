@@ -1,11 +1,13 @@
 # ex: set ts=4 et:
 
+from contextlib import contextmanager
 from pyvirtualdisplay import Display
 import os
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.expected_conditions import staleness_of
 from selenium.webdriver.support.ui import WebDriverWait
 import time
 
@@ -18,8 +20,6 @@ def has_angular(browser):
         print 'has_angular?'
         wait = WebDriverWait(browser, 1, poll_frequency=0.125)
         wait.until(lambda browser: browser.execute_script('return typeof window.angular !== "undefined"'))
-        #browser.implicitly_wait(1)
-        #return browser.execute_script('return typeof window.angular !== "undefined"')
         return True
     except TimeoutException:
         return False
@@ -45,17 +45,6 @@ angular.element(document).ready(function () {
 _VirtDisplay = None
 _Browser = None
 
-def init():
-    pass
-
-def shutdown():
-    _Browser.quit()
-    _VirtDisplay.stop()
-    try:
-        _VirtDisplay.popen.kill() # prevent zombie
-    except:
-        pass
-
 def get_display():
     global _VirtDisplay
     if not _VirtDisplay:
@@ -74,6 +63,28 @@ def get_browser():
     if not _Browser:
         _Browser = get_browser_firefox_invisible()
     return _Browser
+
+def init():
+    print 'browser_selection.init start...'
+    x = get_display()
+    print 'browser_selection.init done'
+    return x
+
+def shutdown():
+    print 'browser_selection.shutdown start...'
+    try:
+        _Browser.quit()
+    except:
+        pass
+    try:
+        _VirtDisplay.stop()
+    except:
+        pass
+    try:
+        _VirtDisplay.popen.kill() # prevent zombie
+    except:
+        pass
+    print 'browser_selection.shutdown done'
 
 
 '''
@@ -106,24 +117,47 @@ browser = webdriver.PhantomJS()
 
 #browser.set_window_size(1024, 768)
 
-def url_fetch(url):
-    browser = get_browser()
-    browser.set_page_load_timeout(10)
-    browser.get(url)
+@contextmanager
+def wait_for_page_to_load(browser, timeout=10):
+    old_page = browser.find_element_by_tag_name('html')
+    yield
+    WebDriverWait(browser, timeout).until(staleness_of(old_page))
     wait_for_angular(browser)
-    links = set(browser.execute_script('return [].slice.call(document.querySelectorAll("a[href]")).map(function(a){ return a.getAttribute("href"); })'))
-    page_source = unicode(browser.page_source).encode('utf8')
-    # this is the DOM after it's been updated by angular...
-    #browser.execute_script('return document.documentElement.outerHTML')
-    return page_source, links
+
+
+def url_fetch(url, load_timeout_sec=10):
+    browser = get_browser()
+    print dir(browser)
+    browser.set_page_load_timeout(load_timeout_sec)
+    with wait_for_page_to_load(browser, timeout=load_timeout_sec):
+        print 'getting %s' % url.encode('utf8')
+        browser.get(url)
+        links = set(browser.execute_script('return [].slice.call(document.querySelectorAll("a[href]")).map(function(a){ return a.getAttribute("href"); })'))
+        page_source = unicode(browser.page_source).encode('utf8')
+        # this is the DOM after it's been updated by angular...
+        #browser.execute_script('return document.documentElement.outerHTML')
+    return page_source, list(links)
 
 
 if __name__ == '__main__':
-    page_source, links = url_fetch('http://www.sephora.com/foundation-kits-sets')
-    print len(links)
-    print sorted(links)[:100]
-    print (page_source or u'')[:100]
-    shutdown()
+    t = time.time()
+    try:
+        init()
+        page_source, links = url_fetch('http://www.sephora.com/foundation-kits-sets')
+        print len(links)
+        print sorted(links)[:100]
+        print len(page_source)
+        print (page_source or u'')[:1024]
+        print time.time() - t
+
+        page_source, links = url_fetch('http://www.sephora.com/nail-polish-nail-lacquer')
+        print time.time() - t
+
+    except Exception as e:
+        print e
+    finally:
+        shutdown()
+    print time.time() - t
 
     '''
 #browser.execute_script('scroll(0, 9999);');
