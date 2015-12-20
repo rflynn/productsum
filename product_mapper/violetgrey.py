@@ -211,9 +211,9 @@ class ProductsVioletgrey(object):
         img_url = None
 
         try:
-            canonical_url = soup.find('link', rel='canonical').get('href')
+            url_canonical = soup.find('link', rel='canonical').get('href')
         except:
-            canonical_url = url
+            url_canonical = url
 
         # <select class="custom-selector cart_variant_id" data-selector=".cart_variant_id" id="sizes" name="sizes"><option data-sku="TAT-PC-OIL" price="48" selected="selected" stock="1" value="2244">5.1 oz</option></select>
         tag = soup.find('select', {'name': 'sizes'})
@@ -223,6 +223,7 @@ class ProductsVioletgrey(object):
                 size = tag.text
 
         return {
+            'url': url_canonical,
             'sku': sku,
             'slug': slug,
             'brand': brand,
@@ -305,7 +306,8 @@ class ProductsVioletgrey(object):
 
             p = ProductVioletgrey(
                 id=prodid,
-                url=(og.get('url')
+                url=(custom.get('url')
+                            or og.get('url')
                             or sp.get('url')
                             or url
                             or None),
