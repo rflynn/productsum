@@ -242,7 +242,10 @@ class ProductBluefly(object):
         if self.features:
             self.features = [normstring(f) for f in self.features]
 
+        # some product name/titles/descrs are insanely prefixed with many levels of the brand...
         if self.brand and self.name:
+            if self.name.lower().startswith(self.brand.lower()):
+                self.name = self.name[len(self.brand):].lstrip()
             by_brand_prefix = 'by ' + self.brand
             if self.name.lower().startswith(by_brand_prefix.lower()):
                 self.name = self.name[len(by_brand_prefix):].lstrip()
@@ -414,6 +417,9 @@ if __name__ == '__main__':
 
     url = 'http://www.bluefly.com/a-testoni-brown-leather-chelsea-boots/p/357144202/detail.fly'
     filepath = 'test/www.bluefly.com-a-testoni-brown-leather-chelsea-boots-p-357144202-detail.fly.gz'
+
+    url = 'http://www.bluefly.com/la-prairie-la-prairie-by-la-prairie-la-prairie-cellular-eye-make-up-remover-125ml42oz/p/357891001/detail.fly'
+    filepath = 'test/www.bluefly.com-la-prairie-la-prairie-by-la-prairie-la-prairie-cellular-eye-make-up-remover-125ml42oz-p-357891001-detail.fly.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
