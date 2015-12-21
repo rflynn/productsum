@@ -15,7 +15,6 @@ import gc
 import multiprocessing
 import psycopg2
 import psycopg2.extensions
-import sys
 import time
 import traceback
 from yurl import URL
@@ -265,8 +264,6 @@ def map_products(url_host):
         recvrate = recv / max(1.0, elapsed)
         print 'progress: %.1f sec, %d sent, %d recv (%.1f/sec)' % (
             elapsed, sent, recv, recvrate)
-
-    url_host = None
 
     man = multiprocessing.Manager()
     q1 = man.Queue()

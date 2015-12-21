@@ -4,6 +4,7 @@
 import elasticsearch
 from elasticsearch.helpers import bulk, streaming_bulk
 # ref: https://github.com/elastic/elasticsearch-py/blob/master/example/load.py
+import unicodedata
 
 from dbconn import get_psql_conn
 from psycopg2.extras import RealDictCursor
@@ -45,6 +46,10 @@ schema = \
                         'spikes=>spike',
                     ]
                 },
+                'nfkc_normalizer': { # normalize unicode form
+                    'type': 'icu_normalizer',
+                    'name': 'nfkc',
+                },
             },
             'tokenizer': {
                 'word_only': {
@@ -54,17 +59,26 @@ schema = \
                 },
             },
             'analyzer': {
+                'folding': {
+                    'tokenizer': 'standard',
+                    'filter': [
+                        'nfkc_normalizer',
+                        'lowercase',
+                        'asciifolding'
+                    ],
+                },
                 'my_english': {
                     'tokenizer': 'word_only',
-                        'filter': [
-                            'lowercase',
-                            #'porter_stem'
-                            #'snowball',
-                            'eng_stem',
-                            'pos_stem',
-                            'custom_stem',
-                            'my_synonym_filter',
-                        ]
+                    'filter': [
+                        'lowercase',
+                        #'porter_stem'
+                        #'snowball',
+                        'eng_stem',
+                        'pos_stem',
+                        'custom_stem',
+                        'nfkc_normalizer',
+                        'my_synonym_filter',
+                    ]
                 },
                 'keyw': {
                     'tokenizer': 'keyword',
@@ -81,9 +95,13 @@ schema = \
                 'merchant_slug':  { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url_host':       { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url':            { 'type': 'string' },
+                # ugh... brand is a pita...
                 'brand':          { 'type': 'string' },
                 'brand_orig':     { 'type': 'string' },
                 'brand_raw':      { 'type': 'string', 'analyzer': 'keyw' },
+                'brand_ascii':    { 'type': 'string', 'analyzer': 'folding' },
+                'brand_orig_ascii':{ 'type': 'string', 'analyzer': 'folding' },
+                'brand_raw_ascii':{ 'type': 'string', 'analyzer': 'folding' },
                 'name':           { 'type': 'string', 'analyzer': 'my_english' },
                 'descr':          { 'type': 'string', 'index': 'not_analyzed'},
                 'in_stock':       { 'type': 'boolean'},
@@ -112,6 +130,10 @@ select
     coalesce(bt.brand_to, up.brand) as brand,
     up.brand                        as brand_orig,
     coalesce(bt.brand_to, up.brand) as brand_raw,
+    -- identical copies of ${brand_foo}_ascii, they're normalized in elasticsearch
+    coalesce(bt.brand_to, up.brand) as brand_ascii,
+    up.brand                        as brand_orig_ascii,
+    coalesce(bt.brand_to, up.brand) as brand_raw_ascii,
     name,
     substr(descr, 0, 4096) as descr,
     in_stock,
@@ -128,7 +150,16 @@ left join brand_translate bt
 -- limit 1000
 ''')
         for row in cursor:
-            yield dict(row)
+            d = dict(row)
+            # no permutation of ES asciifolding works. why why why
+            if d['brand'] is not None:
+                norm = unicodedata.normalize('NFKD', d['brand']).encode('ascii','ignore')
+                d['brand_ascii'] = norm
+                d['brand_raw_ascii'] = norm
+            if d['brand_orig'] is not None:
+                norm = unicodedata.normalize('NFKD', d['brand_orig']).encode('ascii','ignore')
+                d['brand_orig'] = norm
+            yield d
 
 '''
 curl -XPOST 'localhost:9200/test/type1/1/_update' -d '{
