@@ -15,7 +15,6 @@ import gc
 import multiprocessing
 import psycopg2
 import psycopg2.extensions
-import sys
 import time
 import traceback
 from yurl import URL
@@ -34,6 +33,7 @@ from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
+from modaoperandi import ProductsModaoperandi
 from mytheresa import ProductsMyTheresa
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
@@ -170,6 +170,7 @@ Host2Map = {
     'www.fwrd.com':         ProductsFwrd,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
+    'www.modaoperandi.com': ProductsModaoperandi,
     'www.mytheresa.com':    ProductsMyTheresa,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
@@ -263,8 +264,6 @@ def map_products(url_host):
         recvrate = recv / max(1.0, elapsed)
         print 'progress: %.1f sec, %d sent, %d recv (%.1f/sec)' % (
             elapsed, sent, recv, recvrate)
-
-    url_host = None
 
     man = multiprocessing.Manager()
     q1 = man.Queue()
