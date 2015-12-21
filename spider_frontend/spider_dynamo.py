@@ -27,6 +27,7 @@ _Seeds = {
     'http://www.barneys.com/': {'skip':{'/on/'}},
     'http://www.bathandbodyworks.com/': {
         'skip': {
+            '*jsessionid=',
             '/cart/',
             '/checkout/',
             '/emailFriend/',
@@ -35,6 +36,32 @@ _Seeds = {
             '/include/',
             '/largeImage/',
             '/prodEmailHandler/',
+        }
+    },
+    'http://www.beauty.com/': {
+        'skip': {
+            '/4213/edh',
+            '/500.htm',
+            '/affiliate/content.asp',
+            '/cart.asp',
+            '/checkout/',
+            '/checkout/default.asp',
+            '/la/account/',
+            '/la/order/',
+            '/list.asp',
+            '/LookAheadSuggestions.aspx',
+            '/onorder.asp',
+            '/popups/largerphoto/default.asp',
+            '/pricing.asp',
+            '/products/email_product.asp',
+            '/products/writereview.asp',
+            '/shoppingbag.asp',
+            '/templates/events/circular.asp',
+            '/templates/evgrndept/default.asp',
+            '/templates/HIPAA/info.asp',
+            '/templates/stdcat/default.asp',
+            '/templates/stdplist/default.asp',
+            '/user/',
         }
     },
     'http://www.bergdorfgoodman.com/': {
@@ -115,7 +142,10 @@ _Seeds = {
     },
     'http://www.dillards.com/': {
         'skip': {
+            '/c/',
+            '/credit-services/',
             '/html/',
+            '/shop/en/dillards/faqs-notices-policies-us',
             '/webapp/wcs/stores/servlet/OrderItemDisplay', # cart
             '/webapp/wcs/stores/servlet/LogonForm',
         },
