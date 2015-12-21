@@ -222,7 +222,7 @@ class ProductBluefly(object):
         self.url = url
         self.in_stock = in_stock
         self.img_url = img_url
-        self.brand = brand
+        self.brand = dehtmlify(brand)
         self.brand_type = brand_type
         self.bread_crumb = bread_crumb
         self.category = category
@@ -241,6 +241,12 @@ class ProductBluefly(object):
 
         if self.features:
             self.features = [normstring(f) for f in self.features]
+
+        if self.brand and self.name:
+            by_brand_prefix = 'by ' + self.brand
+            if self.name.lower().startswith(by_brand_prefix.lower()):
+                self.name = self.name[len(by_brand_prefix):].lstrip()
+
 
     def __repr__(self):
         return ('''ProductBluefly(
