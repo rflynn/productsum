@@ -204,7 +204,7 @@ class ProductsModaoperandi(object):
         img_url = None
         img_urls = None
         # moda-specific
-        producttype = None 
+        producttype = None
         is_preorder = None
         endsontxt = None
 
@@ -375,27 +375,45 @@ class ProductsModaoperandi(object):
                     or nth(utag.get('productID'), 0)
                     or None)
 
+        try:
+            spoffer = sp['offers'][0]['properties']
+        except:
+            spoffer = {}
+
+        try:
+            spbrand = sp.get('brand')
+            if spbrand:
+                spbrand = spbrand[0]
+                if isinstance(spbrand, basestring):
+                    pass
+                elif isinstance(spbrand, dict):
+                    spbrand = nth(spbrand['properties']['name'], 0)
+            if isinstance(spbrand, list):
+                spbrand = u' '.join(spbrand)
+        except:
+            spbrand = None
+
+        brand = (custom.get('brand')
+                    or utag.get('designer_name')
+                    or og.get('product:brand')
+                    or og.get('brand')
+                    or spbrand
+                    or None)
+
+        price = (og.get('product:original_price:amount')
+                    or (nth(utag.get('product_original_price'), 0) or None)
+                    or og.get('price:amount')
+                    or nth(spoffer.get('price'), 0)
+                    or custom.get('price') # expected
+                    or nth(utag.get('product_price'), 0)
+                    or None)
+
         products = []
 
-        if prodid:
+        # moda plays it loose with product ids; so we need to be really
+        # sure we have a "real" product...
 
-            try:
-                spoffer = sp['offers'][0]['properties']
-            except:
-                spoffer = {}
-
-            try:
-                spbrand = sp.get('brand')
-                if spbrand:
-                    spbrand = spbrand[0]
-                    if isinstance(spbrand, basestring):
-                        pass
-                    elif isinstance(spbrand, dict):
-                        spbrand = nth(spbrand['properties']['name'], 0)
-                if isinstance(spbrand, list):
-                    spbrand = u' '.join(spbrand)
-            except:
-                spbrand = None
+        if prodid and brand and price:
 
             p = ProductModaoperandi(
                 id=prodid,
@@ -421,13 +439,7 @@ class ProductsModaoperandi(object):
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
-                price=(og.get('product:original_price:amount')
-                            or (nth(utag.get('product_original_price'), 0) or None)
-                            or og.get('price:amount')
-                            or nth(spoffer.get('price'), 0)
-                            or custom.get('price') # expected
-                            or nth(utag.get('product_price'), 0)
-                            or None),
+                price=price,
                 sale_price=(og.get('product:sale_price:amount')
                             or og.get('sale_price:amount')
                             or og.get('product:price:amount')
@@ -436,12 +448,7 @@ class ProductsModaoperandi(object):
                             or nth(spoffer.get('price'), 0)
                             or nth(utag.get('product_unit_price'), 0)
                             or None),
-                brand=(custom.get('brand')
-                            or utag.get('designer_name')
-                            or og.get('product:brand')
-                            or og.get('brand')
-                            or spbrand
-                            or None),
+                brand=brand,
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or utag.get('bread_crumb')
@@ -518,11 +525,16 @@ if __name__ == '__main__':
 
     import sys
 
+    # test no-op
+    #tfilepath = 'test/www.yoox.com-us-44814772VC-item.gz'
+
+    # test that a brand page is not detected as a product
+    url = 'https://www.modaoperandi.com/penguin-randomhouse'
+    filepath = 'test/www.modaoperandi.com-penguin-randomhouse-ensure-brand-not-seen-as-product.gz'
+
+    # test a product
     url = 'https://www.modaoperandi.com/oscar-de-la-renta-ss16/lola-pump-in-seafoam-patent-leather'
     filepath = 'test/www.modaoperandi.com-oscar-de-la-renta-ss16-lola-pump-in-seafoam-patent-leather.gz'
-
-    # test no-op
-    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
