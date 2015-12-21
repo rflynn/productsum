@@ -126,9 +126,11 @@ def url_to_product(url):
 
 @app.route('/parse')
 def parse():
+    import unicodedata
     q = request.args.get('q')
     j = tag_name.tag_query(q)
-    return jsonify(result=j)
+    k = [(t, [unicodedata.normalize('NFKD', x).encode('ascii','ignore') for x in l]) for t, l in j]
+    return jsonify(result={'q': j, 'normalized': k})
 
 # http://0.0.0.0:9998/search/by/url?url=http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
 
