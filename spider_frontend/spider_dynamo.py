@@ -530,6 +530,7 @@ _Seeds = {
     'https://www.ssense.com/': {
         'skip': {
             '/fr-fr/'
+            '*fr-fr', # why doesn't fr-fr work?!?!?!?
             # robots.txt
             '*/addproductstoshoppingbag/',
             '*/popup',
