@@ -138,7 +138,7 @@ def wait_for_page_to_load(browser, timeout=30):
 
 def url_fetch(url, load_timeout_sec=30):
     browser = get_browser()
-    print dir(browser)
+    #print dir(browser)
     browser.set_page_load_timeout(load_timeout_sec)
     with wait_for_page_to_load(browser, timeout=load_timeout_sec):
         print 'getting %s' % url.encode('utf8')

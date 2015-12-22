@@ -11,6 +11,7 @@ import binascii
 import boto3
 import botocore
 from boto3.dynamodb.conditions import Key, Attr
+from datetime import datetime
 import gc
 import multiprocessing
 import psycopg2
@@ -26,6 +27,7 @@ from dbconn import get_psql_conn
 from barneys import ProductsBarneys
 from bathandbodyworks import ProductsBathandBodyWorks
 from bergdorfgoodman import ProductsBergdorfGoodman
+from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
 from dermstore import ProductsDermstore
 from drugstorecom import ProductsDrugstoreCom
@@ -70,10 +72,13 @@ while reading metadata
 def each_link(url_host=None, since_ts=0):
     # ref: http://boto3.readthedocs.org/en/latest/reference/customizations/dynamodb.html#ref-dynamodb-conditions
 
+    print 'each_link url_host=%s since_ts=%s' % (
+        url_host, datetime.fromtimestamp(since_ts))
+
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('link')
 
-    fe = Attr('updated').gt(since_ts) & Attr('body').ne(None)
+    fe = Attr('body').ne(None)
     #fe = Attr('body').ne(None) # FIXME: temporary for ssense, which was fucking up...
     pe = '#u,updated,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
@@ -107,8 +112,8 @@ def each_link(url_host=None, since_ts=0):
         while resp is None:
             try:
                 resp = table.query(
-                    IndexName='host-index',
-                    KeyConditionExpression=Key('host').eq(url_host),
+                    IndexName='host-index3',
+                    KeyConditionExpression=Key('host').eq(url_host) & Key('updated').gte(since_ts),
                     FilterExpression=fe,
                     ProjectionExpression=pe,
                     ExpressionAttributeNames=ean,
@@ -128,7 +133,7 @@ def each_link(url_host=None, since_ts=0):
                 try:
                     r = table.query(
                         ExclusiveStartKey=resp['LastEvaluatedKey'],
-                        IndexName='host-index',
+                        IndexName='host-index3',
                         KeyConditionExpression=Key('host').eq(url_host),
                         FilterExpression=fe,
                         ProjectionExpression=pe,
@@ -163,6 +168,7 @@ Host2Map = {
     'www.barneys.com':      ProductsBarneys,
     'www.bathandbodyworks.com': ProductsBathandBodyWorks,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
+    'www1.bloomingdales.com':ProductsBloomingdales,
     'www.bluefly.com':      ProductsBluefly,
     'www.dermstore.com':    ProductsDermstore,
     'www.drugstore.com':    ProductsDrugstoreCom,
@@ -315,7 +321,7 @@ def map_products(url_host):
                 if sent % 1000 == 0:
                     show_progress(sent, recv)
         print 'finishing up final %s...' % (sent - recv)
-        handle_responses(q2, sent - recv)
+        handle_responses(q2, 0)
     except KeyboardInterrupt:
         try:
             pool.terminate()
@@ -327,12 +333,15 @@ def map_products(url_host):
 if __name__ == '__main__':
 
     url_hosts = sys.argv[1:]
-    while url_hosts:
-        url_host = url_hosts.pop(0)
-        print 'url_host:', url_host
-        if url_host not in Host2Map:
-            print 'url host not in ', sorted(Host2Map.keys())
-            sys.exit(1)
-        map_products(url_host)
+    if url_hosts:
+        while url_hosts:
+            url_host = url_hosts.pop(0)
+            print 'url_host:', url_host
+            if url_host not in Host2Map:
+                print 'url host not in ', sorted(Host2Map.keys())
+                sys.exit(1)
+            map_products(url_host)
+    else:
+        map_products(None) # all
 
     print 'done'

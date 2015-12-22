@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from modaoperandi.com to zero or more products
+map a document archived from bloomingdales.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -19,13 +19,13 @@ from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from schemaorg import SchemaOrg
 from tealium import Tealium
-from util import nth, normstring, dehtmlify, xboolstr
+from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'modaoperandi'
+MERCHANT_SLUG = 'bloomingdales'
 
 
-class ProductModaoperandi(object):
+class ProductBloomingdales(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -79,19 +79,25 @@ class ProductModaoperandi(object):
             self.name = u' '.join(self.name) or None
         self.name = dehtmlify(normstring(self.name))
         self.title = dehtmlify(normstring(self.title))
-        if self.title:
-            if self.title.endswith(' | Moda Operandi'):
-                self.title = self.title[:-len(' | Moda Operandi')]
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
         self.descr = dehtmlify(normstring(self.descr))
         if self.features:
             self.features = [dehtmlify(f) for f in self.features]
-        if self.color:
-            self.color = self.color.title()
+
+        if self.name:
+            if self.name.endswith(" | Bloomingdale's"):
+                self.name = self.name[:-len(" | Bloomingdale's")]
+
+        if self.title:
+            if self.title.endswith(" | Bloomingdale's"):
+                self.title = self.title[:-len(" | Bloomingdale's")]
+
+        if self.upc:
+            self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductModaoperandi:
+        return ('''ProductBloomingdales:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -149,9 +155,24 @@ class ProductModaoperandi(object):
 
     def to_product(self):
 
+        if not self.colors:
+            available_colors = None
+        elif self.colors == [u'No Color']:
+            available_colors = []
+        else:
+            available_colors = [c for c in self.colors if c]
+
+        if not self.sizes:
+            available_sizes = None
+        elif self.sizes == ['NO SIZE']:
+            available_sizes = []
+        else:
+            available_sizes = [s for s in self.sizes if s]
+
         return Product(
             merchant_slug=MERCHANT_SLUG,
             url_canonical=self.url,
+            upc=self.upc,
             merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.price,
@@ -167,15 +188,15 @@ class ProductModaoperandi(object):
             descr=self.descr,
             features=self.features,
             color=self.color,
-            available_colors=self.colors,
+            available_colors=available_colors,
             size=self.size,
-            available_sizes=self.sizes,
+            available_sizes=available_sizes,
             img_url=self.img_url,
             img_urls=sorted(self.img_urls) if self.img_urls is not None else None
         )
 
 
-class ProductsModaoperandi(object):
+class ProductsBloomingdales(object):
 
     VERSION = 0
 
@@ -183,7 +204,6 @@ class ProductsModaoperandi(object):
     def get_custom(soup, url, og):
 
         sku = None
-        slug = None
         productid = None
         brand = None
         category = None
@@ -194,7 +214,6 @@ class ProductsModaoperandi(object):
         features = None
         in_stock = None
         slug = None
-        currency = None
         price = None
         sale_price = None
         color = None
@@ -202,139 +221,91 @@ class ProductsModaoperandi(object):
         size = None
         sizes = None
         img_url = None
-        img_urls = None
-        # moda-specific
-        producttype = None
-        is_preorder = None
-        endsontxt = None
+        upc = None
+        upcs = None
 
         try:
-            canonical_url = soup.find('link', rel='canonical').get('href')
+            url_canonical = soup.find('link', rel='canonical').get('href')
         except:
-            canonical_url = url
+            url_canonical = url
 
-        '''
-<div class="container col-43-gutter ga-eec-product" data-brand="Oscar de la Renta" data-category="SHOES" data-id="516337" data-name="Lola Pump in Seafoam Patent Leather" data-price="770.0" data-producttype="boutique">
-        '''
-        tag = soup.find('div', {'data-brand': True})
+        tag = soup.find('input', {'type': 'hidden',
+                                  'id': 'productId',
+                                  'value': True})
         if tag:
-            brand = brand or tag.get('data-brand')
-            category = category or tag.get('data-category')
-            sku = sku or tag.get('data-id')
-            name = name or tag.get('data-name')
-            price = price or tag.get('data-price')
-            producttype = producttype or tag.get('data-producttype')
+            sku = tag.get('value') or None
 
-        tag = soup.find('span', {'class': 'product-name'})
+        # jackpot
+        tag = soup.find('script',
+                        text=lambda t: t and bool(re.search(r'var productDetail\b',
+                                                    t, re.DOTALL)))
         if tag:
-            name = normstring(tag.get_text())
+            m = re.search(r'var productDetail\s*=\s*({.*})', tag.text)
+            if m:
+                try:
+                    objtxt = m.groups(1)[0]
+                    #print objtxt
+                    #obj = execjs.eval(objtxt)
+                    obj = json.loads(objtxt)
+                    #pprint(obj)
+                    sku = obj.get('productId') or None
+                    price = nth(obj.get('price'), 0) or None
+                    if price:
+                        price = str(price)
+                    sale_price = nth(obj.get('salePrice'), 0) or None
+                    if sale_price:
+                        sale_price = str(sale_price)
+                    color = obj.get('primaryColor') or None
+                    title = obj.get('shortDescription') or None
+                    features = obj.get('bulletText') or None
+                    brand = obj.get('brand') or None
+                    in_stock = obj.get('available')
+                    sizes = obj.get('sizes') or None
+                    upcs = sorted({o.get('upc') for o in obj.get('upcs', [])
+                                                    if o.get('upc')})
 
-        js = {}
-        pd = soup.find('script', text=lambda t: t and 'var pageData' in t)
-        if pd:
-            try:
-                code = re.search('({[^;]*})', pd.text, re.DOTALL).groups(0)[0]
-                #print code
-                js = json.loads(code)
-                obj = js['data']
-                #pprint(obj)
+                    if color:
+                        # pick a random UPC as long as the color matches (there are a bunch...)
+                        try:
+                            upc = [o.get('upc')
+                                    for o in obj.get('upcs', [])
+                                        if o.get('upc') and nth(o['attributes']['COLOR'], 0) == color][0]
+                            #print 'upc:', upc
+                        except Exception as e:
+                            print e
+                    if (not upc) and upcs:
+                        upc = upcs[0]
 
-                url = obj.get('url', url)
-                sku = sku or obj.get('id')
-                if sku:
-                    sku = str(sku)
-                productid = productid or obj.get('id')
-                brand = brand or obj.get('designer_name')
-                subcategory = obj.get('subcategory')
-                if category and subcategory:
-                    breadcrumbs = [category, subcategory]
-                slug = slug or obj.get('slug')
-                price = obj.get('retail_price_usd') or None
-                if price:
-                    currency = 'USD'
-                name = name or obj.get('name')
-                descr = descr or obj.get('description')
-                if descr:
-                    if '**' in descr:
-                        descr = descr.replace('**', '') # weird highlighting of brand name...
-                img_url = obj.get('imgUrl')
-                imgs = obj.get('images')
-                if imgs:
-                    img_urls = [imgs[i]['medium'] for i in imgs['order']]
-                # if the image order thing worked, use the first image
-                img_url = img_urls[0]
-
-            except:
-                pass
-        #pprint(js)
-
-        di = soup.find('div', {'class': 'detail-info'})
-        if di:
-            features = [f for f in [normstring(li.get_text() if hasattr(li, 'get_text') else li)
-                            for li in di.findAll('li')] if f]
-
-            if features:
-                c = [f for f in features if f and f.lower().startswith('color:')]
-                if c:
-                    # if this worked, use it, it's more accurate than the tag data
-                    color = dehtmlify(normstring(c[0][6:]))
-
-        # <select class="custom-selector cart_variant_id" data-selector=".cart_variant_id" id="sizes" name="sizes"><option data-sku="TAT-PC-OIL" price="48" selected="selected" stock="1" value="2244">5.1 oz</option></select>
-        tag = soup.find('select', {'name': 'sizes'})
-        if tag:
-            tag = tag.find('option', selected=True)
-            if tag:
-                size = tag.text
-
-        tag = soup.find('div', {'class': 'ends-on'})
-        if tag:
-            txt = normstring(tag.get_text())
-            if txt:
-                endsontxt = txt.lower()
-                if 'available for preorder' in endsontxt:
-                    is_preorder = True
-                elif endsontxt == u'':
-                    is_preorder = False
-
-        '''
-        <p class="prod-state pdp__product-info--additional-info" id="availabilityTextOriginal">
-            Sold Out
-        </p>
-        '''
-        tag = soup.find('p', id='availabilityTextOriginal')
-        if tag:
-            txt = normstring(tag.get_text())
-            if txt:
-                txt = txt.lower()
-                if txt == 'sold out':
-                    in_stock = False
-
-        if in_stock is not False:
-            if not is_preorder:
-                in_stock = True
+                    colors = filter(None,
+                                        sorted({nth(o['attributes']['COLOR'], 0)
+                                            for o in obj.get('upcs', [])
+                                                if 'attributes' in o and 'COLOR' in o['attributes']}))
+                    breadcrumbs = [v.keys()[0] for k, v in
+                                    sorted(obj.get('depthPathList', {}).iteritems())] or None
+                    if breadcrumbs:
+                        category = category or breadcrumbs[-1]
+                except:
+                    traceback.print_exc()
 
         return {
-            'sku': sku,
-            'slug': slug,
+            'url_canonical': url_canonical,
             'brand': brand,
+            'sku': sku,
+            'upc': upc,
+            'slug': slug,
             'category': category,
-            'breadcrumbs': breadcrumbs,
             'name': name,
             'in_stock': in_stock,
             'descr': descr,
             'features': features,
-            'currency': currency,
             'price': price,
             'sale_price': sale_price,
+            'breadcrumbs': breadcrumbs,
             'color': color,
             'colors': colors,
             'size': size,
             'sizes': sizes,
-            'img_url': img_url,
-            'img_urls': img_urls,
-            'producttype': producttype,
-            'is_preorder': is_preorder,
-            'endsontxt': endsontxt,
+            'upcs': upcs,
         }
 
     @classmethod
@@ -368,59 +339,42 @@ class ProductsModaoperandi(object):
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
-                    or custom.get('sku')
-                    or nth(utag.get('product_id'), 0)
+                    or custom.get('sku') # this one is expected for bloomingdales.com
                     or nth(sp.get('sku'), 0)
                     or nth(utag.get('product_id'), 0)
                     or nth(utag.get('productID'), 0)
                     or None)
 
-        try:
-            spoffer = sp['offers'][0]['properties']
-        except:
-            spoffer = {}
-
-        try:
-            spbrand = sp.get('brand')
-            if spbrand:
-                spbrand = spbrand[0]
-                if isinstance(spbrand, basestring):
-                    pass
-                elif isinstance(spbrand, dict):
-                    spbrand = nth(spbrand['properties']['name'], 0)
-            if isinstance(spbrand, list):
-                spbrand = u' '.join(spbrand)
-        except:
-            spbrand = None
-
-        brand = (custom.get('brand')
-                    or utag.get('designer_name')
-                    or og.get('product:brand')
-                    or og.get('brand')
-                    or spbrand
-                    or None)
-
-        price = (og.get('product:original_price:amount')
-                    or (nth(utag.get('product_original_price'), 0) or None)
-                    or og.get('price:amount')
-                    or nth(spoffer.get('price'), 0)
-                    or custom.get('price') # expected
-                    or nth(utag.get('product_price'), 0)
-                    or None)
-
         products = []
 
-        # moda plays it loose with product ids; so we need to be really
-        # sure we have a "real" product...
+        if prodid and og.get('type') == 'product':
 
-        if prodid and brand and price:
+            try:
+                spoffer = sp['offers'][0]['properties']
+            except:
+                spoffer = {}
 
-            p = ProductModaoperandi(
+            try:
+                spbrand = sp.get('brand')
+                if spbrand:
+                    spbrand = spbrand[0]
+                    if isinstance(spbrand, basestring):
+                        pass
+                    elif isinstance(spbrand, dict):
+                        spbrand = nth(spbrand['properties']['name'], 0)
+                if isinstance(spbrand, list):
+                    spbrand = u' '.join(spbrand)
+            except:
+                spbrand = None
+
+            p = ProductBloomingdales(
                 id=prodid,
-                url=(og.get('url')
+                url=(custom.get('url_canonical')
+                            or og.get('url')
                             or sp.get('url')
                             or url
                             or None),
+                upc=custom.get('upc') or None,
                 slug=custom.get('slug') or None,
                 merchant_name=(og.get('product:retailer_title')
                             or og.get('retailer_title')
@@ -437,24 +391,31 @@ class ProductsModaoperandi(object):
                             or og.get('currency:currency')
                             or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
-                            or custom.get('currency')
                             or None),
-                price=price,
-                sale_price=(og.get('product:sale_price:amount')
+                price=(custom.get('price') # less fucked-up than og:
+                            or og.get('product:original_price:amount')
+                            or og.get('price:amount')
+                            or nth(spoffer.get('price'), 0)
+                            or nth(utag.get('product_price'), 0)
+                            or None),
+                sale_price=(custom.get('sale_price') # less fucked-up than og:
+                            or og.get('product:sale_price:amount')
                             or og.get('sale_price:amount')
                             or og.get('product:price:amount')
                             or og.get('price:amount')
                             or custom.get('sale_price') # expected
                             or nth(spoffer.get('price'), 0)
-                            or nth(utag.get('product_unit_price'), 0)
                             or None),
-                brand=brand,
+                brand=(custom.get('brand')
+                            or og.get('product:brand')
+                            or og.get('brand')
+                            or spbrand
+                            or None),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or utag.get('bread_crumb')
                             or None),
                 name=(custom.get('name')
-                            or (nth(utag.get('product_name'), 0) or None)
                             or og.get('title')
                             or sp.get('name')
                             or nth(utag.get('product_name'), 0)
@@ -481,7 +442,6 @@ class ProductsModaoperandi(object):
                             or None),
                 features=custom.get('features') or None,
                 color=(custom.get('color')
-                            or (nth(utag.get('product_color'), 0) or None)
                             or og.get('product:color')
                             or og.get('color')
                             or nth(sp.get('color'), 0)
@@ -489,14 +449,10 @@ class ProductsModaoperandi(object):
                 colors=custom.get('colors'),
                 size=custom.get('size') or None,
                 sizes=custom.get('sizes'),
-                img_url=(custom.get('img_url')
-                            or og.get('image')
+                img_url=(og.get('image')
                             or nth(sp.get('image'), 0)
-                            or nth(utag.get('product_image_url'), 0)
                             or None),
-                img_urls=(custom.get('img_urls')
-                            or sp.get('image')
-                            or None),
+                img_urls=sp.get('image'),
             )
             products.append(p)
 
@@ -518,23 +474,18 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsModaoperandi.from_html(url, html)
+    return ProductsBloomingdales.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
+    url = 'http://www1.bloomingdales.com/shop/product/stuart-weitzman-nouveau-metallic-python-embossed-pointed-pumps?ID=1439967&CategoryID=17397#fn%3Dspp%3D5'
+    filepath = 'test/www1.bloomingdales.com-shop-product-stuart-weitzman-nouveau-metallic-python-embossed-pointed-pumps-ID-1439967-CategoryID-17397.gz'
+
     # test no-op
-    #tfilepath = 'test/www.yoox.com-us-44814772VC-item.gz'
-
-    # test that a brand page is not detected as a product
-    url = 'https://www.modaoperandi.com/penguin-randomhouse'
-    filepath = 'test/www.modaoperandi.com-penguin-randomhouse-ensure-brand-not-seen-as-product.gz'
-
-    # test a product
-    url = 'https://www.modaoperandi.com/oscar-de-la-renta-ss16/lola-pump-in-seafoam-patent-leather'
-    filepath = 'test/www.modaoperandi.com-oscar-de-la-renta-ss16-lola-pump-in-seafoam-patent-leather.gz'
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:

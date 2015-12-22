@@ -31,11 +31,17 @@ schema = \
                     'language': 'English',
                 },
                 'my_synonym_filter': {
-                    'type': 'synonym', 
-                    'synonyms': [ 
-                        '+,plus',
+                    'type': 'synonym',
+                    'synonyms': [
+                        '+,plus,and',
+                        '&,and',
                         'lacquer,polish', # e.g. nail polish
                         'lotion,cream,creme,sunscreen',
+                        'edp=>eau de parfum',
+                        'edt=>eau de toilette',
+                        'sp,spray',
+                        'eau secrete,eau de toilette',
+                        'coffret,set',
                     ]
                 },
                 'custom_stem': {
@@ -50,6 +56,12 @@ schema = \
                     'type': 'icu_normalizer',
                     'name': 'nfkc',
                 },
+                'my_synonym_color': {
+                    'type': 'synonym',
+                    'synonyms': [
+                        'rouge,red',
+                    ]
+                }
             },
             'tokenizer': {
                 'word_only': {
@@ -84,6 +96,15 @@ schema = \
                     'tokenizer': 'keyword',
                     'filter': [],
                 },
+                'my_color': {
+                    'tokenizer': 'standard',
+                    'filter': [
+                        'lowercase',
+                        'eng_stem',
+                        'pos_stem',
+                        'my_synonym_color',
+                    ]
+                }
             },
         },
     },
@@ -111,6 +132,7 @@ schema = \
                 'price_max':      { 'type': 'float'  },
                 'sale_price_min': { 'type': 'float'  },
                 'sale_price_max': { 'type': 'float'  },
+                'color':          { 'type': 'string', 'analyzer': 'my_color' },
                 #'img_url':        { 'type': 'string', 'index': 'not_analyzed' },
                 #'img_urls':       { 'type': 'array', 'index': 'not_analyzed' }, # WTF?
             }
@@ -143,6 +165,8 @@ select
     price_max,
     sale_price_min,
     sale_price_max,
+    color,
+    available_colors,
     img_urls
 from url_product up
 left join brand_translate bt

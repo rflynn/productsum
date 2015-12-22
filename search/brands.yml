@@ -146,6 +146,7 @@ Gucci:
         GUCCI:
     line:
         Gucci Makeup:
+        Gucci Fragrance:
 Marc Jacobs:
     aka:
         MARC JACOBS:
@@ -297,6 +298,7 @@ VINCE CAMUTO:
             type: diffusion
         'Dolce & Gabbana Vintage':
         'DOLCE & GABBANA UNDERWEAR':
+        'Dolce & Gabbana Fragrance':
 Tory Burch:
     aka:
         TORY BURCH:
@@ -450,6 +452,7 @@ Stuart Weitzman:
         STUART WEITZMAN:
     line:
         Stuart Weitzman Kids:
+        "Stuart Weitzman Bridal & Evening Collection":
 SWAROVSKI:
     aka:
         Swarovski:
@@ -615,6 +618,7 @@ Comme des Garçons:
         'Comme des Garçons Homme Plus':
             aka:
                 'Comme Des Garcons Homme Plus':
+                'Comme Des Garçons Homme Plus':
         'Comme des Garcons Parfums':
         'Comme des Garçons Girl':
             aka:
@@ -642,6 +646,7 @@ Victoria Beckham:
                 'VICTORIA, VICTORIA BECKHAM':
                 '"VICTORIA, VICTORIA BECKHAM"':
                 '"Victoria, Victoria Beckham"':
+                'Victoria, Victoria Beckham':
         Victoria Beckham Denim:
             aka:
                 VICTORIA BECKHAM DENIM:
@@ -928,6 +933,8 @@ Mara Hoffman:
 One Teaspoon:
 'Lovers + Friends':
 Bobbi Brown:
+    aka:
+        BOBBI BROWN:
 Ulla Johnson:
 Louis Vuitton:
     line:
@@ -950,7 +957,6 @@ KARL LAGERFELD:
                 KARL:
         HOGAN by KARL LAGERFELD:
 Wyatt:
-BOBBI BROWN:
 Lancôme:
     aka:
         Lancome:
@@ -1172,6 +1178,7 @@ Sophia Webster:
 bareMinerals:
     aka:
         'bareMinerals®':
+        BareMinerals:
 Chaser:
     aka:
         CHASER:
@@ -1441,6 +1448,8 @@ WOOLRICH:
         Woolrich:
 ThePerfext:
 The North Face:
+    line:
+        The North Face Kids:
 'J.Crew':
     aka:
         JCrew:
@@ -1483,6 +1492,7 @@ Nordstrom:
         Nordstrom Baby:
         Nordstrom Collection:
         Nordstrom at Home:
+        Nordstrom Signature and Caroline Issa:
 FOSSIL:
     aka:
         Fossil:
@@ -1614,7 +1624,9 @@ Herve Leger:
 Roland Mouret:
     aka:
         ROLAND MOURET:
-TIGI:
+Tigi:
+    aka:
+        TIGI:
 Caption:
 Dolce Vita:
     aka:
@@ -1823,6 +1835,7 @@ Gottex:
         '"Gottex Swim, Plus Size"':
     line:
         BLUSH BY GOTTEX:
+        X BY GOTTEX:
 FAITH CONNEXION:
     aka:
         Faith Connexion:
@@ -2048,7 +2061,11 @@ Anita Ko:
     aka:
         ANITA KO:
 Gund:
-ALBERTA FERRETTI:
+Alberta Ferretti:
+    aka:
+        ALBERTA FERRETTI:
+    line:
+        Alberta Ferretti Collection:
 Royce Leather:
 'NIC+ZOE':
     aka:
@@ -2925,7 +2942,9 @@ Parker Black:
 Electric Picks:
     aka:
         Electric Picks Jewelry:
-Sally Lapointe:
+Sally LaPointe:
+    aka:
+        Sally Lapointe:
 Le Metier de Beaute:
 DC:
     line:
@@ -3084,7 +3103,9 @@ Elizabeth Taylor:
 Artecnica:
 'Dr. Loretta':
 DemyLee:
-HEIDI KLEIN:
+Heidi Klein:
+    aka:
+        HEIDI KLEIN:
 Basta Surf:
 'Bric''s':
     aka:
@@ -3711,6 +3732,10 @@ Luxor Treasures:
 Ariat:
 'HARPER + LIV PLUS':
 'Dr. Martens':
+    aka:
+        'DR. MARTENS':
+    line:
+        "Dr. Martens Kid's Collection":
 'LAQA and Co.':
 MIA:
 Each x Other:
@@ -4059,6 +4084,7 @@ Yves Salomon:
     line:
         Salomon:
         Army by Yves Salomon:
+        Meteo by Yves Salomon:
 Sbicca:
 'SOPHIA + ZEKE':
 Algenist:
@@ -4841,7 +4867,6 @@ Carlos Santana:
 Markus Lupfer:
 Mustela:
 Maggy London:
-'DR. MARTENS':
 Crabtree Evelyn:
 Anavini:
 basq skin care:
@@ -5804,6 +5829,8 @@ Fairfax:
 DEBBIE SHUCHAT:
 PATRA:
 NYX:
+    aka:
+        Nyx Cosmetics:
 MISS ELAINE:
 KRUPS:
 Antonio Puig:
@@ -5954,7 +5981,9 @@ iWoodesign:
 'Priscilla & Parker':
 NUXE:
 Mederma:
-ERMANNO SCERVINO:
+Ermanno Scervino:
+    aka:
+        ERMANNO SCERVINO:
     line:
         SCERVINO STREET:
         ERMANNO SCERVINO LINGERIE:
@@ -6333,7 +6362,9 @@ Gladys Tamez Millinery:
 Casio:
     aka:
         CASIO:
-CHI:
+Chi:
+    aka:
+        CHI:
 Bop Basics:
 SOPHIE THEALLET:
 'L''ATELIER d''exercices':
@@ -7329,6 +7360,8 @@ Parfums De Marly:
 Undefeated:
 Fuzzi:
 'Tak. Ori':
+    aka:
+        'Tak.Ori':
 GRANDOE:
 ANGELINA FOLIES:
 Bloomsbury Publishing:
@@ -7336,7 +7369,7 @@ Bloomsbury Publishing:
 Swiss Guard:
 'ARK & CO':
 Legology Air Lite:
-'THE PEOPLE''S MOVEMENT':
+"THE PEOPLE'S MOVEMENT":
 Hummer:
 Blowout Beauty:
 SHARPER IMAGE:
@@ -7760,6 +7793,7 @@ Vivienne Westwood:
                 VIVIENNE WESTWOOD ANGLOMANIA:
                 Vivienne Westwood Anglomania:
                 Vivienne Westwood Anglomania:
+        Vivienne Westwood Man:
 BIBI LOU:
 Rachel Roy:
 One Direction:
@@ -7841,7 +7875,9 @@ Boconi:
 Alpinestars:
 'P''kolino':
 Dante Goods and Bads:
-CARGO:
+Cargo:
+    aka:
+        CARGO:
 Sejour:
 Vuarnet:
 Yvonne Leon:
@@ -8465,7 +8501,6 @@ Brownie Points:
 Su Man Skincare:
 Oxygenetix:
 Stussy:
-Alberta Ferretti Collection:
 NV NICK VERREOS:
 Tiny Cottons:
 'CARDIFF SKATE CO.':
@@ -8535,7 +8570,9 @@ Marie Turnor Accessories:
 Cutie Bees:
 JOYA:
 Victoria Classics:
-'L''Oreal':
+"L'Oréal":
+    aka:
+        "L'Oreal":
 Travis Sandoval Glass:
 ROYAL APOTHIC:
 ANNA RACHELE:
@@ -8818,7 +8855,7 @@ Keurig:
 Eyeko:
 EMMERICH:
 Maxilip:
-'Ben''s Garden':
+"Ben's Garden":
 'Alex® Toys':
 For Restless Sleepers:
 Fabio Rusconi:
@@ -8983,7 +9020,9 @@ Zenith:
     line:
         'ill.i by will.i.am':
 Renee Lewis:
-'(+) PEOPLE':
+"+People":
+    aka:
+        '(+) PEOPLE':
 Rotary:
 SELETTI:
 Addiction Nouvelle Lingerie:
@@ -9188,3 +9227,251 @@ DermaQuest:
 LEGO:
     aka:
         'LEGO®':
+Thermalogic:
+Maybelline:
+Revlon:
+Terre Mere Cosmetics:
+City Chic:
+Amazing Cosmetics:
+Paul and Joe Beaute:
+Maria Black:
+Royale:
+nOir:
+Alexandra Ferguson:
+'All-Clad':
+French Bull:
+    url: 'http://www.frenchbull.com/'
+Boska Holland:
+Inmod Signature:
+Lorion Beauty:
+Rolf Glass:
+Adesso:
+CellPowerCases:
+Chef Works:
+Chintaly Imports:
+Chroma:
+ColoredPrints:
+Cristel:
+de Buyer:
+    url: 'http://www.debuyer.com/'
+Diamond Sofa:
+Flashpoint Candle:
+Habitat:
+IKASE:
+iPM:
+Jesper Office:
+Maceoo:
+Messermeister:
+'Not Soap, Radio':
+    url: 'http://notsoapradio.com/'
+Office Star:
+Oneida:
+Palace Linen:
+Scanpan:
+Team Chipmunk:
+'The Oliver Gal Artist Co.':
+Thermalogic:
+WAYF:
+Woll:
+Armen Living:
+Crosley Radio:
+'D.L. & Co.':
+Nakamol:
+Swiss Diamond:
+Belcho:
+Ilia:
+Si And Si Design:
+Zig Zag:
+ABBA:
+Anolon:
+BlissfulCASE:
+Cardboard Safari:
+Caroline Chu:
+Hej:
+Allan Copley Designs:
+Rouge Bunny Rouge:
+Vitabath:
+Demeter:
+Loopy Gear:
+Rosetta Getty:
+'Peugeot':
+'2B Colours':
+AG Hair:
+Aromatherapy:
+CoZibug:
+Little World Peas:
+Lotta Stensson:
+Outdoor Decor:
+Dansk:
+Gena Myint:
+Clinicians Complex:
+Inez and Vinoodh:
+'Tom & Teddy':
+dolan:
+Fusion Beauty:
+RGB Cosmetics:
+Carla Mancini:
+Jennifer Lopez:
+Marchesa:
+Morgan Lane:
+Sea Urchin Studio:
+Epicurean:
+Microplane:
+Q Squared:
+Tela Beauty Organics by Philip Pelusi:
+Chella Skin Care:
+Giorgio Bellini:
+Modern Littles:
+STYLESTALKER:
+'3 Custom Color Specialists':
+    url: 'http://www.threecustom.com/'
+Blue Plate:
+Corinne McCormack:
+LVX:
+Max Factor:
+michael marcus cosmetics:
+SIRCUIT SKIN:
+Viking:
+VivierSkin:
+'Ben-Amun':
+'Circadia by Dr. Pugliese':
+INIKA:
+Lonely:
+"Nature's Bounty":
+Acacia Swimwear:
+myface cosmetics:
+Old West Kids Boots:
+Shu Uemura:
+Youngblood:
+Boxx Cosmetics:
+CIA:
+Little Lime:
+Little Mass:
+Nature Made:
+Bashian:
+BIBASQUE:
+CC Skye:
+Christian Audigier:
+Cult Cosmetics:
+Eyn:
+Haus of Arte:
+Home Fragrance:
+JK Adams:
+LAFCO House and Home:
+Mukikim:
+Too Faced Cosmetics:
+VESTIGE:
+American Crew:
+Creative Displays:
+darci by DiCaprio:
+DDF:
+Jennifer Zeuner Jewelry:
+'Lauren B. Beauty':
+Napapijri:
+Remo Tulliani:
+'Smith & Cult':
+Annabella Lilly:
+Finds:
+Hammer Stahl:
+Jira Couture:
+Karla Spetic:
+Leur Logette:
+Pippa Small:
+Stone Candles:
+TAVIK Swimwear:
+Cetaphil:
+'EarZings- Pierce-Free':
+Estelle and Thild:
+Filthy Etiquette:
+'ila-spa':
+Noe:
+SCOSHA:
+Signature Collection:
+GNC:
+Venyx:
+BUwood:
+Karina:
+Neutrogena:
+"Nature's Way":
+Avant Toi:
+Aveeno:
+Portero:
+Ginette NY:
+Peermont:
+"Beauty & the Beach":
+Alex Perry:
+Redken:
+Bark:
+NOW Foods:
+California Moonrise:
+Joico:
+Paul Mitchell:
+Arman Sarkisyan:
+Muscletech:
+Ruifier:
+"1-100":
+Garden of Life:
+OGX:
+Rusk:
+Masterpeace:
+Mark and Estel:
+CoverGirl:
+Conair:
+SheaMoisture:
+Olympian Labs:
+Nordic Naturals:
+Carlson:
+Kenra Professional:
+"L'anza":
+New Chapter:
+Physicians Formula:
+Kms California:
+Sally Hansen:
+Twinlab:
+Vilshenko:
+Essence:
+Rainbow Light:
+Riviera:
+Catrice:
+Elle:
+"George & Laurel":
+Benefit Cosmetics:
+Eylure:
+Rimmel London:
+Anna e Alex:
+Doffer Boys:
+Hask:
+Jarrow Formulas:
+"Met-Rx":
+Miss Spa:
+MusclePharm:
+Palladio:
+Roja Parfums:
+Tomasz Donocik:
+Vega:
+Wella:
+"Nature's Plus":
+"Nip + Fab":
+Optimum Nutrition:
+OTAZU:
+Pampers:
+John Frieda:
+Karuna:
+Nexxus:
+Walgreens:
+AprilMarin:
+"Barlean's Organic Oils":
+Natrol:
+Quest Nutrition:
+Sexy Hair:
+Starlight:
+Tresemme:
+Anna Baiguera:
+Bagatelle:
+Costarellos:
+Gioia:
+Goldwell:
+Marc Anthony:
+Natural Factors:
+Pura Vida:
+Abellan New York:
