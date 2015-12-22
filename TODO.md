@@ -65,10 +65,15 @@ TODO:
     30. ✔ reduce ridiculous flask debug cpu usage
             ref: http://stackoverflow.com/questions/28241989/flask-app-restarting-with-stat
     31. ✔ get ES custom stemming working
-
-    32. ...parse product tags/ngrams
-    33. query by multi-term ngrams in elasticsearch
+    32. ✔ parse product tags/ngrams
+    33. ✔ query by multi-term ngrams in elasticsearch
         ref: https://www.elastic.co/guide/en/elasticsearch/guide/current/phrase-matching.html
+    34. ✔✔ watch the new star wars
+    35. ✔ handle searching by color better...
+    35. why did this url disappear and never come back...? http://www.bluefly.com/sisley-sisley-by-sisley-eye-contour-mask-30ml1oz/p/357805401/detail.fly
+    36. ...create smart dynamodb index with only the fields i need
+    36. add second layer in database
+        parse out tagged attributes into separate fields
 
     32. normalize product url - use canonical:
             * nordstrom

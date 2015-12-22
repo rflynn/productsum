@@ -6,7 +6,7 @@ select merchant_slug, count(distinct merchant_sku) as dsku, count(merchant_sku) 
 select distinct brand, count(*) as cnt from url_product where brand not in (select brand_from from brand_translate) group by brand order by cnt desc;
 
 
-truncate brand_translate;
+delete from brand_translate;
 \copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' delimiter ',' csv;
 
 
