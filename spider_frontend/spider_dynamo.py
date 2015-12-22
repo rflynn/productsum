@@ -310,6 +310,7 @@ _Seeds = {
             '/Shop/Featured-Products/',
             '/Shop/Lost/',
             '/Shop/Search/',
+            '/am/pssizechart.nap',
         },
     },
     'http://www.revolveclothing.com/': {'skip':{'/r/ajax/crawlerDiscovery.jsp'}},
