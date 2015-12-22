@@ -235,6 +235,7 @@
             <li><a href="/?q=Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag $1015">Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag $1015</a>
             <li><a href="/?q=Life is good Go-To Hoodie $48">Life is good Go-To Hoodie $48</a>
             <li><a href="/?q=Christian Louboutin Follies Spikes Pumps $1295">Christian Louboutin Follies Spikes Pumps $1295</a> &mdash; sufficiently different product names, prices, photos, you name it...
+            <li><a href="/?q=Menscience Eye Gel Mask $16">Menscience Eye Gel Mask $16</a> same product, different images
         </ol>
 
         <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
@@ -267,6 +268,7 @@
                 <ol>
                     <li><a href="/?q=Clé de Peau Beauté Limited Edition Makeup Coffret $210">Clé de Peau Beauté Limited Edition Makeup Coffret $210</a> &mdash; product name only shares one word?!
                     <li><a href="/?q=Super Fluid UV Defense Ultra Light Sunscreen SPF 50 , 1.7 oz. $38">Super Fluid UV Defense Ultra Light Sunscreen SPF 50 , 1.7 oz. $38</a> yields 3 matches, including "Kiehl's Since 1851 Super Fluid UV Defense Ultra Light Sunscreen SPF 50+, 1.7 oz. $38", but <a href="/?q=Kiehl's Since 1851 Super Fluid UV Defense Ultra Light Sunscreen SPF 50+, 1.7 oz. $38">Kiehl's Since 1851 Super Fluid UV Defense Ultra Light Sunscreen SPF 50+, 1.7 oz. $38</a> yields 2, not containing the first
+                    <li><a href="?q=DIOR Hypnotic Poison  $77">DIOR Hypnotic Poison  $77</a> vs. <a href="/?q=DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a>
                 </ol>
 
             <li>unit conversions
@@ -276,6 +278,7 @@
                         <ol>
                             <li>30ml vs. 1.16 oz <a href="/?q=Sisley Paris Eye Contour Mask, 30ml">Sisley Paris Eye Contour Mask, 30ml</a>
                             <li>50ml vs 1.6 oz <a href="/?q=Burberry Eau de Parfum - My Burberry, 50ml $95">Burberry Eau de Parfum - My Burberry, 50ml $95</a>
+                            <li>"2.1 oz" vs. "60 ml" <a href="/?q=Sisley Paris Black Rose Mask 2.1 oz $162">Sisley Paris Black Rose Mask 2.1 oz $162</a>
                         </ol>
                     <li>TODO: "1 piece" should match anything not stating another amount; but the textual difference when not stated reduces the match score: <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90">Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90</a> vs. <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue $24.90">Foreo ISSA Brush Head - Cobalt Blue $24.90</a>
                     <li><strike>are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"</strike>
@@ -288,7 +291,6 @@
                 </ol>
             <li>non-normalized language
                 <ol>
-                    <li><a href="/?q=Stuart Weitzman Nudist song Sandals $415">Stuart Weitzman Nudist song Sandals $415</a>
                     <li><a href="/?q=Cushnie et Ochs Sequin Samantha Dress $1795">Cushnie et Ochs Sequin Samantha Dress $1795</a> fwrd "sequin samantha dress" vs. shopbop "sequin strapless dress" ... the 2nd shopbop img is very close to first fwrd image...
                     <li><strike><a href="/?q=Deborah Lippmann Nail Lacquer in Whip It $18">Deborah Lippmann Nail Lacquer in Whip It $18</a> &mdash; synonym (nail polish vs. nail lacquer)</strike>
                 </ol>
@@ -296,11 +298,12 @@
                 <ol>
                     <li><a href="/?q=Leather Kitten Heel Pumps">Leather Kitten Heel Pumps</a> &mdash; too broad
                 </ol>
-            <li>specificity
+            <li>specificity: even brand + name + price can just be too vague...
                 <ol>
-                    <li><a href="/?q=Ray-Ban Sunglasses $200">Ray-Ban Sunglasses $200</a> -- even brand + name + price can just be too vague...
+                    <li><a href="/?q=Ray-Ban Sunglasses $200">Ray-Ban Sunglasses $200</a>
                     <li><a href="/?q=KATE SPADE NEW YORK Tiny Metro Watch $175">KATE SPADE NEW YORK Tiny Metro Watch $175</a>
                     <li><a href="/?q=SERGIO ROSSI Suede Pumps $605">SERGIO ROSSI Suede Pumps $605</a>
+                    <li><a href="/?q=Stuart Weitzman Nudist song Sandals $415">Stuart Weitzman Nudist song Sandals $415</a>
                 </ol>
             <li>color
                 <ol>
@@ -341,7 +344,7 @@
         <br style="clear:both">
 
         <xmp></xmp>
-        
+
     </body>
 
     <script>
@@ -515,7 +518,7 @@ function text_query(str)
         {
             'multi_match' : {
                 'query': str,
-                'fields': [ 'name', 'brand', 'price'] 
+                'fields': [ 'name', 'brand', 'price']
             }
         }
     ];
@@ -612,9 +615,9 @@ function parse_qstr(qstr)
                 $('#parse-qstr').append($('<div class="'+type_+'">').text(substr));
                 if (type_ === 'brand' && !seen_brand) {
                     //must.push({match_phrase:{brand: substr}})
-                    should.push({
+                    must.push({
                         bool: {
-                            must:[
+                            should:[
                                 {match_phrase:{brand: substr}},
                                 {match_phrase:{brand_orig: substr}},
                                 {match_phrase:{brand_raw: substr}},
@@ -634,8 +637,17 @@ function parse_qstr(qstr)
                             }
                         }
                     });
-                } else if (type_ == 'product' || type_ == 'color') {
+                } else if (type_ == 'product') {
                     must.push({match_phrase:{name: substr}});
+                } else if (type_ == 'color') {
+                    should.push({
+                        bool: {
+                            should:[
+                                {match_phrase:{color: substr}},
+                                {match_phrase:{available_colors: substr}},
+                                {match_phrase:{name: substr}}
+                            ]
+                        }});
                 } else {
                     should.push({match_phrase:{name:substr}});
                 }

@@ -327,12 +327,15 @@ def map_products(url_host):
 if __name__ == '__main__':
 
     url_hosts = sys.argv[1:]
-    while url_hosts:
-        url_host = url_hosts.pop(0)
-        print 'url_host:', url_host
-        if url_host not in Host2Map:
-            print 'url host not in ', sorted(Host2Map.keys())
-            sys.exit(1)
-        map_products(url_host)
+    if url_hosts:
+        while url_hosts:
+            url_host = url_hosts.pop(0)
+            print 'url_host:', url_host
+            if url_host not in Host2Map:
+                print 'url host not in ', sorted(Host2Map.keys())
+                sys.exit(1)
+            map_products(url_host)
+    else:
+        map_products(None) # all
 
     print 'done'
