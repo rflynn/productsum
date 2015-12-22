@@ -270,7 +270,7 @@ class ProductsBloomingdales(object):
                             upc = [o.get('upc')
                                     for o in obj.get('upcs', [])
                                         if o.get('upc') and nth(o['attributes']['COLOR'], 0) == color][0]
-                            print 'upc:', upc
+                            #print 'upc:', upc
                         except Exception as e:
                             print e
                     if (not upc) and upcs:

@@ -211,6 +211,7 @@
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
             <li><a href="/?q=Deborah Lippmann Nail Lacquer in Respect $18">Deborah Lippmann Nail Lacquer in Respect $18</a>
+            <li><a href="/?q=Bobbi Brown Deluxe Eye and Cheek Palette $85">Bobbi Brown Deluxe Eye and Cheek Palette $85</a>
             <li><a href="/?q=Burberry 'My Burberry' Eau de Parfum $95">Burberry 'My Burberry' Eau de Parfum $95</a>
             <li><a href="/?q=Glam-To-Go Cheek, Eye %26 Lip Travel Case">Glam-To-Go Cheek, Eye & Lip Travel Case</a> &mdash; test ampersand handling
             <li><a href="/?q=Powder Blush Case %26 Brush $40">Powder Blush Case & Brush $40</a> &mdash; test ampersand handling
@@ -588,7 +589,7 @@ function parse_qstr(qstr)
 {
     $('#parse-qstr').empty();
     $.getJSON(
-        '/parse?q=' + (qstr || ''),
+        '/parse?q=' + (qstr.replace('&', '%26') || ''),
         function(data) {
             var must = [];
             var should = [];
