@@ -11,6 +11,7 @@ import binascii
 import boto3
 import botocore
 from boto3.dynamodb.conditions import Key, Attr
+from datetime import datetime
 import gc
 import multiprocessing
 import psycopg2
@@ -71,10 +72,13 @@ while reading metadata
 def each_link(url_host=None, since_ts=0):
     # ref: http://boto3.readthedocs.org/en/latest/reference/customizations/dynamodb.html#ref-dynamodb-conditions
 
+    print 'each_link url_host=%s since_ts=%s' % (
+        url_host, datetime.fromtimestamp(since_ts))
+
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('link')
 
-    fe = Attr('updated').gt(since_ts) & Attr('body').ne(None)
+    fe = Attr('body').ne(None)
     #fe = Attr('body').ne(None) # FIXME: temporary for ssense, which was fucking up...
     pe = '#u,updated,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
@@ -108,8 +112,8 @@ def each_link(url_host=None, since_ts=0):
         while resp is None:
             try:
                 resp = table.query(
-                    IndexName='host-index',
-                    KeyConditionExpression=Key('host').eq(url_host),
+                    IndexName='host-index3',
+                    KeyConditionExpression=Key('host').eq(url_host) & Key('updated').gte(since_ts),
                     FilterExpression=fe,
                     ProjectionExpression=pe,
                     ExpressionAttributeNames=ean,
@@ -129,7 +133,7 @@ def each_link(url_host=None, since_ts=0):
                 try:
                     r = table.query(
                         ExclusiveStartKey=resp['LastEvaluatedKey'],
-                        IndexName='host-index',
+                        IndexName='host-index3',
                         KeyConditionExpression=Key('host').eq(url_host),
                         FilterExpression=fe,
                         ProjectionExpression=pe,
