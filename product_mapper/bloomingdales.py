@@ -244,10 +244,10 @@ class ProductsBloomingdales(object):
             if m:
                 try:
                     objtxt = m.groups(1)[0]
-                    print objtxt
+                    #print objtxt
                     #obj = execjs.eval(objtxt)
                     obj = json.loads(objtxt)
-                    pprint(obj)
+                    #pprint(obj)
                     sku = obj.get('productId') or None
                     price = nth(obj.get('price'), 0) or None
                     if price:
