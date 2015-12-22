@@ -33,7 +33,8 @@ schema = \
                 'my_synonym_filter': {
                     'type': 'synonym',
                     'synonyms': [
-                        '+,plus',
+                        '+,plus,and',
+                        '&,and',
                         'lacquer,polish', # e.g. nail polish
                         'lotion,cream,creme,sunscreen',
                         'edp=>eau de parfum',
