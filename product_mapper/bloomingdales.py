@@ -261,7 +261,8 @@ class ProductsBloomingdales(object):
                     brand = obj.get('brand') or None
                     in_stock = obj.get('available')
                     sizes = obj.get('sizes') or None
-                    upcs = sorted({o.get('upc') for o in obj.get('upcs', []) if o.get('upc')})
+                    upcs = sorted({o.get('upc') for o in obj.get('upcs', [])
+                                                    if o.get('upc')})
 
                     if color:
                         # pick a random UPC as long as the color matches (there are a bunch...)
@@ -272,6 +273,8 @@ class ProductsBloomingdales(object):
                             print 'upc:', upc
                         except Exception as e:
                             print e
+                    if (not upc) and upcs:
+                        upc = upcs[0]
 
                     colors = filter(None,
                                         sorted({nth(o['attributes']['COLOR'], 0)
