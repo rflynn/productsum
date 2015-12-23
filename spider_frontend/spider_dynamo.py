@@ -77,6 +77,7 @@ _Seeds = {
             '/mobile/',
             '/stores/',
             '/shop/checkout/',
+            '/shop/feedback/', # ignore extensive reviews
             '/subscribe/',
         }
     },
@@ -284,6 +285,7 @@ _Seeds = {
             '*?*main_colors=*%7C',
             '*?*color_pattern=*%7C',
             '/customer/',
+            '/de-de/',
             '/giftcard/',
             '/mzcatalog/',
             '/mywishlist/',
