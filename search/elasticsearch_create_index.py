@@ -50,6 +50,10 @@ schema = \
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
+			"‘=>'",
+			"’=>'",
+			'“=>"',
+			'”=>"',
                     ]
                 },
                 'nfkc_normalizer': { # normalize unicode form
@@ -66,7 +70,7 @@ schema = \
             'tokenizer': {
                 'word_only': {
                     'type': 'pattern',
-                    'pattern': r"(\d+(?:\.\d+)?|\p{L}+|[&'+$])",
+                    'pattern': r"(\d+(?:\.\d+)?|\p{L}+|[&'+$/\"])",
                     'group': '1',
                 },
             },
