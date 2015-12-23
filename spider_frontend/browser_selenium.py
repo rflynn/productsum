@@ -143,25 +143,23 @@ def url_fetch(url, load_timeout_sec=30):
     with wait_for_page_to_load(browser, timeout=load_timeout_sec):
         print 'getting %s' % url.encode('utf8')
         browser.get(url)
-        links = set(browser.execute_script('return [].slice.call(document.querySelectorAll("a[href]")).map(function(a){ return a.getAttribute("href"); })'))
+        #links = set(browser.execute_script('return [].slice.call(document.querySelectorAll("a[href]")).map(function(a){ return a.getAttribute("href"); })'))
         page_source = unicode(browser.page_source).encode('utf8')
         # this is the DOM after it's been updated by angular...
         #browser.execute_script('return document.documentElement.outerHTML')
-    return page_source, list(links)
+    return page_source#, list(links)
 
 
 if __name__ == '__main__':
     t = time.time()
     try:
         init()
-        page_source, links = url_fetch('http://www.sephora.com/foundation-kits-sets')
-        print len(links)
-        print sorted(links)[:100]
+        page_source = url_fetch('http://www.sephora.com/foundation-kits-sets')
         print len(page_source)
         print (page_source or u'')[:1024]
         print time.time() - t
 
-        page_source, links = url_fetch('http://www.sephora.com/nail-polish-nail-lacquer')
+        page_source = url_fetch('http://www.sephora.com/nail-polish-nail-lacquer')
         print time.time() - t
 
     except Exception as e:
