@@ -58,10 +58,21 @@ def get_browser_firefox_invisible():
     browser = webdriver.Firefox()
     return browser
 
+def get_browser_chrome():
+    display = get_display()
+    # runs on ubuntu but doesn't work...
+    #display = Display(visible=0, size=(1024, 768))
+    #display.start()
+    chromedriver = '/usr/lib/chromium-browser/chromedriver'
+    os.environ['webdriver.chrome.driver'] = chromedriver
+    browser = webdriver.Chrome(chromedriver)
+    return browser
+
 def get_browser():
     global _Browser
     if not _Browser:
-        _Browser = get_browser_firefox_invisible()
+        #_Browser = get_browser_firefox_invisible()
+        _Browser = get_browser_chrome()
     return _Browser
 
 def init():
@@ -118,14 +129,14 @@ browser = webdriver.PhantomJS()
 #browser.set_window_size(1024, 768)
 
 @contextmanager
-def wait_for_page_to_load(browser, timeout=10):
+def wait_for_page_to_load(browser, timeout=30):
     old_page = browser.find_element_by_tag_name('html')
     yield
     WebDriverWait(browser, timeout).until(staleness_of(old_page))
     wait_for_angular(browser)
 
 
-def url_fetch(url, load_timeout_sec=10):
+def url_fetch(url, load_timeout_sec=30):
     browser = get_browser()
     #print dir(browser)
     browser.set_page_load_timeout(load_timeout_sec)
