@@ -12,7 +12,7 @@ from urlparse import urljoin
 from yurl import URL
 
 from spider_backend import db_dynamo as db, s3wrap, page_links
-from spider_frontend import ua
+from spider_frontend import ua, browser_selenium
 
 
 _Seeds = {
@@ -329,7 +329,28 @@ _Seeds = {
         }
     },
     'http://www.selfridges.com/US/en/': {'ok':{'/US/en/'}},
-    'http://www.sephora.com/': {},
+    'http://www.sephora.com/': {
+        'runjs': {},
+        'skip': {
+            '/basket/',
+            '/checkout/',
+            '/error/',
+            '/lovelist/',
+            '/profile/MyAccount/',
+            '/profile/login/',
+            '/profile/orders/',
+            '/profile/purchaseHistory/',
+            '/profile/popup/',
+            '/profile/logout/',
+            '/profile/forgotpassword/',
+            '/profile/myBeautyBag/',
+            '/profile/accountHistory/',
+            '/profile/common/',
+            '/profile/orderConfirmation/',
+            '/profile/registration/',
+            '/shopping-list/',
+        }
+    },
     'http://www.shoescribe.com/us/women': {'ok':{'/us/'}},
     'http://www.stuartweitzman.com/': {},
     'http://www.stylebop.com/': {
@@ -633,7 +654,8 @@ assert get_mimetype({}) is None
 assert get_mimetype({'Content-Type': 'text/html'}) == 'text/html'
 assert get_mimetype({'Content-Type': 'text/html;charset=UTF-8'}) == 'text/html'
 
-def url_fetch(url, referer=None):
+def url_fetch(url, referer=None, settings=None):
+    settings = settings or {}
     headers = None
     code = -1 # unspecified error
     mimetype = None
@@ -659,7 +681,14 @@ def url_fetch(url, referer=None):
         code = r.status_code
         headers = sorted([(k, v) for k, v in r.headers.iteritems()])
         mimetype = get_mimetype(r.headers)
-        body = r.text
+        body = r.text # by default use static body...
+        if 'runjs' in settings and code == 200 and 'html' in mimetype:
+            # if configured, and looks like success, fetch body with
+            # headless browser so we execute javascript
+            try:
+                body = browser_selenium.url_fetch(url)
+            except:
+                traceback.print_exc()
         canonical_url = parse_canonical_url(body, url)
     except requests.exceptions.MissingSchema:
         code = -2
@@ -682,7 +711,7 @@ def compress_body(body):
     import StringIO
     stringio = StringIO.StringIO()
     with gzip.GzipFile(fileobj=stringio, mode='wb') as gzip_file:
-        gzip_file.write(body.encode('utf8'))
+        gzip_file.write(python_sucks(body).encode('utf8'))
     return stringio.getvalue()
     # TODO: consider one-liner
     #return body.encode('utf8').encode('zlib_encode')
@@ -770,7 +799,7 @@ def python_sucks(x):
         return unicode(x, 'utf8')
     raise Exception(str(x))
 
-def get_links(url, referer=None):
+def get_links(url, referer=None, settings=None):
     print 'get_links %s' % url
     links = []
     item = db.get_url(url)
@@ -781,7 +810,7 @@ def get_links(url, referer=None):
         else:
             db.invalidate_cache(url)
             print 'updating %s' % url
-        url, results = url_fetch(url, referer=referer)
+        url, results = url_fetch(url, referer=referer, settings=settings)
 
         # WTF?!?!?!? i have to do this here and i don't know why...
         (code, headers, body, canonical_url, mimetype) = results
@@ -841,22 +870,22 @@ def traverse(url, fqdn): # breadth-first traversal
     # best spider url to test this with is yoox; they have a bunch of crazy unicode urls
     settings = _Seeds[url]
     # fetch seed url w/o checking whitelist/blacklist
-    _canon, urls_ = get_links(python_sucks(url), referer=url)
+    _canon, urls_ = get_links(python_sucks(url), referer=url, settings=settings)
     urls = OrderedSet([_canon] + urls_)
     while urls:
         next_url = page_links.canonicalize_url(urls.pop(0))
         if ok_to_spider(next_url, fqdn, settings):
-            canon, links = get_links(next_url, referer=url)
+            canon, links = get_links(next_url, referer=url, settings=settings)
             while links:
                 assert isinstance(links[0], unicode)
                 l = page_links.canonicalize_url(links.pop(0))
                 if l != next_url and l not in urls and ok_to_spider(l, fqdn, settings):
-                    canon, _links = get_links(l, referer=next_url) # ignore results...
+                    canon, _links = get_links(l, referer=next_url, settings=settings) # ignore results...
                     # prioritize following up w/ canon first
                     if ok_to_spider(canon, fqdn, settings):
                         if canon != l:
                             print 'fetching canon', python_sucks(canon)
-                            get_links(python_sucks(canon), referer=l)
+                            get_links(python_sucks(canon), referer=l, settings=settings)
                         urls.add(canon)
 
 # TODO: have us try all seeds at all times; schedule each one...
