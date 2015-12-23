@@ -2,7 +2,9 @@
 # -*- encoding: utf-8 -*-
 
 import boto3
+import botocore
 from boto3.dynamodb.conditions import Key, Attr
+import time
 
 
 def fetchall(table, url_host=None, url_contains=None):
@@ -19,7 +21,7 @@ def fetchall(table, url_host=None, url_contains=None):
     while resp is None:
         try:
             resp = table.query(
-                IndexName='host-index',
+                IndexName='host-index3',
                 KeyConditionExpression=Key('host').eq(url_host),
                 FilterExpression=fe,
                 ProjectionExpression=pe,
@@ -38,7 +40,7 @@ def fetchall(table, url_host=None, url_contains=None):
             try:
                 r = table.query(
                     ExclusiveStartKey=resp['LastEvaluatedKey'],
-                    IndexName='host-index',
+                    IndexName='host-index3',
                     KeyConditionExpression=Key('host').eq(url_host),
                     FilterExpression=fe,
                     ProjectionExpression=pe,
@@ -67,6 +69,12 @@ if __name__ == '__main__':
             url = item['url']
             print url
             print table.delete_item(Key={'url': url})
+
+    # nuke all javascript-requiring sites before we had selenim set up
+    #deleteall('www.stuartweitzman.com', '/')
+    #deleteall('www.thecorner.com', '/')
+    #deleteall('www.luisaviaroma.com', '/')
+    #deleteall('www.sephora.com', '/')
 
     #deleteall('www.fwrd.com', '/fw/Login.jsp')
     #deleteall('www.zappos.com', '/favorites.do')
