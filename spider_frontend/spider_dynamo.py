@@ -703,6 +703,7 @@ def url_fetch(url, referer=None, settings=None):
                 body = browser_selenium.url_fetch(url)
             except:
                 traceback.print_exc()
+            sleep(5) # make sure we don't request too fast...
         canonical_url = parse_canonical_url(body, url)
     except requests.exceptions.MissingSchema:
         code = -2
