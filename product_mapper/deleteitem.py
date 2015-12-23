@@ -70,7 +70,12 @@ if __name__ == '__main__':
             print url
             print table.delete_item(Key={'url': url})
 
+    # nuke all javascript-requiring sites before we had selenim set up
+    #deleteall('www.stuartweitzman.com', '/')
+    #deleteall('www.thecorner.com', '/')
+    #deleteall('www.luisaviaroma.com', '/')
     #deleteall('www.sephora.com', '/')
+
     #deleteall('www.fwrd.com', '/fw/Login.jsp')
     #deleteall('www.zappos.com', '/favorites.do')
     #deleteall('www.barneys.com', '/on/')
