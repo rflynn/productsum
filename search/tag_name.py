@@ -14,7 +14,7 @@ def flatten(l):
 
 def tokenize(s):
     assert isinstance(s, unicode)
-    return re.findall(ur"(\d+(?:\.\d+)?|\w+|[&'+$])", s.lower(), re.UNICODE)
+    return re.findall(ur"(\d+(?:\.\d+)?|\w+|[&'+$/\"])", s.lower(), re.UNICODE)
 
 def tags_load(filepath, tag):
     try:
@@ -22,7 +22,7 @@ def tags_load(filepath, tag):
             return [(tag, tokenize(line)) for line in f if line]
     except Exception as e:
         print e
-        return []
+        raise
 
 def reverse_index(l):
     index = defaultdict(list)
