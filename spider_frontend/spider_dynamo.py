@@ -833,6 +833,9 @@ def ok_to_spider(url, fqdn, settings):
             if not any(prefix_matches(u.path + u.query, s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
+    if '://www.ssense.com/fr-fr/' in url:
+        # FIXME: i don't understand why the simple rule of blocking /fr-fr/ does not work for ssense...
+        return False
     return True
 
 def traverse(url, fqdn): # breadth-first traversal
