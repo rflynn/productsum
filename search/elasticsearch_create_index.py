@@ -120,6 +120,7 @@ schema = \
                 'merchant_slug':  { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url_host':       { 'type': 'string', 'analyzer': 'keyw' }, # don't parse this
                 'url':            { 'type': 'string' },
+                'url_raw':        { 'type': 'string', 'analyzer': 'keyw' },
                 # ugh... brand is a pita...
                 'brand':          { 'type': 'string' },
                 'brand_orig':     { 'type': 'string' },
@@ -153,6 +154,7 @@ select
     merchant_slug,
     url_host,
     url_canonical as url,
+    url_canonical as url_raw,
     coalesce(bt.brand_to, up.brand) as brand,
     up.brand                        as brand_orig,
     coalesce(bt.brand_to, up.brand) as brand_raw,
