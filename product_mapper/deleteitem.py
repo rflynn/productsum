@@ -2,7 +2,9 @@
 # -*- encoding: utf-8 -*-
 
 import boto3
+import botocore
 from boto3.dynamodb.conditions import Key, Attr
+import time
 
 
 def fetchall(table, url_host=None, url_contains=None):
@@ -19,7 +21,7 @@ def fetchall(table, url_host=None, url_contains=None):
     while resp is None:
         try:
             resp = table.query(
-                IndexName='host-index',
+                IndexName='host-index3',
                 KeyConditionExpression=Key('host').eq(url_host),
                 FilterExpression=fe,
                 ProjectionExpression=pe,
@@ -38,7 +40,7 @@ def fetchall(table, url_host=None, url_contains=None):
             try:
                 r = table.query(
                     ExclusiveStartKey=resp['LastEvaluatedKey'],
-                    IndexName='host-index',
+                    IndexName='host-index3',
                     KeyConditionExpression=Key('host').eq(url_host),
                     FilterExpression=fe,
                     ProjectionExpression=pe,
