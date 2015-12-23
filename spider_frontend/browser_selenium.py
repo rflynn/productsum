@@ -70,6 +70,7 @@ def get_browser_chrome():
 
 def get_browser():
     global _Browser
+    print 'get_browser...'
     if not _Browser:
         #_Browser = get_browser_firefox_invisible()
         _Browser = get_browser_chrome()
@@ -132,6 +133,7 @@ browser = webdriver.PhantomJS()
 def wait_for_page_to_load(browser, timeout=30):
     old_page = browser.find_element_by_tag_name('html')
     yield
+    print 'waiting for new page...'
     WebDriverWait(browser, timeout).until(staleness_of(old_page))
     wait_for_angular(browser)
 

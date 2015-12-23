@@ -711,7 +711,7 @@ def compress_body(body):
     import StringIO
     stringio = StringIO.StringIO()
     with gzip.GzipFile(fileobj=stringio, mode='wb') as gzip_file:
-        gzip_file.write(body.encode('utf8'))
+        gzip_file.write(python_sucks(body).encode('utf8'))
     return stringio.getvalue()
     # TODO: consider one-liner
     #return body.encode('utf8').encode('zlib_encode')

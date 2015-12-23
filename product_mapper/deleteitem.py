@@ -70,6 +70,7 @@ if __name__ == '__main__':
             print url
             print table.delete_item(Key={'url': url})
 
+    #deleteall('www.sephora.com', '/')
     #deleteall('www.fwrd.com', '/fw/Login.jsp')
     #deleteall('www.zappos.com', '/favorites.do')
     #deleteall('www.barneys.com', '/on/')
