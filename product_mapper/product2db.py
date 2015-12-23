@@ -42,6 +42,7 @@ from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
 from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
+from sephora import ProductsSephora
 from shopbop import ProductsShopbop
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
@@ -182,6 +183,7 @@ Host2Map = {
     'www.net-a-porter.com': ProductsNetaPorter,
     'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
+    'www.sephora.com':      ProductsSephora,
     'www.shopbop.com':      ProductsShopbop,
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
