@@ -128,6 +128,8 @@ def url_to_product(url):
 def parse():
     import unicodedata
     q = request.args.get('q')
+    if q.startswith('http://') or q.startswith('https://'):
+        return jsonify(result={'q':[]})
     j = tag_name.tag_query(q)
     k = [(t, [unicodedata.normalize('NFKD', x).encode('ascii','ignore') for x in l]) for t, l in j]
     return jsonify(result={'q': j, 'normalized': k})

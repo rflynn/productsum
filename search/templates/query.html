@@ -155,7 +155,7 @@
                 background-color: DarkGoldenRod;
             }
             #parse-qstr .quantity {
-                background-color: purple;
+                background-color: magenta;
             }
             #parse-qstr .size {
                 background-color: pink;
@@ -283,6 +283,7 @@
                         </ol>
                     <li>TODO: "1 piece" should match anything not stating another amount; but the textual difference when not stated reduces the match score: <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90">Foreo ISSA Brush Head - Cobalt Blue (1 piece) $24.90</a> vs. <a href="/?q=Foreo ISSA Brush Head - Cobalt Blue $24.90">Foreo ISSA Brush Head - Cobalt Blue $24.90</a>
                     <li><strike>are not respected -- e.g. "1.7 fl oz" vs. 3.4 fl oz"</strike>
+                    <li><a href="/?q=Hot Tools 0.75 Inch - 1.25 Inch Tapered Curling Iron (2 piece)">Hot Tools 0.75 Inch - 1.25 Inch Tapered Curling Iron (2 piece)</a>
                 </ol>
 
             <li>price
@@ -353,7 +354,9 @@
 function is_url(str)
 {
     var s = str.trim();
-    return s.startsWith('http://') || s.startsWith('https://');
+    var t = s.startsWith('http://') || s.startsWith('https://');
+    console.log('is_url', str, t);
+    return t;
 }
 
 SCORE_MIN_THRESHOLD = 1.0
@@ -548,7 +551,7 @@ function url_query(str)
     return {
         'bool':{
             'must':[
-                {'match':{'url':str}}
+                {'match':{url_raw:str}}
             ]
         }
     };
@@ -594,6 +597,8 @@ function parse_qstr(qstr)
             var must = [];
             var should = [];
             var or = [];
+            console.log(data);
+            console.log(data.result);
             console.log(data.result.q);
             var qstrlow = qstr.toLowerCase();
             var qi = 0;
@@ -655,7 +660,7 @@ function parse_qstr(qstr)
                 seen_brand = seen_brand || type_ === 'brand';
             }
             console.log('match', must, should);
-            search(undefined, undefined,
+            search(qstr, undefined,
                 {
                     query: {must: must, should: should}
                     //filter: {or: []}
@@ -670,7 +675,11 @@ function search(txtq, params, phrases_yall)
     start_loading();
 
     var query = {};
-    if (phrases_yall) {
+    if (is_url(txtq)) {
+        query = {
+            query: url_query(txtq)
+        };
+    } else if (phrases_yall) {
         query = {
             query: {
                 filtered : {
@@ -689,17 +698,15 @@ function search(txtq, params, phrases_yall)
                 }
             }
         };
-    } else if (is_url(txtq)) {
-        query = {
-            query: url_query(es_cape(txtq))
-        };
     } else {
         query = {
             query: text_query(es_cape(txtq))
         };
     }
     query.from = 0;
-    query.size = 100;
+    if (!query.size) {
+        query.size = 100;
+    }
 
     $.ajax({
         method: 'POST',
