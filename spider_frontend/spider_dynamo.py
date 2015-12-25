@@ -90,8 +90,8 @@ _Seeds = {
             '/about/',
             '/mobile/',
             '/stores/',
-            '/shop/checkout/',
-            '/shop/feedback/', # ignore extensive reviews
+            '*/checkout/',
+            '*/feedback/', # ignore extensive reviews
             '/subscribe/',
         }
     },
