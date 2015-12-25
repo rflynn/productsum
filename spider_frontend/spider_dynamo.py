@@ -710,6 +710,9 @@ def url_fetch(url, referer=None, settings=None):
                 traceback.print_exc()
                 code = -1
                 body = None
+            if body is None:
+                if code == 200:
+                    code = -1
             sleep(5) # make sure we don't request too fast...
         canonical_url = parse_canonical_url(body, url)
     except requests.exceptions.MissingSchema:
