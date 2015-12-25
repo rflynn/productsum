@@ -70,10 +70,12 @@ TODO:
         ref: https://www.elastic.co/guide/en/elasticsearch/guide/current/phrase-matching.html
     34. ✔✔ watch the new star wars
     35. ✔ handle searching by color better...
-    35. why did this url disappear and never come back...? http://www.bluefly.com/sisley-sisley-by-sisley-eye-contour-mask-30ml1oz/p/357805401/detail.fly
-    36. ...create smart dynamodb index with only the fields i need
-    36. add second layer in database
+    35. ✔ why did this url disappear and never come back...? http://www.bluefly.com/sisley-sisley-by-sisley-eye-contour-mask-30ml1oz/p/357805401/detail.fly
+    36. ✔ create smart dynamodb index with only the fields i need
+    37. add second layer in database
         parse out tagged attributes into separate fields
+            brand
+    38. add selenium browser support on top of requests for sephora
 
     32. normalize product url - use canonical:
             * nordstrom

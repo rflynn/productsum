@@ -72,5 +72,32 @@ create table brand_translate (
 -- update it like this
 -- \copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' with csv;
 
+create table url_product_attr (
+    --id                  serial primary key,
+    created             timestamp with time zone not null default (now() at time zone 'utc'),
+    updated             timestamp with time zone not null default (now() at time zone 'utc'),
+
+    url_product_id      bigint not null unique references url_product (id),
+
+    name_brand          text[],
+    name_color          text[],
+    name_material       text[],
+    name_product        text[],
+    name_pattern        text[],
+    name_qty            int[],
+    name_size_raw       text[],
+    name_size_gram      int[],
+    name_size_inch      float[],
+    name_size_mm        float[],
+    name_size_ounce     float[],
+    name_size_fl_ounce  float[],
+    name_size_liter     float[],
+    name_size_gallon    float[],
+    name_size_quart     float[],
+    name_size_num       float[]
+
+);
+
+
 commit;
 
