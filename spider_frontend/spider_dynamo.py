@@ -552,9 +552,14 @@ _Seeds = {
         }
     },
     'https://www.ssense.com/': {
+        'ok': {
+            '/',
+            '/en-us/',
+        },
         'skip': {
             '/fr-fr/'
             '*fr-fr', # why doesn't fr-fr work?!?!?!?
+            '/en-ca/',
             # robots.txt
             '*/addproductstoshoppingbag/',
             '*/popup',
