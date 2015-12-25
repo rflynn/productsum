@@ -18,7 +18,7 @@ def has_angular(browser):
     # Boolean(document.querySelector('[ng-app]'))
     try:
         print 'has_angular?'
-        wait = WebDriverWait(browser, 1, poll_frequency=0.125)
+        wait = WebDriverWait(browser, 2, poll_frequency=0.25)
         wait.until(lambda browser: browser.execute_script('return typeof window.angular !== "undefined"'))
         return True
     except TimeoutException:
@@ -75,6 +75,14 @@ def get_browser():
         #_Browser = get_browser_firefox_invisible()
         _Browser = get_browser_chrome()
     return _Browser
+
+def kill_browser():
+    global _Browser
+    try:
+        _Browser.quit()
+    except Exception as e:
+        print e
+    _Browser = None
 
 def init():
     print 'browser_selection.init start...'
@@ -141,14 +149,15 @@ def wait_for_page_to_load(browser, timeout=30):
 def url_fetch(url, load_timeout_sec=30):
     browser = get_browser()
     #print dir(browser)
-    browser.set_page_load_timeout(load_timeout_sec)
-    with wait_for_page_to_load(browser, timeout=load_timeout_sec):
-        print 'getting %s' % url.encode('utf8')
-        browser.get(url)
-        #links = set(browser.execute_script('return [].slice.call(document.querySelectorAll("a[href]")).map(function(a){ return a.getAttribute("href"); })'))
-        page_source = unicode(browser.page_source).encode('utf8')
-        # this is the DOM after it's been updated by angular...
-        #browser.execute_script('return document.documentElement.outerHTML')
+    try:
+        browser.set_page_load_timeout(load_timeout_sec)
+        with wait_for_page_to_load(browser, timeout=load_timeout_sec):
+            print 'getting %s' % url.encode('utf8')
+            browser.get(url)
+            page_source = unicode(browser.page_source).encode('utf8')
+    except Exception as e:
+        print e
+        kill_browser()
     return page_source#, list(links)
 
 
