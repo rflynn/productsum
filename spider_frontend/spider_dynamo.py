@@ -566,9 +566,14 @@ _Seeds = {
         }
     },
     'https://www.ssense.com/': {
+        'ok': {
+            '/',
+            '/en-us/',
+        },
         'skip': {
             '/fr-fr/'
             '*fr-fr', # why doesn't fr-fr work?!?!?!?
+            '/en-ca/',
             # robots.txt
             '*/addproductstoshoppingbag/',
             '*/popup',
@@ -703,6 +708,8 @@ def url_fetch(url, referer=None, settings=None):
                 body = browser_selenium.url_fetch(url)
             except:
                 traceback.print_exc()
+                code = -1
+                body = None
             sleep(5) # make sure we don't request too fast...
         canonical_url = parse_canonical_url(body, url)
     except requests.exceptions.MissingSchema:
@@ -877,6 +884,9 @@ def ok_to_spider(url, fqdn, settings):
             if not any(prefix_matches(u.path + u.query, s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
+    if '://www.ssense.com/fr-fr/' in url:
+        # FIXME: i don't understand why the simple rule of blocking /fr-fr/ does not work for ssense...
+        return False
     return True
 
 def traverse(url, fqdn): # breadth-first traversal

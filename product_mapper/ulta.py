@@ -261,6 +261,22 @@ class ProductsUlta(object):
 
         starttime = time.time()
 
+        if 'ciSelector=' in url:
+            # just a search page, ignore contents
+            # e.g. http://www.ulta.com/ulta/a/Makeup-Eyes-Eye-Liner/_/N-1z13uuoZ1z13utqZ1z13utsZ1z13utoZ1z13uulZ26yh?categoryId=cat80042&ciSelector=leaf
+            signals = {}
+            realproducts = []
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals=signals)
+
+            return ProductMapResult(page=page,
+                                    products=realproducts)
+
         soup = BeautifulSoup(html)
 
         # standard shit
