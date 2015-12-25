@@ -14,7 +14,7 @@ import re
 from urlparse import urljoin
 from yurl import URL
 
-from util import dehtmlify, normstring, unquote
+from util import dehtmlify, normstring, unquote, u
 from dbconn import get_psql_conn
 
 
@@ -83,23 +83,23 @@ class Product(object):
         self.gtin13 = gtin13
         self.gtin14 = gtin14
         self.mpn = mpn
-        self.price_str = str(price)
+        self.price_str = u(price)
         self.price_min = None
         self.price_max = None
-        self.sale_price_str = str(sale_price)
+        self.sale_price_str = u(sale_price)
         self.sale_price_min = None
         self.sale_price_max = None
-        self.currency = currency
-        self.brand = brand
-        self.category = category
+        self.currency = u(currency)
+        self.brand = u(brand)
+        self.category = u(category)
         self.bread_crumb = bread_crumb
         self.in_stock = in_stock
         self.stock_level = stock_level
-        self.name = name
-        self.title = title
-        self.descr = descr
+        self.name = u(name)
+        self.title = u(title)
+        self.descr = u(descr)
         self.features = features
-        self.color = color
+        self.color = u(color)
         self.available_colors = available_colors
         self.size = size
         self.available_sizes = available_sizes

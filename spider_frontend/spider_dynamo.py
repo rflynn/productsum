@@ -64,6 +64,20 @@ _Seeds = {
             '/user/',
         }
     },
+    'http://www.beautybar.com/': {
+        'needs-cookies': {},
+        'skip': {
+            '*%7C',
+            '*%7c',
+            '/about-us',
+            '/buy/',
+            '/helpcenter/',
+            '/legal',
+            '/login*',
+            '/myaccount',
+            '/shoppingcart',
+        },
+    },
     'http://www.bergdorfgoodman.com/': {
         'skip': {
             '/account/',
