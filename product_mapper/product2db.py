@@ -80,10 +80,12 @@ def each_link(url_host=None, since_ts=0):
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('link')
 
+    kce = Key('host').eq(url_host) & Key('updated').gte(since_ts)
     fe = Attr('body').ne(None)
     #fe = Attr('body').ne(None) # FIXME: temporary for ssense, which was fucking up...
     pe = '#u,updated,host,body' # TODO: updated as well...
     ean = {'#u': 'url',}
+    limit = 50
 
     # TODO: refactor very similiar branches
 
@@ -115,12 +117,12 @@ def each_link(url_host=None, since_ts=0):
             try:
                 resp = table.query(
                     IndexName='host-index3',
-                    KeyConditionExpression=Key('host').eq(url_host) & Key('updated').gte(since_ts),
+                    KeyConditionExpression=kce,
                     FilterExpression=fe,
                     ProjectionExpression=pe,
                     ExpressionAttributeNames=ean,
                     Select='SPECIFIC_ATTRIBUTES',
-                    Limit=10
+                    Limit=limit
                 )
             except botocore.exceptions.ClientError as e:
                 print e
@@ -136,12 +138,12 @@ def each_link(url_host=None, since_ts=0):
                     r = table.query(
                         ExclusiveStartKey=resp['LastEvaluatedKey'],
                         IndexName='host-index3',
-                        KeyConditionExpression=Key('host').eq(url_host),
+                        KeyConditionExpression=kce,
                         FilterExpression=fe,
                         ProjectionExpression=pe,
                         ExpressionAttributeNames=ean,
                         Select='SPECIFIC_ATTRIBUTES',
-                        Limit=10
+                        Limit=limit
                     )
                     resp = r
                 except botocore.exceptions.ClientError as e:

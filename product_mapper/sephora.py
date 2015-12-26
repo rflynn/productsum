@@ -344,6 +344,18 @@ class ProductsSephora(object):
 
         starttime = time.time()
 
+        if '/sephoratv/sephoratv.jsp' in url:
+            # nuthin'
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={})
+            return ProductMapResult(page=page,
+                                    products=[])
+
         soup = BeautifulSoup(html)
 
         # standard shit
@@ -527,6 +539,9 @@ if __name__ == '__main__':
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
+
+    # test ignore by url
+    #url = 'http://www.sephora.com/sephoratv/sephoratv.jsp?ooid=blah'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
