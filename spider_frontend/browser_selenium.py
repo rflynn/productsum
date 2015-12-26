@@ -18,7 +18,7 @@ def has_angular(browser):
     # Boolean(document.querySelector('[ng-app]'))
     try:
         print 'has_angular?'
-        wait = WebDriverWait(browser, 2, poll_frequency=0.25)
+        wait = WebDriverWait(browser, 2, poll_frequency=1)
         wait.until(lambda browser: browser.execute_script('return typeof window.angular !== "undefined"'))
         return True
     except TimeoutException:
@@ -148,6 +148,7 @@ def wait_for_page_to_load(browser, timeout=30):
 
 def url_fetch(url, load_timeout_sec=30):
     browser = get_browser()
+    page_source = None
     #print dir(browser)
     try:
         browser.set_page_load_timeout(load_timeout_sec)

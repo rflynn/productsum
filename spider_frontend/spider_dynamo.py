@@ -346,6 +346,7 @@ _Seeds = {
     'http://www.sephora.com/': {
         'runjs': {},
         'skip': {
+            '*?skuId=*&icid2=*_image', # useless image links
             '/basket/',
             '/checkout/',
             '/error/',
