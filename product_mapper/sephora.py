@@ -215,6 +215,7 @@ class ProductsSephora(object):
         features = None
         in_stock = None
         slug = None
+        currency = None
         price = None
         sale_price = None
         color = None
@@ -246,7 +247,7 @@ class ProductsSephora(object):
                 #print objtxt
                 #obj = execjs.eval(objtxt)
                 obj = json.loads(objtxt)
-                pprint(obj)
+                #pprint(obj)
             except:
                 traceback.print_exc()
                 obj = {}
@@ -277,9 +278,9 @@ class ProductsSephora(object):
             if m:
                 try:
                     objtxt = m.groups(0)[0]
-                    print objtxt
+                    #print objtxt
                     obj = json.loads(objtxt)
-                    pprint(obj)
+                    #pprint(obj)
                 except:
                     traceback.print_exc()
                     obj = {}
