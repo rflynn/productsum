@@ -856,6 +856,8 @@ def get_links(url, referer=None, settings=None):
 
 
 def prefix_matches(path, prefix):
+    if prefix == '/':
+        return path in ('', '/')
     if '*' in prefix:
         pattern = prefix
         pattern = pattern.replace('+', '[+]')
@@ -867,6 +869,9 @@ def prefix_matches(path, prefix):
         or (prefix[-1] == '/' and path == prefix[:-1]) # "/en/" ~= "/en"
     )
 
+assert prefix_matches('/', '/')
+assert prefix_matches('', '/')
+assert not prefix_matches('/a', '/')
 assert prefix_matches('/foo/bar?baz', '/*bar')
 assert prefix_matches('/fr-fr/femmes', '/fr-fr/')
 assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
