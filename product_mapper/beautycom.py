@@ -186,7 +186,9 @@ class ProductsBeautyCom(object):
         sku = None
         slug = None
         brand = None
+        name = None
         descr = None
+        features = None
         in_stock = None
         colors = None
         sizes = None
@@ -250,9 +252,8 @@ class ProductsBeautyCom(object):
 
         try:
             tag = soup.find('div', {'itemprop': 'breadcrumb'})
-            print tag
+            #print tag
             if tag:
-                print [a.get_text() for a in tag.findAll('a')]
                 breadcrumbs = [a.get_text() for a in tag.findAll('a')] or None
         except Exception as e:
             print e
