@@ -217,7 +217,7 @@ class ProductsBeautyCom(object):
             tag = soup.find('table', {'id': 'TblProdForkPromo'})
             if tag:
                 descr = tag.findAll('p')[2].get_text()
-            features = [li.get_text() for  li in tag.findAll('li')] or None
+                features = [li.get_text() for  li in tag.findAll('li')] or None
         except Exception as e:
             print e
 
