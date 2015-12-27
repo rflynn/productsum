@@ -42,6 +42,7 @@ from mytheresa import ProductsMyTheresa
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
+from theoutnet import ProductsTheOutNet
 from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
 from sephora import ProductsSephora
@@ -193,6 +194,7 @@ Host2Map = {
     'www.shopbop.com':      ProductsShopbop,
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
+    'www.theoutnet.com':    ProductsTheOutNet,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
     'www.violetgrey.com':   ProductsVioletgrey,
