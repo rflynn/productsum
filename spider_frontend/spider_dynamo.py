@@ -156,6 +156,7 @@ _Seeds = {
         },
     },
     'http://www.dillards.com/': {
+        'runjs': {},
         'skip': {
             '/c/',
             '/credit-services/',
