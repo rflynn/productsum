@@ -51,6 +51,7 @@ from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
+from walgreens import ProductsWalgreens
 from violetgrey import ProductsVioletgrey
 from yoox import ProductsYoox
 from zappos import ProductsZappos
@@ -198,6 +199,7 @@ Host2Map = {
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
     'www.violetgrey.com':   ProductsVioletgrey,
+    'www.walgreens.com':    ProductsWalgreens,
     'www.yoox.com':         ProductsYoox,
     'www.zappos.com':       ProductsZappos,
 }
