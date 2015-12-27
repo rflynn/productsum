@@ -484,6 +484,36 @@ _Seeds = {
             '/users',
         }
     },
+    'http://www.walgreens.com/': {
+        'runjs': {},
+        'skip': {
+            '/balancerewards/', # custom
+            '/common/',
+            '/emailsignup/',
+            '/includes/',
+            '/iso/',
+            '/library/checkdrug/',
+            '/logout.jsp',
+            '/marketing/emailsignup/',
+            '/messaging/',
+            '/overlays/',
+            '/password/',
+            '/pharmacy/',
+            '/popups/',
+            '/register/',
+            '/reviews/',
+            '/search/search_results.jsp?',
+            '/send/',
+            '/shoppinglist/',
+            '/store/browse/overlays/',
+            '/store/checkout/',
+            '/store/sscart.jsp',
+            '/storelocator/', # custom
+            '/topic/', # custom
+            '/webpickup/',
+            '/youraccount/',
+        }
+    },
     'http://www.yoox.com/us': {
         # ugh...
         # yoox.com/ redirects to /us/women, but /us/women has a canonical address of yoox.com/
