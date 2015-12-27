@@ -70,6 +70,9 @@ if __name__ == '__main__':
             print url
             print table.delete_item(Key={'url': url})
 
+    #deleteall('www.mytheresa.com', '/de-de/')
+    #deleteall('www.ssense.com', '/fr-fr/')
+
     # nuke all javascript-requiring sites before we had selenim set up
     #deleteall('www.stuartweitzman.com', '/')
     #deleteall('www.thecorner.com', '/')

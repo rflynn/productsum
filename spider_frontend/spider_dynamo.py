@@ -346,7 +346,7 @@ _Seeds = {
     'http://www.sephora.com/': {
         'runjs': {},
         'skip': {
-            '*?skuId=*&icid2=*_image', # useless image links
+            '*_image', # useless image links
             '/basket/',
             '/checkout/',
             '/error/',
@@ -706,7 +706,7 @@ def url_fetch(url, referer=None, settings=None):
             # if configured, and looks like success, fetch body with
             # headless browser so we execute javascript
             try:
-                body = browser_selenium.url_fetch(url)
+                body = browser_selenium.url_fetch(url, timeout=30)
             except:
                 traceback.print_exc()
                 code = -1

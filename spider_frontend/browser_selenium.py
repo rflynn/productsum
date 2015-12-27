@@ -146,20 +146,19 @@ def wait_for_page_to_load(browser, timeout=30):
     wait_for_angular(browser)
 
 
-def url_fetch(url, load_timeout_sec=30):
+def url_fetch(url, timeout=30):
     browser = get_browser()
     page_source = None
-    #print dir(browser)
     try:
-        browser.set_page_load_timeout(load_timeout_sec)
-        with wait_for_page_to_load(browser, timeout=load_timeout_sec):
+        browser.set_page_load_timeout(timeout)
+        with wait_for_page_to_load(browser, timeout=timeout):
             print 'getting %s' % url.encode('utf8')
             browser.get(url)
             page_source = unicode(browser.page_source).encode('utf8')
     except Exception as e:
         print e
         kill_browser()
-    return page_source#, list(links)
+    return page_source
 
 
 if __name__ == '__main__':
