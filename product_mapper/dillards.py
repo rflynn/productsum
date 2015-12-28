@@ -239,13 +239,13 @@ class ProductsDillards(object):
                         form.findAll('input', {'type': 'hidden',
                                                'name': True,
                                                'value': True})}
-            pprint(inputs)
+            #pprint(inputs)
             sku = sku or inputs.get('productId')
 
         tag = soup.find('span', {'class': lambda c: c and 'original-price' in c})
         if tag:
             tag = tag.find('span', {'class': 'price-number'})
-            print 'tag:', tag
+            #print 'tag:', tag
             if tag:
                 price = normstring(tag.string)
 
@@ -269,7 +269,7 @@ class ProductsDillards(object):
         bl = soup.find('span', {'class': lambda c: c and 'brand-link' in c})
         if bl:
             a = bl.find('a', {'href': True})
-            print a
+            #print a
             if a:
                 txt = normstring(a.get_text())
                 if txt and txt.startswith('Shop All '):
