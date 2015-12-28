@@ -456,7 +456,6 @@ _Seeds = {
         }
     },
     'http://www.target.com/': {
-        'runjs': {},
         'ok': { # custom
             '/',
             '/c/beauty/',
