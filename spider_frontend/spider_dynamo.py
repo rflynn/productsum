@@ -6,6 +6,7 @@ from orderedset import OrderedSet
 import random
 import re
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from time import sleep
 import traceback
 from urlparse import urljoin
@@ -13,6 +14,9 @@ from yurl import URL
 
 from spider_backend import db_dynamo as db, s3wrap, page_links
 from spider_frontend import ua, browser_selenium
+
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # annoying
 
 
 _Seeds = {
