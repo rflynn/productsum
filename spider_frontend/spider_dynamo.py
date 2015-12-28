@@ -315,6 +315,19 @@ _Seeds = {
             '/system/',
         }
     },
+    'http://www.maybelline.com': {
+        'skip': {
+            # custom
+            '/Makeup-Videos/',
+            '/shopping-bags.aspx',
+            # robots.txt
+            '/Layers/',
+            '/Maybelline/',
+            '/MaybellineV2/',
+            '/user/',
+            '/members/',
+        },
+    },
     'http://www.michaelkors.com/': {},
     'http://www.mytheresa.com/': {
         'skip': {
