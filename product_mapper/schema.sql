@@ -60,6 +60,8 @@ alter table url_product add column product_mapper_version smallint;
 alter table url_product drop column product_mapper_version;
 alter table url_page    add column product_mapper_version smallint;
 
+alter table url_product add column asin char(10);
+
 
 create table brand_translate (
     id                  serial primary key,
