@@ -13,6 +13,8 @@ create table url_page (
     proctime            float,
     signals             json
 );
+-- for fast updated timestamp lookup by url_host by product2db script
+create index idx_url_page_url_host on url_page (url_host);
 
 create table url_product (
     --id                  serial primary key,
@@ -80,6 +82,7 @@ create table url_product_attr (
     updated             timestamp with time zone not null default (now() at time zone 'utc'),
 
     url_product_id      bigint not null unique references url_product (id),
+    url_product_name    text, -- input that drives everything else
 
     name_brand          text[],
     name_color          text[],
@@ -99,7 +102,6 @@ create table url_product_attr (
     name_size_num       float[]
 
 );
-
 
 commit;
 
