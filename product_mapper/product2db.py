@@ -52,6 +52,7 @@ from sephora import ProductsSephora
 from shopbop import ProductsShopbop
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
+from targetimport ProductsTarget
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
@@ -201,6 +202,7 @@ Host2Map = {
     'www.shopbop.com':      ProductsShopbop,
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
+    'www.target.com':       ProductsTarget,
     'www.theoutnet.com':    ProductsTheOutNet,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
