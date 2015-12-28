@@ -334,7 +334,7 @@ def map_products(url_host):
                 if sent < skip:
                     recv += 1 # fake it
                 else:
-                    q1.put((url, host, sha256, updated))
+                    q1.put((url, host, sha256, datetime.fromtimestamp(updated)))
                     if q1.qsize() >= POOLSIZE * 2:
                         # input queue full enough, process output.
                         # throttles input rate

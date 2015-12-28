@@ -76,7 +76,7 @@ TODO:
         parse out tagged attributes into separate fields
             brand
     38. ✔ add selenium browser support on top of requests for sephora
-    39. url_product.updated timestamp should be when the doc was fetched, not when it was processed
+    39. ✔ url_product.updated timestamp should be when the doc was fetched, not when it was processed
     40. normalize product url - use canonical:
             * nordstrom
             * barneys (e.g. 504143194)
