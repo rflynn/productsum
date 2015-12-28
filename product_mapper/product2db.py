@@ -52,7 +52,7 @@ from sephora import ProductsSephora
 from shopbop import ProductsShopbop
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
-from targetimport ProductsTarget
+from target import ProductsTarget
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
