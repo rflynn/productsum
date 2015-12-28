@@ -340,7 +340,7 @@ class ProductsSephora(object):
         }
 
     @classmethod
-    def from_html(cls, url, html):
+    def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
 
@@ -352,7 +352,8 @@ class ProductsSephora(object):
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
-                    signals={})
+                    signals={},
+                    updated=updated)
             return ProductMapResult(page=page,
                                     products=[])
 
@@ -508,7 +509,8 @@ class ProductsSephora(object):
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
-                    signals=signals)
+                    signals=signals,
+                    updated=updated)
 
         return ProductMapResult(page=page,
                                 products=realproducts)

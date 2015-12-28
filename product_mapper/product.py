@@ -519,7 +519,8 @@ class ProductMapResultPage(object):
                  url=None,
                  size=None,
                  proctime=None,
-                 signals=None):
+                 signals=None,
+                 updated=None):
         assert isinstance(version, int)
         assert version >= 0
         assert version < 32768
@@ -528,6 +529,7 @@ class ProductMapResultPage(object):
         assert size and size > 0
         assert proctime and proctime > 0
         assert signals is None or isinstance(signals, dict)
+        assert updated is None or isinstance(updated, basestring)
         self.version = version
         self.merchant_slug = merchant_slug
         self.url = url
@@ -535,6 +537,7 @@ class ProductMapResultPage(object):
         self.size = size
         self.proctime = proctime
         self.signals = signals
+        self.updated = updated
 
     def __repr__(self):
         return ('''ProductMapResultPage(
@@ -555,7 +558,7 @@ class ProductMapResultPage(object):
         cursor.execute('''
 update url_page
 set
-    updated = now(),
+    updated = %s,
     product_mapper_version = %s,
     merchant_slug = %s,
     url_host = %s,
@@ -564,7 +567,8 @@ set
     signals = %s
 where
     url_canonical = %s
-''',  (self.version,
+''',  (self.updated or str(datetime.utcnow()),
+       self.version,
        self.merchant_slug,
        self.url_host,
        self.size,
@@ -573,6 +577,7 @@ where
        self.url))
 
     def _psql_insert(self, cursor):
+        ts = self.updated or str(datetime.utcnow())
         cursor.execute('''
 insert into url_page (
     created,
@@ -585,8 +590,8 @@ insert into url_page (
     proctime,
     signals
 ) values (
-    now(),
-    now(),
+    %s,
+    %s,
     %s,
     %s,
     %s,
@@ -595,7 +600,9 @@ insert into url_page (
     %s,
     %s
 )
-''',  (self.version,
+''',  (ts,
+       ts,
+       self.version,
        self.merchant_slug,
        self.url_host,
        self.url,

@@ -341,7 +341,7 @@ match: (u'season', u'57')
         }
 
     @classmethod
-    def from_html(cls, url, html):
+    def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
 
@@ -353,7 +353,8 @@ match: (u'season', u'57')
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
-                    signals={})
+                    signals={},
+                    updated=updated)
             return ProductMapResult(page=page,
                                     products=[])
 
@@ -510,7 +511,8 @@ match: (u'season', u'57')
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
-                    signals=signals)
+                    signals=signals,
+                    updated=updated)
 
         return ProductMapResult(page=page,
                                 products=realproducts)

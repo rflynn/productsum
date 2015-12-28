@@ -182,7 +182,7 @@ class ProductsUnknown(object):
     VERSION = 0
 
     @classmethod
-    def from_html(cls, url, html, require_prodid=True):
+    def from_html(cls, url, html, updated=None, require_prodid=True):
 
         starttime = time.time()
 
@@ -330,7 +330,8 @@ class ProductsUnknown(object):
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
-                    signals=signals)
+                    signals=signals,
+                    updated=updated)
 
         return ProductMapResult(page=page,
                                 products=realproducts)
