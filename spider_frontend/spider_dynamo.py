@@ -6,6 +6,7 @@ from orderedset import OrderedSet
 import random
 import re
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from time import sleep
 import traceback
 from urlparse import urljoin
@@ -13,6 +14,9 @@ from yurl import URL
 
 from spider_backend import db_dynamo as db, s3wrap, page_links
 from spider_frontend import ua, browser_selenium
+
+
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # annoying
 
 
 _Seeds = {
@@ -78,6 +82,18 @@ _Seeds = {
             '/shoppingcart',
         },
     },
+    'http://www.beautylish.com/': {
+        'skip': {
+            '/about/',
+            '/bag/',
+            '/jobs/',
+            '/help/',
+            '/photos/',
+            '/press/',
+            '/talk/',
+            '/videos/',
+        }
+    },
     'http://www.bergdorfgoodman.com/': {
         'skip': {
             '/account/',
@@ -130,6 +146,14 @@ _Seeds = {
     },
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
+    'http://www.cvs.com/': {
+        'ok': {
+            '/',
+            '/shop/beauty/',
+            '/shop/personal-care/',
+            '/shop/skin-care/',
+        },
+    },
     'http://www.cusp.com/': {},
     'http://www.dermstore.com/': {
         'skip': {
@@ -715,7 +739,10 @@ def url_fetch(url, referer=None, settings=None):
     try:
         # TODO: limit size...
         # ref: http://stackoverflow.com/questions/23514256/http-request-with-timeout-maximum-size-and-connection-pooling
-        r = requests.get(url,
+        with requests.Session() as s:
+            # maintain state (cookies, etc) for lifetime of the request
+            # some sites set cookies and redirect and check them
+            r = s.get(url,
                          allow_redirects=True,
                          headers={
                             'Accept': 'text/html',
