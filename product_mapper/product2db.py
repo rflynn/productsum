@@ -37,6 +37,7 @@ from fwrd import ProductsFwrd
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
 from matchesfashion import ProductsMatchesFashion
+from maybelline import ProductsMaybelline
 from modaoperandi import ProductsModaoperandi
 from mytheresa import ProductsMyTheresa
 from neimanmarcus import ProductsNeimanMarcus
@@ -185,6 +186,7 @@ Host2Map = {
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
     'www.matchesfashion.com': ProductsMatchesFashion,
+    'www.maybelline.com':   ProductsMaybelline,
     'www.modaoperandi.com': ProductsModaoperandi,
     'www.mytheresa.com':    ProductsMyTheresa,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
