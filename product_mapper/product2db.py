@@ -32,6 +32,7 @@ from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
 from dermstore import ProductsDermstore
+from dillards import ProductsDillards
 from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
@@ -182,6 +183,7 @@ Host2Map = {
     'www1.bloomingdales.com':ProductsBloomingdales,
     'www.bluefly.com':      ProductsBluefly,
     'www.dermstore.com':    ProductsDermstore,
+    'www.dillards.com':     ProductsDillards,
     'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
@@ -214,12 +216,14 @@ read the HTML body from S3
 read zero or more products from the HTML using a host-specific mapper
 return the results
 '''
-def handle_url(url, host, sha256):
+def handle_url(url, host, sha256, updated):
     try:
         body = s3wrap.get_body_by_hash('productsum-spider',
                                        binascii.hexlify(sha256))
         if body:
-            return Host2Map[host].from_html(url, unicode(decompress_body(body.read()), 'utf8'))
+            return Host2Map[host].from_html(url,
+                                            unicode(decompress_body(body.read()), 'utf8'),
+                                            updated=updated)
     except:
         traceback.print_exc()
         raise
@@ -320,8 +324,9 @@ def map_products(url_host):
             sha256 = link['body']
             host = link['host']
             url = link['url']
+            updated = link['updated']
             last_updated = ProductMapResultPage.last_updated(conn, host, url) or 0
-            if sha256 and host in Host2Map and link['updated'] > last_updated:
+            if sha256 and host in Host2Map and updated > last_updated:
                 # has data, we have a mapper for the host, and updated since last seen...
                 sha256 = bytearray(sha256.value) # extract raw binary
                 sent += 1
@@ -329,7 +334,7 @@ def map_products(url_host):
                 if sent < skip:
                     recv += 1 # fake it
                 else:
-                    q1.put((url, host, sha256))
+                    q1.put((url, host, sha256, updated))
                     if q1.qsize() >= POOLSIZE * 2:
                         # input queue full enough, process output.
                         # throttles input rate

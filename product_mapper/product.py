@@ -23,7 +23,7 @@ class Product(object):
     def __init__(self,
                  merchant_slug=None, url_canonical=None, merchant_sku=None,
                  merchant_product_obj=None,
-                 upc=None, gtin8=None, gtin12=None, gtin13=None, gtin14=None, mpn=None,
+                 upc=None, gtin8=None, gtin12=None, gtin13=None, gtin14=None, mpn=None, asin=None,
                  price=None, sale_price=None, currency=None,
                  brand=None, category=None, bread_crumb=None,
                  in_stock=None, stock_level=None,
@@ -45,6 +45,7 @@ class Product(object):
         assert isinstance(gtin13,           (type(None), basestring))
         assert isinstance(gtin14,           (type(None), basestring))
         assert isinstance(mpn,              (type(None), basestring))
+        assert isinstance(asin,             (type(None), basestring))
         assert isinstance(price,            (type(None), int, float, basestring))
         assert isinstance(sale_price,       (type(None), int, float, basestring))
         assert isinstance(currency,         (type(None), basestring))
@@ -83,6 +84,7 @@ class Product(object):
         self.gtin13 = gtin13
         self.gtin14 = gtin14
         self.mpn = mpn
+        self.asin = asin
         self.price_str = xstr(price)
         self.price_min = None
         self.price_max = None
@@ -263,6 +265,7 @@ class Product(object):
     gtin13............ %s
     gtin14............ %s
     mpn............... %s
+    asin.............. %s
     price_str......... %s
     price_min......... %s
     price_max......... %s
@@ -296,6 +299,7 @@ class Product(object):
        self.gtin13,
        self.gtin14,
        self.mpn,
+       self.asin,
        self.price_str,
        self.price_min,
        self.price_max,
@@ -335,6 +339,7 @@ set
     gtin13 = %s,
     gtin14 = %s,
     mpn = %s,
+    asin = %s,
     price_min = %s,
     price_max = %s,
     sale_price_min = %s,
@@ -367,6 +372,7 @@ where
        self.gtin13,
        self.gtin14,
        self.mpn,
+       self.asin,
        self.price_min,
        self.price_max,
        self.sale_price_min,
@@ -409,6 +415,7 @@ insert into url_product (
     gtin13,
     gtin14,
     mpn,
+    asin,
     price_min,
     price_max,
     sale_price_min,
@@ -462,6 +469,7 @@ insert into url_product (
     %s,
     %s,
     %s,
+    %s,
     %s
 )
 ''',  (self.merchant_product_obj.VERSION,
@@ -475,6 +483,7 @@ insert into url_product (
        self.gtin13,
        self.gtin14,
        self.mpn,
+       self.asin,
        self.price_min,
        self.price_max,
        self.sale_price_min,
@@ -519,7 +528,8 @@ class ProductMapResultPage(object):
                  url=None,
                  size=None,
                  proctime=None,
-                 signals=None):
+                 signals=None,
+                 updated=None):
         assert isinstance(version, int)
         assert version >= 0
         assert version < 32768
@@ -528,6 +538,7 @@ class ProductMapResultPage(object):
         assert size and size > 0
         assert proctime and proctime > 0
         assert signals is None or isinstance(signals, dict)
+        assert updated is None or isinstance(updated, basestring)
         self.version = version
         self.merchant_slug = merchant_slug
         self.url = url
@@ -535,6 +546,7 @@ class ProductMapResultPage(object):
         self.size = size
         self.proctime = proctime
         self.signals = signals
+        self.updated = updated
 
     def __repr__(self):
         return ('''ProductMapResultPage(
@@ -555,7 +567,7 @@ class ProductMapResultPage(object):
         cursor.execute('''
 update url_page
 set
-    updated = now(),
+    updated = %s,
     product_mapper_version = %s,
     merchant_slug = %s,
     url_host = %s,
@@ -564,7 +576,8 @@ set
     signals = %s
 where
     url_canonical = %s
-''',  (self.version,
+''',  (self.updated or str(datetime.utcnow()),
+       self.version,
        self.merchant_slug,
        self.url_host,
        self.size,
@@ -573,6 +586,7 @@ where
        self.url))
 
     def _psql_insert(self, cursor):
+        ts = self.updated or str(datetime.utcnow())
         cursor.execute('''
 insert into url_page (
     created,
@@ -585,8 +599,8 @@ insert into url_page (
     proctime,
     signals
 ) values (
-    now(),
-    now(),
+    %s,
+    %s,
     %s,
     %s,
     %s,
@@ -595,7 +609,9 @@ insert into url_page (
     %s,
     %s
 )
-''',  (self.version,
+''',  (ts,
+       ts,
+       self.version,
        self.merchant_slug,
        self.url_host,
        self.url,

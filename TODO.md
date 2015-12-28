@@ -72,18 +72,16 @@ TODO:
     35. ✔ handle searching by color better...
     35. ✔ why did this url disappear and never come back...? http://www.bluefly.com/sisley-sisley-by-sisley-eye-contour-mask-30ml1oz/p/357805401/detail.fly
     36. ✔ create smart dynamodb index with only the fields i need
-    37. add second layer in database
+    37. ... add second layer in database
         parse out tagged attributes into separate fields
             brand
-    38. add selenium browser support on top of requests for sephora
-
-    32. normalize product url - use canonical:
+    38. ✔ add selenium browser support on top of requests for sephora
+    39. url_product.updated timestamp should be when the doc was fetched, not when it was processed
+    40. normalize product url - use canonical:
             * nordstrom
             * barneys (e.g. 504143194)
             * fwrd (e.g. http://localhost:9998/?q=brand:(Charlotte%20Olympia)%20Aranea%20Suede%20Heels%20$895)
             * ssense /fr-fr/ products...
-    33. normalize product name -- remove brand prefix/suffix
-
 
     ...
     ref: https://lucidworks.com/blog/2014/07/12/solution-for-multi-term-synonyms-in-lucenesolr-using-the-auto-phrasing-tokenfilter/
