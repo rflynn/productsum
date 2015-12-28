@@ -323,12 +323,13 @@ class Product(object):
        self.img_url,
        self.img_urls)).encode('utf8')
 
-    def _psql_update(self, cursor):
+    def _psql_update(self, cursor, updated=None):
+        ts = updated or str(datetime.utcnow())
         try:
             cursor.execute('''
 update url_product
 set
-    updated = now(),
+    updated = %s,
     product_mapper_version = %s,
     merchant_slug = %s,
     url_host = %s,
@@ -362,7 +363,8 @@ set
     img_urls = %s
 where
     url_canonical = %s
-''',  (self.merchant_product_obj.VERSION,
+''',  (ts,
+       self.merchant_product_obj.VERSION,
        self.merchant_slug,
        self.url_host,
        self.merchant_sku,
@@ -398,7 +400,8 @@ where
             print self
             raise
 
-    def _psql_insert(self, cursor):
+    def _psql_insert(self, cursor, updated=None):
+        ts = updated or str(datetime.utcnow())
         try:
             cursor.execute('''
 insert into url_product (
@@ -437,8 +440,8 @@ insert into url_product (
     img_url,
     img_urls
 ) values (
-    now(),
-    now(),
+    %s,
+    %s,
     %s,
     %s,
     %s,
@@ -472,7 +475,9 @@ insert into url_product (
     %s,
     %s
 )
-''',  (self.merchant_product_obj.VERSION,
+''',  (ts,
+       ts,
+       self.merchant_product_obj.VERSION,
        self.merchant_slug,
        self.url_host,
        self.url_canonical,
@@ -508,11 +513,11 @@ insert into url_product (
             print self
             raise
 
-    def save(self, conn, commit=True):
+    def save(self, conn, commit=True, updated=None):
         with conn.cursor() as cursor:
-            self._psql_update(cursor)
+            self._psql_update(cursor, updated=updated)
             if cursor.rowcount == 0:
-                self._psql_insert(cursor)
+                self._psql_insert(cursor, updated=updated)
             if commit:
                 conn.commit()
 
@@ -680,7 +685,7 @@ class ProductMapResult(object):
         conn = get_psql_conn()
         self.page.save(conn, commit=False)
         for p in self.products:
-            p.save(conn, commit=False)
+            p.save(conn, commit=False, updated=self.page.updated)
         conn.commit()
 
 if __name__ == '__main__':
