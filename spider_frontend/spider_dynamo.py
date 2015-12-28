@@ -78,6 +78,18 @@ _Seeds = {
             '/shoppingcart',
         },
     },
+    'http://www.beautylish.com/': {
+        'skip': {
+            '/about/',
+            '/bag/',
+            '/jobs/',
+            '/help/',
+            '/photos/',
+            '/press/',
+            '/talk/',
+            '/videos/',
+        }
+    },
     'http://www.bergdorfgoodman.com/': {
         'skip': {
             '/account/',
@@ -130,6 +142,14 @@ _Seeds = {
     },
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
+    'http://www.cvs.com/': {
+        'ok': {
+            '/',
+            '/shop/beauty/',
+            '/shop/personal-care/',
+            '/shop/skin-care/',
+        },
+    },
     'http://www.cusp.com/': {},
     'http://www.dermstore.com/': {
         'skip': {
