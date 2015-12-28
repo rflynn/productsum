@@ -307,7 +307,7 @@ def map_products(url_host):
     since_ts = 0
     conn = get_psql_conn()
     if url_host:
-        since_ts = ProductMapResultPage.first_any_updated(conn, url_host) or 0
+        since_ts = ProductMapResultPage.last_any_updated(conn, url_host) or 0
 
     '''
     scan all links in dynamodb

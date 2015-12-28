@@ -626,10 +626,10 @@ and url_canonical = %s
             return calendar.timegm(row[0].timetuple())
 
     @staticmethod
-    def first_any_updated(conn, url_host):
+    def last_any_updated(conn, url_host):
         with conn.cursor() as cursor:
             cursor.execute('''
-select min(updated)
+select max(updated)
 from url_page
 where url_host = %s
 ''', (url_host,))
