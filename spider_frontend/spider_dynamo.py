@@ -735,7 +735,10 @@ def url_fetch(url, referer=None, settings=None):
     try:
         # TODO: limit size...
         # ref: http://stackoverflow.com/questions/23514256/http-request-with-timeout-maximum-size-and-connection-pooling
-        r = requests.get(url,
+        with requests.Session() as s:
+            # maintain state (cookies, etc) for lifetime of the request
+            # some sites set cookies and redirect and check them
+            r = s.get(url,
                          allow_redirects=True,
                          headers={
                             'Accept': 'text/html',
