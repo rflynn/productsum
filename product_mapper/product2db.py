@@ -27,6 +27,7 @@ from dbconn import get_psql_conn
 from barneys import ProductsBarneys
 from bathandbodyworks import ProductsBathandBodyWorks
 from beautycom import ProductsBeautyCom
+from beautybar import ProductsBeautybar
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
@@ -175,6 +176,7 @@ Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
     'www.barneys.com':      ProductsBarneys,
     'www.beauty.com':       ProductsBeautyCom,
+    'www.beautybar.com':       ProductsBeautybar,
     'www.bathandbodyworks.com': ProductsBathandBodyWorks,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www1.bloomingdales.com':ProductsBloomingdales,
