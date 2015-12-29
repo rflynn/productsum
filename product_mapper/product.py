@@ -23,7 +23,9 @@ class Product(object):
     def __init__(self,
                  merchant_slug=None, url_canonical=None, merchant_sku=None,
                  merchant_product_obj=None,
-                 upc=None, gtin8=None, gtin12=None, gtin13=None, gtin14=None, mpn=None, asin=None,
+                 upc=None, gtin8=None, gtin12=None, gtin13=None, gtin14=None,
+                 mpn=None, asin=None,
+                 isbn=None, isbn13=None, isbn10=None,
                  price=None, sale_price=None, currency=None,
                  brand=None, category=None, bread_crumb=None,
                  in_stock=None, stock_level=None,
@@ -46,6 +48,9 @@ class Product(object):
         assert isinstance(gtin14,           (type(None), basestring))
         assert isinstance(mpn,              (type(None), basestring))
         assert isinstance(asin,             (type(None), basestring))
+        assert isinstance(isbn,             (type(None), basestring))
+        assert isinstance(isbn13,           (type(None), basestring))
+        assert isinstance(isbn10,           (type(None), basestring))
         assert isinstance(price,            (type(None), int, float, basestring))
         assert isinstance(sale_price,       (type(None), int, float, basestring))
         assert isinstance(currency,         (type(None), basestring))
@@ -85,6 +90,9 @@ class Product(object):
         self.gtin14 = gtin14
         self.mpn = mpn
         self.asin = asin
+        self.isbn = isbn
+        self.isbn13 = isbn13
+        self.isbn10 = isbn10
         self.price_str = xstr(price)
         self.price_min = None
         self.price_max = None
@@ -113,6 +121,12 @@ class Product(object):
             self.img_urls = [img_url]
         elif img_urls and not img_url:
             self.img_url = self.img_urls[0]
+
+        if self.isbn:
+            if (not self.isbn13) and len(self.isbn) == 13:
+                self.isbn13 = self.isbn
+            if (not self.isbn10) and len(self.isbn) == 10:
+                self.isbn10 = self.isbn
 
         self.fixup_upc()
         self.fixup_prices_and_currency()
@@ -266,6 +280,9 @@ class Product(object):
     gtin14............ %s
     mpn............... %s
     asin.............. %s
+    isbn.............. %s
+    isbn13............ %s
+    isbn10............ %s
     price_str......... %s
     price_min......... %s
     price_max......... %s
@@ -300,6 +317,9 @@ class Product(object):
        self.gtin14,
        self.mpn,
        self.asin,
+       self.isbn,
+       self.isbn13,
+       self.isbn10,
        self.price_str,
        self.price_min,
        self.price_max,
@@ -341,6 +361,9 @@ set
     gtin14 = %s,
     mpn = %s,
     asin = %s,
+    isbn = %s,
+    isbn13 = %s,
+    isbn10 = %s,
     price_min = %s,
     price_max = %s,
     sale_price_min = %s,
@@ -375,6 +398,9 @@ where
        self.gtin14,
        self.mpn,
        self.asin,
+       self.isbn,
+       self.isbn13,
+       self.isbn10,
        self.price_min,
        self.price_max,
        self.sale_price_min,
@@ -419,6 +445,9 @@ insert into url_product (
     gtin14,
     mpn,
     asin,
+    isbn,
+    isbn13,
+    isbn10,
     price_min,
     price_max,
     sale_price_min,
@@ -473,6 +502,9 @@ insert into url_product (
     %s,
     %s,
     %s,
+    %s,
+    %s,
+    %s,
     %s
 )
 ''',  (ts,
@@ -489,6 +521,9 @@ insert into url_product (
        self.gtin14,
        self.mpn,
        self.asin,
+       self.isbn,
+       self.isbn13,
+       self.isbn10,
        self.price_min,
        self.price_max,
        self.sale_price_min,
