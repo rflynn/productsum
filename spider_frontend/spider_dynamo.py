@@ -737,7 +737,7 @@ _Seeds = {
             '/',
             '/browse/Beauty/',
             '/c/brand/', # browse brands
-            '/c/kp/', # featured categories
+            #'/c/kp/', # featured categories # XXX: too broad
             '/c/tp/', # top
             '/cp/Bath-Body/', # categories
             '/cp/Beauty/',
