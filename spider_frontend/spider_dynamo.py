@@ -192,11 +192,12 @@ _Seeds = {
     },
     'http://www.drugstore.com': {
         'skip': {
-            # my app-specific, might change in the futrue
+            # my app-specific, might change in the future
             '/household-food-and-pets/',
             '/medicine-and-health/',
             '/walgreens-pharmacy/',
             '/personal-care/',
+            '/your-list/', # requires login
             # their robots.txt
             '/4213/edh',
             '/500.htm',
@@ -296,6 +297,9 @@ _Seeds = {
     'http://madisonlosangeles.com/': {},
     'http://www.matchesfashion.com/': {
         'skip': {
+            # custom
+            '/us/settings*',
+            # robots.txt
             '*/addtowaitlist/*',
             '*/sendfriend/*',
             '*?q=*',
@@ -628,6 +632,7 @@ _Seeds = {
             '*_dynSessConf=',
             '/browse/inc/addToFavorites.jsp',
             '/browse/inc/productDetail_crossSell.jsp',
+            '/careers-at-ulta/', # useless
             '/image-server/',
             '/ulta/cart/',
             '/ulta/checkout/',
