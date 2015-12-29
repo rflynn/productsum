@@ -440,6 +440,18 @@ _Seeds = {
             '/shopping-list/',
         }
     },
+    'http://www.shiseido.com/': {
+        'skip': {
+            # custom
+            '/Customer-Service/',
+            '/Privacy/',
+            '/store-locator/',
+            '/Site-Selector/',
+            # robots.txt
+            '/*prefn1',
+            '/PowerReviews-WriteReviewPage/',
+        },
+    },
     'http://www.shoescribe.com/us/women': {'ok':{'/us/'}},
     'http://www.stuartweitzman.com/': {
         'runjs': {},
