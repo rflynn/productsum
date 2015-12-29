@@ -334,7 +334,6 @@ class ProductsBathandBodyWorks(object):
                                         {'property': re.compile('^product:'),
                                          'content':True})}
         custom = cls.get_custom(soup, url, og)
-        utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
 
@@ -343,7 +342,6 @@ class ProductsBathandBodyWorks(object):
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
             'metaprod': metaprod,
-            'utag': utag,
             'custom': custom,
         }
         #pprint(signals)
@@ -356,8 +354,6 @@ class ProductsBathandBodyWorks(object):
                     or og.get('product_id')
                     or custom.get('sku') # this one is expected for drugstore.com
                     or nth(sp.get('sku'), 0)
-                    or nth(utag.get('product_id'), 0)
-                    or nth(utag.get('productID'), 0)
                     or None)
 
         products = []
@@ -403,14 +399,12 @@ class ProductsBathandBodyWorks(object):
                             or og.get('currency')
                             or og.get('currency:currency')
                             or metaprod.get('price:currency')
-                            or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
                             or None),
                 price=(og.get('product:original_price:amount')
                             or og.get('price:amount')
                             or nth(spoffer.get('price'), 0)
                             or custom.get('price') # expected
-                            or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(og.get('product:sale_price:amount')
                             or og.get('sale_price:amount')
@@ -426,12 +420,10 @@ class ProductsBathandBodyWorks(object):
                             or None),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
-                            or utag.get('bread_crumb')
                             or None),
                 name=(custom.get('name')
                             or og.get('title')
                             or sp.get('name')
-                            or nth(utag.get('product_name'), 0)
                             or None),
                 title=(custom.get('title')
                             or og.get('title')
@@ -445,10 +437,9 @@ class ProductsBathandBodyWorks(object):
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
                             or og.get('availability')) in ('instock', 'in stock'))
-                            or xboolstr(nth(utag.get('product_available'), 0)))
                             or custom.get('in_stock')
-                            or None),
-                stock_level=(nth(utag.get('stock_level'), 0)
+                            or None)),
+                stock_level=(custom.get('stock_level')
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
