@@ -256,7 +256,7 @@
             <li>missing
                 <ol>
                     <li><a href="/?q=Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige">Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige</a>
-                    <li><a href="/?q=Nyx Soft Matte Lip Cream in London">Nyx Soft Matte Lip Cream in London</a>
+                    <li><strike><a href="/?q=Nyx Soft Matte Lip Cream in London">Nyx Soft Matte Lip Cream in London</a></strike>
                     <li><strike><a href="/?q=Rimmel Lasting Finish Matte by Kate Moss in Shade 110">Rimmel Lasting Finish Matte by Kate Moss in Shade 110</a></strike>
                     <li><a href="/?q=Wet n Wild Megalast Lip Color in Sugar Plum Fairy">Wet n Wild Megalast Lip Color in Sugar Plum Fairy</a>
                     <li><strike><a href="/?q=L'Oréal Colour Riche in Blake's Red and Freida's Red">L'Oréal Colour Riche in Blake's Red and Freida's Red</a></strike>
@@ -654,7 +654,7 @@ function parse_qstr(qstr)
                         }
                     });
                 } else if (type_ == 'product') {
-                    must.push({match_phrase:{name: substr}});
+                    should.push({match_phrase:{name: substr}});
                 } else if (type_ == 'color') {
                     should.push({
                         bool: {
@@ -722,7 +722,7 @@ function search(txtq, params, phrases_yall)
         method: 'POST',
         url: es_index() + '_search',
         crossDomain: true,
-        timeout: 5000,
+        timeout: 10000,
         dataType: 'json',
         data: JSON.stringify(query)
     }).done(function(data) {
