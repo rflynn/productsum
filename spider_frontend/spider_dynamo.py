@@ -673,6 +673,7 @@ _Seeds = {
     'http://www.zappos.com/': {
         'skip': {
             '/favorites.do',
+            '/*.jpg', # wtf
         }
     },
     'http://www1.bloomingdales.com/': {
