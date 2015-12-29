@@ -23,6 +23,8 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import nth, normstring, xboolstr, maybe_join, dehtmlify
 
+MERCHANT_SLUG = 'neimanmarcus'
+
 
 class ProductNeimanMarcus(object):
     VERSION = 0
@@ -135,7 +137,7 @@ class ProductNeimanMarcus(object):
             category = self.bread_crumb[-1]
 
         return Product(
-            merchant_slug='neimanmarcus',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.canonical_url,
             merchant_sku=self.prodid,
             merchant_product_obj=self,
@@ -168,6 +170,19 @@ class ProductsNeimanMarcus(object):
     def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
+
+        if '/search.jsp?' in url:
+            # search results are never a product...
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={},
+                    updated=updated)
+            return ProductMapResult(page=page,
+                                    products=[])
 
         products = []
 
@@ -248,7 +263,7 @@ class ProductsNeimanMarcus(object):
 
         page = ProductMapResultPage(
                  version=cls.VERSION,
-                 merchant_slug='neimanmarcus',
+                 merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),
                  proctime = time.time() - starttime,
@@ -298,6 +313,9 @@ if __name__ == '__main__':
 
     # doesn't populate url_product...
     filepath = 'test/www.neimanmarcus.com-Sklo-Sway-Long-Bowl-Accents-prod185550170_cat40520739__-p.prod-icid--searchType-EndecaDrivenCat.gz'
+
+    # ignore by url...
+    #url = 'http://www.neimanmarcus.com/search.jsp?N=4294914706&_requestid=151757&Ntt=Psycho+Bunny'
 
     with gzip.open(filepath) as f:
         html = f.read()
