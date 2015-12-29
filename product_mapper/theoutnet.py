@@ -294,7 +294,7 @@ match: (u'season', u'57')
             li = tag.findChildren('li')
             sold_outs = ['sold-out' in l.findChild('label').get('class')
                             for l in li]
-            print 'sold_outs:', sold_outs
+            #print 'sold_outs:', sold_outs
             in_stock = sold_outs and not all(sold_outs)
             sizes = sizes or [normstring(l.findChild('span').string) for l in li] or None
 
