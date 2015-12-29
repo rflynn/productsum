@@ -20,6 +20,8 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import nth, dehtmlify, normstring, xboolstr, maybe_join
 
+MERCHANT_SLUG = 'macys'
+
 
 def get_meta_twitter(soup):
     # twitter card
@@ -154,7 +156,7 @@ class ProductMacys(object):
     def to_product(self):
 
         return Product(
-            merchant_slug='macys',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.canonical_url,
             upc=self.upc,
             merchant_sku=self.prodid,
@@ -188,6 +190,19 @@ class ProductsMacys(object):
     def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
+
+        if '/Brand/' in url:
+            # skip stuff that can't be a product
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={},
+                    updated=updated)
+            return ProductMapResult(page=page,
+                                    products=[])
 
         products = []
 
@@ -274,7 +289,7 @@ class ProductsMacys(object):
 
         page = ProductMapResultPage(
                  version=cls.VERSION,
-                 merchant_slug='macys',
+                 merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),
                  proctime = time.time() - starttime,
@@ -479,6 +494,9 @@ if __name__ == '__main__':
     # test "full" page
     url = 'http://www1.macys.com/shop/product/coach-swagger-27-carryall-in-metallic-patchwork-leather?ID=2544700&CategoryID=26846'
     filepath = 'test/www1.macys.com-shop-product-coach-swagger-27-carryall-in-metallic-patchwork-leather-ID-2544700.gz'
+
+    # test no-op url
+    #url = 'http://www1.macys.com/shop/featured/purple/Brand/Nina'
 
     with gzip.open(filepath) as f:
         html = f.read()
