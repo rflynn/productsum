@@ -28,6 +28,16 @@ _Seeds = {
     'http://us.christianlouboutin.com/us_en/': {'ok':{'/us_en/'}},
     'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
     'http://us.topshop.com/en': {'ok':{'/en/'}},
+    'http://www.alexandermcqueen.com/': {
+        'skip': {
+            '/account/',
+            '/checkout/',
+            '/chooseyourcountry.asp',
+            '/cms/',
+            '/sitemap.asp',
+            '/us/mcq',
+        },
+    },
     'http://www.barneys.com/': {'skip':{'/on/'}},
     'http://www.bathandbodyworks.com/': {
         'skip': {
@@ -666,7 +676,10 @@ _Seeds = {
     'http://www.walgreens.com/': {
         'runjs': {},
         'skip': {
-            '/balancerewards/', # custom
+            # custom
+            '/balancerewards/',
+            '/mktg/',
+            # robots.txt
             '/common/',
             '/emailsignup/',
             '/includes/',
