@@ -279,6 +279,16 @@ _Seeds = {
         }
     },
     'http://www.josephstores.com/': {},
+    'http://www.lancome-usa.com/': {
+        'skip': {
+            # custom
+            '/on/demandware.store/Sites-lancome_us-Site/default/Stores-Find',
+            '/on/demandware.store/Sites-lancome_us-Site/default/CustomerService-ContactUsRealDialog',
+            # robots.txt
+            '/on/demandware.store/Sites-lancome_us-Site/default/Account-Show',
+            '/on/demandware.store/Sites-lancome_us-Site/default/Cart-Show',
+        },
+    },
     'http://www.lordandtaylor.com/': {
         'skip': {
             '/common/',
@@ -418,9 +428,13 @@ _Seeds = {
     'http://www.sephora.com/': {
         'runjs': {},
         'skip': {
-            '*_image', # useless image links
-            '/customerService/', # useless
-            '/sephoratv/', # useless videos
+            # custom
+            '*_image',
+            '/about/',
+            '/customerService/',
+            '/rewards',
+            '/sephoratv/',
+            # robots.txt
             '/basket/',
             '/checkout/',
             '/error/',
@@ -717,6 +731,48 @@ _Seeds = {
             '/webpickup/',
             '/youraccount/',
         }
+    },
+    'http://www.walmart.com/': {
+        'ok': {
+            '/',
+            '/browse/Beauty/',
+            '/c/brand/', # browse brands
+            '/c/kp/', # featured categories
+            '/c/tp/', # top
+            '/cp/Bath-Body/', # categories
+            '/cp/Beauty/',
+            '/cp/Fragrances/',
+            '/cp/Hair-Care/',
+            '/cp/Health/',
+            '/cp/Makeup/',
+            '/cp/Mens-Grooming/',
+            '/cp/Shaving/',
+            '/cp/Skin-Care/',
+            '/ip/', # products
+        },
+        'skip': {
+            # custom
+            '/account/',
+            '/store/',
+            # robots.txt
+            '/account/',
+            '/api/review/',
+            '/browse/invalid-category-id/',
+            '/buyguide/',
+            '/c/store/',
+            '/cart2/',
+            '/cdstore/',
+            '/classrooms/',
+            '/email_collect/',
+            '/iphone/',
+            '/prod/cp/',
+            '/reviews/seller/',
+            '/shopping_card/',
+            '/shoppinglists/',
+            '/solutions/',
+            '/store/category/',
+            '/store/popular_in_grade/',
+        },
     },
     'http://www.yoox.com/us': {
         # ugh...
