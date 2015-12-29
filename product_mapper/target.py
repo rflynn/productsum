@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from dillards.com to zero or more products
+map a document archived from target.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -23,13 +23,13 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'dillards'
+MERCHANT_SLUG = 'target'
 
 
-class ProductDillards(object):
+class ProductTarget(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
-                 merchant_sku=None, upc=None, isbn=None, ean=None,
+                 merchant_sku=None, upc=None, isbn=None, ean=None, asin=None,
                  currency=None, sale_price=None, price=None,
                  brand=None, category=None, breadcrumb=None,
                  in_stock=None, stock_level=None,
@@ -47,6 +47,7 @@ class ProductDillards(object):
         self.upc = upc
         self.isbn = isbn
         self.ean = ean
+        self.asin = asin
         self.currency = currency
         self.sale_price = sale_price
         self.price = price
@@ -87,18 +88,18 @@ class ProductDillards(object):
             self.features = [dehtmlify(f) for f in self.features]
 
         if self.name:
-            if self.name.endswith(" | Bloomingdale's"):
-                self.name = self.name[:-len(" | Bloomingdale's")]
+            if self.name.endswith(" : Target"):
+                self.name = self.name[:-len(" : Target")]
 
         if self.title:
-            if self.title.endswith(" | Bloomingdale's"):
-                self.title = self.title[:-len(" | Bloomingdale's")]
+            if self.title.endswith(" : Target"):
+                self.title = self.title[:-len(" : Target")]
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductDillards:
+        return ('''ProductTarget:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -107,6 +108,7 @@ class ProductDillards(object):
     upc.............. %s
     isbn............. %s
     ean.............. %s
+    asin............. %s
     currency......... %s
     sale_price....... %s
     price............ %s
@@ -134,6 +136,7 @@ class ProductDillards(object):
        self.upc,
        self.isbn,
        self.ean,
+       self.asin,
        self.currency,
        self.sale_price,
        self.price,
@@ -174,6 +177,7 @@ class ProductDillards(object):
             merchant_slug=MERCHANT_SLUG,
             url_canonical=self.url,
             upc=self.upc,
+            asin=self.asin,
             merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.price,
@@ -197,7 +201,7 @@ class ProductDillards(object):
         )
 
 
-class ProductsDillards(object):
+class ProductsTarget(object):
 
     VERSION = 0
 
@@ -225,6 +229,7 @@ class ProductsDillards(object):
         sizes = None
         img_url = None
         upc = None
+        asin = None
         upcs = None
 
         try:
@@ -232,72 +237,75 @@ class ProductsDillards(object):
         except:
             url_canonical = url
 
-        # form id="OrderItemAdd_0"
-        form = soup.find('form', {'id': 'OrderItemAdd_0'})
-        if form:
-            inputs = {t['name']: t['value'] for t in
-                        form.findAll('input', {'type': 'hidden',
-                                               'name': True,
-                                               'value': True})}
-            #pprint(inputs)
-            sku = sku or inputs.get('productId')
-
-        tag = soup.find('span', {'class': lambda c: c and 'original-price' in c})
+        # <div id="entitledItem"
+        tag = soup.find('div', id='entitledItem')
         if tag:
-            tag = tag.find('span', {'class': 'price-number'})
-            #print 'tag:', tag
-            if tag:
-                price = normstring(tag.string)
+            try:
+                objtxt = tag.text
+                obj = json.loads(objtxt)
+                pprint(obj)
+                colors = [x for x in
+                            [normstring(o['Attributes'].keys()[0][6:])
+                                for o in obj]
+                                    if x] or None
+            except Exception as e:
+                print e
 
-        tag = soup.find('span', {'class': lambda c: c and 'now-price' in c})
+        tag = soup.find('div', id='breadcrumbs')
         if tag:
-            tag = tag.find('span', {'class': 'price-number'})
-            if tag:
-                sale_price = normstring(tag.string)
-
-        # <div id="description-panel"
-        dp = soup.find('div', id='description-panel')
-        if dp:
-            features = [normstring(li.string) for li in dp.findAll('li')]
+            try:
+                breadcrumbs = [x for x in
+                                    [normstring(a.get_text())
+                                        for a in tag.findAll('a', href=True)]
+                                            if x] or None
+            except Exception as e:
+                print e
 
         '''
-        <span class="brand-link pull-right hide-when-international">
-            <a data-twist="shop-all-brand" id="shop-all-brand" href="/brand/Adrianna+Papell">Shop All Adrianna Papell
-            <i class="fa fa-angle-right"></i></a>
-        </span>
+        <script type="text/blzscript">
+            Target.globals.refreshItems = [{
         '''
-        bl = soup.find('span', {'class': lambda c: c and 'brand-link' in c})
-        if bl:
-            a = bl.find('a', {'href': True})
-            #print a
-            if a:
-                txt = normstring(a.get_text())
-                if txt and txt.startswith('Shop All '):
-                    brand = txt[8:] or None
-
-        sel = soup.find('select', id='sizeInput_id0')
-        if sel:
-            sizes = [x for x in
-                        [normstring(o.get_text())
-                            for o in sel.findAll('option')[1:]] if x] or None
-
-        sel = soup.find('select', id='colorInput_id0')
-        if sel:
-            colors = sorted([x for x in
-                        [normstring(o.get_text())
-                            for o in sel.findAll('option')[1:]] if x]) or None
+        tag = soup.find('script', text=re.compile(r'refreshItems\s*=\s*\['))
+        if tag:
+            try:
+                m = re.search(r'(\[.*\])', tag.text)
+                if m:
+                    objtxt = m.groups(0)[0]
+                    #print objtxt
+                    obj = json.loads(objtxt)
+                    #pprint(obj)
+                    attr = obj[0]['Attributes']
+                    #pprint(attr)
+                    try:
+                        price_min = attr['price']['offerPriceMin'] or None
+                        price_max = attr['price']['offerPriceMin'] or None
+                        if price_min:
+                            if price_max:
+                                price = '%s-%s' % (price_min, price_max)
+                            else:
+                                price = price_min
+                    except Exception as e:
+                        print e
+                    sku = sku or attr['partNumber'] or None
+                    name = name or attr['productName'] or None
+                    in_stock = attr['inventory']['status'] == 'in stock'
+                    stock_level = stock_level or attr['inventory']['netAvailableQuantity']
+                    img_url = img_url or attr['primary_image'] or None
+            except Exception as e:
+                print e
 
         return {
             'url_canonical': url_canonical,
             'brand': brand,
             'sku': sku,
             'upc': upc,
+            'asin': asin,
             'slug': slug,
             'category': category,
             'name': name,
-            'descr': descr,
             'in_stock': in_stock,
             'stock_level': stock_level,
+            'descr': descr,
             'features': features,
             'currency': currency,
             'price': price,
@@ -315,7 +323,7 @@ class ProductsDillards(object):
 
         starttime = time.time()
 
-        if '/dillardstv/dillardstv.jsp' in url:
+        if False:
             # nuthin'
             page = ProductMapResultPage(
                     version=cls.VERSION,
@@ -354,42 +362,45 @@ class ProductsDillards(object):
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
-                    or custom.get('sku') # this one is expected for dillards.com
-                    or nth(sp.get('sku'), 0)
-                    or nth(utag.get('product_id'), 0)
-                    or nth(utag.get('productID'), 0)
+                    or custom.get('sku')
+                    or nth(sp.get('productId'), 0)
+                    or nth(sp.get('productID'), 0) # this one is expected for target.com
                     or None)
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
             except:
                 spoffer = {}
 
-            try:
-                spbrand = sp.get('brand')
-                if spbrand:
-                    spbrand = spbrand[0]
-                    if isinstance(spbrand, basestring):
-                        pass
-                    elif isinstance(spbrand, dict):
-                        spbrand = nth(spbrand['properties']['name'], 0)
-                if isinstance(spbrand, list):
-                    spbrand = u' '.join(spbrand)
-            except:
-                spbrand = None
+            descr = (custom.get('descr')
+                            or nth(sp.get('description'), 0)
+                            or og.get('description')
+                            or meta.get('description')
+                            or None)
+            descr = dehtmlify(normstring(descr))
 
-            p = ProductDillards(
+            features = None
+            if descr:
+                if u'•' in descr:
+                    f = descr.split(u'•')
+                    if len(f) > 1:
+                        features = [normstring(x) for x in f]
+                        descr = features.pop(0)
+
+            p = ProductTarget(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
                             or sp.get('url')
                             or url
                             or None),
-                upc=custom.get('upc') or None,
+                upc=(custom.get('upc')
+                            or og.get('upc')
+                            or None),
                 slug=custom.get('slug') or None,
                 merchant_name=(og.get('product:retailer_title')
                             or og.get('retailer_title')
@@ -398,6 +409,7 @@ class ProductsDillards(object):
                 ean=(og.get('product:ean')
                             or og.get('ean')
                             or None),
+                asin=custom.get('asin') or None,
                 currency=(og.get('product:price:currency')
                             or og.get('product:sale_price:currency')
                             or og.get('sale_price:currency')
@@ -422,42 +434,34 @@ class ProductsDillards(object):
                             or custom.get('sale_price')
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=(custom.get('brand')
-                            or og.get('product:brand')
-                            or og.get('brand')
-                            or spbrand
+                brand=(nth(sp.get('brand'), 0)
                             or None),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or utag.get('bread_crumb')
                             or None),
                 name=(custom.get('name')
-                            or sp.get('name')
+                            or nth(sp.get('name'), 0)
                             or og.get('title')
-                            or nth(utag.get('product_name'), 0)
                             or None),
                 title=(custom.get('title')
                             or og.get('title')
                             or meta.get('title')
                             or None),
-                descr=(custom.get('descr')
-                            or og.get('description')
-                            or sp.get('description')
-                            or meta.get('description')
-                            or None),
+                descr=descr,
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
                             or og.get('availability')) in ('instock', 'in stock'))
                             or xboolstr(nth(utag.get('product_available'), 0)))
                             or custom.get('in_stock')
                             or None),
-                stock_level=(nth(utag.get('stock_level'), 0)
-                            or custom.get('stock_level')
+                stock_level=(custom.get('stock_level')
+                            or nth(utag.get('stock_level'), 0)
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
                             or None),
-                features=custom.get('features') or None,
+                features=custom.get('features') or features or None,
                 color=(custom.get('color')
                             or og.get('product:color')
                             or og.get('color')
@@ -492,15 +496,18 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsDillards.from_html(url, html)
+    return ProductsTarget.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'http://www.dillards.com/p/adrianna-papell-sleeveless-midi-taffeta-dress/504668773?di=04300690_zi_blue&facetCache=pageSize%3D100%26beginIndex%3D0%26orderBy%3D1'
-    filepath = 'test/www.dillards.com-p-adrianna-papell-sleeveless-midi-taffeta-dress-504668773.html.gz'
+    url = 'http://www.target.com/p/nyx-matte-lipstick/-/A-14725808'
+    filepath = 'test/www.target.com-p-nyx-matte-lipstick---A-14725808.gz'
+
+    url = 'http://www.target.com/p/sheamoisture-curl-enhancing-smoothie-coconut-and-hibiscus-12-oz/-/A-12239244'
+    filepath = 'test/www.target.com-p-sheamoisture-curl-enhancing-smoothie-coconut-and-hibiscus-12-oz---A-12239244.gz'
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'

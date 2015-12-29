@@ -52,6 +52,7 @@ from sephora import ProductsSephora
 from shopbop import ProductsShopbop
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
+from target import ProductsTarget
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
@@ -201,6 +202,7 @@ Host2Map = {
     'www.shopbop.com':      ProductsShopbop,
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
+    'www.target.com':       ProductsTarget,
     'www.theoutnet.com':    ProductsTheOutNet,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
@@ -217,6 +219,8 @@ read zero or more products from the HTML using a host-specific mapper
 return the results
 '''
 def handle_url(url, host, sha256, updated):
+    #print 'handle_url updated:', updated
+    #print ('handle_url(%s, %s, %s, %s)' % (url, host, str(sha256), updated)).encode('utf8')
     try:
         body = s3wrap.get_body_by_hash('productsum-spider',
                                        binascii.hexlify(sha256))
@@ -334,7 +338,8 @@ def map_products(url_host):
                 if sent < skip:
                     recv += 1 # fake it
                 else:
-                    q1.put((url, host, sha256, datetime.fromtimestamp(updated)))
+                    q1.put((url, host, sha256,
+                            str(datetime.fromtimestamp(updated))))
                     if q1.qsize() >= POOLSIZE * 2:
                         # input queue full enough, process output.
                         # throttles input rate

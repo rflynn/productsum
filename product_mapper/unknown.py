@@ -216,6 +216,8 @@ class ProductsUnknown(object):
                     or nth(utag.get('product_id'), 0)
                     or nth(utag.get('productID'), 0)
                     or nth(sp.get('sku'), 0)
+                    or nth(sp.get('productId'), 0)
+                    or nth(sp.get('productID'), 0)
                     or None)
 
         products = []

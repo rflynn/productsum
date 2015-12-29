@@ -290,7 +290,9 @@ _Seeds = {
             '/webapp/wcs/stores/servlet/fr/thebay',
         }
     },
-    'http://www.luisaviaroma.com/': {},
+    'http://www.luisaviaroma.com/': {
+        'runjs': {},
+    },
     'http://madisonlosangeles.com/': {},
     'http://www.matchesfashion.com/': {
         'skip': {
@@ -367,7 +369,25 @@ _Seeds = {
             '/am/pssizechart.nap',
         },
     },
-    'http://www.revolveclothing.com/': {'skip':{'/r/ajax/crawlerDiscovery.jsp'}},
+    'http://www.revolveclothing.com/': {
+        'skip': {
+            '/r/ajax/crawlerDiscovery.jsp',
+        },
+    },
+    'https://shop.riteaid.com/': {
+        'skip': {
+            # custom
+            '/info/',
+            # ignore everything but beauty and...
+            '/baby-kids-mom/',
+            '/diet-fitness/',
+            '/electronics-office/',
+            '/household/',
+            '/medicine-health/',
+            '/sexual-health/',
+            '/vitamins-supplements/',
+        },
+    },
     'http://www.saksfifthavenue.com/': {
         # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446904973
         #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', url.path)),
@@ -385,6 +405,8 @@ _Seeds = {
         'runjs': {},
         'skip': {
             '*_image', # useless image links
+            '/customerService/', # useless
+            '/sephoratv/', # useless videos
             '/basket/',
             '/checkout/',
             '/error/',
@@ -405,7 +427,22 @@ _Seeds = {
         }
     },
     'http://www.shoescribe.com/us/women': {'ok':{'/us/'}},
-    'http://www.stuartweitzman.com/': {},
+    'http://www.stuartweitzman.com/': {
+        'runjs': {},
+        'skip': {
+            # custom
+            '/?ChangeCountry=',
+            '/home',
+            '/shopping-bag',
+            '/service/',
+            # robots.txt
+            '/admin/',
+            '/ckeditor/',
+            '/fckeditor/',
+            '/search/',
+            '/search_results/',
+        },
+    },
     'http://www.stylebop.com/': {
         'skip': {
             # ignore other languages

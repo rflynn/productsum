@@ -500,7 +500,7 @@ if __name__ == '__main__':
     filepath = 'test/www.beautybar.com-p-molton-brown-body-wash-pink-pepperpod-10-oz-924171.gz'
 
     # test no-op
-    filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
