@@ -338,7 +338,7 @@ class ProductsWalgreens(object):
                     print e
                 
         overview = soup.find('div', {'class': lambda c: c and 'vpd_overview' in c})
-        if tag:
+        if overview:
             t = overview.find(lambda tag: tag and hasattr(tag, 'text') and tag.text.startswith('Size/Count'))
             if t:
                 txt = normstring(t.get_text()[10:])
