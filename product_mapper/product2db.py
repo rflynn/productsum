@@ -46,6 +46,7 @@ from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
 from theoutnet import ProductsTheOutNet
+from riteaid import ProductsRiteaid
 from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
 from sephora import ProductsSephora
@@ -176,6 +177,7 @@ def decompress_body(body):
 
 Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
+    'shop.riteaid.com':     ProductsRiteaid,
     'www.barneys.com':      ProductsBarneys,
     'www.beauty.com':       ProductsBeautyCom,
     'www.beautybar.com':       ProductsBeautybar,
