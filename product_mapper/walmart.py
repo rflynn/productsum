@@ -302,7 +302,7 @@ class ProductsWalmart(object):
                     #print objtxt
                     #obj = json.loads(objtxt)
                     obj = execjs.eval(objtxt)
-                    pprint(obj)
+                    #pprint(obj)
                     sku = obj.get('usItemId') or None
                     name = obj.get('productName') or None
                     img_url = obj.get('primaryImageUrl') or None
