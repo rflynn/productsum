@@ -57,6 +57,7 @@ from target import ProductsTarget
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
+from walmart import ProductsWalmart
 from violetgrey import ProductsVioletgrey
 from yoox import ProductsYoox
 from zappos import ProductsZappos
@@ -208,6 +209,7 @@ Host2Map = {
     'www.theoutnet.com':    ProductsTheOutNet,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
+    'www.walmart.com':      ProductsWalmart,
     'www.violetgrey.com':   ProductsVioletgrey,
     'www.walgreens.com':    ProductsWalgreens,
     'www.yoox.com':         ProductsYoox,
