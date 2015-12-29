@@ -405,6 +405,8 @@ _Seeds = {
         'runjs': {},
         'skip': {
             '*_image', # useless image links
+            '/customerService/', # useless
+            '/sephoratv/', # useless videos
             '/basket/',
             '/checkout/',
             '/error/',
