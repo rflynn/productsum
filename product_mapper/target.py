@@ -343,7 +343,6 @@ class ProductsTarget(object):
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
         custom = cls.get_custom(soup, url, og)
-        utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
 
@@ -351,7 +350,6 @@ class ProductsTarget(object):
             'meta': meta,
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
-            'utag': utag,
             'custom': custom,
         }
         #pprint(signals)
@@ -416,7 +414,6 @@ class ProductsTarget(object):
                             or og.get('price:currency')
                             or og.get('currency')
                             or og.get('currency:currency')
-                            or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
@@ -424,7 +421,6 @@ class ProductsTarget(object):
                             or og.get('product:original_price:amount')
                             or og.get('price:amount')
                             or nth(spoffer.get('price'), 0)
-                            or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(custom.get('sale_price')
                             or og.get('product:sale_price:amount')
@@ -438,7 +434,6 @@ class ProductsTarget(object):
                             or None),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
-                            or utag.get('bread_crumb')
                             or None),
                 name=(custom.get('name')
                             or nth(sp.get('name'), 0)
@@ -451,12 +446,10 @@ class ProductsTarget(object):
                 descr=descr,
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
-                            or og.get('availability')) in ('instock', 'in stock'))
-                            or xboolstr(nth(utag.get('product_available'), 0)))
+                            or og.get('availability')) in ('instock', 'in stock')))
                             or custom.get('in_stock')
                             or None),
                 stock_level=(custom.get('stock_level')
-                            or nth(utag.get('stock_level'), 0)
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
