@@ -104,6 +104,24 @@ _Seeds = {
             '/videos/',
         }
     },
+    'http://www.belk.com/': {
+        'skip': {
+            # custom
+            # robots.txt
+            '/AST/Boutiques/',
+            '/AST/Featured/Promo_Details/Ratings_and_Reviews.jsp',
+            '/AST/Main/Belk_Primary/Sale_and_Clearance/',
+            '/AST/Main/Wedding_Primary/',
+            '/AST/Misc/Belk_Stores/Global_Navigation/',
+            '/AST/Misc/Belk_Stores/My_Account/',
+            '/AST/Misc/Belk_Stores/Shop_by_Brand.jsp',
+            '/AST/Misc/Gift_Recommendations/',
+            '/bridalregistry/bridal_search_results.jsp',
+            '/myaccount/',
+            '/ratingsandreviews',
+            '/search/',
+        },
+    },
     'http://www.bergdorfgoodman.com/': {
         'skip': {
             '/account/',
