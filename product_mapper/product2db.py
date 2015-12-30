@@ -54,6 +54,7 @@ from saks import ProductsSaks
 from sephora import ProductsSephora
 from shopbop import ProductsShopbop
 from shiseido import ProductsShiseido
+from skinstore import ProductsSkinstore
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from target import ProductsTarget
@@ -209,6 +210,7 @@ Host2Map = {
     'www.sephora.com':      ProductsSephora,
     'www.shiseido.com':     ProductsShiseido,
     'www.shopbop.com':      ProductsShopbop,
+    'www.skinstore.com':    ProductsSkinstore,
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
     'www.target.com':       ProductsTarget,
