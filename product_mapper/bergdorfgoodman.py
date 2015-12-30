@@ -21,6 +21,8 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import nth, normstring, dehtmlify, maybe_join, xboolstr, xint
 
+MERCHANT_SLUG = 'bergdorfgoodman'
+
 
 class ProductBergdorfGoodman(object):
     VERSION = 0
@@ -120,7 +122,7 @@ class ProductBergdorfGoodman(object):
 
     def to_product(self):
         return Product(
-            merchant_slug='bergdorfgoodman',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.canonical_url,
             merchant_sku=self.prodid,
             merchant_product_obj=self,
@@ -213,6 +215,19 @@ class ProductsBergdorfGoodman(object):
 
         starttime = time.time()
 
+        if '/search.jsp?' in url:
+            # search results are not products
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={},
+                    updated=updated)
+            return ProductMapResult(page=page,
+                                    products=[])
+
         products = []
 
         soup = BeautifulSoup(html)
@@ -276,7 +291,7 @@ class ProductsBergdorfGoodman(object):
 
         page = ProductMapResultPage(
                     version=cls.VERSION,
-                    merchant_slug='bergdorfgoodman',
+                    merchant_slug=MERCHANT_SLUG,
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
@@ -298,6 +313,9 @@ if __name__ == '__main__':
     filepath = 'test/www.bergdorfgoodman.com-Christian-Louboutin-So-Kate-Patent-Red-Sole-Pump-Nude-Pumps-prod109600142_cat379623__-p.prod.gz'
 
     #filepath = 'www.bergdorfgoodman.com-Tata-Harper-Boosted-Contouring-Eye-Mask-1-0-oz-prod111290137-p.prod.gz'
+
+    # skip by url
+    #url = 'http://www.bergdorfgoodman.com/search.jsp?N=4294967088&from=saledi&rd=1&Ntt=Elie+Tahari'
 
     with gzip.open(filepath) as f:
         html = f.read()
