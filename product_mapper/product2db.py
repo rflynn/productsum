@@ -51,6 +51,7 @@ from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
 from sephora import ProductsSephora
 from shopbop import ProductsShopbop
+from shiseido import ProductsShiseido
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from target import ProductsTarget
@@ -202,6 +203,7 @@ Host2Map = {
     'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
     'www.sephora.com':      ProductsSephora,
+    'www.shiseido.com':     ProductsShiseido,
     'www.shopbop.com':      ProductsShopbop,
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
