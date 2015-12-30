@@ -258,7 +258,7 @@ class ProductsBeautylish(object):
         # breadcrumbs
         # FIXME: i think this is in javascript
         bc = soup.find('ul', itemprop='breadcrumb')
-        print 'bc:', bc
+        #print 'bc:', bc
         if bc:
             try:
                 breadcrumbs = [x for x in

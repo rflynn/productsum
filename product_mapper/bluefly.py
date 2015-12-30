@@ -9,12 +9,15 @@ from pprint import pprint
 import re
 import time
 import traceback
+from yurl import URL
 
 from datavocabulary import DataVocabulary
 from htmlmetadata import HTMLMetadata
 from og import OG
 from product import Product, ProductMapResultPage, ProductMapResult
 from util import nth, xstrip, normstring, dehtmlify
+
+MERCHANT_SLUG = 'bluefly'
 
 
 def script_dataDictionary(soup):
@@ -295,7 +298,7 @@ class ProductBluefly(object):
     def to_product(self):
 
         return Product(
-            merchant_slug='bluefly',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.url,
             merchant_sku=self.id,
             name=self.name,
@@ -327,6 +330,20 @@ class ProductsBluefly(object):
     def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
+
+        u = URL(url)
+        if u.path and u.path.startswith('/designer/'):
+            # not a product page
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={},
+                    updated=updated)
+            return ProductMapResult(page=page,
+                                    products=[])
 
         soup = BeautifulSoup(html)
 
@@ -402,7 +419,7 @@ class ProductsBluefly(object):
 
         page = ProductMapResultPage(
                  version=cls.VERSION,
-                 merchant_slug='bluefly',
+                 merchant_slug=MERCHANT_SLUG,
                  url=url,
                  size=len(html),
                  proctime = time.time() - starttime,
@@ -421,6 +438,9 @@ if __name__ == '__main__':
 
     url = 'http://www.bluefly.com/la-prairie-la-prairie-by-la-prairie-la-prairie-cellular-eye-make-up-remover-125ml42oz/p/357891001/detail.fly'
     filepath = 'test/www.bluefly.com-la-prairie-la-prairie-by-la-prairie-la-prairie-cellular-eye-make-up-remover-125ml42oz-p-357891001-detail.fly.gz'
+
+    # test np-op url
+    #url = 'http://www.bluefly.com/designer/kroon'
 
     with gzip.open(filepath) as f:
         html = f.read()
