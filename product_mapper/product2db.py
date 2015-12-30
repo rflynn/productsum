@@ -31,6 +31,7 @@ from beautybar import ProductsBeautybar
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
+from cvs import ProductsCVS
 from dermstore import ProductsDermstore
 from dillards import ProductsDillards
 from drugstorecom import ProductsDrugstoreCom
@@ -187,6 +188,7 @@ Host2Map = {
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www1.bloomingdales.com':ProductsBloomingdales,
     'www.bluefly.com':      ProductsBluefly,
+    'www.cvs.com':          ProductsCVS,
     'www.dermstore.com':    ProductsDermstore,
     'www.dillards.com':     ProductsDillards,
     'www.drugstore.com':    ProductsDrugstoreCom,
