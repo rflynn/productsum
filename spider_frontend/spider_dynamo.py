@@ -458,6 +458,7 @@ _Seeds = {
         'skip': {
             # custom
             '/Customer-Service/',
+            '/on/demandware.store/Sites-Shiseido_US-Site/en_US/PowerReviews-WriteReviewPage',
             '/Privacy/',
             '/store-locator/',
             '/Site-Selector/',
