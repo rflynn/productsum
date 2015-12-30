@@ -39,6 +39,8 @@ class ProductBeautylish(object):
                  size=None, sizes=None,
                  img_url=None, img_urls=None):
 
+        assert isinstance(brand,       (type(None), basestring))
+
         self.id = id
         self.url = url
         self.merchant_name = merchant_name
@@ -94,6 +96,15 @@ class ProductBeautylish(object):
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
         self.descr = dehtmlify(normstring(self.descr))
+        if self.descr and not self.features:
+            if u'•' in self.descr:
+                flist = [x for x in
+                            [normstring(x) for x in self.descr.split(u'•')]
+                                if x] or None
+                if flist:
+                    self.descr = flist.pop(0)
+                    self.features = flist
+
         if self.features:
             self.features = [dehtmlify(f) for f in self.features]
 
@@ -105,9 +116,9 @@ class ProductBeautylish(object):
             if self.title.endswith(" | Beautylish"):
                 self.title = self.title[:-len(" | Beautylish")]
 
-
         if self.upc:
             self.upc = str(self.upc)
+
 
     def __repr__(self):
         return ('''ProductBeautylish:
@@ -496,6 +507,9 @@ if __name__ == '__main__':
 
     url = 'http://www.beautylish.com/s/inglot-cosmetics-lipstick-100-cream'
     filepath = 'test/www.beautylish.com-s-inglot-cosmetics-lipstick-100-cream.gz'
+
+    url = 'http://www.beautylish.com/s/charlotte-tilbury-filmstar-bronze-glow-light-to-medium'
+    filepath = 'test/www.beautylish.com-s-charlotte-tilbury-filmstar-bronze-glow-light-to-medium.gz'
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
