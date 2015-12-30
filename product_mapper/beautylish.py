@@ -263,6 +263,7 @@ class ProductsBeautylish(object):
                 name = br.find(itemprop='name')
                 if name:
                     brand = normstring(name.get_text())
+                    assert isinstance(brand, (type(None, basestring)))
             except:
                 traceback.print_exc()
 
