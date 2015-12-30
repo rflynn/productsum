@@ -243,13 +243,14 @@ class ProductsRiteaid(object):
                     except:
                         pass
                 ul = dd.find('ul')
-                try:
-                    features = [x for x in
-                                    [normstring(li.get_text())
-                                        for li in ul.findAll('li')]
-                                            if x] or None
-                except Exception as e:
-                    print e
+                if ul:
+                    try:
+                        features = [x for x in
+                                        [normstring(li.get_text())
+                                            for li in ul.findAll('li')]
+                                                if x] or None
+                    except Exception as e:
+                        print e
 
         # <p class="product-ids">Item No. 0435816</p>
         tag = soup.find('p', {'class': 'product-ids'})
