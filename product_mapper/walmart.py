@@ -379,8 +379,8 @@ class ProductsWalmart(object):
 
         starttime = time.time()
 
-        if '/walmarttv/walmarttv.jsp' in url:
-            # nuthin'
+        if '/productlist/' in url:
+            # search results, no products
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
