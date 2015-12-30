@@ -15,7 +15,7 @@ class Tealium(object):
 
     @staticmethod
     def get_utag_data(soup):
-        utag_text = [s.text for s in soup.findAll('script')
+        utag_text = [s.text for s in soup.findAll('script', text=True)
                         if 'utag_data' in s.text]
         j = {}
         if utag_text:
