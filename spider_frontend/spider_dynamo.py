@@ -541,6 +541,37 @@ _Seeds = {
         },
     },
     'http://www.shoescribe.com/us/women': {'ok':{'/us/'}},
+    'http://www.skinstore.com/': {
+        'skip': {
+            # custom
+            '/myAccount/',
+            '/serviceCenter/',
+            # robots.txt
+            '/Search/',
+            '/acquisition/',
+            '/admin/',
+            '/assets/',
+            '/checkout/',
+            '/educationCenter/',
+            '/expressShopper/',
+            '/fav/',
+            '/myaccount/',
+            '/orderStatus/',
+            '/orderstatus/',
+            '/productArchive/',
+            '/productarchive/',
+            '/search/',
+            '/servicecenter/askus.aspx',
+            '/servicecenter/requestinformation.aspx',
+            '/servicecenter/sitefeedback.aspx',
+            '/store/',
+            '/storefront/',
+            '/uploadedFiles/',
+            '/uploadedImages/',
+            '/widgets/',
+            '/workarea/',
+        },
+    },
     'http://www.stuartweitzman.com/': {
         'runjs': {},
         'skip': {
