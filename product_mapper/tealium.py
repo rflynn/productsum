@@ -1,5 +1,6 @@
 # ex: set ts=4 et:
 
+import execjs
 import json
 from pprint import pprint
 import re
@@ -18,13 +19,20 @@ class Tealium(object):
                         if 'utag_data' in s.text]
         j = {}
         if utag_text:
+            #print 'utag_text[0]:', utag_text[0]
             m = re.search('utag_data\s*=\s*({[^;]*})', utag_text[0], re.DOTALL)
             if m:
                 try:
                     objstr = m.groups(0)[0]
+                    #print 'objstr:', objstr
                     j = json.loads(objstr)
-                except Exception as e:
-                    print 'tealium', e
+                except:
+                    # fall back to more expensive but more tolerant execjs
+                    try:
+                        j = execjs.eval(objstr)
+                    except:
+                        print 'tealium:'
+                        traceback.print_exc()
 
         return j
 
