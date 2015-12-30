@@ -379,7 +379,7 @@ class ProductsWalmart(object):
 
         starttime = time.time()
 
-        if '/productlist/' in url:
+        if False:
             # search results, no products
             page = ProductMapResultPage(
                     version=cls.VERSION,

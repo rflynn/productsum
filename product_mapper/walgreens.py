@@ -401,8 +401,8 @@ class ProductsWalgreens(object):
 
         starttime = time.time()
 
-        if '/walgreenstv/walgreenstv.jsp' in url:
-            # nuthin'
+        if '/productlist/' in url:
+            # search results, no products
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
