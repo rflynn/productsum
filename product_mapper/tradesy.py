@@ -20,6 +20,8 @@ from schemaorg import SchemaOrg
 from tealium import Tealium
 from util import nth, normstring, xboolstr, u
 
+MERCHANT_SLUG = 'tradesy'
+
 
 class ProductTradesy(object):
     VERSION = 0
@@ -125,7 +127,7 @@ class ProductTradesy(object):
 
     def to_product(self):
         return Product(
-            merchant_slug='tradesy',
+            merchant_slug=MERCHANT_SLUG,
             url_canonical=self.canonical_url,
             merchant_sku=self.prodid,
             merchant_product_obj=self,
@@ -209,6 +211,19 @@ class ProductsTradesy(object):
 
         starttime = time.time()
 
+        if '/search?' in url:
+            # search results are not products
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={},
+                    updated=updated)
+            return ProductMapResult(page=page,
+                                    products=[])
+
         products = []
 
         soup = BeautifulSoup(html)
@@ -267,7 +282,7 @@ class ProductsTradesy(object):
 
         page = ProductMapResultPage(
                     version=cls.VERSION,
-                    merchant_slug='tradesy',
+                    merchant_slug=MERCHANT_SLUG,
                     url=url,
                     size=len(html),
                     proctime = time.time() - starttime,
@@ -287,6 +302,9 @@ if __name__ == '__main__':
 
     # test no-op
     #filepath = 'test/www.dermstore.com-product_Lipstick_31136.htm.gz'
+
+    # url no-op
+    #url = 'https://www.tradesy.com/search?q=duffle'
 
     with gzip.open(filepath) as f:
         html = unicode(f.read(), 'utf8')
