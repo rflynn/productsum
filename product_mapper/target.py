@@ -243,7 +243,7 @@ class ProductsTarget(object):
             try:
                 objtxt = tag.text
                 obj = json.loads(objtxt)
-                pprint(obj)
+                #pprint(obj)
                 colors = [x for x in
                             [normstring(o['Attributes'].keys()[0][6:])
                                 for o in obj]
