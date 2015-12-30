@@ -277,8 +277,8 @@ class ProductsTarget(object):
                     attr = obj[0]['Attributes']
                     #pprint(attr)
                     try:
-                        price_min = attr['price']['offerPriceMin'] or None
-                        price_max = attr['price']['offerPriceMin'] or None
+                        price_min = attr['price'].get('offerPriceMin') or None
+                        price_max = attr['price'].get('offerPriceMin') or None
                         if price_min:
                             if price_max:
                                 price = '%s-%s' % (price_min, price_max)
@@ -286,12 +286,12 @@ class ProductsTarget(object):
                                 price = price_min
                     except Exception as e:
                         print e
-                    sku = sku or attr['partNumber'] or None
-                    name = name or attr['productName'] or None
-                    in_stock = attr['inventory']['status'] == 'in stock'
+                    sku = sku or attr.get('partNumber') or None
+                    name = name or attr.get('productName') or None
+                    img_url = img_url or attr.get('primary_image') or None
+                    in_stock = attr['inventory'].get('status') == 'in stock'
                     if 'inventory' in attr and 'netAvailableQuantity' in attr['inventory']:
                         stock_level = stock_level or attr['inventory']['netAvailableQuantity']
-                    img_url = img_url or attr['primary_image'] or None
             except Exception as e:
                 print e
 
