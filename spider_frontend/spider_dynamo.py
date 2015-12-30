@@ -474,7 +474,30 @@ _Seeds = {
             '/trendcaster',
         }
     },
-    'http://www.selfridges.com/US/en/': {'ok':{'/US/en/'}},
+    'http://www.selfridges.com/US/en/': {
+        'ok': {
+            '/US/en/',
+        },
+        'skip': {
+            # custom
+            '/*CountrySelection',
+            '/*MyAccount',
+            '/*WishList',
+            '/*OrderCalculate',
+            '/*gift-card',
+            # robots.txt
+            '/webapp/wcs/stores/servlet/OrderItemAdd',
+            '/webapp/wcs/stores/servlet/OrderItemDisplay',
+            '/webapp/wcs/stores/servlet/OrderCalculate',
+            '/webapp/wcs/stores/servlet/QuickOrderCmd',
+            '/webapp/wcs/stores/servlet/InterestItemDisplay',
+            '/webapp/wcs/stores/servlet/ProductDisplayLargeImageView',
+            '/webapp/wcs/stores/servlet/FittingRoomApplicationView',
+            '/webapp/wcs/stores/servlet/LogonForm',
+            '*/content/brand-guidlines*',
+            '*/wcsstore/Selfridges/upload/html5/brand-guidelines-email.html',
+        },
+    },
     'http://www.sephora.com/': {
         'runjs': {},
         'skip': {
@@ -602,9 +625,13 @@ _Seeds = {
             '/c/beauty/',
             '/c/*beauty',
             '/c/*health',
+            '/c/*clothing',
+            '/c/*shoes',
             '/p/',
             '/sb/*beauty',
             '/sb/*health',
+            '/sb/*clothing',
+            '/sb/*shoes',
         },
         'skip': { # robots.txt
             '/Allons_voter*',
