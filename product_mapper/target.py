@@ -289,7 +289,8 @@ class ProductsTarget(object):
                     sku = sku or attr['partNumber'] or None
                     name = name or attr['productName'] or None
                     in_stock = attr['inventory']['status'] == 'in stock'
-                    stock_level = stock_level or attr['inventory']['netAvailableQuantity']
+                    if 'inventory' in attr and 'netAvailableQuantity' in attr['inventory']:
+                        stock_level = stock_level or attr['inventory']['netAvailableQuantity']
                     img_url = img_url or attr['primary_image'] or None
             except Exception as e:
                 print e
