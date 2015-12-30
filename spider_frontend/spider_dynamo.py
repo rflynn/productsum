@@ -163,6 +163,32 @@ _Seeds = {
             '/shop/personal-care/',
             '/shop/skin-care/',
         },
+        'skip': {
+            # custom
+            '/help/',
+            # robots.txt
+            '/account/',
+            '/bizontent/navarro/',
+            '/checkout/',
+            '/clinic-locator/cliniclocator-city.jsp?stateId=*',
+            '/content/multidose',
+            '/minuteclinic/clinic-locator/view-list.jsp?_requestid=*',
+            '/minuteclinic/clinics/*/as$',
+            '/minuteclinic/clinics/*/ib$',
+            '/minuteclinic/search.jsp?q=*',
+            '/mobile/',
+            '/mobilelanding/',
+            '/photo/cardspdp?category=*',
+            '/photo/empty-shopping-cart',
+            '/photo/error*',
+            '/photo/library/',
+            '/photo/offerdetails',
+            '/photo/product-details?category=*',
+            '/search/',
+            '/shop/popups',
+            '/store-locator/details-directions/*',
+            '/stores/add-favorite-popup.jsp',
+        },
     },
     'http://www.cusp.com/': {},
     'http://www.dermstore.com/': {
@@ -279,6 +305,30 @@ _Seeds = {
         }
     },
     'http://www.josephstores.com/': {},
+    'https://www.katespade.com/': {
+        'skip': {
+            # custom
+            '/customer-care/',
+            '/gift-cards-1/',
+            '/gwp/',
+            '/katespade-about-us/',
+            '/katespade-careers',
+            '/katespade-customer-service-shipping/',
+            '/katespade-customer-service-privacy-security/',
+            '/shopping-bag',
+            '/stores',
+            # robots.txt
+            '*/Employee-BrandCloset/*',
+            '*/Employee-EStockRoom/*',
+            '*/CSSuite-Home/*',
+            '*/Account-Show/*',
+            '*/Account-StartRegister/*',
+            '*/Wishlist-Show/*',
+            '*/COShippingMultiple-StartShipments/*',
+            '*/Cart-Show/*',
+            '*/demandware.store/*',
+        },
+    },
     'http://www.lancome-usa.com/': {
         'skip': {
             # custom
@@ -551,8 +601,10 @@ _Seeds = {
             '/',
             '/c/beauty/',
             '/c/*beauty',
+            '/c/*health',
             '/p/',
             '/sb/*beauty',
+            '/sb/*health',
         },
         'skip': { # robots.txt
             '/Allons_voter*',
