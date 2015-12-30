@@ -260,10 +260,10 @@ class ProductsBeautylish(object):
         br = soup.find(itemtype='http://schema.org/Brand')
         if br:
             try:
-                name = br.find(itemprop='name')
-                if name:
-                    brand = normstring(name.get_text())
-                    assert isinstance(brand, (type(None, basestring)))
+                x = br.find(itemprop='name')
+                if x:
+                    brand = normstring(x.get_text())
+                    assert isinstance(brand, (type(None), basestring))
             except:
                 traceback.print_exc()
 
