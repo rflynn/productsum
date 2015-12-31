@@ -1092,6 +1092,7 @@ _Seeds = {
     'https://www.victoriassecret.com/': {},
     'http://www.ysl.com/us': {
         'ok': {
+            '/',
             '/us/',
         },
         'skip': {
