@@ -52,6 +52,7 @@ from theoutnet import ProductsTheOutNet
 from riteaid import ProductsRiteaid
 from revolveclothing import ProductsRevolveClothing
 from saks import ProductsSaks
+from selfridges import ProductsSelfridges
 from sephora import ProductsSephora
 from shopbop import ProductsShopbop
 from shiseido import ProductsShiseido
@@ -209,6 +210,7 @@ Host2Map = {
     'www.nyxcosmetics.com': ProductsNyxCosmetics,
     'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
+    'www.selfridges.com':   ProductsSelfridges,
     'www.sephora.com':      ProductsSephora,
     'www.shiseido.com':     ProductsShiseido,
     'www.shopbop.com':      ProductsShopbop,

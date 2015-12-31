@@ -227,6 +227,10 @@ class Product(object):
         if pmax:
             self.sale_price_max = pmax
 
+        if self.currency == '$':
+            self.currency = 'USD'
+
+
     @staticmethod
     def parse_price(value):
         currency = None
