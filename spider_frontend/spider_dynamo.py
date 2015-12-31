@@ -461,6 +461,17 @@ _Seeds = {
             '/am/pssizechart.nap',
         },
     },
+    'http://www.nyxcosmetics.com/': {
+        'skip': {
+            '/careers.html',
+            '/customer-service-privacy-policy.html',
+            '/faqs.html',
+            '/events.html',
+            '/on/demandware.store/',
+            '/shipping-returns.html',
+            '/termsandconditions.html',
+        },
+    },
     'http://www.revolveclothing.com/': {
         'skip': {
             '/r/ajax/crawlerDiscovery.jsp',
