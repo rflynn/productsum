@@ -260,13 +260,13 @@ class ProductsSelfridges(object):
                 brand = brand or inp.get('productBrand') or None
                 title = title or inp.get('productTitle') or None
                 category = category or inp.get('wcid') or None
-                print 'inp:',
-                pprint(inp)
+                #print 'inp:',
+                #pprint(inp)
             except:
                 traceback.print_exc()
 
         dko = soup.find('select', {'class': 'dk'})
-        print 'dko:', dko
+        #print 'dko:', dko
         if dko:
             opt = dko.findAll('option', value=True)
             if opt:
