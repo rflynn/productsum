@@ -225,6 +225,19 @@ class ProductsDrugstoreCom(object):
 
         starttime = time.time()
 
+        if '/your-list/' in url:
+            # nuthin'
+            page = ProductMapResultPage(
+                    version=cls.VERSION,
+                    merchant_slug=MERCHANT_SLUG,
+                    url=url,
+                    size=len(html),
+                    proctime = time.time() - starttime,
+                    signals={},
+                    updated=updated)
+            return ProductMapResult(page=page,
+                                    products=[])
+
         soup = BeautifulSoup(html)
 
         # standard shit
