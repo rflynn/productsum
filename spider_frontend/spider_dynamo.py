@@ -536,6 +536,7 @@ _Seeds = {
             '/customerService/',
             '/rewards',
             '/sephoratv/',
+            '/stores/',
             # robots.txt
             '/basket/',
             '/checkout/',
