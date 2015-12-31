@@ -255,7 +255,7 @@
 
             <li>missing
                 <ol>
-                    <li><a href="/?q=Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige">Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige</a>
+                    <li><strike><a href="/?q=Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige">Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige</a></strike>
                     <li><strike><a href="/?q=Nyx Soft Matte Lip Cream in London">Nyx Soft Matte Lip Cream in London</a></strike>
                     <li><strike><a href="/?q=Rimmel Lasting Finish Matte by Kate Moss in Shade 110">Rimmel Lasting Finish Matte by Kate Moss in Shade 110</a></strike>
                     <li><a href="/?q=Wet n Wild Megalast Lip Color in Sugar Plum Fairy">Wet n Wild Megalast Lip Color in Sugar Plum Fairy</a>
@@ -426,7 +426,7 @@ function display_price(p)
         d = Number(d).toFixed(0);
     else
         d = Number(d).toFixed(2);
-    if (!p.in_stock)
+    if (p.in_stock === false)
         return $('<div>').text('out-of-stock');
     return $('<div>').append($('<sup>').html(c)).append(d);
 }
