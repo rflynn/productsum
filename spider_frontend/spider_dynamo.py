@@ -536,6 +536,7 @@ _Seeds = {
             '/customerService/',
             '/rewards',
             '/sephoratv/',
+            '/stores/',
             # robots.txt
             '/basket/',
             '/checkout/',
@@ -974,7 +975,11 @@ _Seeds = {
         #'favor': lambda url: bool(re.match(r'/shop/product/.*?\?ID=\d+&CategoryID=\d+', url.path)),
     },
     'https://us.burberry.com/': {},
-    'https://www.italist.com/en': {'ok':{'/en/'}},
+    'https://www.italist.com/en': {
+        'ok': {
+            '/en/',
+        },
+    },
     'https://www.modaoperandi.com/': {
         'skip': {
             '/about'
