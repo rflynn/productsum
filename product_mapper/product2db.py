@@ -29,6 +29,7 @@ from bathandbodyworks import ProductsBathandBodyWorks
 from beautycom import ProductsBeautyCom
 from beautybar import ProductsBeautybar
 from beautylish import ProductsBeautylish
+from belk import ProductsBelk
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
@@ -189,6 +190,7 @@ Host2Map = {
     'www.beauty.com':       ProductsBeautyCom,
     'www.beautybar.com':       ProductsBeautybar,
     'www.beautylish.com':      ProductsBeautylish,
+    'www.belk.com':             ProductsBelk,
     'www.bathandbodyworks.com': ProductsBathandBodyWorks,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www1.bloomingdales.com':ProductsBloomingdales,
