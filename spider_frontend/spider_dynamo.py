@@ -1043,7 +1043,68 @@ _Seeds = {
     'https://www.tradesy.com/': {
         # seems legit...
     },
+    'http://us.rimmellondon.com/': {
+        'ok': {
+            '/products/',
+        },
+        'skip': {
+            # robots.txt
+            '/includes/',
+            '/misc/',
+            '/modules/',
+            '/profiles/',
+            '/scripts/',
+            '/themes/',
+            '/CHANGELOG.txt',
+            '/cron.php',
+            '/INSTALL.mysql.txt',
+            '/INSTALL.pgsql.txt',
+            '/INSTALL.sqlite.txt',
+            '/install.php',
+            '/INSTALL.txt',
+            '/LICENSE.txt',
+            '/MAINTAINERS.txt',
+            '/update.php',
+            '/UPGRADE.txt',
+            '/xmlrpc.php',
+            # clean URLs
+            '/admin/',
+            '/comment/reply/',
+            '/filter/tips/',
+            '/node/add/',
+            '/search/',
+            '/user/register/',
+            '/user/password/',
+            '/user/login/',
+            '/user/logout/',
+            # no clean URLs
+            '/?q=admin/',
+            '/?q=comment/reply/',
+            '/?q=filter/tips/',
+            '/?q=node/add/',
+            '/?q=search/',
+            '/?q=user/password/',
+            '/?q=user/register/',
+            '/?q=user/login/',
+            '/?q=user/logout/',
+        },
+    },
     'https://www.victoriassecret.com/': {},
+    'http://www.ysl.com/us': {
+        'ok': {
+            '/us/',
+        },
+        'skip': {
+            # custom
+            '/corporate/',
+            '/us/Account/',
+            '/us/AddressDrivenCheckout/Cart',
+            '/us/Help/',
+            # robots.txt
+            '/yTos/',
+            '/teaser.asp*',
+        },
+    },
 }
 
 
