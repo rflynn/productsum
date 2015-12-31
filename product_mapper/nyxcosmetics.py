@@ -273,7 +273,7 @@ class ProductsNyxCosmetics(object):
                 if m:
                     objtxt = m.groups(0)[0]
                     obj = json.loads(objtxt)
-                    pprint(obj)
+                    #pprint(obj)
                     title = obj.get('title') or None
                     if 'trackerData' in obj:
                         td = obj['trackerData']
