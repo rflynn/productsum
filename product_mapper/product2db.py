@@ -47,6 +47,7 @@ from mytheresa import ProductsMyTheresa
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
+from nyxcosmetics import ProductsNyxCosmetics
 from theoutnet import ProductsTheOutNet
 from riteaid import ProductsRiteaid
 from revolveclothing import ProductsRevolveClothing
@@ -205,6 +206,7 @@ Host2Map = {
     'www.mytheresa.com':    ProductsMyTheresa,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
+    'www.nyxcosmetics.com': ProductsNyxCosmetics,
     'www.revolveclothing.com': ProductsRevolveClothing,
     'www.saksfifthavenue.com': ProductsSaks,
     'www.sephora.com':      ProductsSephora,
