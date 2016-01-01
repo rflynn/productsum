@@ -361,7 +361,7 @@ class ProductsTheCorner(object):
 
         starttime = time.time()
 
-        if not re.search(r'_cod\w+\.html$', url):
+        if not re.search(r'_cod\w{8,16}\.html$', url):
             # all product pages have the "codXXXXX.html" format url
             page = ProductMapResultPage(
                     version=cls.VERSION,
