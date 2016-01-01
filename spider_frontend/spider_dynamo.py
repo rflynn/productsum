@@ -30,12 +30,16 @@ _Seeds = {
     'http://us.topshop.com/en': {'ok':{'/en/'}},
     'http://www.alexandermcqueen.com/': {
         'skip': {
+            # custom
             '/account/',
             '/checkout/',
             '/chooseyourcountry.asp',
             '/cms/',
             '/sitemap.asp',
             '/us/mcq',
+            # robots.txt
+            '/scripts/',
+            '/teaser.asp*',
         },
     },
     'http://www.barneys.com/': {'skip':{'/on/'}},
@@ -470,6 +474,23 @@ _Seeds = {
             '/on/demandware.store/',
             '/shipping-returns.html',
             '/termsandconditions.html',
+        },
+    },
+    'http://www.ralphlauren.com/': {
+        'runjs': {},
+        'skip': {
+            # custom
+            '/helpdesk/',
+            # robots.txt
+            '/cart/',
+            '/cartHandler/',
+            '/checkout/',
+            '/coreg/',
+            '/employee/',
+            '/include/',
+            '/product/index.jsp?productId=2894542',
+            '/product/index.jsp?productId=3560608',
+            '/search/',
         },
     },
     'http://www.revolveclothing.com/': {
@@ -975,7 +996,46 @@ _Seeds = {
         },
         #'favor': lambda url: bool(re.match(r'/shop/product/.*?\?ID=\d+&CategoryID=\d+', url.path)),
     },
-    'https://us.burberry.com/': {},
+    'https://us.burberry.com/': {
+        # does not need js
+        'skip': {
+            # custom
+            '/burberry/myburberry/',
+            '/checkout/',
+            '/customer-service/',
+            '/store-locator/',
+            # robots.txt
+            '/*/?locale=*',
+            '/*/?search=true*',
+            '/*/?trail=*',
+            '/book-of-gifts/gifts-for-children/*',
+            '/book-of-gifts/gifts-for-her/*',
+            '/book-of-gifts/gifts-for-him/*',
+            '/book-of-gifts/gifts-for-the-home/*',
+            '/geschenkkatalog/geschenke-fur-ihn/*',
+            '/geschenkkatalog/geschenke-fur-kinder/*',
+            '/geschenkkatalog/geschenke-fur-sie/*',
+            '/geschenkkatalog/geschenke-fur-zuhause/*',
+            '/libro-de-los-regalos/regalos-para-/*',
+            '/libro-de-los-regalos/regalos-para-el-hogar/*',
+            '/libro-de-los-regalos/regalos-para-ella/*',
+            '/libro-de-los-regalos/regalos-para-ni/*',
+            '/libro-dei-regali/regali-per-i-bambini/*',
+            '/libro-dei-regali/regali-per-la-casa/*',
+            '/libro-dei-regali/regali-per-lei/*',
+            '/libro-dei-regali/regali-per-lui/*',
+            '/livret-de-cadeaux/cadeaux-pour-elle/*',
+            '/livret-de-cadeaux/cadeaux-pour-la-maison/*',
+            '/livret-de-cadeaux/cadeaux-pour-les-enfants/*',
+            '/livret-de-cadeaux/cadeaux-pour-lui/*',
+            '/livro-de-presentes/presentes-infantis/*',
+            '/livro-de-presentes/presentes-para-ela/*',
+            '/livro-de-presentes/presentes-para-ele/*',
+            '/livro-de-presentes/presentes-para-o-lar/*',
+            '/search/*',
+            '/store/burberry/views/email/email.jsp*',
+        },
+    },
     'https://www.italist.com/en': {
         'ok': {
             '/en/',
