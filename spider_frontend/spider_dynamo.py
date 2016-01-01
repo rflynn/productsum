@@ -178,6 +178,19 @@ _Seeds = {
     },
     'http://www.bluemercury.com/': {
         'skip': {
+            # custom
+            '/CAREERS/',
+            '/Marla/ProductSubmissions.htm',
+            '/MemberLogin.aspx',
+            '/Ordering-and-Payment',
+            '/Returns-and-Exchanges',
+            '/Shipping-Information',
+            '/about.aspx',
+            '/cart.aspx',
+            '/contact.aspx',
+            '/createAccount.aspx',
+            '/policies.aspx',
+            # robots.txt
             '/Samples',
             '/TrendingReports',
             '/backadmin',
