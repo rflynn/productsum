@@ -381,7 +381,7 @@ class ProductsItalist(object):
             'og':   og,
             'custom': custom,
         }
-        pprint(signals)
+        #pprint(signals)
 
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
@@ -528,7 +528,7 @@ if __name__ == '__main__':
     import sys
 
     url = 'https://www.italist.com/en/woman/shoes/high-heeled-shoes/3.1-phillip-lim-martini-t-strap-pumps/463802/512873/3.1-phillip-lim'
-    filepath = 'www.italist.com-en-woman-shoes-high-heeled-shoes-3.1-phillip-lim-martini-t-strap-pumps-463802-512873-3.1-phillip-lim.gz'
+    filepath = 'test/www.italist.com-en-woman-shoes-high-heeled-shoes-3.1-phillip-lim-martini-t-strap-pumps-463802-512873-3.1-phillip-lim.gz'
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
