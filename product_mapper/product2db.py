@@ -68,6 +68,7 @@ from walgreens import ProductsWalgreens
 from walmart import ProductsWalmart
 from violetgrey import ProductsVioletgrey
 from yoox import ProductsYoox
+from ysl import ProductsYSL
 from zappos import ProductsZappos
 
 '''
@@ -229,6 +230,7 @@ Host2Map = {
     'www.violetgrey.com':   ProductsVioletgrey,
     'www.walgreens.com':    ProductsWalgreens,
     'www.yoox.com':         ProductsYoox,
+    'www.ysl.com':          ProductsYSL,
     'www.zappos.com':       ProductsZappos,
 }
 
