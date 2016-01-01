@@ -176,6 +176,17 @@ _Seeds = {
             '/sl/',
         },
     },
+    'http://www.bluemercury.com/': {
+        'skip': {
+            '/Samples',
+            '/TrendingReports',
+            '/backadmin',
+            '/gwps/',
+            '/productExports',
+            '/samples/',
+            '/testimonials',
+        },
+    },
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
     'http://www.cvs.com/': {
