@@ -53,6 +53,9 @@ def score_match_perm(perm):
                 for tag, tokens in perm)
     # favor more varied tags
     num += len(tags)
+    # favor brand appearing first, ugh
+    if perm:
+        num += perm[0][0] == 'brand'
     return float(num) / max(1, len(perm))
 
 def match_tree_flatten(mt, state=None, done=None):
@@ -173,6 +176,7 @@ def run_tests():
         u'LOUISE ET CIE Gold-Plated Glass Pearl Stud Earrings',
         u'SWAROVSKI Solitaire Swarovski Crystal Stud Earrings $69', # when 2 instances of brand appear, we should favor the prefix
         u'Glam-To-Go Cheek, Eye & Lip Travel Case', # ampersand...
+        u'LA MER CRÈME DE LA MER', # brand "LA MER" appears twice, favor first...
     ]
     for t in tests:
         tq = tag_query(t)
