@@ -39,6 +39,7 @@ from dillards import ProductsDillards
 from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
+from italist import ProductsItalist
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
 from matchesfashion import ProductsMatchesFashion
@@ -201,6 +202,7 @@ Host2Map = {
     'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
+    'www.italist.com':      ProductsItalist,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
     'www.matchesfashion.com': ProductsMatchesFashion,

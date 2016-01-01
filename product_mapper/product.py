@@ -1,5 +1,5 @@
 # ex: set ts=4 et:
-
+# -*- coding: utf-8 -*-
 
 '''
 one product to rule them all
@@ -93,10 +93,10 @@ class Product(object):
         self.isbn = isbn
         self.isbn13 = isbn13
         self.isbn10 = isbn10
-        self.price_str = xstr(price)
+        self.price_str = u(price)
         self.price_min = None
         self.price_max = None
-        self.sale_price_str = xstr(sale_price)
+        self.sale_price_str = u(sale_price)
         self.sale_price_min = None
         self.sale_price_max = None
         self.currency = u(currency)
@@ -153,6 +153,7 @@ class Product(object):
             assert '<br>' not in self.name
             assert '<strong>' not in self.name
             assert '&amp;' not in self.name
+        self.name = self.name or None
 
         if self.title:
             self.title = normstring(dehtmlify(self.title))
@@ -213,6 +214,11 @@ class Product(object):
         if not self.currency and cur:
             if cur == '$':
                 self.currency = 'USD'
+            elif cur == u'€':
+                self.currency = 'EUR'
+            elif cur == u'£':
+                self.currency = 'GBP'
+
         if pmin:
             self.price_min = pmin
         if pmax:
@@ -222,6 +228,10 @@ class Product(object):
         if not self.currency and cur:
             if cur == '$':
                 self.currency = 'USD'
+            elif cur == u'€':
+                self.currency = 'EUR'
+            elif cur == u'£':
+                self.currency = 'GBP'
         if pmin:
             self.sale_price_min = pmin
         if pmax:
@@ -229,7 +239,10 @@ class Product(object):
 
         if self.currency == '$':
             self.currency = 'USD'
-
+        elif cur == u'€':
+            self.currency = 'EUR'
+        elif cur == u'£':
+            self.currency = 'GBP'
 
     @staticmethod
     def parse_price(value):
@@ -251,7 +264,7 @@ class Product(object):
     @staticmethod
     def _do_parse_price(price):
         # FIXME: price parsing via regex is not good enough; use a proper parser...
-        m = re.match('([$]?)((?:\d{1,3},)?\d{1,6}(?:\.\d{1,3})?)', price)
+        m = re.match(u'([$€£¥]?)((?:\d{1,3},)?\d{1,6}(?:\.\d{1,3})?)', price, re.UNICODE)
         if m:
             cur1, pr1 = m.groups()
             if not cur1: cur1 = None
