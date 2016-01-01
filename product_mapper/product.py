@@ -93,10 +93,10 @@ class Product(object):
         self.isbn = isbn
         self.isbn13 = isbn13
         self.isbn10 = isbn10
-        self.price_str = u(price)
+        self.price_str = price
         self.price_min = None
         self.price_max = None
-        self.sale_price_str = u(sale_price)
+        self.sale_price_str = sale_price
         self.sale_price_min = None
         self.sale_price_max = None
         self.currency = u(currency)
@@ -115,6 +115,16 @@ class Product(object):
         self.available_sizes = available_sizes
         self.img_url = img_url
         self.img_urls = img_urls
+
+        if self.price_str:
+            if not isinstance(self.price_str, basestring):
+                self.price_str = str(self.price_str)
+            self.price_str = u(self.price_str)
+
+        if self.sale_price_str:
+            if not isinstance(self.sale_price_str, basestring):
+                self.sale_price_str = str(self.sale_price_str)
+            self.sale_price_str = u(self.sale_price_str)
 
         # cross-populate
         if img_url and not img_urls:
@@ -174,7 +184,7 @@ class Product(object):
         # here we map this value to the appropriate specific GTIN
         if self.upc:
             if not re.match('^[0-9]{8,14}$', self.upc):
-                print "upc doesn't match known pattern..."
+                print "upc doesn't match known pattern (%s)..." % repr(self.upc)
             else:
                 l = len(self.upc)
                 if l == 8 and not self.gtin8:
