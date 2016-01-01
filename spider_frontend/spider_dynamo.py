@@ -811,6 +811,7 @@ _Seeds = {
             '/browse/inc/productDetail_crossSell.jsp',
             '/careers-at-ulta/', # useless
             '/image-server/',
+            '/ulta/a/Nails-ULTA-Collection/_/N-*?categoryId=cat350015&ciSelector=leaf/', # endless permutations of search results
             '/ulta/cart/',
             '/ulta/checkout/',
             '/ulta/common/productRecommendations.jsp',
