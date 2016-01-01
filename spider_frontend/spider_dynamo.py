@@ -1102,6 +1102,9 @@ _Seeds = {
         'ok': {
             '/en/',
         },
+        'skip': {
+            '/en/login',
+        },
     },
     'https://www.modaoperandi.com/': {
         'skip': {
