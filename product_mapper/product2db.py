@@ -62,6 +62,7 @@ from skinstore import ProductsSkinstore
 from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from target import ProductsTarget
+from thecorner import ProductsTheCorner
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
@@ -223,6 +224,7 @@ Host2Map = {
     'www.ssense.com':       ProductsSsense,
     'www.stylebop.com':     ProductsStylebop,
     'www.target.com':       ProductsTarget,
+    'www.thecorner.com':    ProductsTheCorner,
     'www.theoutnet.com':    ProductsTheOutNet,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
