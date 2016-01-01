@@ -997,12 +997,13 @@ _Seeds = {
         #'favor': lambda url: bool(re.match(r'/shop/product/.*?\?ID=\d+&CategoryID=\d+', url.path)),
     },
     'https://us.burberry.com/': {
-        # does not need js
+        'runjs': {},
         'skip': {
             # custom
             '/burberry/myburberry/',
             '/checkout/',
             '/customer-service/',
+            '/our-history/',
             '/store-locator/',
             # robots.txt
             '/*/?locale=*',
