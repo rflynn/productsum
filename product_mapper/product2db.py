@@ -24,6 +24,7 @@ from product import ProductMapResult, ProductMapResultPage
 from spider_backend import s3wrap
 from dbconn import get_psql_conn
 
+from _6pm import Products6pm
 from barneys import ProductsBarneys
 from bathandbodyworks import ProductsBathandBodyWorks
 from beautycom import ProductsBeautyCom
@@ -190,6 +191,7 @@ def decompress_body(body):
 Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
     'shop.riteaid.com':     ProductsRiteaid,
+    'www.6pm.com':          Products6pm,
     'www.barneys.com':      ProductsBarneys,
     'www.beauty.com':       ProductsBeautyCom,
     'www.beautybar.com':       ProductsBeautybar,
