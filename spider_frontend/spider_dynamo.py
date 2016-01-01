@@ -21,6 +21,18 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # annoying
 
 _Seeds = {
     #'http://www.abercrombie.com/shop/us': {'ok':{'/shop/us/'}},
+    'http://www.6pm.com/': {
+        'skip': {
+            '/bin/',
+            '/multiview/',
+            '/product/review/add/',
+            '/cart',
+            '/login',
+            '/logout',
+            '/register',
+            '/account',
+        },
+    },
     'http://couture.zappos.com/': {},
     'https://shop.harpersbazaar.com/': {},
     'http://shop.mango.com/US': {'ok':{'/US/'}},
