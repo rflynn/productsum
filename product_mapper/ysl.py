@@ -260,7 +260,6 @@ class ProductsYSL(object):
         if not sku:
             # "Cod10":"44670189gt"
             m = re.search(r'"Cod10":"(\w{8,16})"', str(soup))
-            print 'm:', m.groups()
             if m:
                 sku = m.groups(0)[0]
 
@@ -284,8 +283,8 @@ class ProductsYSL(object):
                         k = d.find('span', {'class': 'text'}) or \
                              d.find('span', {'class': 'attributesTitle'})
                         v = d.find('span', {'class': 'value'})
-                        print 'k:', k
-                        print 'v:', v
+                        #print 'k:', k
+                        #print 'v:', v
                         if k and v:
                             k = normstring(k.get_text())
                             v = normstring(v.get_text())
