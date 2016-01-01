@@ -175,12 +175,12 @@ _Seeds = {
     'http://www.brownsfashion.com/': {},
     'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
     'http://www.cvs.com/': {
-        'ok': {
-            '/',
-            '/shop/beauty/',
-            '/shop/personal-care/',
-            '/shop/skin-care/',
-        },
+        #'ok': {
+        #    '/',
+        #    '/shop/beauty/',
+        #    '/shop/personal-care/',
+        #    '/shop/skin-care/',
+        #},
         'skip': {
             # custom
             '/help/',
