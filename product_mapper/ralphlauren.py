@@ -290,11 +290,11 @@ class ProductsRalphLauren(object):
         if sc:
             try:
                 #print sc.text
-                obj = execjs.exec_(sc.text + '; return itemMap;')
+                obj = execjs.exec_('try{' + sc.text + ';}catch(e){}; return itemMap;')
                 #pprint(obj)
                 try:
                     if obj:
-                        stock_level = sum(i.get('quantityOnHand', 0) for i in obj)
+                        stock_level = sum(int(i.get('quantityOnHand', 0)) for i in obj)
                     if stock_level is not None:
                         in_stock = stock_level > 0
                 except:
@@ -385,12 +385,17 @@ class ProductsRalphLauren(object):
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
             except:
                 spoffer = {}
+
+            try:
+                spmanuf = sp['manufacturer'][0]['properties']
+            except:
+                spmanuf = {}
 
             try:
                 spbrand = sp.get('brand')
@@ -409,6 +414,7 @@ class ProductsRalphLauren(object):
                         or spbrand
                         or og.get('product:brand')
                         or og.get('brand')
+                        or nth(spmanuf.get('name'), 0)
                         or None)
 
             p = ProductRalphLauren(
@@ -525,6 +531,10 @@ if __name__ == '__main__':
 
     url = 'http://www.ralphlauren.com/product/index.jsp?productId=2415065&cp=1760781.72870876&ab=tn_men_cs_bestsellers&s=D-DollarRank&parentPage=family'
     filepath = 'test/www.ralphlauren.com-product-index.jsp-productId-2415065.gz'
+
+    # this is a collection of items, it superficially has a sku and name, but isn't an actual product, oh well...
+    url = 'http://www.ralphlauren.com/product/index.jsp?productId=78465876'
+    filepath = 'test/www.ralphlauren.com-product-index.jsp-productId-78465876.gz'
 
     url = 'http://www.ralphlauren.com/product/index.jsp?productId=81188816'
     filepath = 'test/www.ralphlauren.com-product-index.jsp-productId-81188816.gz'
