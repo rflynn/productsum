@@ -278,7 +278,7 @@ class ProductsItalist(object):
 
         # <div class="navigation_path"> <a href="https://www.italist.com/en">Home</a> <span>&gt;</span> <a href="https://www.italist.com/en/woman/1">Woman</a><span>&gt;</span><a href="https://www.italist.com/en/woman/shoes/108">Shoes</a><span>&gt;</span><a href="https://www.italist.com/en/woman/shoes/high-heeled-shoes/120">High-heeled shoes</a><span>&gt;</span> <span class="text">3.1 Phillip Lim Martini T-Strap Pumps</span> </div>
         np = soup.find('div', {'class': 'navigation_path'})
-        print 'np:', np
+        #print 'np:', np
         if np:
             try:
                 breadcrumbs = [x for x in
