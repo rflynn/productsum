@@ -530,7 +530,17 @@ _Seeds = {
             '/members/',
         },
     },
-    'http://www.michaelkors.com/': {},
+    'http://www.michaelkors.com/': {
+        'runjs': {},
+        'skip': {
+            # custom
+            '/browse/common/',
+            '/checkout/',
+            '/stores/',
+            # robots.txt
+            '/myaccount/',
+        },
+    },
     'http://www.mytheresa.com/': {
         'skip': {
             # endless filter combinations...
