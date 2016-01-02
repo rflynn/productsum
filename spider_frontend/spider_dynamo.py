@@ -966,6 +966,19 @@ _Seeds = {
             '/ulta/reminder/',
         }
     },
+    'http://us.christianlouboutin.com/us_en/': {
+        'ok': {
+            '/us_en/',
+        },
+        'skip': {
+            # custom
+            '/us_en/checkout',
+            '/us_en/contacts',
+            '/us_en/customer',
+            '/us_en/news',
+            '/us_en/storelocator',
+        },
+    },
     'http://www.violetgrey.com/': {
         'skip': {
             '/account',
