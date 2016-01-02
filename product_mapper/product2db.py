@@ -51,7 +51,6 @@ from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
 from nyxcosmetics import ProductsNyxCosmetics
-from theoutnet import ProductsTheOutNet
 from riteaid import ProductsRiteaid
 from ralphlauren import ProductsRalphLauren
 from revolveclothing import ProductsRevolveClothing
@@ -65,6 +64,8 @@ from ssense import ProductsSsense
 from stylebop import ProductsStylebop
 from target import ProductsTarget
 from thecorner import ProductsTheCorner
+from theoutnet import ProductsTheOutNet
+from therealreal import ProductsTheRealReal
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
@@ -230,6 +231,7 @@ Host2Map = {
     'www.target.com':       ProductsTarget,
     'www.thecorner.com':    ProductsTheCorner,
     'www.theoutnet.com':    ProductsTheOutNet,
+    'www.therealreal.com':  ProductsTheRealReal,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
     'www.walmart.com':      ProductsWalmart,
