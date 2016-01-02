@@ -375,6 +375,7 @@ _Seeds = {
         },
     },
     'https://www.jcrew.com/': {
+        'runjs': {},
         'skip': {
             # custom
             '/aboutus/',
