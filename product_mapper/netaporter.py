@@ -24,7 +24,7 @@ class ProductNetaPorter(object):
     VERSION = 0
     def __init__(self, id=None, canonical_url=None,
                  stocklevel=None, instock=None,
-                 price=None, currency=None,
+                 price=None, sale_price=None, currency=None,
                  brand=None,
                  name=None, title=None, descr=None,
                  features=None,
@@ -36,6 +36,7 @@ class ProductNetaPorter(object):
         assert stocklevel is None or isinstance(stocklevel, basestring)
         assert instock is None or isinstance(instock, bool)
         assert price is None or isinstance(price, float)
+        assert sale_price is None or isinstance(sale_price, float)
         assert currency is None or isinstance(currency, basestring)
         assert brand is None or isinstance(brand, basestring)
         assert name is None or isinstance(name, basestring)
@@ -50,6 +51,7 @@ class ProductNetaPorter(object):
         self.stocklevel = stocklevel
         self.instock = instock
         self.price = price
+        self.sale_price = sale_price
         self.currency = currency
         self.brand = brand
         self.name = normstring(name)
@@ -72,6 +74,7 @@ class ProductNetaPorter(object):
     stocklevel..%s
     brand.......%s
     price.......%s
+    sale_price..%s
     currency....%s
     name........%s
     title.......%s
@@ -82,7 +85,7 @@ class ProductNetaPorter(object):
 )''' % (self.id, self.canonical_url,
         self.instock, self.stocklevel,
         self.brand,
-        self.price, self.currency,
+        self.price, self.sale_price, self.currency,
         self.name, self.title, self.descr,
         self.features,
         self.img_url,
@@ -95,7 +98,7 @@ class ProductNetaPorter(object):
             merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.price,
-            sale_price=None,
+            sale_price=self.sale_price,
             currency=self.currency,
             category=self.bread_crumb[0] if self.bread_crumb else None,
             bread_crumb=self.bread_crumb,
@@ -167,6 +170,7 @@ class ProductsNetaPorter(object):
                 stocklevel=None,
                 instock=pd.get('availability'),
                 price=pd.get('price') or None,
+                sale_price=pd.get('sale_price') or None,
                 currency=ba.get('currency') or None,
                 brand=(pa.get('brand')
                         or pd.get('brand')
@@ -178,7 +182,8 @@ class ProductsNetaPorter(object):
                         or None),
                 title=meta.get('title') or None,
                 descr=(custom.get('descr')
-                        or meta.get('description')),
+                        or meta.get('description')
+                        or None),
                 features=custom.get('features') or None,
                 img_url=(nth(sp.get('image'), 0)
                             or mi.get('image') or None),
@@ -275,7 +280,8 @@ class ProductsNetaPorter(object):
                 available = not sold_out if sold_out is not None else None
                 brand_name = attrs.get('data-designer-name').replace('_', ' ') if 'data-designer-name' in attrs else None
                 bread_crumb = re.split('\s*/\s*', attrs.get('data-breadcrumb-names').strip()) if 'data-breadcrumb-names' in attrs else None
-                price = float(attrs.get('data-price')) / 100 if 'data-price' in attrs else None
+                price = float(attrs.get('data-price-full')) / 100 if 'data-price-full' in attrs else None
+                sale_price = float(attrs.get('data-price')) / 100 if 'data-price' in attrs else None
                 name = attrs.get('data-analytics-key').strip() if 'data-analytics-key' in attrs else None
             except:
                 traceback.print_exc()
@@ -286,6 +292,7 @@ class ProductsNetaPorter(object):
                 'brand': brand_name,
                 'bread_crumb': bread_crumb,
                 'price': price,
+                'sale_price': sale_price,
                 'name': name,
             }
         return data
@@ -380,7 +387,11 @@ if __name__ == '__main__':
 
     url = 'http://www.net-a-porter.com/product/638211'
     filepath = 'test/www.net-a-porter.com-us-en-product-638211-christian_louboutin-so-kate-120-leather-pumps.gz'
+
     filepath = 'test/www.net-a-porter.com-us-en-product-638341-jimmy_choo-lucy-metallic-leather-pumps.gz'
+
+    url = 'http://www.net-a-porter.com/us/en/product/600258/Paula_Mendoza/triple-ariane-gold-plated-ring?cm_mmc=LinkshareUS-_-TnL5HPStwNw-_-Custom-_-LinkBuilder&siteID=TnL5HPStwNw-NYS_A3beMKodJqyEZhz6MQ'
+    filepath = 'test/www.net-a-porter.com-us-en-product-600258-Paula_Mendoza-triple-ariane-gold-plated-ring.gz'
 
     with gzip.open(filepath) as f:
         html = f.read()
