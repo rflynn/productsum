@@ -128,6 +128,7 @@ _Seeds = {
             '/help/',
             '/photos/',
             '/press/',
+            '/review/',
             '/talk/',
             '/videos/',
         }
