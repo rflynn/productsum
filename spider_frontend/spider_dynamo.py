@@ -238,6 +238,8 @@ _Seeds = {
             # custom
             '/help/',
             '*;jsessionid=',
+            '/minuteclinic/',
+            '*/clinics/',
             # robots.txt
             '/account/',
             '/bizontent/navarro/',
