@@ -46,8 +46,11 @@
                 background-position: center;
                 background-repeat: no-repeat;
             }
-            div.price sup {
-                font-size: x-small;
+            span.price.on-sale {
+                color: #999;
+            }
+            span.sale-price {
+                padding-left: 3px;
             }
             #sparkline {
                 margin-top: 0.5em;
@@ -209,7 +212,11 @@
             <li><a href="/?q=Clarisonic Cashmere Cleanse Facial Brush Head $30">Clarisonic Cashmere Cleanse Facial Brush Head $30</a>
             <li><a href="/?q=Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36">Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
+            <li><a href="/?q=Clarins UV Plus SPF 50, 1.7 oz. $42">Clarins UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
+            <li><a href="/?q=Tracie Martyn Complexion Savior, 1.67 fl. oz. $80">Tracie Martyn Complexion Savior, 1.67 fl. oz. $80</a>
+            <li><a href="/?q=YVES SAINT LAURENT MASCARA VOLUME EFFET FAUX CILS">YVES SAINT LAURENT MASCARA VOLUME EFFET FAUX CILS</a>
+            <li><a href="/?q=Norell Norell Eau de Parfum, 3.4 oz. $150.00">Norell Norell Eau de Parfum, 3.4 oz. $150.00</a>
             <li><a href="/?q=Deborah Lippmann Nail Lacquer in Respect $18">Deborah Lippmann Nail Lacquer in Respect $18</a>
             <li><a href="/?q=Bobbi Brown Deluxe Eye and Cheek Palette $85">Bobbi Brown Deluxe Eye and Cheek Palette $85</a>
             <li><a href="/?q=Burberry 'My Burberry' Eau de Parfum $95">Burberry 'My Burberry' Eau de Parfum $95</a>
@@ -222,7 +229,6 @@
             <li><a href="/?q=NVPS Leopard-Print Red Sole Pump, Brown $1045">NVPS Leopard-Print Red Sole Pump, Brown $1045</a>
             <li><a href="/?q=Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745">Christian Louboutin Rivierina Patent Red Sole Pump, Shocking Pink $745</a>
             <li><a href="/?q=Sisley Paris Botanical D-Tox, 30ml $245">Sisley Paris Botanical D-Tox, 30ml $245</a>
-            <li><a href="/?q=Clarins UV Plus SPF 50, 1.7 oz. $42">Clarins UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=TOM FORD Patent Leather Pin-Heel Pump, Nude $890">TOM FORD Patent Leather Pin-Heel Pump, Nude $890</a> &mdash; there are several similar entries which should NOT match
             <li><a href="/?q=CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50">CLINIQUE Sun SPF 50 Face Cream/1.7 oz. $21.50</a>
             <li><a href="/?q=Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795">Christian Louboutin Cataclou Studded Red Sole Demi-Wedge Sandal, Black/Dark Gunmetal $795</a> &mdash; phrases "red sole" and "demi-wedge" are missing, and spoil match... also, image recognition could help tell the difference between 2 identical text definitions from bergdorf...
@@ -255,12 +261,25 @@
 
             <li>missing
                 <ol>
+                    <li>matches well, but scores aren't close enough <a href="/?q=GlamGlow SUPERMUD Clearing Treatment 1.2 fl oz.">GlamGlow SUPERMUD Clearing Treatment 1.2 fl oz.</a>
+                    <li><strike><a href="/?q=LA MER CRÈME DE LA MER">LA MER CRÈME DE LA MER</a></strike>
+                    <ol>
+                        <li><a href="/?q=La Mer Crème de la Mer $170">La Mer Crème de la Mer $170</a> NOTE: "Crème" vs. "Creme"
+                    </ol>
+                    <li><a href="/?q=Klorane Smoothing and Relaxing Patches with Soothing Cornflower (7 piece)">Klorane Smoothing and Relaxing Patches with Soothing Cornflower (7 piece)</a> NOTE: "7 piece" vs. "x 7"
+                    <li><a href="/?q=Dior Diorshow Mascara">Dior Diorshow Mascara</a> clean up mutiple matches per merchant
+                    <li><a href="/?q=Bioderma Crealine (Sensibio) H2o Ultra-mild Non-rinse Face and Eyes Cleanser 250 ml">Bioderma Crealine (Sensibio) H2o Ultra-mild Non-rinse Face and Eyes Cleanser 250 ml</a>
                     <li><strike><a href="/?q=Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige">Maybelline Color Sensational 'The Buffs' Matte Lip Color in Blushing Beige</a></strike>
                     <li><strike><a href="/?q=Nyx Soft Matte Lip Cream in London">Nyx Soft Matte Lip Cream in London</a></strike>
                     <li><strike><a href="/?q=Rimmel Lasting Finish Matte by Kate Moss in Shade 110">Rimmel Lasting Finish Matte by Kate Moss in Shade 110</a></strike>
                     <li><a href="/?q=Wet n Wild Megalast Lip Color in Sugar Plum Fairy">Wet n Wild Megalast Lip Color in Sugar Plum Fairy</a>
                     <li><strike><a href="/?q=L'Oréal Colour Riche in Blake's Red and Freida's Red">L'Oréal Colour Riche in Blake's Red and Freida's Red</a></strike>
                     <li><a href="/?q=Rimmel Show Off Lip Velvet in Meteoric Matte">Rimmel Show Off Lip Velvet in Meteoric Matte</a>
+                </ol>
+
+            <li>ngram split/merge
+                <ol>
+                    <a href="/?q=Suno Cut-Out A-Line Dress">Suno Cut-Out A-Line Dress</a> "cut-out" doesn't match "cutout"
                 </ol>
 
             <li>brand
@@ -335,7 +354,7 @@
             <li>other product attributes
                 <ol>
                     <li><a href="/?q=DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77">DIOR Hypnotic Poison 1.7 oz Eau De Toilette Spray $77</a> &mdash; product should match but doesn't: '<a href="/?q=DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78">DIOR Hypnotic Poison Eau Secrete by Christian Dior for Women $78</a>
-                    <li><strike>TODO: synonym between lotion/sunscreen <a href="Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a></strike>
+                    <li><strike>TODO: synonym between lotion/sunscreen <a href="/?q=Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74">Elizabeth Arden Ceramide Lift and Firm Day Cream Broad Spectrum Sunscreen SPF 30 (1.7 oz.) $74</a></strike>
                 </ol>
             <li>tokenizing
                 <ol>
@@ -420,15 +439,36 @@ function do_sparkline(scores)
 
 function display_price(p)
 {
+
     var c = p.currency == 'EUR' ? '&euro;' : '$';
+
     var d = p.price_min;
     if (d == Number(d).toFixed(0))
         d = Number(d).toFixed(0);
     else
         d = Number(d).toFixed(2);
+
+    var s = p.sale_price_min;
+    if (s) {
+        if (s == Number(s).toFixed(0))
+            s = Number(s).toFixed(0);
+        else
+            s = Number(s).toFixed(2);
+    }
+
+    var resp = $('<div>');
+
     if (p.in_stock === false)
-        return $('<div>').text('out-of-stock');
-    return $('<div>').append($('<sup>').html(c)).append(d);
+        return resp.text('out-of-stock');
+
+    if (s) {
+        resp.append($('<span class="price on-sale">').append($('<sup>').html(c)).append($('<strike>').text(d)));
+        resp.append($('<span class="sale-price">').append($('<sup>').html(c)).append(s));
+    } else {
+        resp.append($('<span class="price">').append($('<sup>').html(c)).append(d));
+    }
+
+    return resp;
 }
 
 function display_data(query, data)
