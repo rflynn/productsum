@@ -891,6 +891,33 @@ _Seeds = {
             '/p/premium-registry*',
         },
     },
+    'https://www.therealreal.com': {
+        'skip': {
+            # custom
+            '/about',
+            '/authenticity',
+            '/business-sellers',
+            '/careers',
+            '/consignments',
+            '/contactus',
+            '/first_look_subscriptions',
+            '/returns',
+            '/shipping',
+            '/team',
+            '/terms',
+            # robots.txt
+            '/cart',
+            '/checkouts',
+            '/orders',
+            '/countries',
+            '/login',
+            '/line_items',
+            '/password_resets',
+            '/states',
+            '/user_sessions',
+            '/users',
+        },
+    },
     'http://www.toryburch.com/': {},
     'http://www.thecorner.com/us': {'ok':{'/us/'}},
     'http://www.snapdeal.com/': {
