@@ -455,6 +455,9 @@ function display_price(p)
         else
             s = Number(s).toFixed(2);
     }
+    if (s === d) {
+        s = null; // doesn't count
+    }
 
     var resp = $('<div>');
 
