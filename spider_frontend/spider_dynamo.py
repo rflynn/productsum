@@ -35,7 +35,19 @@ _Seeds = {
     },
     'http://couture.zappos.com/': {},
     'https://shop.harpersbazaar.com/': {},
-    'http://shop.mango.com/US': {'ok':{'/US/'}},
+    'http://shop.mango.com/US': {
+        'runjs': {},
+        'ok': {
+            '/catalog',
+            '/US/',
+        },
+        'skip': {
+            '/US/*/help',
+            '/US/account',
+            '/US/login',
+            '/US/signup',
+        },
+    },
     'http://shop.nordstrom.com/': {},
     'http://us.christianlouboutin.com/us_en/': {'ok':{'/us_en/'}},
     'http://us.louisvuitton.com/eng-us/homepage': {'ok':{'/eng-us/'}},
