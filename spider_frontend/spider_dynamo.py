@@ -237,6 +237,7 @@ _Seeds = {
         'skip': {
             # custom
             '/help/',
+            '*;jsessionid=',
             # robots.txt
             '/account/',
             '/bizontent/navarro/',
