@@ -414,6 +414,20 @@ _Seeds = {
         },
     },
     'http://www.josephstores.com/': {},
+    'http://us.jimmychoo.com/': {
+        'needs-cookies': {},
+        'ok': {
+            '/en/',
+            '/on/',
+        },
+        'skip': {
+            '/*/Account-*',
+            '/*/Cart-*',
+            '/*/add-wishlist',
+            '/*/customer-services/',
+            '/*/store-locator/',
+        },
+    },
     'https://www.katespade.com/': {
         'skip': {
             # custom
