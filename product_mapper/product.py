@@ -685,7 +685,11 @@ insert into url_page (
         with conn.cursor() as cursor:
             self._psql_update(cursor)
             if cursor.rowcount == 0:
-                self._psql_insert(cursor)
+                try:
+                    self._psql_insert(cursor)
+                except psycopg2.IntegrityError:
+                    # race condition
+                    self._psql_update(cursor)
             if commit:
                 conn.commit()
 
