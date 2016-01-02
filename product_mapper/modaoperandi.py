@@ -537,6 +537,9 @@ if __name__ == '__main__':
     url = 'https://www.modaoperandi.com/oscar-de-la-renta-ss16/lola-pump-in-seafoam-patent-leather'
     filepath = 'test/www.modaoperandi.com-oscar-de-la-renta-ss16-lola-pump-in-seafoam-patent-leather.gz'
 
+    url = 'https://www.modaoperandi.com/paul-andrew-fw15/black-silver-kidskin-pointed-flats'
+    filepath = 'test/www.modaoperandi.com-paul-andrew-fw15-black-silver-kidskin-pointed-flats.gz'
+
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
             print do_file(url, filepath)
