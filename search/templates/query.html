@@ -210,7 +210,7 @@
         <ol id="goodlist">
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
             <li><a href="/?q=Clarisonic Cashmere Cleanse Facial Brush Head $30">Clarisonic Cashmere Cleanse Facial Brush Head $30</a>
-            <li><a href="/?q=Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36">Ultimate Sun Protection Cream SPF 50+ WetForce, 1.7 oz. $36</a>
+            <li><a href="/?q=Ultimate Sun Protection Cream WetForce $36">Ultimate Sun Protection Cream WetForce $36</a>
             <li><a href="/?q=SHISEIDO Urban Environment UV Protection Cream SPF 40 $32">SHISEIDO Urban Environment UV Protection Cream SPF 40 $32</a>
             <li><a href="/?q=Clarins UV Plus SPF 50, 1.7 oz. $42">Clarins UV Plus SPF 50, 1.7 oz. $42</a>
             <li><a href="/?q=Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38">Kiehl's Since 1851 Facial Fuel UV Guard SPF 50/1.7 oz. $38</a>
@@ -258,6 +258,11 @@
         <div style="width: 50%; float:right">
         <label for="badlist">FIXME</label>
         <ol id="badlist">
+
+            <li>
+                <ol>
+                    <li><a href="http://nymag.com/thecut/2015/12/20-best-designer-pieces-on-sale-right-now/slideshow/1/">the cut galley: 20 best designer pieces on sale now</a>
+                </ol>
 
             <li>missing
                 <ol>
@@ -824,7 +829,12 @@ function do_search_by_product(boxdiv)
     };
     var brand = boxdiv.find('.brand').text();
     var name = boxdiv.find('.name').text();
-    var price = boxdiv.find('.price').text();
+
+    // handle price and/or sale-price
+    var spdiv = boxdiv.find('span.sale-price');
+    var pdiv = boxdiv.find('span.price');
+    var price = spdiv.text() || pdiv.text();
+
     params.brand = brand || null;
     params.name = name || null;
     var newq = '' + brand + ' ' + name;
