@@ -239,11 +239,61 @@ _Seeds = {
         },
     },
     'http://www.clinique.com/': {
+        'crawl-delay': 15,
         'skip': {
+            # custom
             '/account/',
             '/checkout/',
             '/customer-care/',
             '/customer_service/',
+            '/giftcards/',
+
+            # robots.txt
+            '/includes/',
+            '/misc/',
+            '/modules/',
+            '/profiles/',
+            '/scripts/',
+            '/themes/',
+            # Files
+            '/CHANGELOG.txt',
+            '/cron.php',
+            '/INSTALL.mysql.txt',
+            '/INSTALL.pgsql.txt',
+            '/INSTALL.sqlite.txt',
+            '/install.php',
+            '/INSTALL.txt',
+            '/LICENSE.txt',
+            '/MAINTAINERS.txt',
+            '/update.php',
+            '/UPGRADE.txt',
+            '/xmlrpc.php',
+            # Paths (clean URLs)
+            '/admin/',
+            '/comment/reply/',
+            '/filter/tips/',
+            '/node/add/',
+            '/search/',
+            '/user/register/',
+            '/user/password/',
+            '/user/login/',
+            '/user/logout/',
+            '/account/',
+            '/checkout/',
+            '/templates/',
+            '/includes/',
+            # Paths (no clean URLs)
+            '/?q=admin/',
+            '/?q=comment/reply/',
+            '/?q=filter/tips/',
+            '/?q=node/add/',
+            '/?q=search/',
+            '/?q=user/password/',
+            '/?q=user/register/',
+            '/?q=user/login/',
+            '/?q=user/logout/',
+            '/shared/',
+            '*.xml',
         },
     },
     'http://www.cvs.com/': {
@@ -1459,7 +1509,7 @@ def url_fetch(url, referer=None, settings=None):
             if body is None:
                 if code == 200:
                     code = -1
-            sleep(5) # make sure we don't request too fast...
+            sleep(settings.get('crawl-delay') or 5) # make sure we don't request too fast...
         canonical_url = parse_canonical_url(body, url)
     except requests.exceptions.MissingSchema:
         code = -2
