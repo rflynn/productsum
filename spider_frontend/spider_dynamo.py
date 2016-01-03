@@ -215,6 +215,8 @@ _Seeds = {
             '/contact.aspx',
             '/createAccount.aspx',
             '/policies.aspx',
+            '/quick-view.aspx',
+            '/wishlist-main.aspx',
             # robots.txt
             '/Samples',
             '/TrendingReports',
@@ -247,6 +249,7 @@ _Seeds = {
             '/customer-care/',
             '/customer_service/',
             '/giftcards/',
+            '/videos/',
 
             # robots.txt
             '/includes/',
