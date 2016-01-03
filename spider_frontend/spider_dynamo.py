@@ -226,7 +226,18 @@ _Seeds = {
         },
     },
     'http://www.brownsfashion.com/': {},
-    'http://www.chanel.com/en_US/': {'ok':{'/en_US/'}},
+    'http://www.chanel.com/en_US/': {
+        'ok': {
+            '/en_US/',
+        },
+        'skip': {
+            '/en_US/commerce',
+            '/en_US/contact',
+            '/en_US/faq',
+            '/en_US/policies',
+            '/en_US/storelocator',
+        },
+    },
     'http://www.cvs.com/': {
         #'ok': {
         #    '/',
