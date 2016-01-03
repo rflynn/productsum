@@ -238,6 +238,14 @@ _Seeds = {
             '/en_US/storelocator',
         },
     },
+    'http://www.clinique.com/': {
+        'skip': {
+            '/account/',
+            '/checkout/',
+            '/customer-care/',
+            '/customer_service/',
+        },
+    },
     'http://www.cvs.com/': {
         #'ok': {
         #    '/',
