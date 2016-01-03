@@ -41,9 +41,11 @@ from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
 from italist import ProductsItalist
+from jcrew import ProductsJCrew
 from jimmychoo import ProductsJimmyChoo
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
+from mango import ProductsMango
 from matchesfashion import ProductsMatchesFashion
 from maybelline import ProductsMaybelline
 from modaoperandi import ProductsModaoperandi
@@ -191,6 +193,7 @@ def decompress_body(body):
     return f
 
 Host2Map = {
+    'shop.mango.com':       ProductsMango,
     'shop.nordstrom.com':   ProductsNordstrom,
     'shop.riteaid.com':     ProductsRiteaid,
     'us.jimmychoo.com':     ProductsJimmyChoo,
@@ -210,6 +213,7 @@ Host2Map = {
     'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
+    'www.jcrew.com':        ProductsJCrew,
     'www.italist.com':      ProductsItalist,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
