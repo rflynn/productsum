@@ -239,7 +239,7 @@ class ProductsHarrods(object):
             <span id="ctl00_ContentPlaceHolder1_ucTemplate_litProductCode" class="product_code" data-prodid="4659429">Product Code 4659429</span>
         '''
         sp = soup.find(attrs={'data-prodid': True})
-        print 'sp:', sp
+        #print 'sp:', sp
         if sp:
             try:
                 txt = normstring(sp.text)
