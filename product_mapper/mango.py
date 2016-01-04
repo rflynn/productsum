@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from thecorner.com to zero or more products
+map document archived from shop.mango.com to zero or more products
+ref: https://en.wikipedia.org/wiki/Mango_(clothing)
+
+NOTE: some stuff is in espanol
 '''
 
 from bs4 import BeautifulSoup
@@ -24,10 +27,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'thecorner'
+MERCHANT_SLUG = 'mango'
 
 
-class ProductTheCorner(object):
+class ProductMango(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -73,28 +76,20 @@ class ProductTheCorner(object):
             self.id = str(self.id) # ensure we're a string, some signals produce numeric
         assert self.id != 'None'
 
-        if self.price:
-            if self.price.startswith(u'\xe2\u201a\xac '):
-                # replace mangled unicode euro sign U+20AC
-                self.price = u'\u20ac ' + self.price[4:]
-            self.price = normstring(self.price).replace(' ', '')
-
-        if self.sale_price:
-            if self.sale_price.startswith(u'\xe2\u201a\xac '):
-                # replace mangled unicode euro sign U+20AC
-                self.sale_price = u'\u20ac ' + self.sale_price[4:]
-            self.sale_price = normstring(self.sale_price).replace(' ', '')
+        if self.id:
+            if self.id.lower().startswith('sku: #'):
+                self.id = self.id[6:]
 
         if isinstance(self.brand, list):
             self.brand = u' '.join(self.brand) or None
         self.brand = dehtmlify(normstring(self.brand))
 
         if self.brand:
-            if self.brand.startswith('/b/'):
-                # e.g. "/b/inglot-cosmetics"
-                self.brand = normstring(self.brand[3:].replace('-', ' ')) or None
-                if self.brand:
-                    self.brand = self.brand.title()
+            # e.g. "mango man"
+            if self.brand.lower().startswith('mango '):
+                self.brand = self.brand[:5]
+            if self.brand.lower() == 'mango':
+                self.brand = 'Mango'
 
         if isinstance(self.name, list):
             self.name = u' '.join(self.name) or None
@@ -109,19 +104,38 @@ class ProductTheCorner(object):
             self.features = [dehtmlify(f) for f in self.features]
 
         if self.name:
-            if self.name.endswith(" - thecorner.com"):
-                self.name = self.name[:-len(" - thecorner.com")]
-            self.name = self.name or None
+            if self.name.endswith(" | MANGO"):
+                self.name = self.name[:-len(" | MANGO")]
+            if self.name.endswith("MANGO"):
+                self.name = self.name[:-len("MANGO")]
+            self.name = self.name.strip(" -") or None
 
         if self.title:
-            if self.title.endswith(" - thecorner.com"):
-                self.title = self.title[:-len(" - thecorner.com")]
+            if self.title.endswith(" | MANGO"):
+                self.title = self.title[:-len(" | MANGO")]
+            if self.title.endswith("MANGO"):
+                self.title = self.title[:-len("MANGO")]
+            self.title = self.title.strip(" -") or None
+
+        if self.price is not None:
+            try:
+                self.price = normstring(self.price)
+                # "$129.99$64.99" = $price$sale_price
+                m = re.match(r'^(\$[0-9]+(?:\.[0-9]+)?)(\$[0-9]+(?:\.[0-9]+)?)$', self.price)
+                if m:
+                    #print '$price$saleprice:', m.groups(0)
+                    self.price, self.sale_price = m.groups(0)
+            except:
+                pass
+
+        if self.color:
+            self.color = normstring(self.color)
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductTheCorner:
+        return ('''ProductMango:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -220,7 +234,7 @@ class ProductTheCorner(object):
         )
 
 
-class ProductsTheCorner(object):
+class ProductsMango(object):
 
     VERSION = 0
 
@@ -258,79 +272,39 @@ class ProductsTheCorner(object):
         except:
             url_canonical = url
 
+        # <input name="id_producto_hidden" id="id_producto_hidden" type="hidden" value="53043578" />
+        inp = soup.find('input', type='hidden', id='id_producto_hidden', value=True)
+        if inp:
+            sku = sku or inp.get('value') or None
 
-        if not sku:
-            # "Cod10":"44670189gt"
-            m = re.search(r'"Cod10":"(\w{8,16})"', str(soup))
-            if m:
-                sku = m.groups(0)[0]
-
-        if not sku:
-            # http://www.thecorner.com/us/women/slingbacks_cod44941061jc.html
-            # _cod44941061jc.html
-            m = re.search(r'_cod([0-9]+\w+)\.html$', url_canonical)
-            if m:
-                sku = m.groups(0)[0]
-
-        '''
-        if not sku:
-            pc = soup.find('div', {'class': 'productCode'})
-            if pc:
-                t = pc.find('span', {'class': 'text', 'text': True})
-                if t:
-                    try:
-                        x = t.get_text()
-                        if x and re.search(r'^\w{8,16}$', x):
-                            sku = x
-                    except:
-                        traceback.print_exc()
-        '''
-
-        '''
-        <span class="discounted price" itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
-            <meta itemprop="priceCurrency" content="USD"/>
-            <span class="value" itemprop="price">855.00</span>
-            <meta itemprop="price" content="855"/>
-        '''
-        of = soup.find(itemtype='http://data-vocabulary.org/Offer')
-        if of:
-            pr = of.find('meta', itemprop='price', content=True)
-            if pr:
-                price = pr.get('content')
-            cu = of.find('meta', itemprop='priceCurrency', content=True)
-            if cu:
-                currency = cu.get('content')
-
-        '''
-        <span class="full price">
-            <span class="currency">$</span>
-            <span class="value" data-ytos-price="1425">1,425.00</span>
-        '''
-        sp = soup.find('span', {'data-ytos-price': True})
-        if sp:
-            if price:
-                sale_price = price
-            price = sp.get('data-ytos-price') or None
-
-        bn = soup.find('div', {'class': 'brandName'})
-        if bn:
-            brand = brand or normstring(bn.get_text())
-
-        mc = soup.find('span', {'class': 'microCategory'})
-        if mc:
-            name = normstring(mc.get_text())
-
-        itemd = soup.find('div', {'class': 'descriptionContent'})
-        if itemd:
-            features = [x for x in
-                            [normstring(c.string or c.get_text()) for c in itemd.contents]
-                                if x] or None
-            if features:
-                if features[-1].startswith('Product Code '):
-                    features.pop()
-
-        img_urls = [urljoin(url_canonical, i.get('src'))
-                        for i in soup.findAll('img', itemprop='image', src=True)] or None
+        sc = soup.find('script', text=lambda t: t and 'var dataLayerV2Json' in t)
+        if sc:
+            try:
+                m = re.search(r'dataLayerV2Json\s*=\s*({.*})', sc.text)
+                if m:
+                    objtxt = m.groups(0)[0]
+                    print objtxt
+                    obj = json.loads(objtxt)
+                    pprint(obj)
+                    ec = obj.get('ecommerce') or None
+                    if ec:
+                        dt = ec.get('detail') or None
+                        if dt:
+                            av = dt.get('availability')
+                            if isinstance(av, bool):
+                                in_stock = av
+                            sku = sku or dt.get('id') or None
+                            # XXX: are these even right?
+                            #brand = dt.get('brand') or None # XXX: shit
+                            #name = dt.get('name') or None
+                            #price = dt.get('price') or None
+                            #category = dt.get('category') or None
+                            #variant = dt.get('variant') or None
+                        page = obj.get('page') or None
+                        if page:
+                            brand = brand or page.get('brand') or None
+            except:
+                traceback.print_exc()
 
         return {
             'url_canonical': url_canonical,
@@ -362,8 +336,7 @@ class ProductsTheCorner(object):
 
         starttime = time.time()
 
-        if not re.search(r'_cod\w{8,16}\.html$', url):
-            # all product pages have the "codXXXXX.html" format url
+        if False:
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -398,6 +371,7 @@ class ProductsTheCorner(object):
                     or og.get('product_id')
                     or nth(sp.get('sku'), 0)
                     or nth(sp.get('productId'), 0)
+                    or nth(sp.get('productID'), 0)
                     or custom.get('sku')
                     or None)
 
@@ -406,7 +380,7 @@ class ProductsTheCorner(object):
         if prodid:
 
             try:
-                spoffer = sp['offerDetails'][0]['properties'] # XXX: non-standard
+                spoffer = sp['offers'][0]['properties']
             except:
                 spoffer = {}
 
@@ -427,9 +401,9 @@ class ProductsTheCorner(object):
                         or spbrand
                         or og.get('product:brand')
                         or og.get('brand')
-                        or None)
+                        or 'J.Crew')
 
-            p = ProductTheCorner(
+            p = ProductMango(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -454,10 +428,11 @@ class ProductsTheCorner(object):
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
-                price=(custom.get('price')
-                            or og.get('product:original_price:amount')
+                price=(og.get('product:original_price:amount')
                             or og.get('price:amount')
+                            or nth(sp.get('price'), 0)
                             or nth(spoffer.get('price'), 0)
+                            or custom.get('price')
                             or None),
                 sale_price=(custom.get('sale_price')
                             or og.get('product:sale_price:amount')
@@ -471,8 +446,8 @@ class ProductsTheCorner(object):
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or None),
-                name=(custom.get('name')
-                            or sp.get('name')
+                name=(sp.get('name') # better than custom...
+                            or custom.get('name')
                             or og.get('title')
                             or meta.get('title')
                             or None),
@@ -502,7 +477,8 @@ class ProductsTheCorner(object):
                             or og.get('color')
                             or nth(sp.get('color'), 0)
                             or None),
-                colors=custom.get('colors'),
+                colors=(custom.get('colors')
+                            or None),
                 size=custom.get('size') or None,
                 sizes=custom.get('sizes'),
                 img_url=(og.get('image')
@@ -534,18 +510,18 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsTheCorner.from_html(url, html)
+    return ProductsMango.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'http://www.thecorner.com/us/women/slingbacks_cod44941061jc.html'
-    filepath = 'test/www.thecorner.com-us-women-slingbacks_cod44941061jc.html.gz'
+    url = 'http://shop.mango.com/US/p0/men/clothing/coats/faux-fur-applique-quilted-parka/?id=53099007_56&n=1&s=prendas_he.abrigos_he&ident=0__0_1451795122136&ts=1451795122136&p=1&page=1'
+    filepath = 'test/shop.mango.com-US-p0-men-clothing-coats-faux-fur-applique-quilted-parka.gz'
 
-    url = 'http://www.thecorner.com/us/women/slingbacks_cod44941061jc.html'
-    filepath = 'test/www.thecorner.com-us-women-34-length-dress_cod34609375eu.html.gz'
+    url = 'http://shop.mango.com/US/p0/women/sale/shoes/buckle-leather-ankle-boots/?id=53043578_99&n=1&s=rebajas_t5_she&ident=0__0_1451792240601&ts=1451792240601&p=2&page=1'
+    filepath = 'test/shop.mango.com-US-p0-women-sale-shoes-buckle-leather-ankle-boots.gz'
 
     # test no-op
     #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'

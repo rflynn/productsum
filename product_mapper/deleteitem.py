@@ -70,6 +70,15 @@ if __name__ == '__main__':
             print url
             print table.delete_item(Key={'url': url})
 
+    #deleteall('www.beautylish.com', '/review/')
+
+    #deleteall('www.michaelkors.com', '/')
+
+    #deleteall('www.cvs.com', ';jsessionid=')
+    #deleteall('www.cvs.com', '/minuteclinic/')
+
+    #deleteall('www.walmart.com', '/')
+
     #deleteall('www.mytheresa.com', '/de-de/')
     #deleteall('www.ssense.com', '/fr-fr/')
 

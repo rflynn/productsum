@@ -215,6 +215,8 @@ _Seeds = {
             '/contact.aspx',
             '/createAccount.aspx',
             '/policies.aspx',
+            '/quick-view.aspx',
+            '/wishlist-main.aspx',
             # robots.txt
             '/Samples',
             '/TrendingReports',
@@ -236,6 +238,65 @@ _Seeds = {
             '/en_US/faq',
             '/en_US/policies',
             '/en_US/storelocator',
+        },
+    },
+    'http://www.clinique.com/': {
+        'crawl-delay': 15,
+        'skip': {
+            # custom
+            '/account/',
+            '/checkout/',
+            '/customer-care/',
+            '/customer_service/',
+            '/giftcards/',
+            '/videos/',
+
+            # robots.txt
+            '/includes/',
+            '/misc/',
+            '/modules/',
+            '/profiles/',
+            '/scripts/',
+            '/themes/',
+            # Files
+            '/CHANGELOG.txt',
+            '/cron.php',
+            '/INSTALL.mysql.txt',
+            '/INSTALL.pgsql.txt',
+            '/INSTALL.sqlite.txt',
+            '/install.php',
+            '/INSTALL.txt',
+            '/LICENSE.txt',
+            '/MAINTAINERS.txt',
+            '/update.php',
+            '/UPGRADE.txt',
+            '/xmlrpc.php',
+            # Paths (clean URLs)
+            '/admin/',
+            '/comment/reply/',
+            '/filter/tips/',
+            '/node/add/',
+            '/search/',
+            '/user/register/',
+            '/user/password/',
+            '/user/login/',
+            '/user/logout/',
+            '/account/',
+            '/checkout/',
+            '/templates/',
+            '/includes/',
+            # Paths (no clean URLs)
+            '/?q=admin/',
+            '/?q=comment/reply/',
+            '/?q=filter/tips/',
+            '/?q=node/add/',
+            '/?q=search/',
+            '/?q=user/password/',
+            '/?q=user/register/',
+            '/?q=user/login/',
+            '/?q=user/logout/',
+            '/shared/',
+            '*.xml',
         },
     },
     'http://www.cvs.com/': {
@@ -380,7 +441,55 @@ _Seeds = {
     },
     'http://www.gilt.com/': {},
     'http://www.gojane.com/': {},
-    'http://www.harrods.com/': {},
+    'http://www.harrods.com/': {
+        'skip': {
+            # custom
+            '/contact-us/',
+            '/content/',
+            '/gift-cards/',
+            '/instore-designers',
+            '/login',
+            '/register',
+            '/user/',
+            '/visiting-the-store',
+            # robots.txt
+            '/App_Browsers/',
+            '/App_Code/',
+            '/App_Data/',
+            '/App_GlobalResources/',
+            '/App_LocalResources/',
+            '/CSS/',
+            '/Cart.aspx',
+            '/Controls/',
+            '/Email/',
+            '/Flash/',
+            '/GlobalPages/',
+            '/HarrodsStore/GlobalPages/',
+            '/HarrodsStore/Weddings/Default.aspx',
+            '/HarrodsStore/globalpages/Restaurants.aspx',
+            '/Images/',
+            '/JavaScript/',
+            '/Layouts/',
+            '/Minify/',
+            '/Profile/',
+            '/Public/',
+            '/SiteError.htm',
+            '/UIServices/',
+            '/User/',
+            '/User/getARewardsCard.aspx',
+            '/Weddings/Services/Services.aspx?Id=AAC9EBDE-68B7-48d4-9B21-EF32D0F107B4',
+            '/akamai/',
+            '/bin/',
+            '/browser_test.htm',
+            '/globalpages/contentpage.aspx?id=bf12b1ef-2533-4460-a989-c13f26cb7bbc',
+            '/new_css/',
+            '/new_images/',
+            '/pipelines/',
+            '/shoppingbag/',
+            '/templates/',
+            '/version.aspx',
+        },
+    },
     'http://www.jcpenney.com/': {
         'skip': {
             '/products/',
@@ -566,7 +675,32 @@ _Seeds = {
             '*/mywishlist/',
         },
     },
-    'http://www.nastygal.com/': {},
+    'http://www.nastygal.com/': {
+        'skip': {
+            # custom
+            '/account/',
+            '/careers',
+            '/crushes',
+            '/customer-care/',
+            '/gift-card/',
+            '/localization',
+            '/privacy-policy/',
+            '/orders/',
+            '/stores/',
+            '/terms-of-use/',
+            '/tote',
+            # robots.txt
+            '/Expletive-Ring-Set',
+            '/localization',
+            '/account/',
+            '/orders',
+            '/closet',
+            '/tote',
+            '/checkout',
+            '/waitlist/',
+            '/search?',
+        },
+    },
     'http://www.neimanmarcus.com/': {
         'skip': {
             '/account/',
@@ -1453,7 +1587,7 @@ def url_fetch(url, referer=None, settings=None):
             if body is None:
                 if code == 200:
                     code = -1
-            sleep(5) # make sure we don't request too fast...
+            sleep(settings.get('crawl-delay') or 5) # make sure we don't request too fast...
         canonical_url = parse_canonical_url(body, url)
     except requests.exceptions.MissingSchema:
         code = -2
