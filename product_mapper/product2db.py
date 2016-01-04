@@ -40,6 +40,7 @@ from dillards import ProductsDillards
 from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
+from harrods import ProductsHarrods
 from italist import ProductsItalist
 from jcrew import ProductsJCrew
 from jimmychoo import ProductsJimmyChoo
@@ -214,8 +215,9 @@ Host2Map = {
     'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
-    'www.jcrew.com':        ProductsJCrew,
+    'www.harrods.com':      ProductsHarrods,
     'www.italist.com':      ProductsItalist,
+    'www.jcrew.com':        ProductsJCrew,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www1.macys.com':       ProductsMacys,
     'www.matchesfashion.com': ProductsMatchesFashion,
