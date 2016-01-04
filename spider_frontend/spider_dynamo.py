@@ -748,12 +748,14 @@ _Seeds = {
             '/workarea/',
         },
     },
-    'http://www.stuartweitzman.com/': {
+    'http://www.stuartweitzman.com/home/default.aspx': {
         'runjs': {},
         'skip': {
             # custom
             '/?ChangeCountry=',
+            '/careers/',
             '/home',
+            '/my-account/',
             '/shopping-bag',
             '/service/',
             # robots.txt
