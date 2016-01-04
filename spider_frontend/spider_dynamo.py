@@ -580,6 +580,7 @@ _Seeds = {
             # custom
             '/on/demandware.store/Sites-lancome_us-Site/default/Stores-Find',
             '/on/demandware.store/Sites-lancome_us-Site/default/CustomerService-ContactUsRealDialog',
+            '*Wishlist-Add',
             # robots.txt
             '/on/demandware.store/Sites-lancome_us-Site/default/Account-Show',
             '/on/demandware.store/Sites-lancome_us-Site/default/Cart-Show',
