@@ -69,6 +69,10 @@ alter table url_product add column isbn10 char(10);
 
 alter table url_product alter column merchant_sku type varchar(64); -- double length
 
+-- double length to make way for 'christianlouboutin'
+alter table url_page    alter column merchant_slug type varchar(32);
+alter table url_product alter column merchant_slug type varchar(32);
+
 
 create table brand_translate (
     id                  serial primary key,
