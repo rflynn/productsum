@@ -123,9 +123,12 @@ _Seeds = {
     'http://www.beautylish.com/': {
         'skip': {
             '/about/',
+            '/article/',
+            '/articles/',
             '/bag/',
-            '/jobs/',
+            '/f/',
             '/help/',
+            '/jobs/',
             '/photos/',
             '/press/',
             '/review/',
