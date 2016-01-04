@@ -506,7 +506,7 @@ if __name__ == '__main__':
     import sys
 
     url = 'http://us.christianlouboutin.com/us_en/shop/women/decollete-561.html'
-    filepath = 'us.christianlouboutin.com-us_en-shop-women-decollete-561.html.gz'
+    filepath = 'test/us.christianlouboutin.com-us_en-shop-women-decollete-561.html.gz'
 
     # test no-op
     #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'

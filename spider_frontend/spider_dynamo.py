@@ -589,6 +589,30 @@ _Seeds = {
             '/on/demandware.store/Sites-lancome_us-Site/default/Cart-Show',
         },
     },
+    'http://www.ln-cc.com/': {
+        'skip': {
+            # custom
+            '/*Cart-Show',
+            '/*storelocator',
+            '/*/feed/',
+            # robots.txt
+            '/*CountryGateway-SwitchLocale*',
+            '/*prefn1*',
+            '/*prefv1*',
+            '/*SendToFriend-Start?pid*',
+            '/*SendToFriend-Start?source*',
+            '/*send-to-friend?pid*',
+            '/*send-to-friend?source*',
+            '/*Search-Show?q*',
+            '/*risultati-ricerca?q*',
+            '/*resulats-recherche?q*',
+            '/*resultados-busqueda?q*',
+            '/*suchergebnisse?q*',
+            '/*search-results?q*',
+            '/*Product-Variation?*',
+            '/*srule=*',
+        },
+    },
     'http://www.lordandtaylor.com/': {
         'skip': {
             '/common/',
