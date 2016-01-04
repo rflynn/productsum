@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from jcrew.com to zero or more products
+map a document archived from harrods.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -14,7 +14,6 @@ import re
 import time
 import traceback
 from urlparse import urljoin
-from yurl import URL
 
 from htmlmetadata import HTMLMetadata
 from og import OG
@@ -24,10 +23,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'jcrew'
+MERCHANT_SLUG = 'harrods'
 
 
-class ProductJCrew(object):
+class ProductHarrods(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -50,7 +49,7 @@ class ProductJCrew(object):
         self.ean = ean
         self.currency = currency
         self.sale_price = sale_price
-        self.price = u(price)
+        self.price = price
         self.brand = brand
         self.category = category
         self.breadcrumb = breadcrumb
@@ -72,59 +71,34 @@ class ProductJCrew(object):
         if self.id is not None:
             self.id = str(self.id) # ensure we're a string, some signals produce numeric
         assert self.id != 'None'
-
-        if self.id:
-            if self.id.lower().startswith('sku: #'):
-                self.id = self.id[6:]
-
+        if self.price:
+            self.price = normstring(self.price).replace(' ', '')
         if isinstance(self.brand, list):
             self.brand = u' '.join(self.brand) or None
         self.brand = dehtmlify(normstring(self.brand))
-
-        if self.brand:
-            # e.g. "/hush-puppies"
-            if self.brand.startswith('/'):
-                self.brand = self.brand[1:].replace('-', ' ').title()
-
         if isinstance(self.name, list):
             self.name = u' '.join(self.name) or None
-        self.name = dehtmlify(normstring(self.name)) or None
+        self.name = dehtmlify(normstring(self.name))
         self.title = dehtmlify(normstring(self.title))
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
         self.descr = dehtmlify(normstring(self.descr))
         if self.features:
-            if isinstance(self.features, basestring):
-                self.features = [self.features]
             self.features = [dehtmlify(f) for f in self.features]
 
         if self.name:
-            if self.name.endswith(" | J.Crew"):
-                self.name = self.name[:-len(" | J.Crew")]
-            if self.name.endswith("J.Crew"):
-                self.name = self.name[:-len("J.Crew")]
-            self.name = self.name.strip(" -") or None
+            if self.name.endswith(" | Rite Aid"):
+                self.name = self.name[:-len(" | Rite Aid")]
 
         if self.title:
-            if self.title.endswith(" | J.Crew"):
-                self.title = self.title[:-len(" | J.Crew")]
-            if self.title.endswith("J.Crew"):
-                self.title = self.title[:-len("J.Crew")]
-            self.title = self.title.strip(" -") or None
-
-        if self.price is not None:
-            try:
-                n = float(self.price)
-                if n == 0:
-                    self.price = None # some prices are fucked...
-            except:
-                pass
+            if self.title.endswith(" | Rite Aid"):
+                self.title = self.title[:-len(" | Rite Aid")]
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductJCrew:
+        return ('''ProductHarrods:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -223,7 +197,7 @@ class ProductJCrew(object):
         )
 
 
-class ProductsJCrew(object):
+class ProductsHarrods(object):
 
     VERSION = 0
 
@@ -250,97 +224,96 @@ class ProductsJCrew(object):
         size = None
         sizes = None
         img_url = None
-        img_urls = None
         upc = None
         upcs = None
 
         try:
-            canonical = soup.find('link', rel='canonical').get('href')
-            if canonical:
-                url_canonical = urljoin(url, canonical)
+            url_canonical = soup.find('link', rel='canonical').get('href')
         except:
             url_canonical = url
 
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
+        '''
+        <p class="price_pcode f_right">
+            <span class="prices price">
+                <span class='was'>£665.00</span><span class='now'>now £465.00</span></span>
+            <span id="ctl00_ContentPlaceHolder1_ucTemplate_litProductCode" class="product_code" data-prodid="4659429">Product Code 4659429</span>
+        '''
+        sp = soup.find(attrs={'data-prodid': True})
+        #print 'sp:', sp
+        if sp:
             try:
-                price = normstring(fp.get_text()) or None
+                txt = normstring(sp.text)
+                if txt.lower().startswith('product code'):
+                    sku = normstring(txt[12:])
             except:
                 traceback.print_exc()
 
-        '''
-        lpAddVars('page','ProductID','E2854');
-        lpAddVars('page','ProductValue','130.00');
-        lpAddVars('page','ProductValueLocal','130.00');
-        '''
-        sc = soup.find('script', text=lambda t: t and 'lpAddVars(' in t)
-        if sc:
-            lp = {k: v for k, v in
-                    re.findall(r"lpAddVars\('[^']+','([^']+)','([^']+)'\);", sc.text)}
-            #pprint(lp)
-            sku = sku or lp.get('ProductId') or None
-            price = price or lp.get('ProductValue') or None
-            currency = currency or lp.get('Currency') or None
+        p = soup.find(attrs={'class': 'price'})
+        if p:
+            try:
+                w = p.find(attrs={'class': 'was'})
+                if w:
+                    price = normstring(w.get_text())
+                n = p.find(attrs={'class': 'now'})
+                if n:
+                    sale_price = normstring(n.get_text())
+                    if sale_price.startswith('now'):
+                        sale_price = sale_price[3:].strip()
+            except:
+                traceback.print_exc()
 
         if not sku:
-            m = re.search(r'/([A-Z][0-9]{3,5})\.jsp$', url)
+            m = re.search('/[0]{9,11}([0-9]{6,8})$', url_canonical)
             if m:
                 sku = m.groups(0)[0]
 
-        if not sku:
-            dp = soup.find(attrs={'data-productcode': True})
-            if dp:
-                sku = dp.get('data-productcode') or None
-
-        if not sku:
-            #<span class="item-num">item A9184</span>
-            itemnum = soup.find('span', {'class': 'item-num'})
-            if itemnum:
-                try:
-                    txt = normstring(itemnum.get_text())
-                    if txt and re.match('item \w{4,6}', txt):
-                        sku = txt[5:]
-                except:
-                    traceback.print_exc()
-
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
+        ul = soup.find('ul', {'class': 'breadcrumbs'})
+        if ul:
             try:
-                price = normstring(fp.get_text()) or None
-            except:
-                traceback.print_exc()
-
-        pb = soup.select('div#prodDtlBody p')
-        if pb:
-            try:
-                descr = normstring(pb[0].get_text()) or None
+                breadcrumbs = [x for x in
+                            [normstring(l.get_text()).strip(u'\u203a ')
+                                for l in ul.findAll('li')]
+                                    if x] or None
             except:
                 traceback.print_exc()
 
         '''
-        <ul class="tech-details">
-            <li>Suede upper.</li>
-            <li>Faux-fur lining.</li>
-            <li>Rubber sole.</li>
-            <li>Import.</li>
-        </ul>
+<select id="size">
+    <option value="003" data-cwasprice="665.00" data-cprice="465.00" data-pid="000000000004659429" data-quan="1">35 (IT)</option>
+</select>
         '''
-        td = soup.find('ul', {'class': 'tech-details'})
-        #print 'td:', td
-        if td:
+        sel = soup.find('select', id='size')
+        if sel:
             try:
-                features = [normstring(li.get_text())
-                                for li in td.findAll('li')] or None
+                sizes = [x for x in
+                            [normstring(o.get_text())
+                                for o in sel.findAll('option')]
+                                    if x] or None
             except:
                 traceback.print_exc()
 
-        # product-detail-img
-        pdi = soup.find('div', {'class': 'product-detail-img'})
-        if pdi:
+        sel = soup.find('select', id='colour')
+        if sel:
             try:
-                img_urls = [urljoin(url_canonical, x) for x in
-                            [i.get('src') for i in pdi.findAll('img', src=True)]
-                                if x] or None
+                colors = [x for x in
+                            [normstring(o.get_text())
+                                for o in sel.findAll('option')]
+                                    if x] or None
+            except:
+                traceback.print_exc()
+
+        '''
+<dl class="accordion" id="details">
+<dt class="open">Details</dt>
+<dd style="display: block;"><ul><li>Italian sizing </li><li>Heel measures: 9cm </li><li>Upper, lining and sole: leather </li><li>Presented in a Valentino Garavani box </li><li>Made in Italy </li></ul></dd></dl>
+        '''
+        dl = soup.find('dl', id='details')
+        if dl:
+            try:
+                features = [x for x in
+                            [normstring(l.get_text())
+                                for l in dl.findAll('li')]
+                                    if x] or None
             except:
                 traceback.print_exc()
 
@@ -349,7 +322,6 @@ class ProductsJCrew(object):
             'brand': brand,
             'sku': sku,
             'upc': upc,
-            'upcs': upcs,
             'slug': slug,
             'category': category,
             'name': name,
@@ -366,7 +338,6 @@ class ProductsJCrew(object):
             'size': size,
             'sizes': sizes,
             'img_url': img_url,
-            'img_urls': img_urls,
         }
 
     @classmethod
@@ -374,10 +345,8 @@ class ProductsJCrew(object):
 
         starttime = time.time()
 
-        u = URL(url)
-        if u.path and (u.path.startswith('/search2/index.jsp?')
-                    or u.path.startswith('/search/searchNavigation.jsp?')):
-            # definitely not a product...
+        if False:
+            # nuthin'
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -396,6 +365,7 @@ class ProductsJCrew(object):
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
         custom = cls.get_custom(soup, url, og)
+        utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
 
@@ -403,22 +373,24 @@ class ProductsJCrew(object):
             'meta': meta,
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
+            'utag': utag,
             'custom': custom,
         }
         #pprint(signals)
 
+        # TODO: tokenize and attempt to parse url itself for hints on brand and product
+        # use everything at our disposal
+
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
-                    or nth(sp.get('sku'), 0)
-                    or nth(sp.get('productId'), 0)
-                    or nth(sp.get('productID'), 0)
-                    or custom.get('sku')
+                    or nth(sp.get('sku'), 0) # should exist in harrods
+                    or custom.get('sku') # should exist in harrods
                     or None)
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -438,13 +410,7 @@ class ProductsJCrew(object):
             except:
                 spbrand = None
 
-            brand = (custom.get('brand')
-                        or spbrand
-                        or og.get('product:brand')
-                        or og.get('brand')
-                        or 'J.Crew')
-
-            p = ProductJCrew(
+            p = ProductHarrods(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -466,14 +432,15 @@ class ProductsJCrew(object):
                             or og.get('price:currency')
                             or og.get('currency')
                             or og.get('currency:currency')
+                            or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
-                price=(og.get('product:original_price:amount')
+                price=(custom.get('price')
+                            or og.get('product:original_price:amount')
                             or og.get('price:amount')
-                            or nth(sp.get('price'), 0)
                             or nth(spoffer.get('price'), 0)
-                            or custom.get('price')
+                            or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(custom.get('sale_price')
                             or og.get('product:sale_price:amount')
@@ -483,31 +450,37 @@ class ProductsJCrew(object):
                             or custom.get('sale_price')
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=brand,
+                brand=(custom.get('brand')
+                            or og.get('product:brand')
+                            or og.get('brand')
+                            or spbrand
+                            or None),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
+                            or utag.get('bread_crumb')
                             or None),
                 name=(custom.get('name')
                             or sp.get('name')
                             or og.get('title')
-                            or meta.get('title')
+                            or nth(utag.get('product_name'), 0)
                             or None),
                 title=(custom.get('title')
                             or og.get('title')
                             or meta.get('title')
                             or None),
                 descr=(custom.get('descr')
-                            or nth(sp.get('description'), 0)
-                            or nth(spoffer.get('description'), 0)
+                            or sp.get('description') # much better than og
                             or og.get('description')
                             or meta.get('description')
                             or None),
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
-                            or og.get('availability')) in ('instock', 'in stock')))
+                            or og.get('availability')) in ('instock', 'in stock'))
+                            or xboolstr(nth(utag.get('product_available'), 0)))
                             or custom.get('in_stock')
                             or None),
-                stock_level=(custom.get('stock_level')
+                stock_level=(nth(utag.get('stock_level'), 0)
+                            or custom.get('stock_level')
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
@@ -525,9 +498,7 @@ class ProductsJCrew(object):
                             or nth(sp.get('image'), 0)
                             or custom.get('img_url')
                             or None),
-                img_urls=(custom.get('img_urls')
-                            or sp.get('image')
-                            or None),
+                img_urls=sp.get('image'),
             )
             products.append(p)
 
@@ -550,24 +521,24 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsJCrew.from_html(url, html)
+    return ProductsHarrods.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'https://www.jcrew.com/womens_category/shoes/boots/PRDOVR~E2854/E2854.jsp?color_name=tan'
-    filepath = 'test/www.jcrew.com-womens_category-shoes-boots-PRDOVR~E2854-E2854.jsp.gz'
+    url = 'http://www.harrods.com/product/rockstud-90-leather-sandal/valentino/000000000004659429'
+    filepath = 'test/www.harrods.com-product-rockstud-90-leather-sandal-valentino-000000000004659429.gz'
 
-    url = 'https://www.jcrew.com/mens_feature/TheSuitShop/PRDOVR~A9184/99103983136/A9184.jsp'
-    filepath = 'test/www.jcrew.com-mens_feature-TheSuitShop-PRDOVR~A9184-99103983136-A9184.jsp.gz'
+    url = 'http://www.harrods.com/product/mini-drew-leather-and-suede-shoulder-bag/chloe/b12-0401-076-CHL-120'
+    filepath = 'test/www.harrods.com-product-mini-drew-leather-and-suede-shoulder-bag-chloe-b12-0401-076-CHL-120.gz'
 
-    url = 'https://www.jcrew.com/womens_category/sweaters/cardigans/PRDOVR~E4862/E4862.jsp'
-    filepath = 'test/www.jcrew.com-womens_category-sweaters-cardigans-PRDOVR~E4862-E4862.jsp.gz'
+    url = 'http://www.harrods.com/product/nocturnal-cat-eyes-to-hypnotise/charlotte-tilbury/b12-0804-273-CHARTIL-063?cat1=bc-charlotte-tilbury&cat2=bc-charlotte-tilbury-sets'
+    filepath = 'test/www.harrods.com-product-nocturnal-cat-eyes-to-hypnotise-charlotte-tilbury-b12-0804-273-CHARTIL-063.gz'
 
     # test no-op
-    #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:

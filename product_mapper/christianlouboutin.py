@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from jcrew.com to zero or more products
+map a document archived from christianlouboutin.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -24,10 +24,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'jcrew'
+MERCHANT_SLUG = 'christianlouboutin'
 
 
-class ProductJCrew(object):
+class ProductChristianLouboutin(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -101,30 +101,17 @@ class ProductJCrew(object):
         if self.name:
             if self.name.endswith(" | J.Crew"):
                 self.name = self.name[:-len(" | J.Crew")]
-            if self.name.endswith("J.Crew"):
-                self.name = self.name[:-len("J.Crew")]
-            self.name = self.name.strip(" -") or None
+            self.name = self.name or None
 
         if self.title:
             if self.title.endswith(" | J.Crew"):
                 self.title = self.title[:-len(" | J.Crew")]
-            if self.title.endswith("J.Crew"):
-                self.title = self.title[:-len("J.Crew")]
-            self.title = self.title.strip(" -") or None
-
-        if self.price is not None:
-            try:
-                n = float(self.price)
-                if n == 0:
-                    self.price = None # some prices are fucked...
-            except:
-                pass
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductJCrew:
+        return ('''ProductChristianLouboutin:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -223,7 +210,7 @@ class ProductJCrew(object):
         )
 
 
-class ProductsJCrew(object):
+class ProductsChristianLouboutin(object):
 
     VERSION = 0
 
@@ -261,86 +248,50 @@ class ProductsJCrew(object):
         except:
             url_canonical = url
 
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
+        ld = soup.find('script', type='application/ld+json')
+        if ld:
             try:
-                price = normstring(fp.get_text()) or None
+                obj = json.loads(ld.text)
+                #pprint(obj)
+                sku = obj.get('sku') or None
+                color = obj.get('color') or None
+                category = obj.get('category') or None
+                brand = obj.get('brand') or None
+                name = obj.get('name') or None
+                descr = obj.get('description') or None
+                if url_canonical == url and obj.get('url'):
+                    url_canonical = obj.get('url')
             except:
                 traceback.print_exc()
 
         '''
-        lpAddVars('page','ProductID','E2854');
-        lpAddVars('page','ProductValue','130.00');
-        lpAddVars('page','ProductValueLocal','130.00');
+        spConfig = new Product.Config(
         '''
-        sc = soup.find('script', text=lambda t: t and 'lpAddVars(' in t)
-        if sc:
-            lp = {k: v for k, v in
-                    re.findall(r"lpAddVars\('[^']+','([^']+)','([^']+)'\);", sc.text)}
-            #pprint(lp)
-            sku = sku or lp.get('ProductId') or None
-            price = price or lp.get('ProductValue') or None
-            currency = currency or lp.get('Currency') or None
-
-        if not sku:
-            m = re.search(r'/([A-Z][0-9]{3,5})\.jsp$', url)
-            if m:
-                sku = m.groups(0)[0]
-
-        if not sku:
-            dp = soup.find(attrs={'data-productcode': True})
-            if dp:
-                sku = dp.get('data-productcode') or None
-
-        if not sku:
-            #<span class="item-num">item A9184</span>
-            itemnum = soup.find('span', {'class': 'item-num'})
-            if itemnum:
-                try:
-                    txt = normstring(itemnum.get_text())
-                    if txt and re.match('item \w{4,6}', txt):
-                        sku = txt[5:]
-                except:
-                    traceback.print_exc()
-
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
+        pc = soup.find('script', text=lambda t: t and 'new Product.Config(' in t)
+        #print 'pc:', pc
+        if pc:
             try:
-                price = normstring(fp.get_text()) or None
+                m = re.search('({.*})', pc.text)
+                if m:
+                    objtxt = m.groups(0)[0]
+                    #print objtxt
+                    obj = json.loads(objtxt)
+                    #pprint(obj)
+                    '''
+                    attributes
+                    basePrice
+                    outOfStockProducts
+                    '''
             except:
                 traceback.print_exc()
 
-        pb = soup.select('div#prodDtlBody p')
-        if pb:
+        sz = soup.find('div', {'class': 'size'})
+        if sz:
             try:
-                descr = normstring(pb[0].get_text()) or None
-            except:
-                traceback.print_exc()
-
-        '''
-        <ul class="tech-details">
-            <li>Suede upper.</li>
-            <li>Faux-fur lining.</li>
-            <li>Rubber sole.</li>
-            <li>Import.</li>
-        </ul>
-        '''
-        td = soup.find('ul', {'class': 'tech-details'})
-        #print 'td:', td
-        if td:
-            try:
-                features = [normstring(li.get_text())
-                                for li in td.findAll('li')] or None
-            except:
-                traceback.print_exc()
-
-        # product-detail-img
-        pdi = soup.find('div', {'class': 'product-detail-img'})
-        if pdi:
-            try:
-                img_urls = [urljoin(url_canonical, x) for x in
-                            [i.get('src') for i in pdi.findAll('img', src=True)]
-                                if x] or None
+                sizes = [x for x in
+                            [normstring(li.get_text())
+                                for li in sz.findAll('li', {'class', 'attribute-option'})]
+                                    if x] or None
             except:
                 traceback.print_exc()
 
@@ -374,10 +325,7 @@ class ProductsJCrew(object):
 
         starttime = time.time()
 
-        u = URL(url)
-        if u.path and (u.path.startswith('/search2/index.jsp?')
-                    or u.path.startswith('/search/searchNavigation.jsp?')):
-            # definitely not a product...
+        if False:
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -442,9 +390,9 @@ class ProductsJCrew(object):
                         or spbrand
                         or og.get('product:brand')
                         or og.get('brand')
-                        or 'J.Crew')
+                        or None)
 
-            p = ProductJCrew(
+            p = ProductChristianLouboutin(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -550,21 +498,15 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsJCrew.from_html(url, html)
+    return ProductsChristianLouboutin.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'https://www.jcrew.com/womens_category/shoes/boots/PRDOVR~E2854/E2854.jsp?color_name=tan'
-    filepath = 'test/www.jcrew.com-womens_category-shoes-boots-PRDOVR~E2854-E2854.jsp.gz'
-
-    url = 'https://www.jcrew.com/mens_feature/TheSuitShop/PRDOVR~A9184/99103983136/A9184.jsp'
-    filepath = 'test/www.jcrew.com-mens_feature-TheSuitShop-PRDOVR~A9184-99103983136-A9184.jsp.gz'
-
-    url = 'https://www.jcrew.com/womens_category/sweaters/cardigans/PRDOVR~E4862/E4862.jsp'
-    filepath = 'test/www.jcrew.com-womens_category-sweaters-cardigans-PRDOVR~E4862-E4862.jsp.gz'
+    url = 'http://us.christianlouboutin.com/us_en/shop/women/decollete-561.html'
+    filepath = 'us.christianlouboutin.com-us_en-shop-women-decollete-561.html.gz'
 
     # test no-op
     #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'

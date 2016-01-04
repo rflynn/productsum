@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from jcrew.com to zero or more products
+map a document archived from nastygal.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -24,10 +24,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'jcrew'
+MERCHANT_SLUG = 'nastygal'
 
 
-class ProductJCrew(object):
+class ProductNastyGal(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -93,6 +93,17 @@ class ProductJCrew(object):
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
         self.descr = dehtmlify(normstring(self.descr))
+
+        if self.descr and not self.features:
+            # if there's an list of asterisk'ed features embedded in descr, pull em out
+            '''
+            descr............. Blaze past 'em. The Strut and Bolt Heels come in gunmetal vegan leather and feature lightning bolt cutouts, stud detailing throughout, front lace-up closure, and red snakeskin-print vegan leather back. *PU *Shoe Height: 9"/23cm *Heel Height: 4.75 *Imported
+            '''
+            m = re.findall(r'[*](\w[^*]+)', self.descr)
+            if m and len(m) >= 3:
+                self.features = [normstring(x) for x in m] or None
+                self.descr = self.descr[:self.descr.index(m[0])-1].rstrip()
+
         if self.features:
             if isinstance(self.features, basestring):
                 self.features = [self.features]
@@ -120,11 +131,16 @@ class ProductJCrew(object):
             except:
                 pass
 
+        if self.color:
+            if re.match('^[0-9]+$', self.color):
+                # some products have skus for color...
+                self.color = None
+
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductJCrew:
+        return ('''ProductNastyGal:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -223,7 +239,7 @@ class ProductJCrew(object):
         )
 
 
-class ProductsJCrew(object):
+class ProductsNastyGal(object):
 
     VERSION = 0
 
@@ -261,47 +277,42 @@ class ProductsJCrew(object):
         except:
             url_canonical = url
 
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
+        '''
+        <div class='product-detail-container row-fluid' data-style-id='64189' itemscope='itemscope' itemtype='http://schema.org/Product'>
+        '''
+        dsi = soup.find(attrs={'data-style-id': True})
+        if dsi:
             try:
-                price = normstring(fp.get_text()) or None
+                sku = sku or dsi.get('data-style-id') or None
             except:
                 traceback.print_exc()
 
-        '''
-        lpAddVars('page','ProductID','E2854');
-        lpAddVars('page','ProductValue','130.00');
-        lpAddVars('page','ProductValueLocal','130.00');
-        '''
-        sc = soup.find('script', text=lambda t: t and 'lpAddVars(' in t)
-        if sc:
-            lp = {k: v for k, v in
-                    re.findall(r"lpAddVars\('[^']+','([^']+)','([^']+)'\);", sc.text)}
-            #pprint(lp)
-            sku = sku or lp.get('ProductId') or None
-            price = price or lp.get('ProductValue') or None
-            currency = currency or lp.get('Currency') or None
+        if not sku:
+            '''
+            <input hidden name='ProductId' value='64189'>
+            '''
+            inp = soup.find('input', name='ProductId', value=True)
+            if inp:
+                sku = inp.get('value') or None
 
         if not sku:
-            m = re.search(r'/([A-Z][0-9]{3,5})\.jsp$', url)
-            if m:
-                sku = m.groups(0)[0]
+            '''
+            <input name='productStyleId' type='hidden' value='64189'>
+            '''
+            inp = soup.find('input', name='ProductStyleId', value=True)
+            if inp:
+                sku = inp.get('value') or None
 
         if not sku:
-            dp = soup.find(attrs={'data-productcode': True})
-            if dp:
-                sku = dp.get('data-productcode') or None
-
-        if not sku:
-            #<span class="item-num">item A9184</span>
-            itemnum = soup.find('span', {'class': 'item-num'})
-            if itemnum:
-                try:
-                    txt = normstring(itemnum.get_text())
-                    if txt and re.match('item \w{4,6}', txt):
-                        sku = txt[5:]
-                except:
-                    traceback.print_exc()
+            '''
+            <div class='product-style'>Style #:64189
+            '''
+            ps = soup.find('div', {'class': 'product-style'})
+            #print 'ps:', ps
+            if ps:
+                m = re.search(r'Style #:\s*(\d{3,8})', ps.text)
+                if m:
+                    sku = m.groups(0)[0]
 
         fp = soup.find('div', {'class': 'full-price'})
         if fp:
@@ -317,30 +328,28 @@ class ProductsJCrew(object):
             except:
                 traceback.print_exc()
 
-        '''
-        <ul class="tech-details">
-            <li>Suede upper.</li>
-            <li>Faux-fur lining.</li>
-            <li>Rubber sole.</li>
-            <li>Import.</li>
-        </ul>
-        '''
-        td = soup.find('ul', {'class': 'tech-details'})
-        #print 'td:', td
-        if td:
+        # <div class='product-options'>
+        po = soup.find('div', {'class': 'product-options'})
+        #print 'po:', po
+        if po:
             try:
-                features = [normstring(li.get_text())
-                                for li in td.findAll('li')] or None
+                sizes = [x for x in
+                            [normstring(l.get_text())
+                                for l in po.findAll('label', {'class': 'sku-label'})]
+                                    if x] or None
             except:
                 traceback.print_exc()
 
-        # product-detail-img
-        pdi = soup.find('div', {'class': 'product-detail-img'})
-        if pdi:
+        ul = soup.find('ul', {'class': 'breadcrumb'})
+        if ul:
             try:
-                img_urls = [urljoin(url_canonical, x) for x in
-                            [i.get('src') for i in pdi.findAll('img', src=True)]
-                                if x] or None
+                breadcrumbs = [x for x in
+                            [normstring(l.get_text()).strip('/ ')
+                                for l in ul.findAll('li', itemtype='http://data-vocabulary.org/Breadcrumb')]
+                                    if x] or None
+                if breadcrumbs and len(breadcrumbs) >= 3:
+                    if breadcrumbs[0] == u'Home' and breadcrumbs[1] == u'Shop All':
+                        category = breadcrumbs[2]
             except:
                 traceback.print_exc()
 
@@ -374,10 +383,7 @@ class ProductsJCrew(object):
 
         starttime = time.time()
 
-        u = URL(url)
-        if u.path and (u.path.startswith('/search2/index.jsp?')
-                    or u.path.startswith('/search/searchNavigation.jsp?')):
-            # definitely not a product...
+        if False:
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -418,7 +424,7 @@ class ProductsJCrew(object):
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -442,9 +448,9 @@ class ProductsJCrew(object):
                         or spbrand
                         or og.get('product:brand')
                         or og.get('brand')
-                        or 'J.Crew')
+                        or None)
 
-            p = ProductJCrew(
+            p = ProductNastyGal(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -550,21 +556,18 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsJCrew.from_html(url, html)
+    return ProductsNastyGal.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'https://www.jcrew.com/womens_category/shoes/boots/PRDOVR~E2854/E2854.jsp?color_name=tan'
-    filepath = 'test/www.jcrew.com-womens_category-shoes-boots-PRDOVR~E2854-E2854.jsp.gz'
+    url = 'http://www.nastygal.com/shoes-heels/nasty-gal-strut-and-bolt-cutout-heels'
+    filepath = 'test/www.nastygal.com-shoes-heels-nasty-gal-strut-and-bolt-cutout-heels.gz'
 
-    url = 'https://www.jcrew.com/mens_feature/TheSuitShop/PRDOVR~A9184/99103983136/A9184.jsp'
-    filepath = 'test/www.jcrew.com-mens_feature-TheSuitShop-PRDOVR~A9184-99103983136-A9184.jsp.gz'
-
-    url = 'https://www.jcrew.com/womens_category/sweaters/cardigans/PRDOVR~E4862/E4862.jsp'
-    filepath = 'test/www.jcrew.com-womens_category-sweaters-cardigans-PRDOVR~E4862-E4862.jsp.gz'
+    url = 'http://www.nastygal.com/clothes-dresses/lioness-found-love-slit-dress--navy'
+    filepath = 'test/www.nastygal.com-clothes-dresses-lioness-found-love-slit-dress--navy.gz'
 
     # test no-op
     #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'

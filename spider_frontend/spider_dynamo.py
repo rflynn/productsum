@@ -583,6 +583,7 @@ _Seeds = {
             # custom
             '/on/demandware.store/Sites-lancome_us-Site/default/Stores-Find',
             '/on/demandware.store/Sites-lancome_us-Site/default/CustomerService-ContactUsRealDialog',
+            '*Wishlist-Add',
             # robots.txt
             '/on/demandware.store/Sites-lancome_us-Site/default/Account-Show',
             '/on/demandware.store/Sites-lancome_us-Site/default/Cart-Show',
@@ -885,12 +886,14 @@ _Seeds = {
             '/workarea/',
         },
     },
-    'http://www.stuartweitzman.com/': {
+    'http://www.stuartweitzman.com/home/default.aspx': {
         'runjs': {},
         'skip': {
             # custom
             '/?ChangeCountry=',
+            '/careers/',
             '/home',
+            '/my-account/',
             '/shopping-bag',
             '/service/',
             # robots.txt
