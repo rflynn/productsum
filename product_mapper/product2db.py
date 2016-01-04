@@ -34,6 +34,7 @@ from belk import ProductsBelk
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
+from christianlouboutin import ProductsChristianLouboutin
 from cvs import ProductsCVS
 from dermstore import ProductsDermstore
 from dillards import ProductsDillards
@@ -199,6 +200,7 @@ Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
     'shop.riteaid.com':     ProductsRiteaid,
     'us.jimmychoo.com':     ProductsJimmyChoo,
+    'us.christianlouboutin.com': ProductsChristianLouboutin,
     'www.6pm.com':          Products6pm,
     'www.barneys.com':      ProductsBarneys,
     'www.beauty.com':       ProductsBeautyCom,
