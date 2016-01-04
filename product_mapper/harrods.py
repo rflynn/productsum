@@ -390,7 +390,7 @@ class ProductsHarrods(object):
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
