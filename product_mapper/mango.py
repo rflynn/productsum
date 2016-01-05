@@ -283,9 +283,9 @@ class ProductsMango(object):
                 m = re.search(r'dataLayerV2Json\s*=\s*({.*})', sc.text)
                 if m:
                     objtxt = m.groups(0)[0]
-                    print objtxt
+                    #print objtxt
                     obj = json.loads(objtxt)
-                    pprint(obj)
+                    #pprint(obj)
                     ec = obj.get('ecommerce') or None
                     if ec:
                         dt = ec.get('detail') or None

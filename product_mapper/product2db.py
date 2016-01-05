@@ -345,7 +345,7 @@ def map_products(url_host):
 
     # our worker processes don't peg the CPU due to i/o
     # so if we directly map 1:1 w/ CPU we waste a lot of resources
-    POOLSIZE = multiprocessing.cpu_count() * 2
+    POOLSIZE = multiprocessing.cpu_count() * 1
     pool = multiprocessing.Pool(POOLSIZE, worker, (q1, q2,))
 
     sent = 0

@@ -255,7 +255,7 @@ class ProductsToryBurch(object):
                 m = re.search(r'app.Product\(({[^;]+})\)', sc.text, re.DOTALL)
                 if m:
                     objtxt = m.groups(0)[0]
-                    print repr(objtxt)
+                    #print repr(objtxt)
                     #obj = json.loads(objtxt)
                     obj = execjs.exec_('return ' + objtxt)
                     #pprint(obj)
