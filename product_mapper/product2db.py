@@ -72,6 +72,7 @@ from target import ProductsTarget
 from thecorner import ProductsTheCorner
 from theoutnet import ProductsTheOutNet
 from therealreal import ProductsTheRealReal
+from toryburch import ProductsToryBurch
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
@@ -244,6 +245,7 @@ Host2Map = {
     'www.thecorner.com':    ProductsTheCorner,
     'www.theoutnet.com':    ProductsTheOutNet,
     'www.therealreal.com':  ProductsTheRealReal,
+    'www.toryburch.com':    ProductsToryBurch,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
     'www.walmart.com':      ProductsWalmart,
