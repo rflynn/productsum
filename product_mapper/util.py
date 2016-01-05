@@ -37,7 +37,14 @@ def xstrip(s):
 def normstring(s):
     if s is None:
         return None
-    return xstrip(re.sub('\s+', ' ', s))
+    s2 = xstrip(re.sub('\s+', ' ', s))
+    if u'â€™' in s2:
+        # fix common encoding errors
+        try:
+            s2 = s2.encode('cp1252').decode('utf8')
+        except:
+            pass
+    return s2
 
 def unquote(s):
     if s is None:
