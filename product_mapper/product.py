@@ -215,9 +215,9 @@ class Product(object):
                 print u"gtin8 '%s' does not match numeric pattern..." % (self.gtin8,)
             else:
                 if not self.gtin12 and not self.gtin13 and not self.gtin14:
-                    self.gtin12 = '000000' + self.gtin8
-                    self.gtin13 = '0000000' + self.gtin8
-                    self.gtin14 = '00000000' + self.gtin8
+                    self.gtin12 = '0000' + self.gtin8
+                    self.gtin13 = '00000' + self.gtin8
+                    self.gtin14 = '000000' + self.gtin8
 
     def fixup_prices_and_currency(self):
         if self.price_str:
