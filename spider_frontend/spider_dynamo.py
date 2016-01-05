@@ -501,7 +501,7 @@ _Seeds = {
             '/jsp/browse/',
             '/jsp/checkout/',
             '/jsp/customerservice/',
-            '/Customers/',:
+            '/Customers/',
             # robots.txt
             '/products/',
             '/jsp/search',
