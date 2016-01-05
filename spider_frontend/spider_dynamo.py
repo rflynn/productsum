@@ -315,6 +315,7 @@ _Seeds = {
             '*;jsessionid=',
             '/minuteclinic/',
             '*/clinics/',
+            '/store-locator/',
             # robots.txt
             '/account/',
             '/bizontent/navarro/',
