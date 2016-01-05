@@ -495,6 +495,13 @@ _Seeds = {
     },
     'http://www.jcpenney.com/': {
         'skip': {
+            # custom
+            '/dotcom/jsp/cart/',
+            '/jsp/browse/',
+            '/jsp/checkout/',
+            '/jsp/customerservice/',
+            '/Customers/',:
+            # robots.txt
             '/products/',
             '/jsp/search',
             '/jsp/browse/pp/print/',
