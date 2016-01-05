@@ -316,6 +316,7 @@ _Seeds = {
             '/minuteclinic/',
             '*/clinics/',
             '/store-locator/',
+            '/stores/',
             # robots.txt
             '/account/',
             '/bizontent/navarro/',
