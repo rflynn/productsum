@@ -7,6 +7,12 @@ from pprint import pprint
 from search import tag_name
 
 
+def xfloat(s):
+    try:
+        return float(s)
+    except ValueError:
+        return None
+
 def norm_frac(n, d):
     return str(float(n) / float(d))[1:]
 
@@ -20,10 +26,11 @@ def val_inches(val):
         val = val[0] + '.' + val[1]
     else:
         val = ''.join(val)
-    return float(val)
+    return xfloat(val)
 
 assert val_inches(['1','/','4']) == 0.25
 assert val_inches(['1','1','/','4']) == 1.25
+assert val_inches(['..5']) is None
 
 def size_attrs(d):
     size_unit = defaultdict(list)
@@ -33,7 +40,7 @@ def size_attrs(d):
             val = float('.'.join(toks[:-2]))
         else:
             if toks[0] == 'size' and len(toks) == 2:
-                unit, val = 'num', float(toks[1])
+                unit, val = 'num', xfloat(toks[1])
             else:
                 val, unit = toks[:-1], toks[-1]
                 if unit in ('in','inch','inches','"'):
@@ -57,7 +64,8 @@ def size_attrs(d):
                         unit = 'quart'
                     val = float(val[0])
             #print unit, val
-            size_unit[unit].append(val)
+            if unit and val is not None:
+                size_unit[unit].append(val)
     return dict(size_unit)
 
 Num_ = {
@@ -95,16 +103,17 @@ def merge(a):
     return [u' '.join(map(unicode, x)) for x in a]
 
 def name_to_attrs(name):
-    tq = tag_name.tag_query(name)
-    #pprint(tq)
     d = defaultdict(list)
-    for tag, toks in tq:
-        d[tag].append(toks)
-    #qty = qty_attrs(d)
-    #print 'qty:', qty
-    # postgresql doesn't like jagged arrays...
-    for k in ['brand','color','material','product','pattern']:
-        d[k] = merge(d.get(k))
+    if name:
+        tq = tag_name.tag_query(name)
+        #pprint(tq)
+        for tag, toks in tq:
+            d[tag].append(toks)
+        #qty = qty_attrs(d)
+        #print 'qty:', qty
+        # postgresql doesn't like jagged arrays...
+        for k in ['brand','color','material','product','pattern']:
+            d[k] = merge(d.get(k))
     d['size'] = size_attrs(d)
     d['quantity'] = qty_attrs(d) or None
     return dict(d)#, qty#, dict(size_unit)
@@ -114,7 +123,7 @@ def update(cursor, url_product_id, attrs):
         sql = '''
 update url_product_name_attr
 set
-    updated            = now() at time zone 'utc',
+    updated            = %s,
     name_brand         = %s,
     name_color         = %s,
     name_material      = %s,
@@ -135,7 +144,7 @@ where
     url_product_id = %s
 '''
         args =(
-        # updated
+        updated,
         attrs.get('brand'),
         attrs.get('color'),
         attrs.get('material'),
@@ -159,7 +168,7 @@ where
         print cursor.mogrify(sql, args)
         raise
 
-def insert(cursor, url_product_id, attrs):
+def insert(cursor, url_product_id, updated, attrs):
     try:
         cursor.execute('''
 insert into url_product_name_attr (
@@ -183,8 +192,8 @@ insert into url_product_name_attr (
     name_size_quart,
     name_size_num
 ) values (
-    now(),
-    now(),
+    %s,
+    %s,
     %s,
     %s,
     %s,
@@ -203,7 +212,9 @@ insert into url_product_name_attr (
     %s,
     %s
 )
-''',  (url_product_id,
+''',  (updated,
+       updated,
+       url_product_id,
        attrs.get('brand'),
        attrs.get('color'),
        attrs.get('material'),
@@ -222,11 +233,12 @@ insert into url_product_name_attr (
        attrs.get('size').get('num')))
     except:
         raise
-    
-def upsert(conn, cursor, url_product_id, attrs, cnt):
-    update(cursor, url_product_id, attrs)
-    if cursor.rowcount == 0:
-        insert(cursor, url_product_id, attrs)
+
+def upsert(conn, cursor, url_product_id, updated, attrs, cnt):
+    try:
+        insert(cursor, url_product_id, updated, attrs)
+    except:
+        update(cursor, url_product_id, updated, attrs)
     if cnt % 1000 == 0:
         conn.commit()
 
@@ -239,29 +251,38 @@ def run():
         upsert into url_product_name_attrs
     '''
     conn = get_psql_conn()
-    with conn.cursor('url_product_name_attr_serversidecursor') as read_cursor, \
-          conn.cursor() as write_cursor:
+    with conn.cursor('url_product_name_attr_serversidecursor2', withhold=True) as read_cursor, \
+         conn.cursor() as write_cursor:
         read_cursor.execute('''
-            select id, name
+            select id, updated, name
             from url_product
             where updated > coalesce(
                                 (select max(updated) as maxupd
                                  from url_product_name_attr),
                                 timestamp '2016-01-01')
+            order by updated asc
             ''')
+        print 'rowcount:', read_cursor.rowcount
         cnt = 0
-        for row in read_cursor:
+        row = None
+        attrs = None
+        try:
+            for row in read_cursor:
+                url_product_id, updated, name = row
+                print 'name:', name.encode('utf8') if name else name
+                attrs = name_to_attrs(name)
+                cnt += 1
+                upsert(conn, write_cursor, url_product_id, updated, attrs, cnt)
+            conn.commit()
+        except:
             print 'row:', row
-            url_product_id, name = row
-            attrs = name_to_attrs(name)
             print attrs
-            cnt += 1
-            upsert(conn, write_cursor, url_product_id, attrs, cnt)
-        conn.commit()
+            conn.commit()
+            raise
 
 def test():
     names = [
-        u'Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675'
+        u'Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675',
         u'Matis Paris Cleansing Cream - Creme Demaquillante (6.76 fl oz.) $44',
         u'Brighton 1-1/4" - 1" Salina Taper Belt',
         u'4 g 2" 55 mm 4.2 oz 1.7 fl oz. 1.7 liter 2 gallons 4 qt size 6',
