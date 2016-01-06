@@ -207,6 +207,9 @@ def run_tests():
         u'Glam-To-Go Cheek, Eye & Lip Travel Case', # ampersand...
         u'LA MER CRÈME DE LA MER', # brand "LA MER" appears twice, favor first...
         u'Smoothing and Relaxing Eye Patches x 7',
+        u'FOUNTAIN The Hair Molecule - 8 oz',
+        # TOO SLOW....
+        u'Le Vian Green Tourmaline (7/8 ct. t.w.), Peridot (7/8 ct. t.w.), Lemon Quartz (7/8 ct. t.w.) and Chocolate (1/3 ct. t.w.) and White Diamond (1/10 ct. t.w.) Ring in 14k Gold',
     ]
     for t in tests:
         tq = tag_query(t)
@@ -215,7 +218,7 @@ def run_tests():
 
 if __name__ == '__main__':
 
-    #run_tests()
+    run_tests()
 
     import sys
     from pprint import pprint
