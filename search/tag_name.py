@@ -177,6 +177,7 @@ def run_tests():
         u'SWAROVSKI Solitaire Swarovski Crystal Stud Earrings $69', # when 2 instances of brand appear, we should favor the prefix
         u'Glam-To-Go Cheek, Eye & Lip Travel Case', # ampersand...
         u'LA MER CRÈME DE LA MER', # brand "LA MER" appears twice, favor first...
+        u'Smoothing and Relaxing Eye Patches x 7',
     ]
     for t in tests:
         tq = tag_query(t)
@@ -185,9 +186,16 @@ def run_tests():
 
 if __name__ == '__main__':
 
-    run_tests()
+    #run_tests()
 
-    #import sys
-    #for line in sys.stdin:
-    #    print tag_query(unicode(line, 'utf8'), ri)
+    import sys
+    from pprint import pprint
+
+    for line in sys.stdin:
+        if len(line) > 80:
+            print "TOO LONG WE'RE SLOW", line.strip()
+            continue
+        print line.strip()
+        pprint(tag_query(unicode(line, 'utf8')), width=500)
+        print
 
