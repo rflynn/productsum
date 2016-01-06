@@ -37,7 +37,7 @@ def xstrip(s):
 def normstring(s):
     if s is None:
         return None
-    s2 = xstrip(re.sub('\s+', ' ', s))
+    s2 = xstrip(re.sub('\s+', ' ', u(s)))
     if u'â€™' in s2:
         # fix common encoding errors
         try:
