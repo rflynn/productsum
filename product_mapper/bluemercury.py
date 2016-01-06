@@ -26,7 +26,7 @@ from util import nth, normstring, dehtmlify, xboolstr, u
 MERCHANT_SLUG = 'bluemercury'
 
 
-class ProductJCPenney(object):
+class ProductBlueMercury(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -105,7 +105,7 @@ class ProductJCPenney(object):
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductJCPenney:
+        return ('''ProductBlueMercury:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -204,7 +204,7 @@ class ProductJCPenney(object):
         )
 
 
-class ProductsJCPenney(object):
+class ProductsBlueMercury(object):
 
     VERSION = 0
 
@@ -387,7 +387,7 @@ class ProductsJCPenney(object):
             except:
                 spbrand = None
 
-            p = ProductJCPenney(
+            p = ProductBlueMercury(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -498,7 +498,7 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsJCPenney.from_html(url, html)
+    return ProductsBlueMercury.from_html(url, html)
 
 
 if __name__ == '__main__':
