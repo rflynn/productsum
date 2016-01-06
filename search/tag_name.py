@@ -121,6 +121,35 @@ def tag_query(qstr):
         bestperm.append(price)
     return bestperm
 
+
+def to_original_case(tq, qstr):
+    '''
+    re-convert lowercase'd tokens back to their original case
+    '''
+    lqstr = qstr.lower()
+    tq2 = []
+    idx = 0
+    for tag, toks in tq:
+        toks2 = []
+        for tok in toks:
+            #print 'lsqtr=%s tok=%s idx=%s' % (lqstr, tok, idx)
+            i2 = lqstr.index(tok, idx)
+            t2 = qstr[i2:i2+len(tok)]
+            toks2.append(t2)
+            idx = i2 + len(tok)
+        tq2.append((tag, toks2))
+    return tq2
+
+assert to_original_case([], u'') == []
+try:
+    assert to_original_case([('tag', [u'a'])], u'') == []
+    raise Exception('expected failure')
+except:
+    pass
+assert to_original_case([('tag', [u'a'])], u'A') == [('tag', [u'A'])]
+assert to_original_case([('tag', [u'b'])], u'AB') == [('tag', [u'B'])]
+
+
 # watch our tag files, and if they change, re-load the reverse index
 
 observer = None

@@ -62,7 +62,7 @@ def size_attrs(d):
                         unit = 'gallon'
                     elif unit in ('qt','qts','quarts'):
                         unit = 'quart'
-                    val = float(val[0])
+                    val = xfloat(val[0])
             #print unit, val
             if unit and val is not None:
                 size_unit[unit].append(val)
@@ -106,6 +106,7 @@ def name_to_attrs(name):
     d = defaultdict(list)
     if name:
         tq = tag_name.tag_query(name)
+        tq = tag_name.to_original_case(tq, name) # convert to original tokens
         #pprint(tq)
         for tag, toks in tq:
             d[tag].append(toks)
@@ -118,12 +119,13 @@ def name_to_attrs(name):
     d['quantity'] = qty_attrs(d) or None
     return dict(d)#, qty#, dict(size_unit)
 
-def update(cursor, url_product_id, attrs):
+def update(cursor, url_product_id, name, attrs):
     try:
         sql = '''
 update url_product_name_attr
 set
     updated            = %s,
+    name               = %s,
     name_brand         = %s,
     name_color         = %s,
     name_material      = %s,
@@ -145,6 +147,7 @@ where
 '''
         args =(
         updated,
+        name,
         attrs.get('brand'),
         attrs.get('color'),
         attrs.get('material'),
@@ -168,13 +171,14 @@ where
         print cursor.mogrify(sql, args)
         raise
 
-def insert(cursor, url_product_id, updated, attrs):
+def insert(cursor, url_product_id, updated, name, attrs):
     try:
         cursor.execute('''
 insert into url_product_name_attr (
     created,
     updated,
     url_product_id,
+    url_product_name,
     name_brand,
     name_color,
     name_material,
@@ -210,11 +214,13 @@ insert into url_product_name_attr (
     %s,
     %s,
     %s,
+    %s,
     %s
 )
 ''',  (updated,
        updated,
        url_product_id,
+       name,
        attrs.get('brand'),
        attrs.get('color'),
        attrs.get('material'),
@@ -234,11 +240,11 @@ insert into url_product_name_attr (
     except:
         raise
 
-def upsert(conn, cursor, url_product_id, updated, attrs, cnt):
+def upsert(conn, cursor, url_product_id, updated, name, attrs, cnt):
     try:
-        insert(cursor, url_product_id, updated, attrs)
+        insert(cursor, url_product_id, updated, name, attrs)
     except:
-        update(cursor, url_product_id, updated, attrs)
+        update(cursor, url_product_id, updated, name, attrs)
     if cnt % 1000 == 0:
         conn.commit()
 
@@ -259,10 +265,9 @@ def run():
             where updated > coalesce(
                                 (select max(updated) as maxupd
                                  from url_product_name_attr),
-                                timestamp '2016-01-01')
+                                timestamp '1970-01-01')
             order by updated asc
             ''')
-        print 'rowcount:', read_cursor.rowcount
         cnt = 0
         row = None
         attrs = None
@@ -271,8 +276,9 @@ def run():
                 url_product_id, updated, name = row
                 print 'name:', name.encode('utf8') if name else name
                 attrs = name_to_attrs(name)
+                #print 'attrs=%s' % (str(attrs).encode('utf8'),)
                 cnt += 1
-                upsert(conn, write_cursor, url_product_id, updated, attrs, cnt)
+                upsert(conn, write_cursor, url_product_id, updated, name, attrs, cnt)
             conn.commit()
         except:
             print 'row:', row
