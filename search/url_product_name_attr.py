@@ -100,18 +100,33 @@ def qty_attrs(d):
 def name_to_attrs(name):
     d = defaultdict(list)
     if name and len(name) < 100: # XXX: FIXME: we're too slow
-        tq = tag_name.tag_query(name)
-        tq = tag_name.to_original_substrings(tq, name) # convert to original tokens
+        otq = tag_name.tag_query(name)
+        tq = tag_name.to_original_case(otq, name)
         #pprint(tq)
         for tag, toks in tq:
             d[tag].append(toks)
-        #qty = qty_attrs(d)
-        #print 'qty:', qty
+
+        # preserve brand exactly for later re-matching
+        tqbrand = tag_name.to_original_substrings(otq, name)
+        if 'brand' in d:
+            del d['brand']
+        if 'product' in d:
+            del d['product']
+        if 'material' in d:
+            del d['material']
+        if 'color' in d:
+            del d['color']
+        if 'pattern' in d:
+            del d['pattern']
+        for tag, toks in tqbrand:
+            if tag in ('brand', 'product', 'material','color','pattern'):
+                d[tag].append(toks)
+	
     d['size'] = size_attrs(d)
     d['quantity'] = qty_attrs(d) or None
     return dict(d)#, qty#, dict(size_unit)
 
-def update(cursor, url_product_id, name, attrs):
+def update(cursor, url_product_id, updated, name, attrs):
     try:
         sql = '''
 update url_product_name_attr
@@ -249,7 +264,8 @@ def run():
         upsert into url_product_name_attrs
     '''
     conn = get_psql_conn()
-    with conn.cursor('url_product_name_attr_serversidecursor2', withhold=True) as read_cursor, \
+    conn.autocommit = False
+    with conn.cursor('namedcursor2', withhold=True) as read_cursor, \
          conn.cursor() as write_cursor:
         read_cursor.execute('''
             select id, updated, name
@@ -258,21 +274,29 @@ def run():
                                 (select max(updated) as maxupd
                                  from url_product_name_attr),
                                 timestamp '1970-01-01')
+            and merchant_slug in ('macys','target','beautycom') -- XXX: FIXME: remove, just for testing...
             order by updated asc
             ''')
         cnt = 0
         row = None
         attrs = None
         try:
-            for row in read_cursor:
-                url_product_id, updated, name = row
-                print 'name:', name.encode('utf8') if name else name
-                attrs = name_to_attrs(name)
-                #print 'attrs=%s' % (str(attrs).encode('utf8'),)
-                cnt += 1
-                upsert(conn, write_cursor, url_product_id, updated, name, attrs, cnt)
-            conn.commit()
-        except:
+            while True:
+                # bulk fetch to amortize latency
+                rows = read_cursor.fetchmany(1000)
+                if not rows:
+                    break
+                for row in rows:
+                    url_product_id, updated, name = row
+                    print 'name:', name.encode('utf8') if name else name
+                    attrs = name_to_attrs(name)
+                    #print 'attrs=%s' % (str(attrs).encode('utf8'),)
+                    cnt += 1
+                    upsert(conn, write_cursor, url_product_id,
+                            updated, name, attrs, cnt)
+            conn.commit() # final commit
+        except Exception as e:
+            print e
             print 'row:', row
             print attrs
             conn.commit()
