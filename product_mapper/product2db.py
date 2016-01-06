@@ -46,6 +46,7 @@ from harrods import ProductsHarrods
 from italist import ProductsItalist
 from jcrew import ProductsJCrew
 from jimmychoo import ProductsJimmyChoo
+from ln_cc import ProductsLN_CC
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
 from mango import ProductsMango
@@ -224,6 +225,7 @@ Host2Map = {
     'www.italist.com':      ProductsItalist,
     'www.jcrew.com':        ProductsJCrew,
     'www.lordandtaylor.com': ProductsLordandTaylor,
+    'www.ln-cc.com':        ProductsLN_CC,
     'www1.macys.com':       ProductsMacys,
     'www.matchesfashion.com': ProductsMatchesFashion,
     'www.maybelline.com':   ProductsMaybelline,
