@@ -104,7 +104,7 @@ def merge(a):
 
 def name_to_attrs(name):
     d = defaultdict(list)
-    if name:
+    if name and len(name) < 100: # XXX: FIXME: we're too slow
         tq = tag_name.tag_query(name)
         tq = tag_name.to_original_case(tq, name) # convert to original tokens
         #pprint(tq)
