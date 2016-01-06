@@ -87,6 +87,8 @@ def match_best(q, ri):
     assert isinstance(q, unicode)
     #qtoks = tokenize(q[:80]) # FIXME: chop for performance
     qtoks = tokenize(q)
+    if not qtoks:
+        return []
     mt = match_tree2(qtoks, ri)
     #pprint(mt)
     permutations = match_tree_flatten(mt)
@@ -206,6 +208,8 @@ def run_tests():
         u'SWAROVSKI Solitaire Swarovski Crystal Stud Earrings $69', # when 2 instances of brand appear, we should favor the prefix
         u'Glam-To-Go Cheek, Eye & Lip Travel Case', # ampersand...
         u'LA MER CRÈME DE LA MER', # brand "LA MER" appears twice, favor first...
+        u'T-shirt à imprimé "Undecorated" bleu marine',
+        u'-',
     ]
     for t in tests:
         tq = tag_query(t)
