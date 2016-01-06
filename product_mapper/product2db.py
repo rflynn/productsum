@@ -34,6 +34,7 @@ from belk import ProductsBelk
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
+from bluemercury import ProductsBlueMercury
 from christianlouboutin import ProductsChristianLouboutin
 from cvs import ProductsCVS
 from dermstore import ProductsDermstore
@@ -211,6 +212,7 @@ Host2Map = {
     'www.bathandbodyworks.com': ProductsBathandBodyWorks,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www1.bloomingdales.com':ProductsBloomingdales,
+    'www.bluemercury.com':  ProductsBlueMercury,
     'www.bluefly.com':      ProductsBluefly,
     'www.cvs.com':          ProductsCVS,
     'www.dermstore.com':    ProductsDermstore,
