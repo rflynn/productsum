@@ -291,7 +291,7 @@ class ProductsNastyGal(object):
             '''
             <input hidden name='ProductId' value='64189'>
             '''
-            inp = soup.find('input', name='ProductId', value=True)
+            inp = soup.find('input', {'name': 'ProductId', 'value': True})
             if inp:
                 sku = inp.get('value') or None
 
@@ -299,7 +299,7 @@ class ProductsNastyGal(object):
             '''
             <input name='productStyleId' type='hidden' value='64189'>
             '''
-            inp = soup.find('input', name='ProductStyleId', value=True)
+            inp = soup.find('input', {'name': 'ProductStyleId', 'value': True})
             if inp:
                 sku = inp.get('value') or None
 
