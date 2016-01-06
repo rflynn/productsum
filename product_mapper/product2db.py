@@ -393,6 +393,8 @@ def map_products(url_host):
         print 'finishing up final %s...' % (sent - recv)
         handle_responses(q2, 0)
     except KeyboardInterrupt:
+        pass
+    finally:
         try:
             pool.terminate()
         except:
