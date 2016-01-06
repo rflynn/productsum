@@ -97,24 +97,16 @@ def qty_attrs(d):
                     qty.append(n)
         return qty
 
-def merge(a):
-    if a is None:
-        return None
-    return [u' '.join(map(unicode, x)) for x in a]
-
 def name_to_attrs(name):
     d = defaultdict(list)
     if name and len(name) < 100: # XXX: FIXME: we're too slow
         tq = tag_name.tag_query(name)
-        tq = tag_name.to_original_case(tq, name) # convert to original tokens
+        tq = tag_name.to_original_substrings(tq, name) # convert to original tokens
         #pprint(tq)
         for tag, toks in tq:
             d[tag].append(toks)
         #qty = qty_attrs(d)
         #print 'qty:', qty
-        # postgresql doesn't like jagged arrays...
-        for k in ['brand','color','material','product','pattern']:
-            d[k] = merge(d.get(k))
     d['size'] = size_attrs(d)
     d['quantity'] = qty_attrs(d) or None
     return dict(d)#, qty#, dict(size_unit)

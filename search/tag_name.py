@@ -152,6 +152,22 @@ assert to_original_case([('tag', [u'a'])], u'A') == [('tag', [u'A'])]
 assert to_original_case([('tag', [u'b'])], u'AB') == [('tag', [u'B'])]
 
 
+def to_original_substrings(tq, qstr):
+    lqstr = qstr.lower()
+    tq2 = []
+    idx = 0
+    for tag, toks in tq:
+        t2 = []
+        for tok in toks:
+            i2 = lqstr.index(tok, idx)
+            t2.append(i2)
+            idx = i2 + len(tok)
+        tq2.append((tag, [qstr[t2[0]:t2[-1]+len(toks[-1])]]))
+    return tq2
+
+assert to_original_substrings([('tag', [u'a', u'b'])], u'A B') == [('tag', [u'A B'])]
+
+
 # watch our tag files, and if they change, re-load the reverse index
 
 observer = None
@@ -212,6 +228,7 @@ def run_tests():
         u'-',
         u'Smoothing and Relaxing Eye Patches x 7',
         u'FOUNTAIN The Hair Molecule - 8 oz',
+        u'Anne Klein Gold-Tone Pink Leather Charger Bracelet',
         # TOO SLOW....
         u'Le Vian Green Tourmaline (7/8 ct. t.w.), Peridot (7/8 ct. t.w.), Lemon Quartz (7/8 ct. t.w.) and Chocolate (1/3 ct. t.w.) and White Diamond (1/10 ct. t.w.) Ring in 14k Gold',
     ]
