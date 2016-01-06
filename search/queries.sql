@@ -7,12 +7,12 @@ select distinct brand, count(*) as cnt from url_product where brand not in (sele
 
 
 -- how to update brands
--- manually edit search/data/brands.yml
--- python brandload.py > /tmp/brands.csv
+-- $ manually edit search/data/brands.yml
+-- $ python brandload.py > /tmp/brands.csv
 delete from brand_translate;
 \copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' delimiter ',' csv;
 \copy (select brand_from from brand_translate) to '/tmp/tag.brand.csv' csv;
--- mv /tmp/tag.brand.csv ./data/
+-- $ mv /tmp/tag.brand.csv ./data/
 
 
 \copy (select brand from (select brand, count(*) as cnt from url_product group by brand order by cnt desc) as x) to '/tmp/brands.csv' with csv;

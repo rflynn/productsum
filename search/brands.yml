@@ -2532,7 +2532,7 @@ CYNTHIA STEFFE:
 ELLEN TRACY:
     aka:
         Ellen Tracy:
-'8':
+#'8': #XXX: TOO VAGUE
 RtA:
     aka:
         Rta:
@@ -4664,7 +4664,6 @@ Books To Bed:
 CAMILLE K:
 Christopher Esber:
 Baccarat:
-OUT:
 "A.Sauvage":
     aka:
         Sauvage:
@@ -5361,7 +5360,11 @@ SoftWalk:
         'SoftWalk®':
 VENeffect:
 Vianel:
-BALI:
+Bali:
+    aka:
+        BALI:
+    line:
+        Beauty by Bali:
 Summit White Mountain:
 Bostonian:
 BLOOME:
@@ -7096,7 +7099,7 @@ MISS NAORY:
 Tusting:
 Michele Keeler:
 Decleor:
-'ROLLA''S':
+"ROLLA'S":
 ALDO:
 JBU:
 Denis Colomb:
@@ -9570,9 +9573,6 @@ Pari Desai:
 Christian Roth:
 Revol:
 'Stitch''s':
-Mother of Pearl:
-    aka:
-        Mother Of Pearl:
 TSU YA:
 'MAX & CO.':
 'Angelina''s of Maryland':
@@ -15814,7 +15814,6 @@ Molami:
 Monica Sordo:
 Mon Image:
 MONOCROM:
-MOTHER OF PEARL:
 Motivi:
 MOUCHE:
 MOULIN ROTY:
@@ -23828,3 +23827,5 @@ RBX:
 NyQuil:
     line:
         ZzzQuil:
+LA Colors:
+"AC/DC":
