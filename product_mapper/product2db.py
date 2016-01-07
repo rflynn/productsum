@@ -14,6 +14,7 @@ from boto3.dynamodb.conditions import Key, Attr
 from datetime import datetime
 import gc
 import multiprocessing
+import os
 import psycopg2
 import psycopg2.extensions
 import time
@@ -282,6 +283,14 @@ def handle_url(url, host, sha256, updated):
         traceback.print_exc()
         raise
 
+def reduce_proc_priority():
+    # workers are not time-sensitive, while spider processes are
+    # when running on machines with both, de-prioritized workers
+    try:
+        os.nice(1)
+    except Exception as e:
+        print e
+
 '''
 per-CPU(ish) worker that
     reads input
@@ -290,6 +299,7 @@ per-CPU(ish) worker that
 NOTE: doesn't peg a CPU due to S3 i/o
 '''
 def worker(q1, q2):
+    reduce_proc_priority()
     while True:
         params = q1.get(True)
         q2.put(handle_url(*params))
