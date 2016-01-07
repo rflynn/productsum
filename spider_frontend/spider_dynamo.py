@@ -855,6 +855,7 @@ _Seeds = {
             '/rewards',
             '/sephoratv/',
             '/stores/',
+            '*?country_switch=',
             # robots.txt
             '/basket/',
             '/checkout/',
@@ -1875,6 +1876,7 @@ assert not prefix_matches('/a', '/')
 assert prefix_matches('/foo/bar?baz', '/*bar')
 assert prefix_matches('/fr-fr/femmes', '/fr-fr/')
 assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
+assert prefix_matches('/trussardi?country_switch=ca&lang=en&redirect=homepage', '*?country_switch=')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:
@@ -1886,11 +1888,11 @@ def ok_to_spider(url, fqdn, settings):
     if settings:
         # enforce path prefix whitelist/blacklist
         if 'skip' in settings:
-            if any(prefix_matches(u.path + u.query, s) for s in settings['skip']):
+            if any(prefix_matches(u.path + ('?' + u.query if u.query else ''), s) for s in settings['skip']):
                 print 'skip', url, settings['skip']
                 return False
         if 'ok' in settings:
-            if not any(prefix_matches(u.path + u.query, s) for s in settings['ok']):
+            if not any(prefix_matches(u.path + ('?' + u.query if u.query else ''), s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
     if '://www.ssense.com/fr-fr/' in url:
