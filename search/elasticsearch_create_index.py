@@ -50,10 +50,12 @@ schema = \
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
-			"‘=>'",
-			"’=>'",
-			'“=>"',
-			'”=>"',
+                        'flared=>flare',
+                        'flares=>flare',
+                        "‘=>'",
+                        "’=>'",
+                        '“=>"',
+                        '”=>"',
                     ]
                 },
                 'nfkc_normalizer': { # normalize unicode form
