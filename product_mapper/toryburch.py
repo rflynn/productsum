@@ -320,8 +320,8 @@ class ProductsToryBurch(object):
 
         starttime = time.time()
 
-        if False:
-            # nuthin'
+        if '/search?q=' in url:
+            # not a product
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
