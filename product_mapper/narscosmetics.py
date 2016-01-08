@@ -520,10 +520,10 @@ if __name__ == '__main__':
     import sys
 
     url = 'http://www.narscosmetics.com/USA/palais-royal-satin-lip-pencil/0607845092100.html'
-    filepath = 'www.narscosmetics.com-USA-palais-royal-satin-lip-pencil-0607845092100.html.gz'
+    filepath = 'test/www.narscosmetics.com-USA-palais-royal-satin-lip-pencil-0607845092100.html.gz'
 
     url = 'http://www.narscosmetics.com/USA/schiap-nail-polish/0607845036371.html'
-    filepath = 'www.narscosmetics.com-USA-schiap-nail-polish-0607845036371.html.gz'
+    filepath = 'test/www.narscosmetics.com-USA-schiap-nail-polish-0607845036371.html.gz'
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
