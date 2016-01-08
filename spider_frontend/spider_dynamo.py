@@ -650,6 +650,32 @@ _Seeds = {
     'http://www.luisaviaroma.com/': {
         'runjs': {},
     },
+    'http://www.maccosmetics.com/': {
+        'skip': {
+            # custom
+            '/account/',
+            '/checkout/',
+            '/culture/',
+            '/counterfeit-education',
+            '/customer_service/',
+            '/customer-service-faq',
+            '/employment',
+            '/giftcards',
+            '/egiftcards',
+            '/giving_back',
+            '/our-story',
+            '/privacy-policy',
+            '/mac-pro',
+            '/makeup-services/',
+            '/returns/',
+            '/shipping/',
+            '/stores/',
+            '/supplier-relations',
+            '/terms-conditions',
+            '/viva-glam-mac-aids-fund',
+            # robots.txt looks like some unmodified wordpress template
+        },
+    },
     'http://madisonlosangeles.com/': {},
     'http://www.matchesfashion.com/': {
         'skip': {
