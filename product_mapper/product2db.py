@@ -56,6 +56,7 @@ from matchesfashion import ProductsMatchesFashion
 from maybelline import ProductsMaybelline
 from modaoperandi import ProductsModaoperandi
 from mytheresa import ProductsMyTheresa
+from narscosmetics import ProductsNarsCosmetics
 from nastygal import ProductsNastyGal
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
@@ -234,6 +235,7 @@ Host2Map = {
     'www.maybelline.com':   ProductsMaybelline,
     'www.modaoperandi.com': ProductsModaoperandi,
     'www.mytheresa.com':    ProductsMyTheresa,
+    'www.narscosmetics.com':ProductsNarsCosmetics,
     'www.nastygal.com':     ProductsNastyGal,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
