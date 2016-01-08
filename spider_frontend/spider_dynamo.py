@@ -941,6 +941,7 @@ _Seeds = {
     'http://www.skinstore.com/': {
         'skip': {
             # custom
+            '/ContentPages/BazaarVoiceLogin.aspx',
             '/myAccount/',
             '/serviceCenter/',
             # robots.txt
