@@ -270,12 +270,10 @@ Bansar
         '''
         try:
             # this is legit, but narscosmetics has a different url per color
-            '''
-            _colors = [x for x in
+            colors = [x for x in
                         [normstring(o.get_text())
                             for o in soup.select('select.Color option[data-color]')]
                                 if x] or None
-            '''
             c = soup.select('select.Color option[class="selected"]')
             if c:
                 color = normstring(c[0].get_text())
