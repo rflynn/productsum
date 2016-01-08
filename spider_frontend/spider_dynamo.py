@@ -369,6 +369,8 @@ _Seeds = {
     'http://www.dillards.com/': {
         'runjs': {},
         'skip': {
+            # custom
+            '/*/void(0)', # they weirdly link here, stop following these fucking links...
             '/c/',
             '/credit-services/',
             '/html/',
