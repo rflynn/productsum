@@ -718,6 +718,9 @@ _Seeds = {
     'http://www.narscosmetics.com/': {
         'skip': {
             # custom
+            '/*/null',
+            '/*/Wishlist-Add',
+            '/*/SendToFriend',
             '/USA/Account',
             '/USA/customer-care.html',
             '/USA/Stores',

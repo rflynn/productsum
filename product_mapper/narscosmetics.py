@@ -278,7 +278,7 @@ Bansar
 
         try:
             t1 = soup.find('div', id='tab1')
-            print 't1:', t1
+            #print 't1:', t1
             if t1:
                 p = t1.find('p')
                 if p:
@@ -316,7 +316,7 @@ Bansar
                                 for li in soup.select('ol.breadcrumb li')]
                                     if x] or None
             if breadcrumbs:
-                if breadcrumbs[0] == u'Home':
+                if breadcrumbs[0] == u'Home' and len(breadcrumbs) > 1:
                     category = breadcrumbs[1]
         except:
             traceback.print_exc()
