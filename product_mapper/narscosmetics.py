@@ -269,10 +269,16 @@ Bansar
 </option>
         '''
         try:
-            colors = [x for x in
+            # this is legit, but narscosmetics has a different url per color
+            '''
+            _colors = [x for x in
                         [normstring(o.get_text())
                             for o in soup.select('select.Color option[data-color]')]
                                 if x] or None
+            '''
+            c = soup.select('select.Color option[class="selected"]')
+            if c:
+                color = normstring(c[0].get_text())
         except:
             traceback.print_exc()
 
@@ -519,11 +525,11 @@ if __name__ == '__main__':
 
     import sys
 
-    url = 'http://www.narscosmetics.com/USA/palais-royal-satin-lip-pencil/0607845092100.html'
-    filepath = 'test/www.narscosmetics.com-USA-palais-royal-satin-lip-pencil-0607845092100.html.gz'
-
     url = 'http://www.narscosmetics.com/USA/schiap-nail-polish/0607845036371.html'
     filepath = 'test/www.narscosmetics.com-USA-schiap-nail-polish-0607845036371.html.gz'
+
+    url = 'http://www.narscosmetics.com/USA/palais-royal-satin-lip-pencil/0607845092100.html'
+    filepath = 'test/www.narscosmetics.com-USA-palais-royal-satin-lip-pencil-0607845092100.html.gz'
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
