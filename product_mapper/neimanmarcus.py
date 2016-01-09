@@ -80,7 +80,10 @@ class ProductNeimanMarcus(object):
         # fixups
 
         if self.stocklevel is not None:
-            self.stocklevel = int(self.stocklevel)
+            try:
+                self.stocklevel = int(self.stocklevel)
+            except:
+                self.stocklevel = None
 
         # normalize bread_crumb
         if self.bread_crumb is not None:
@@ -224,7 +227,7 @@ class ProductsNeimanMarcus(object):
                 p = ProductNeimanMarcus(
                     prodid=prodid,
                     canonical_url=custom.get('url_canonical') or url,
-                    stocklevel=nth(utag.get('stock_level'), 0),
+                    stocklevel=nth(utag.get('stock_level'), 0) or None,
                     instock=xboolstr(nth(utag.get('product_available'), 0)),
                     brand=nth(sp.get(u'brand'), 0) or custom.get('brand') or None,
                     name=name,
