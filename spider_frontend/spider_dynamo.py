@@ -607,6 +607,8 @@ _Seeds = {
             '/*Cart-Show',
             '/*storelocator',
             '/*/feed/',
+            '/*/send-to-friend',
+            '/*/customer-service/',
             # robots.txt
             '/*CountryGateway-SwitchLocale*',
             '/*prefn1*',
