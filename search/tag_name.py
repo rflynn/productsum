@@ -3,6 +3,7 @@
 
 import codecs
 from collections import defaultdict
+import itertools
 from pprint import pprint, pformat
 import re
 import string
@@ -14,7 +15,11 @@ def flatten(l):
 
 def tokenize(s):
     assert isinstance(s, unicode)
-    return re.findall(ur"(\d+(?:\.\d+)?|\w+|[&'+$/\"])", s.lower(), re.UNICODE)
+    return re.findall(ur"(\d+(?:\.\d+)?|\w+|[&'+$/\"-])", s.lower(), re.UNICODE)
+
+def tokenize_words(s):
+    assert isinstance(s, unicode)
+    return re.findall(ur"(\d+(?:\.\d+)?|\w+)", s.lower(), re.UNICODE)
 
 def tags_load(filepath, tag):
     try:
@@ -27,13 +32,15 @@ def tags_load(filepath, tag):
 def reverse_index(l):
     index = defaultdict(list)
     for tag, tokens in l:
-        index[tokens[0]].append((tag, tokens))
+        if (tag, tokens) not in index[tokens[0]]:
+            index[tokens[0]].append((tag, tokens))
     return index
 
 def build_tag_reverse_index():
     tags = [tags_load('./data/tag.%s.csv' % tag, tag)
                 for tag in ['brand',
                             'color',
+                            'demographic',
                             'material',
                             'ngram2',
                             'pattern',
@@ -80,6 +87,27 @@ def match_tree2(qtoks, ri):
              match_tree2(qtoks[1:], ri)
                 if len(qtoks) > 1 else None)]
 
+def match_list(qtoks, ri):
+    return [(tok, [(tag, toks)
+                        for tag, toks in ri.get(tok, [])
+                            if toks == qtoks[i:i+len(toks)]] or [(None, [tok])])
+                for i, tok in enumerate(qtoks or [])]
+
+def match_list_iter(ml, idx=0):
+    if len(ml) > idx:
+        tok, matches = ml[idx]
+        for tag, toks in matches:
+            yield [(tag, toks)] + list(match_list_iter(ml, idx + len(toks)))
+
+def match_list_iter2(ml):
+    for p in itertools.product(*[matches for tok, matches in ml]):
+        a = []
+        i = 0
+        while i < len(p):
+            a.append(p[i])
+            i += len(p[i][1])
+        yield a
+
 def match_best(q, ri):
     if not q:
         return []
@@ -89,11 +117,22 @@ def match_best(q, ri):
     qtoks = tokenize(q)
     if not qtoks:
         return []
+
+    ml = match_list(qtoks, ri)
+    #print 'match list: %s' % (pformat(ml, width=200))
+    mli = match_list_iter2(ml)
+    #print 'match_list_iter: %s' % (pformat(mli, width=200),)
+
+    '''
     mt = match_tree2(qtoks, ri)
-    #pprint(mt)
+    #print 'match tree: %s' % (pformat(mt, width=200))
     permutations = match_tree_flatten(mt)
-    #print '%d permutations: %s' % (len(permutations), permutations)
-    #print len(permutations)
+    print '%d permutations: %s' % (len(permutations), pformat(permutations, width=200))
+    print len(permutations)
+    '''
+
+    permutations = mli
+
     scoredperm = [(score_match_perm(perm), perm) for perm in permutations]
     #pprint(sorted(scoredperm, reverse=True)[:3], width=240)
     bestscore, bestperm = max(scoredperm) if scoredperm else (None, None)
@@ -119,6 +158,7 @@ def tag_query(qstr):
     #print 'tokens:', tokens
     ri = get_reverse_index()
     bestperm = match_best(qstr, ri)
+    bestperm = list(bestperm)
     if price:
         bestperm.append(price)
     return bestperm
@@ -203,8 +243,8 @@ def shutdown():
 def run_tests():
     ri = get_reverse_index()
     tests = [
-        u'Ike Behar Check Dress Shirt, Brown/Blue',
         u'RED VALENTINO flower print sheer shirt',
+        u'Ike Behar Check Dress Shirt, Brown/Blue',
         u'VINTAGE by Jessica Liebeskind Leather Hobo Messenger Bag',
         u'Alexander McQueen Leopard-Print Pony Hair Envelope Clutch Bag',
         u'Deborah Lippmann Luxurious Nail Color - Whip It (0.5 fl oz.)',
@@ -229,26 +269,43 @@ def run_tests():
         u'Smoothing and Relaxing Eye Patches x 7',
         u'FOUNTAIN The Hair Molecule - 8 oz',
         u'Anne Klein Gold-Tone Pink Leather Charger Bracelet',
-        # TOO SLOW....
+        u'Wet n Wild Megalast Lip Color in Sugar Plum Fairy',
+        u'2-Piece Plaid Pajama Set',
+        u'Black Label Open-Front Cashmere Cardigan, Long-Sleeve Cashmere Sweater & Mid-Rise Matchstick Jeans',
+        # XXX: FIXME: TOO SLOW....
         u'Le Vian Green Tourmaline (7/8 ct. t.w.), Peridot (7/8 ct. t.w.), Lemon Quartz (7/8 ct. t.w.) and Chocolate (1/3 ct. t.w.) and White Diamond (1/10 ct. t.w.) Ring in 14k Gold',
     ]
     for t in tests:
+        print t.encode('utf8')
         tq = tag_query(t)
         #print 'bestperm:', pformat(tq, width=200)
-        print tq
+        pprint(tq, width=200)
 
 if __name__ == '__main__':
 
-    run_tests()
-
     import sys
     from pprint import pprint
+    from collections import Counter
+
+    if sys.argv and sys.argv[1:] == ['test']:
+        run_tests()
+        sys.exit(0)
+
+    nones = Counter()
 
     for line in sys.stdin:
-        if len(line) > 80:
-            print "TOO LONG WE'RE SLOW", line.strip()
-            continue
+        #if len(line) > 80:
+        #    print "TOO LONG WE'RE SLOW", line.strip()
+        #    continue
         print line.strip()
-        pprint(tag_query(unicode(line, 'utf8')), width=500)
+        tq = tag_query(unicode(line, 'utf8'))
+        pprint(tq, width=500)
         print
+        for t, x in itertools.groupby(tq, lambda x: x[0] is None):
+            if t:
+                x = [x[0] for _, x in x]
+                if re.search(r'\w+', x[0], re.UNICODE) and re.search(r'\w+', x[-1], re.UNICODE):
+                    nones[tuple(x)] += 1
 
+        unmatched_ngrams = sorted([(n, x) for x, n in dict(nones).iteritems() if n > 1], reverse=False)
+        pprint(unmatched_ngrams, width=100)
