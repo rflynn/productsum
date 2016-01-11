@@ -609,6 +609,8 @@ _Seeds = {
             '/*/feed/',
             '/*/send-to-friend',
             '/*/customer-service/',
+            '/*/customer-care/',
+            '*/select-country?Country=',
             # robots.txt
             '/*CountryGateway-SwitchLocale*',
             '/*prefn1*',
