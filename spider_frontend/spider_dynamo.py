@@ -817,6 +817,7 @@ _Seeds = {
             '/rewards',
             '/sephoratv/',
             '/stores/',
+            '?country_switch=',
             # robots.txt
             '/basket/',
             '/checkout/',
