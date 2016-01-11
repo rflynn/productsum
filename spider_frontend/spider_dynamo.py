@@ -1561,6 +1561,7 @@ _Seeds = {
     },
     'https://www.tradesy.com/': {
         # seems legit...
+        '*/tel:', # has a number of weird links ending in tel:
     },
     'http://us.rimmellondon.com/': {
         'ok': {
