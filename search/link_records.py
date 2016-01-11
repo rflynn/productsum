@@ -160,13 +160,18 @@ class ProductRecord(object):
 
     def calc_matcher(self):
         if self.name_tokens:
+            #if self.color_tokens and self.colors_tokens:
+            #    self.matcher = ProductMatcher(self.name, self.name_tokens, self.colors_tokens)
             if self.color_tokens and not self.colors_tokens:
                 self.matcher = ProductMatcher(self.name, self.name_tokens, self.color_tokens)
             elif self.colors_tokens:
                 for ct in self.colors_tokens:
                     if is_suffix(self.name_tokens, ct): # FIXME: use max suffix... and then forget suffix...
                         self.matcher = ProductMatcher(self.name, self.name_tokens[:-len(ct)], self.colors_tokens)
-                        break
+                        return
+                #print 'no matcher for ', self.name_tokens, ':::', self.colors_tokens
+                self.matcher = ProductMatcher(self.name, self.name_tokens, self.colors_tokens)
+                
 
     def closest_prefixes(self, records):
         if self.name_tokens:
@@ -197,8 +202,8 @@ if __name__ == '__main__':
                 matchers[m] = m
             records[name] = r
 
-    print 'records:', len(records)
-    print 'matchers:', len(matchers)
+    #print 'records:', len(records)
+    #print 'matchers:', len(matchers)
 
     matchers2 = defaultdict(list)
     for _, m in matchers.iteritems():
@@ -211,9 +216,9 @@ if __name__ == '__main__':
 
     # display results
     for k, v in matchers2.iteritems():
-        print k, len(v)
-        if len(v) > 1:
-            print pformat(v, indent=4, width=50)
+        print 'matchers2:', k, len(v)
+        #if len(v) > 1:
+        #    print pformat(v, indent=4, width=50)
 
 
     def do_match(r, matchers):
@@ -226,11 +231,12 @@ if __name__ == '__main__':
         return m
 
 
+    #sys.exit(0)
 
     G = nx.DiGraph()
 
     for name, r in records.iteritems():
-        print r, 'matches', 
+        #print r, 'matches', 
         matches = do_match(r, matchers2)
         if matches:
             for m, pct in matches.iteritems():
@@ -239,9 +245,12 @@ if __name__ == '__main__':
                            weight=pct,
                            penwidth=str(round(pct * 5, 1)))
         else:
-            G.add_edge(r.get_ascii_name(), r.get_ascii_name(), weight=1)
+            print 'no matches:', r
+            G.add_edge(r.get_ascii_name(),
+                       r.get_ascii_name(),
+                       weight=1,
+                       penwidth='1')
 
-    #sys.exit(0)
 
     '''
     prefixes = Counter()
