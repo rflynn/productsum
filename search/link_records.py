@@ -20,7 +20,7 @@ unclear:
 
 
 from collections import defaultdict, Counter
-from pprint import pprint
+from pprint import pprint, pformat
 import networkx as nx
 import re
 import unicodecsv as csv
@@ -59,7 +59,74 @@ assert list_prefix_overlap([1,2], [1]) == 1
 assert list_prefix_overlap([1,2], [1,3]) == 1
 assert list_prefix_overlap([1,2], [1,2]) == 2
 
+def is_suffix(l1, l2):
+    return l1[-len(l2):] == l2
+
+def is_subseq(l1, l2):
+    # python makes simple list operations very difficult to be performant
+    l1 = list(l1)
+    l2 = list(l2)
+    return any(l1[i:i+len(l2)] == l2 for i in xrange(len(l1)))
+
+def to_ascii(s):
+    return unicodedata.normalize('NFKD', s).encode('ascii', 'ignore')
+
+
 records = {}
+matchers = {}
+
+class ProductMatcher(object):
+
+    def __init__(self, name, name_tokens, variants_tokens):
+        self.name = name
+        self.name_tokens = name_tokens
+        self.variants_tokens = set(map(tuple, variants_tokens))
+
+    def __repr__(self):
+        return ('ProductMatcher(%s, %s)' % (
+            u' '.join(self.name_tokens),
+            '(%s)' % (','.join(' '.join(vt) for vt in sorted(self.variants_tokens))))).encode('utf8')
+
+    def __hash__(self):
+        return hash(repr(self))
+
+    def __eq__(self, other):
+        return (self.name_tokens == other.name_tokens
+                and self.variants_tokens == other.variants_tokens)
+
+    def is_superset(self, other):
+        return (self.name_tokens == other.name_tokens
+                and self.variants_tokens > other.variants_tokens)
+
+    def overlap(self, pr):
+        assert isinstance(pr, ProductRecord)
+        # calculate how much overlap there is
+        maxtoks = len(pr.name_tokens) + len(pr.color_tokens or [])
+        overlap = 0
+        if is_subseq(pr.name_tokens, self.name_tokens):
+            overlap += len(self.name_tokens)
+            if pr.color_tokens:
+                if tuple(pr.color_tokens) in self.variants_tokens:
+                    overlap += len(pr.color_tokens)
+            overlap += max([len(vt) for vt in self.variants_tokens
+                                if is_subseq(pr.name_tokens, vt)] or [0])
+        return float(overlap) / maxtoks
+
+    @classmethod
+    def definitive_set(cls, matchers):
+        # given a set of matchers, condense based on equality/subset/superset logic into a minimal set
+        ret = sorted(set(matchers), cmp=lambda x,y: x.is_superset(y))
+        ret1 = set()
+        for x in ret:
+            if not any(r.is_superset(x) for r in ret):
+                ret1.add(x)
+        return ret1
+
+pm1 = ProductMatcher('name', ['name'], ['x'])
+pm2 = ProductMatcher('name', ['name'], ['x', 'y']) # superset of pm1
+assert pm2.is_superset(pm1) is True
+assert ProductMatcher.definitive_set([pm2, pm1]) == set([pm2])
+
 
 class ProductRecord(object):
     def __init__(self, brand=None, name=None,
@@ -70,12 +137,36 @@ class ProductRecord(object):
         self.name = name
         self.name_tokens = tokenize_words(name)
         self.color = color
+        if self.color:
+            self.color_tokens = tokenize_words(self.color)
+        else:
+            self.color_tokens = None
         self.colors = colors
+        if self.colors:
+            self.colors_tokens = sorted(tokenize_words(c) for c in self.colors)
+        else:
+            self.colors_tokens = None
         self.size = size
         self.sizes = sizes
 
+        self.matcher = None
+        self.calc_matcher()
+
     def __repr__(self):
         return ('ProductRecord(%s)' % (self.name,)).encode('utf8')
+
+    def get_ascii_name(self):
+        return unicodedata.normalize('NFKD', self.name).encode('ascii', 'ignore')
+
+    def calc_matcher(self):
+        if self.name_tokens:
+            if self.color_tokens and not self.colors_tokens:
+                self.matcher = ProductMatcher(self.name, self.name_tokens, self.color_tokens)
+            elif self.colors_tokens:
+                for ct in self.colors_tokens:
+                    if is_suffix(self.name_tokens, ct): # FIXME: use max suffix... and then forget suffix...
+                        self.matcher = ProductMatcher(self.name, self.name_tokens[:-len(ct)], self.colors_tokens)
+                        break
 
     def closest_prefixes(self, records):
         if self.name_tokens:
@@ -88,10 +179,9 @@ class ProductRecord(object):
                 return int(bestscore), closest[bestscore]
         return 0, []
 
-    def get_ascii_name(self):
-        return unicodedata.normalize('NFKD', self.name).encode('ascii', 'ignore')
-
 if __name__ == '__main__':
+
+    import sys
 
     with open('name-narscosmetics-variants.csv', 'rb') as f:
         rd = csv.reader(f)
@@ -99,15 +189,61 @@ if __name__ == '__main__':
             #print row
             name, color, size, colors, sizes = row
             c = parse_psql_array(colors)
-            #print ('%s, %s, %s' % (name, size, '')).encode('utf8')
+            #print ('%s, %s, %s' % (name, size, c)).encode('utf8')
             #print tokenize_words(name)
-            records[name] = ProductRecord(brand='NARS', name=name, colors=c)
+            r = ProductRecord(brand='NARS', name=name, colors=c)
+            m = r.matcher
+            if m:
+                matchers[m] = m
+            records[name] = r
 
-    #pprint(records)
-    #pprint(records[u'All Day Luminous Powder Foundation Broad Spectrum SPF 24 - Siberia'].closest_prefixes(records.values()))
-    #pprint(records[u'All Day Luminous Powder Foundation'].closest_prefixes(records.values()))
+    print 'records:', len(records)
+    print 'matchers:', len(matchers)
 
-    G = nx.Graph()
+    matchers2 = defaultdict(list)
+    for _, m in matchers.iteritems():
+        matchers2[tuple(m.name_tokens)].append(m)
+
+    #pprint(dict(matchers2))
+    # condense multiple matches under the same name
+    for k, v in matchers2.iteritems():
+        matchers2[k] = ProductMatcher.definitive_set(v)
+
+    # display results
+    for k, v in matchers2.iteritems():
+        print k, len(v)
+        if len(v) > 1:
+            print pformat(v, indent=4, width=50)
+
+
+    def do_match(r, matchers):
+        m = {}
+        for k, v in matchers.iteritems():
+            for v2 in v:
+                o = v2.overlap(r)
+                if o > 0:
+                    m[v2] = o
+        return m
+
+
+
+    G = nx.DiGraph()
+
+    for name, r in records.iteritems():
+        print r, 'matches', 
+        matches = do_match(r, matchers2)
+        if matches:
+            for m, pct in matches.iteritems():
+                G.add_edge(r.get_ascii_name(),
+                           to_ascii(unicode(str(m), 'utf8'))[:128],
+                           weight=pct,
+                           penwidth=str(round(pct * 5, 1)))
+        else:
+            G.add_edge(r.get_ascii_name(), r.get_ascii_name(), weight=1)
+
+    #sys.exit(0)
+
+    '''
     prefixes = Counter()
     for k, r in records.iteritems():
         score, closest = r.closest_prefixes(records.values())
@@ -119,6 +255,7 @@ if __name__ == '__main__':
 
     for i, (k, cnt) in enumerate(sorted(prefixes.iteritems(), key=lambda x: x[1], reverse=True)):
         print ('%3d %3d %s' % (i, cnt, k)).encode('utf8')
+    '''
 
     # graph via graphviz
     print 'nars.dot...'
