@@ -47,6 +47,7 @@ from fwrd import ProductsFwrd
 from harrods import ProductsHarrods
 from italist import ProductsItalist
 from jcrew import ProductsJCrew
+from jcpenney import ProductsJCPenney
 from jimmychoo import ProductsJimmyChoo
 from ln_cc import ProductsLN_CC
 from lordandtaylor import ProductsLordandTaylor
@@ -227,6 +228,7 @@ Host2Map = {
     'www.fwrd.com':         ProductsFwrd,
     'www.harrods.com':      ProductsHarrods,
     'www.italist.com':      ProductsItalist,
+    'www.jcpenney.com':     ProductsJCPenney,
     'www.jcrew.com':        ProductsJCrew,
     'www.lordandtaylor.com': ProductsLordandTaylor,
     'www.ln-cc.com':        ProductsLN_CC,
