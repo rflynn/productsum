@@ -40,6 +40,9 @@ sudo apt-get install -y --force-yes chromium-browser
 sudo apt-get install -y --force-yes chromium-chromedriver
 sudo apt-get install -y --force-yes firefox
 
+# graphviz
+sudo apt-get install -y graphviz libgraphviz-dev pkg-config
+
 # install mosh
 sudo apt-get install -y python-software-properties
 sudo add-apt-repository -y ppa:keithw/mosh
@@ -58,4 +61,7 @@ pip freeze > requirements.txt  # save results in case we missed dependencies
 # run NLTK download step...
 python -m nltk.downloader punkt
 
+# custom pygraphviz wtf
+# ref: https://github.com/pygraphviz/pygraphviz/issues/71
+pip install pygraphviz --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/"
 
