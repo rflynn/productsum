@@ -501,10 +501,13 @@ _Seeds = {
         'skip': {
             # custom
             '/dotcom/jsp/cart/',
+            '/jsp/',
+            '*/jsp/',
             '/jsp/browse/',
             '/jsp/checkout/',
-            '/jsp/customerservice/',
+            '/*/customerservice/',
             '/jsp/giftcard/',
+            '/jsp/global/',
             '/Customers/',
             # robots.txt
             '/products/',
