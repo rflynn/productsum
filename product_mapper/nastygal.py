@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map document archived from shop.mango.com to zero or more products
-ref: https://en.wikipedia.org/wiki/Mango_(clothing)
-
-NOTE: some stuff is in espanol
+map a document archived from nastygal.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -27,10 +24,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'mango'
+MERCHANT_SLUG = 'nastygal'
 
 
-class ProductMango(object):
+class ProductNastyGal(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -85,11 +82,9 @@ class ProductMango(object):
         self.brand = dehtmlify(normstring(self.brand))
 
         if self.brand:
-            # e.g. "mango man"
-            if self.brand.lower().startswith('mango '):
-                self.brand = self.brand[:5]
-            if self.brand.lower() == 'mango':
-                self.brand = 'Mango'
+            # e.g. "/hush-puppies"
+            if self.brand.startswith('/'):
+                self.brand = self.brand[1:].replace('-', ' ').title()
 
         if isinstance(self.name, list):
             self.name = u' '.join(self.name) or None
@@ -98,44 +93,54 @@ class ProductMango(object):
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
         self.descr = dehtmlify(normstring(self.descr))
+
+        if self.descr and not self.features:
+            # if there's an list of asterisk'ed features embedded in descr, pull em out
+            '''
+            descr............. Blaze past 'em. The Strut and Bolt Heels come in gunmetal vegan leather and feature lightning bolt cutouts, stud detailing throughout, front lace-up closure, and red snakeskin-print vegan leather back. *PU *Shoe Height: 9"/23cm *Heel Height: 4.75 *Imported
+            '''
+            m = re.findall(r'[*](\w[^*]+)', self.descr)
+            if m and len(m) >= 3:
+                self.features = [normstring(x) for x in m] or None
+                self.descr = self.descr[:self.descr.index(m[0])-1].rstrip()
+
         if self.features:
             if isinstance(self.features, basestring):
                 self.features = [self.features]
             self.features = [dehtmlify(f) for f in self.features]
 
         if self.name:
-            if self.name.endswith(" | MANGO"):
-                self.name = self.name[:-len(" | MANGO")]
-            if self.name.endswith("MANGO"):
-                self.name = self.name[:-len("MANGO")]
+            if self.name.endswith(" | J.Crew"):
+                self.name = self.name[:-len(" | J.Crew")]
+            if self.name.endswith("J.Crew"):
+                self.name = self.name[:-len("J.Crew")]
             self.name = self.name.strip(" -") or None
 
         if self.title:
-            if self.title.endswith(" | MANGO"):
-                self.title = self.title[:-len(" | MANGO")]
-            if self.title.endswith("MANGO"):
-                self.title = self.title[:-len("MANGO")]
+            if self.title.endswith(" | J.Crew"):
+                self.title = self.title[:-len(" | J.Crew")]
+            if self.title.endswith("J.Crew"):
+                self.title = self.title[:-len("J.Crew")]
             self.title = self.title.strip(" -") or None
 
         if self.price is not None:
             try:
-                self.price = normstring(self.price)
-                # "$129.99$64.99" = $price$sale_price
-                m = re.match(r'^(\$[0-9]+(?:\.[0-9]+)?)(\$[0-9]+(?:\.[0-9]+)?)$', self.price)
-                if m:
-                    #print '$price$saleprice:', m.groups(0)
-                    self.price, self.sale_price = m.groups(0)
+                n = float(self.price)
+                if n == 0:
+                    self.price = None # some prices are fucked...
             except:
                 pass
 
         if self.color:
-            self.color = normstring(self.color)
+            if re.match('^[0-9]+$', self.color):
+                # some products have skus for color...
+                self.color = None
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductMango:
+        return ('''ProductNastyGal:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -234,7 +239,7 @@ class ProductMango(object):
         )
 
 
-class ProductsMango(object):
+class ProductsNastyGal(object):
 
     VERSION = 0
 
@@ -272,37 +277,79 @@ class ProductsMango(object):
         except:
             url_canonical = url
 
-        # <input name="id_producto_hidden" id="id_producto_hidden" type="hidden" value="53043578" />
-        inp = soup.find('input', type='hidden', id='id_producto_hidden', value=True)
-        if inp:
-            sku = sku or inp.get('value') or None
-
-        sc = soup.find('script', text=lambda t: t and 'var dataLayerV2Json' in t)
-        if sc:
+        '''
+        <div class='product-detail-container row-fluid' data-style-id='64189' itemscope='itemscope' itemtype='http://schema.org/Product'>
+        '''
+        dsi = soup.find(attrs={'data-style-id': True})
+        if dsi:
             try:
-                m = re.search(r'dataLayerV2Json\s*=\s*({.*})', sc.text)
+                sku = sku or dsi.get('data-style-id') or None
+            except:
+                traceback.print_exc()
+
+        if not sku:
+            '''
+            <input hidden name='ProductId' value='64189'>
+            '''
+            inp = soup.find('input', {'name': 'ProductId', 'value': True})
+            if inp:
+                sku = inp.get('value') or None
+
+        if not sku:
+            '''
+            <input name='productStyleId' type='hidden' value='64189'>
+            '''
+            inp = soup.find('input', {'name': 'ProductStyleId', 'value': True})
+            if inp:
+                sku = inp.get('value') or None
+
+        if not sku:
+            '''
+            <div class='product-style'>Style #:64189
+            '''
+            ps = soup.find('div', {'class': 'product-style'})
+            #print 'ps:', ps
+            if ps:
+                m = re.search(r'Style #:\s*(\d{3,8})', ps.text)
                 if m:
-                    objtxt = m.groups(0)[0]
-                    #print objtxt
-                    obj = json.loads(objtxt)
-                    #pprint(obj)
-                    ec = obj.get('ecommerce') or None
-                    if ec:
-                        dt = ec.get('detail') or None
-                        if dt:
-                            av = dt.get('availability')
-                            if isinstance(av, bool):
-                                in_stock = av
-                            sku = sku or dt.get('id') or None
-                            # XXX: are these even right?
-                            #brand = dt.get('brand') or None # XXX: shit
-                            #name = dt.get('name') or None
-                            #price = dt.get('price') or None
-                            #category = dt.get('category') or None
-                            #variant = dt.get('variant') or None
-                        page = obj.get('page') or None
-                        if page:
-                            brand = brand or page.get('brand') or None
+                    sku = m.groups(0)[0]
+
+        fp = soup.find('div', {'class': 'full-price'})
+        if fp:
+            try:
+                price = normstring(fp.get_text()) or None
+            except:
+                traceback.print_exc()
+
+        pb = soup.select('div#prodDtlBody p')
+        if pb:
+            try:
+                descr = normstring(pb[0].get_text()) or None
+            except:
+                traceback.print_exc()
+
+        # <div class='product-options'>
+        po = soup.find('div', {'class': 'product-options'})
+        #print 'po:', po
+        if po:
+            try:
+                sizes = [x for x in
+                            [normstring(l.get_text())
+                                for l in po.findAll('label', {'class': 'sku-label'})]
+                                    if x] or None
+            except:
+                traceback.print_exc()
+
+        ul = soup.find('ul', {'class': 'breadcrumb'})
+        if ul:
+            try:
+                breadcrumbs = [x for x in
+                            [normstring(l.get_text()).strip('/ ')
+                                for l in ul.findAll('li', itemtype='http://data-vocabulary.org/Breadcrumb')]
+                                    if x] or None
+                if breadcrumbs and len(breadcrumbs) >= 3:
+                    if breadcrumbs[0] == u'Home' and breadcrumbs[1] == u'Shop All':
+                        category = breadcrumbs[2]
             except:
                 traceback.print_exc()
 
@@ -377,7 +424,7 @@ class ProductsMango(object):
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -401,9 +448,9 @@ class ProductsMango(object):
                         or spbrand
                         or og.get('product:brand')
                         or og.get('brand')
-                        or 'J.Crew')
+                        or None)
 
-            p = ProductMango(
+            p = ProductNastyGal(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -446,8 +493,8 @@ class ProductsMango(object):
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or None),
-                name=(sp.get('name') # better than custom...
-                            or custom.get('name')
+                name=(custom.get('name')
+                            or sp.get('name')
                             or og.get('title')
                             or meta.get('title')
                             or None),
@@ -477,8 +524,7 @@ class ProductsMango(object):
                             or og.get('color')
                             or nth(sp.get('color'), 0)
                             or None),
-                colors=(custom.get('colors')
-                            or None),
+                colors=custom.get('colors'),
                 size=custom.get('size') or None,
                 sizes=custom.get('sizes'),
                 img_url=(og.get('image')
@@ -510,18 +556,18 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsMango.from_html(url, html)
+    return ProductsNastyGal.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'http://shop.mango.com/US/p0/men/clothing/coats/faux-fur-applique-quilted-parka/?id=53099007_56&n=1&s=prendas_he.abrigos_he&ident=0__0_1451795122136&ts=1451795122136&p=1&page=1'
-    filepath = 'test/shop.mango.com-US-p0-men-clothing-coats-faux-fur-applique-quilted-parka.gz'
+    url = 'http://www.nastygal.com/shoes-heels/nasty-gal-strut-and-bolt-cutout-heels'
+    filepath = 'test/www.nastygal.com-shoes-heels-nasty-gal-strut-and-bolt-cutout-heels.gz'
 
-    url = 'http://shop.mango.com/US/p0/women/sale/shoes/buckle-leather-ankle-boots/?id=53043578_99&n=1&s=rebajas_t5_she&ident=0__0_1451792240601&ts=1451792240601&p=2&page=1'
-    filepath = 'test/shop.mango.com-US-p0-women-sale-shoes-buckle-leather-ankle-boots.gz'
+    url = 'http://www.nastygal.com/clothes-dresses/lioness-found-love-slit-dress--navy'
+    filepath = 'test/www.nastygal.com-clothes-dresses-lioness-found-love-slit-dress--navy.gz'
 
     # test no-op
     #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'

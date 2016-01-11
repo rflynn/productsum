@@ -15,6 +15,7 @@ from pprint import pprint
 import re
 import requests
 import time
+from yurl import URL
 
 from htmlmetadata import HTMLMetadata
 from og import OG
@@ -79,7 +80,10 @@ class ProductNeimanMarcus(object):
         # fixups
 
         if self.stocklevel is not None:
-            self.stocklevel = int(self.stocklevel)
+            try:
+                self.stocklevel = int(self.stocklevel)
+            except:
+                self.stocklevel = None
 
         # normalize bread_crumb
         if self.bread_crumb is not None:
@@ -101,7 +105,7 @@ class ProductNeimanMarcus(object):
                     self.brand = cats[0].replace('-', ' ')
 
     def __repr__(self):
-        return '''ProductNeimanMarcus(
+        return ('''ProductNeimanMarcus(
     prodid...........%s
     url..............%s
     instock..........%s
@@ -128,7 +132,7 @@ class ProductNeimanMarcus(object):
        self.cmos_catalog_id,
        self.cmos_item,
        self.cmos_sku,
-       self.is_prod_group)
+       self.is_prod_group)).encode('utf8')
 
     def to_product(self):
 
@@ -191,7 +195,7 @@ class ProductsNeimanMarcus(object):
         og = OG.get_og(soup)
         meta = HTMLMetadata.do_html_metadata(soup)
         utag = Tealium.get_utag_data(soup)
-        custom = cls.get_custom(soup, og)
+        custom = cls.get_custom(soup, og, url)
 
         sp = sp[0] if sp else {}
 
@@ -215,33 +219,15 @@ class ProductsNeimanMarcus(object):
                 or og.get('title')
                 or meta.get('title') or None)
 
-            if utag and utag.get(u'product_id'):
-                for i in xrange(len(utag.get(u'product_id'))):
-                    p = ProductNeimanMarcus(
-                        prodid=nth(utag.get('product_id'), i),
-                        canonical_url=custom.get('url_canonical') or url,
-                        stocklevel=nth(utag.get('stock_level'), i) or None,
-                        instock=xboolstr(nth(utag.get('product_available'), i)),
-                        brand=nth(sp.get(u'brand'), i) or custom.get('brand') or None,
-                        name=nth(utag.get(u'product_name'), i) or name,
-                        title=og.get('title') or meta.get('title') or None,
-                        descr=maybe_join(' ', sp.get('description')) or None,
-                        features=custom.get('features') or None,
-                        price=nth(utag.get('product_price'), i) or None,
-                        currency=utag.get('order_currency_code') or None,
-                        img_url=og.get('image') or None,
-                        bread_crumb=utag.get('bread_crumb') or None,
-                        cmos_catalog_id=nth(utag.get('product_cmos_catalog_id'), i) or None,
-                        cmos_item=nth(utag.get('product_cmos_item'), i) or None,
-                        cmos_sku=nth(utag.get('product_cmos_sku'), i) or None,
-                        nm_product_type=utag.get('product_type'),
-                    )
-                    products.append(p)
-            else:
+            prodid=(nth(utag.get('product_id'), 0)
+                or custom.get('sku')
+                or None)
+
+            if prodid and og.get(u'type') == 'product':
                 p = ProductNeimanMarcus(
-                    prodid=nth(utag.get('product_id'), 0),
+                    prodid=prodid,
                     canonical_url=custom.get('url_canonical') or url,
-                    stocklevel=nth(utag.get('stock_level'), 0),
+                    stocklevel=nth(utag.get('stock_level'), 0) or None,
                     instock=xboolstr(nth(utag.get('product_available'), 0)),
                     brand=nth(sp.get(u'brand'), 0) or custom.get('brand') or None,
                     name=name,
@@ -275,8 +261,9 @@ class ProductsNeimanMarcus(object):
 
 
     @staticmethod
-    def get_custom(soup, og):
+    def get_custom(soup, og, url):
         # url
+        sku = None
         url_canonical = None
         tag = soup.find('link', rel='canonical', href=True)
         if tag:
@@ -285,6 +272,12 @@ class ProductsNeimanMarcus(object):
             url_canonical = og.get('url')
             if url_canonical and url_canonical.endswith('?ecid=NMSocialFacebookLike'):
                 url_canonical = url_canonical[:-len('?ecid=NMSocialFacebookLike')]
+        u = URL(url)
+        if u.path:
+            # e.g. http://www.neimanmarcus.com/Viktor-Rolf-NM-Exclusive-BONBON-Perfume-Swarovski-174-Limited-Edition-50-mL/prod184570129/p.prod
+            m = re.search(r'/(prod[0-9]{8,12})/p\.prod$', u.path)
+            if m:
+                sku = sku or m.groups(0)[0]
         # brand
         brand = None
         tag = soup.find('span', {'class':'prodDesignerName'})
@@ -296,6 +289,7 @@ class ProductsNeimanMarcus(object):
         if tag:
             features = [t.text for t in tag.findAll('li') or []]
         data = {
+            'sku': sku,
             'brand': brand,
             'features': features,
             'url_canonical': url_canonical,
@@ -313,6 +307,10 @@ if __name__ == '__main__':
 
     # doesn't populate url_product...
     filepath = 'test/www.neimanmarcus.com-Sklo-Sway-Long-Bowl-Accents-prod185550170_cat40520739__-p.prod-icid--searchType-EndecaDrivenCat.gz'
+
+    # test page that doesn't define prodid in the utag, we need the url...
+    url = 'http://www.neimanmarcus.com/Viktor-Rolf-NM-Exclusive-BONBON-Perfume-Swarovski-174-Limited-Edition-50-mL/prod184570129/p.prod'
+    filepath = 'test/www.neimanmarcus.com-Viktor-Rolf-NM-Exclusive-BONBON-Perfume-Swarovski-174-Limited-Edition-50-mL-prod184570129-p.prod.gz'
 
     # ignore by url...
     #url = 'http://www.neimanmarcus.com/search.jsp?N=4294914706&_requestid=151757&Ntt=Psycho+Bunny'

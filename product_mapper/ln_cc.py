@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map document archived from shop.mango.com to zero or more products
-ref: https://en.wikipedia.org/wiki/Mango_(clothing)
-
-NOTE: some stuff is in espanol
+map a document archived from ln_cc.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -27,10 +24,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'mango'
+MERCHANT_SLUG = 'ln_cc'
 
 
-class ProductMango(object):
+class ProductLN_CC(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -52,8 +49,8 @@ class ProductMango(object):
         self.isbn = isbn
         self.ean = ean
         self.currency = currency
-        self.sale_price = sale_price
-        self.price = u(price)
+        self.sale_price = normstring(sale_price)
+        self.price = normstring(price)
         self.brand = brand
         self.category = category
         self.breadcrumb = breadcrumb
@@ -75,67 +72,41 @@ class ProductMango(object):
         if self.id is not None:
             self.id = str(self.id) # ensure we're a string, some signals produce numeric
         assert self.id != 'None'
-
-        if self.id:
-            if self.id.lower().startswith('sku: #'):
-                self.id = self.id[6:]
-
+        if self.price:
+            self.price = normstring(self.price).replace(' ', '')
         if isinstance(self.brand, list):
             self.brand = u' '.join(self.brand) or None
         self.brand = dehtmlify(normstring(self.brand))
 
-        if self.brand:
-            # e.g. "mango man"
-            if self.brand.lower().startswith('mango '):
-                self.brand = self.brand[:5]
-            if self.brand.lower() == 'mango':
-                self.brand = 'Mango'
-
         if isinstance(self.name, list):
             self.name = u' '.join(self.name) or None
-        self.name = dehtmlify(normstring(self.name)) or None
+        self.name = dehtmlify(normstring(self.name))
+
+        # clean up "$brand $upper_name"
+        if self.name:
+            if self.brand:
+                if self.name.upper().startswith(self.brand.upper()):
+                    self.name = self.name[len(self.brand):].lstrip()
+            if self.name.upper() == self.name:
+                self.name = self.name.title()
+
         self.title = dehtmlify(normstring(self.title))
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
-        self.descr = dehtmlify(normstring(self.descr))
-        if self.features:
-            if isinstance(self.features, basestring):
-                self.features = [self.features]
-            self.features = [dehtmlify(f) for f in self.features]
-
-        if self.name:
-            if self.name.endswith(" | MANGO"):
-                self.name = self.name[:-len(" | MANGO")]
-            if self.name.endswith("MANGO"):
-                self.name = self.name[:-len("MANGO")]
-            self.name = self.name.strip(" -") or None
-
         if self.title:
-            if self.title.endswith(" | MANGO"):
-                self.title = self.title[:-len(" | MANGO")]
-            if self.title.endswith("MANGO"):
-                self.title = self.title[:-len("MANGO")]
-            self.title = self.title.strip(" -") or None
+            if self.title.endswith(' | LN-CC'):
+                self.title = self.title[:-len(' | LN-CC')]
 
-        if self.price is not None:
-            try:
-                self.price = normstring(self.price)
-                # "$129.99$64.99" = $price$sale_price
-                m = re.match(r'^(\$[0-9]+(?:\.[0-9]+)?)(\$[0-9]+(?:\.[0-9]+)?)$', self.price)
-                if m:
-                    #print '$price$saleprice:', m.groups(0)
-                    self.price, self.sale_price = m.groups(0)
-            except:
-                pass
+        self.descr = dehtmlify(normstring(self.descr))
 
-        if self.color:
-            self.color = normstring(self.color)
+        if self.features:
+            self.features = [dehtmlify(f) for f in self.features]
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductMango:
+        return ('''ProductLN_CC:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -234,7 +205,7 @@ class ProductMango(object):
         )
 
 
-class ProductsMango(object):
+class ProductsLN_CC(object):
 
     VERSION = 0
 
@@ -261,57 +232,121 @@ class ProductsMango(object):
         size = None
         sizes = None
         img_url = None
-        img_urls = None
         upc = None
         upcs = None
 
         try:
-            canonical = soup.find('link', rel='canonical').get('href')
-            if canonical:
-                url_canonical = urljoin(url, canonical)
+            url_canonical = urljoin(url, soup.find('link', rel='canonical').get('href'))
         except:
             url_canonical = url
 
-        # <input name="id_producto_hidden" id="id_producto_hidden" type="hidden" value="53043578" />
-        inp = soup.find('input', type='hidden', id='id_producto_hidden', value=True)
-        if inp:
-            sku = sku or inp.get('value') or None
+        br = soup.find('p', itemprop='breadcrumb')
+        if br:
+            try:
+                breadcrumbs = [x for x in
+                                [normstring(a.get_text())
+                                    for a in br.findAll('a')]
+                                        if x] or None
+            except:
+                traceback.print_exc()
 
-        sc = soup.find('script', text=lambda t: t and 'var dataLayerV2Json' in t)
+        sc = soup.find('script', text=lambda t: t and 'app.trackerData = {' in t)
         if sc:
             try:
-                m = re.search(r'dataLayerV2Json\s*=\s*({.*})', sc.text)
+                m = re.search('app.trackerData = ({.*})', sc.text)
                 if m:
                     objtxt = m.groups(0)[0]
                     #print objtxt
                     obj = json.loads(objtxt)
+                    #obj = execjs.exec_(objtxt + '; return options;')
                     #pprint(obj)
-                    ec = obj.get('ecommerce') or None
-                    if ec:
-                        dt = ec.get('detail') or None
-                        if dt:
-                            av = dt.get('availability')
-                            if isinstance(av, bool):
-                                in_stock = av
-                            sku = sku or dt.get('id') or None
-                            # XXX: are these even right?
-                            #brand = dt.get('brand') or None # XXX: shit
-                            #name = dt.get('name') or None
-                            #price = dt.get('price') or None
-                            #category = dt.get('category') or None
-                            #variant = dt.get('variant') or None
-                        page = obj.get('page') or None
-                        if page:
-                            brand = brand or page.get('brand') or None
+
+                    name = obj.get('Product') or None
+                    try:
+                        sku = obj['ecommerce']['detail']['products'][0]['id']
+                    except:
+                        traceback.print_exc()
             except:
                 traceback.print_exc()
+
+        if not sku:
+            u = URL(url)
+            if u.path:
+                # http://www.ln-cc.com/en/women/jackets-2/pre-ss16%3A-lanvin-single-breasted-coat/lan0223002col.html
+                m = re.search('/([a-z0-9]{8,32})\.html$', u.path)
+                if m:
+                    sku = m.groups(0)[0]
+
+        '''
+        <script type="text/json" class="js-gtm_product_variants_info">
+        '''
+        sc = soup.find('script', {'class': 'js-gtm_product_variants_info'})
+        if sc:
+            try:
+                objtxt = sc.text
+                #print objtxt
+                obj = json.loads(objtxt)
+                #obj = execjs.exec_(objtxt + '; return options;')
+                #pprint(obj)
+
+                o = obj[0]
+                sku = sku or o.get('productMasterID') or None
+                name = o.get('productName') or None
+                price = o.get('productPrice') or None
+                category = o.get('productType') or None
+            except:
+                traceback.print_exc()
+
+        d = soup.find('div', {'class': 'prod-short'})
+        if d:
+            try:
+                descr = normstring(d.get_text())
+            except:
+                traceback.print_exc()
+
+        try:
+            features = [x for x in
+                            [normstring(li.get_text()) for li in
+                                soup.select('div.b-product_long_description ul li')]
+                                    if x] or None
+        except:
+            traceback.print_exc()
+
+        '''
+        <ul class="js-swatches b-swatches_size">
+            <li class="b-swatches_size-item emptyswatch js-unselectable m-unselectable">
+                <a data-variantid="090900000143823" title="SIZE EU 35 is not available for this combination" class="js-swatchanchor b-swatches_size-link b-swatches-link_notifyme js-notifyme_link">
+                    EU 35
+                </a>
+                <span class="b-swatches-link_notifyme js-notifyme_link" data-variantid="090900000143823"></span>
+            </li>
+        '''
+        try:
+            sizes = [x for x in
+                        [normstring(a.get_text()) for a in
+                            soup.select('ul.js-swatches li a')]
+                                if x] or None
+        except:
+            traceback.print_exc()
+
+        '''
+        <ul class="js-thumbnails b-product_thumbnails-list">
+            <li class="js-thumbnail b-product_thumbnail b-product_thumbnail-selected">
+                <img class="js-img_product_thumbnail b-product_thumbnail-image"
+        '''
+        try:
+            img_urls = [x for x in
+                        [urljoin(url_canonical, img.get('src'))
+                            for img in soup.select('ul.js-thumbnails li img.js-img_product_thumbnail')]
+                                if x] or None
+        except:
+            traceback.print_exc()
 
         return {
             'url_canonical': url_canonical,
             'brand': brand,
             'sku': sku,
             'upc': upc,
-            'upcs': upcs,
             'slug': slug,
             'category': category,
             'name': name,
@@ -337,6 +372,7 @@ class ProductsMango(object):
         starttime = time.time()
 
         if False:
+            # nuthin'
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -355,6 +391,7 @@ class ProductsMango(object):
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
         custom = cls.get_custom(soup, url, og)
+        utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
 
@@ -362,17 +399,20 @@ class ProductsMango(object):
             'meta': meta,
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
+            'utag': utag,
             'custom': custom,
         }
         #pprint(signals)
+
+        # TODO: tokenize and attempt to parse url itself for hints on brand and product
+        # use everything at our disposal
 
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
                     or nth(sp.get('sku'), 0)
-                    or nth(sp.get('productId'), 0)
-                    or nth(sp.get('productID'), 0)
-                    or custom.get('sku')
+                    or nth(sp.get('productID'), 0) # should exist in ln_cc
+                    or custom.get('sku') # should exist in ln_cc
                     or None)
 
         products = []
@@ -397,13 +437,7 @@ class ProductsMango(object):
             except:
                 spbrand = None
 
-            brand = (custom.get('brand')
-                        or spbrand
-                        or og.get('product:brand')
-                        or og.get('brand')
-                        or 'J.Crew')
-
-            p = ProductMango(
+            p = ProductLN_CC(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -425,14 +459,15 @@ class ProductsMango(object):
                             or og.get('price:currency')
                             or og.get('currency')
                             or og.get('currency:currency')
+                            or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
-                price=(og.get('product:original_price:amount')
+                price=(custom.get('price')
+                            or og.get('product:original_price:amount')
                             or og.get('price:amount')
-                            or nth(sp.get('price'), 0)
                             or nth(spoffer.get('price'), 0)
-                            or custom.get('price')
+                            or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(custom.get('sale_price')
                             or og.get('product:sale_price:amount')
@@ -442,31 +477,37 @@ class ProductsMango(object):
                             or custom.get('sale_price')
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=brand,
+                brand=(custom.get('brand')
+                            or og.get('product:brand')
+                            or og.get('brand')
+                            or spbrand
+                            or None),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
+                            or utag.get('bread_crumb')
                             or None),
-                name=(sp.get('name') # better than custom...
+                name=(sp.get('name')
                             or custom.get('name')
                             or og.get('title')
-                            or meta.get('title')
+                            or nth(utag.get('product_name'), 0)
                             or None),
                 title=(custom.get('title')
                             or og.get('title')
                             or meta.get('title')
                             or None),
                 descr=(custom.get('descr')
-                            or nth(sp.get('description'), 0)
-                            or nth(spoffer.get('description'), 0)
+                            or sp.get('description') # much better than og
                             or og.get('description')
                             or meta.get('description')
                             or None),
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
-                            or og.get('availability')) in ('instock', 'in stock')))
+                            or og.get('availability')) in ('instock', 'in stock'))
+                            or xboolstr(nth(utag.get('product_available'), 0)))
                             or custom.get('in_stock')
                             or None),
-                stock_level=(custom.get('stock_level')
+                stock_level=(nth(utag.get('stock_level'), 0)
+                            or custom.get('stock_level')
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
@@ -477,16 +518,15 @@ class ProductsMango(object):
                             or og.get('color')
                             or nth(sp.get('color'), 0)
                             or None),
-                colors=(custom.get('colors')
-                            or None),
+                colors=custom.get('colors'),
                 size=custom.get('size') or None,
                 sizes=custom.get('sizes'),
                 img_url=(og.get('image')
                             or nth(sp.get('image'), 0)
                             or custom.get('img_url')
                             or None),
-                img_urls=(custom.get('img_urls')
-                            or sp.get('image')
+                img_urls=(sp.get('image')
+                            or custom.get('img_urls')
                             or None),
             )
             products.append(p)
@@ -510,21 +550,22 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsMango.from_html(url, html)
+    return ProductsLN_CC.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'http://shop.mango.com/US/p0/men/clothing/coats/faux-fur-applique-quilted-parka/?id=53099007_56&n=1&s=prendas_he.abrigos_he&ident=0__0_1451795122136&ts=1451795122136&p=1&page=1'
-    filepath = 'test/shop.mango.com-US-p0-men-clothing-coats-faux-fur-applique-quilted-parka.gz'
+    url = 'http://www.ln-cc.com/en_en/women/jackets-2/pre-ss16%3A-lanvin-single-breasted-coat/lan0223002col.html'
+    filepath = 'test/www.ln-cc.com-en_en-women-jackets-2-pre-ss16%3A-lanvin-single-breasted-coat-lan0223002col.html.gz'
 
-    url = 'http://shop.mango.com/US/p0/women/sale/shoes/buckle-leather-ankle-boots/?id=53043578_99&n=1&s=rebajas_t5_she&ident=0__0_1451792240601&ts=1451792240601&p=2&page=1'
-    filepath = 'test/shop.mango.com-US-p0-women-sale-shoes-buckle-leather-ankle-boots.gz'
+    url = 'http://www.ln-cc.com/en_en/women/shoes-2/valentino-leather-studded-thong-sandal/val0219002blk.html'
+    filepath = 'test/www.ln-cc.com-en_en-women-shoes-2-valentino-leather-studded-thong-sandal-val0219002blk.html.gz'
 
     # test no-op
-    #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'
+    #url = 'http://www.shiseido.com/perfect-rouge/9990000000039,en_US,pd.html'
+    #filepath = 'test/www.shiseido.com-perfect-rouge-9990000000039,en_US,pd.html.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:

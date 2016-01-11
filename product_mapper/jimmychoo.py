@@ -358,7 +358,7 @@ class ProductsJimmyChoo(object):
 
         starttime = time.time()
 
-        if False:
+        if '/search?q=' in url:
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,

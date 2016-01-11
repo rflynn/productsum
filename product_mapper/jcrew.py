@@ -277,7 +277,7 @@ class ProductsJCrew(object):
         if sc:
             lp = {k: v for k, v in
                     re.findall(r"lpAddVars\('[^']+','([^']+)','([^']+)'\);", sc.text)}
-            pprint(lp)
+            #pprint(lp)
             sku = sku or lp.get('ProductId') or None
             price = price or lp.get('ProductValue') or None
             currency = currency or lp.get('Currency') or None
@@ -326,7 +326,7 @@ class ProductsJCrew(object):
         </ul>
         '''
         td = soup.find('ul', {'class': 'tech-details'})
-        print 'td:', td
+        #print 'td:', td
         if td:
             try:
                 features = [normstring(li.get_text())
@@ -374,7 +374,10 @@ class ProductsJCrew(object):
 
         starttime = time.time()
 
-        if False:
+        u = URL(url)
+        if u.path and (u.path.startswith('/search2/index.jsp?')
+                    or u.path.startswith('/search/searchNavigation.jsp?')):
+            # definitely not a product...
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,

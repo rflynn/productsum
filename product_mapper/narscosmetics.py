@@ -2,10 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map document archived from shop.mango.com to zero or more products
-ref: https://en.wikipedia.org/wiki/Mango_(clothing)
-
-NOTE: some stuff is in espanol
+map a document archived from narscosmetics.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -27,13 +24,13 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'mango'
+MERCHANT_SLUG = 'narscosmetics'
 
 
-class ProductMango(object):
+class ProductNarsCosmetics(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
-                 merchant_sku=None, upc=None, isbn=None, ean=None,
+                 merchant_sku=None, upc=None, isbn=None, ean=None, asin=None,
                  currency=None, sale_price=None, price=None,
                  brand=None, category=None, breadcrumb=None,
                  in_stock=None, stock_level=None,
@@ -51,9 +48,10 @@ class ProductMango(object):
         self.upc = upc
         self.isbn = isbn
         self.ean = ean
-        self.currency = currency
+        self.asin = asin
+        self.currency = normstring(currency) or None
         self.sale_price = sale_price
-        self.price = u(price)
+        self.price = price
         self.brand = brand
         self.category = category
         self.breadcrumb = breadcrumb
@@ -64,7 +62,7 @@ class ProductMango(object):
         self.descr = descr
         self.material = material
         self.features = features
-        self.color = color
+        self.color = normstring(color) or None
         self.colors = colors
         self.size = size
         self.sizes = sizes
@@ -75,67 +73,35 @@ class ProductMango(object):
         if self.id is not None:
             self.id = str(self.id) # ensure we're a string, some signals produce numeric
         assert self.id != 'None'
-
-        if self.id:
-            if self.id.lower().startswith('sku: #'):
-                self.id = self.id[6:]
-
+        if self.price:
+            self.price = normstring(self.price).replace(' ', '')
         if isinstance(self.brand, list):
             self.brand = u' '.join(self.brand) or None
         self.brand = dehtmlify(normstring(self.brand))
-
-        if self.brand:
-            # e.g. "mango man"
-            if self.brand.lower().startswith('mango '):
-                self.brand = self.brand[:5]
-            if self.brand.lower() == 'mango':
-                self.brand = 'Mango'
-
         if isinstance(self.name, list):
             self.name = u' '.join(self.name) or None
-        self.name = dehtmlify(normstring(self.name)) or None
+        self.name = dehtmlify(normstring(self.name))
         self.title = dehtmlify(normstring(self.title))
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
         self.descr = dehtmlify(normstring(self.descr))
         if self.features:
-            if isinstance(self.features, basestring):
-                self.features = [self.features]
             self.features = [dehtmlify(f) for f in self.features]
 
         if self.name:
-            if self.name.endswith(" | MANGO"):
-                self.name = self.name[:-len(" | MANGO")]
-            if self.name.endswith("MANGO"):
-                self.name = self.name[:-len("MANGO")]
-            self.name = self.name.strip(" -") or None
+            if self.name.endswith(" | NARS Cosmetics"):
+                self.name = self.name[:-len(" | NARS Cosmetics")]
 
         if self.title:
-            if self.title.endswith(" | MANGO"):
-                self.title = self.title[:-len(" | MANGO")]
-            if self.title.endswith("MANGO"):
-                self.title = self.title[:-len("MANGO")]
-            self.title = self.title.strip(" -") or None
-
-        if self.price is not None:
-            try:
-                self.price = normstring(self.price)
-                # "$129.99$64.99" = $price$sale_price
-                m = re.match(r'^(\$[0-9]+(?:\.[0-9]+)?)(\$[0-9]+(?:\.[0-9]+)?)$', self.price)
-                if m:
-                    #print '$price$saleprice:', m.groups(0)
-                    self.price, self.sale_price = m.groups(0)
-            except:
-                pass
-
-        if self.color:
-            self.color = normstring(self.color)
+            if self.title.endswith(" | NARS Cosmetics"):
+                self.title = self.title[:-len(" | NARS Cosmetics")]
 
         if self.upc:
             self.upc = str(self.upc)
 
+
     def __repr__(self):
-        return ('''ProductMango:
+        return ('''ProductNarsCosmetics:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -144,6 +110,7 @@ class ProductMango(object):
     upc.............. %s
     isbn............. %s
     ean.............. %s
+    asin............. %s
     currency......... %s
     sale_price....... %s
     price............ %s
@@ -171,6 +138,7 @@ class ProductMango(object):
        self.upc,
        self.isbn,
        self.ean,
+       self.asin,
        self.currency,
        self.sale_price,
        self.price,
@@ -211,6 +179,7 @@ class ProductMango(object):
             merchant_slug=MERCHANT_SLUG,
             url_canonical=self.url,
             upc=self.upc,
+            asin=self.asin,
             merchant_sku=self.id,
             merchant_product_obj=self,
             price=self.price,
@@ -234,7 +203,7 @@ class ProductMango(object):
         )
 
 
-class ProductsMango(object):
+class ProductsNarsCosmetics(object):
 
     VERSION = 0
 
@@ -261,63 +230,113 @@ class ProductsMango(object):
         size = None
         sizes = None
         img_url = None
-        img_urls = None
         upc = None
+        asin = None
         upcs = None
 
         try:
-            canonical = soup.find('link', rel='canonical').get('href')
-            if canonical:
-                url_canonical = urljoin(url, canonical)
+            url_canonical = urljoin(url, soup.find('link', rel='canonical').get('href'))
         except:
             url_canonical = url
 
-        # <input name="id_producto_hidden" id="id_producto_hidden" type="hidden" value="53043578" />
-        inp = soup.find('input', type='hidden', id='id_producto_hidden', value=True)
-        if inp:
-            sku = sku or inp.get('value') or None
-
-        sc = soup.find('script', text=lambda t: t and 'var dataLayerV2Json' in t)
-        if sc:
+        # <ul itemprop="breadcrumb">
+        br = soup.find('ul', itemprop='breadcrumb')
+        if br:
             try:
-                m = re.search(r'dataLayerV2Json\s*=\s*({.*})', sc.text)
-                if m:
-                    objtxt = m.groups(0)[0]
-                    #print objtxt
-                    obj = json.loads(objtxt)
-                    #pprint(obj)
-                    ec = obj.get('ecommerce') or None
-                    if ec:
-                        dt = ec.get('detail') or None
-                        if dt:
-                            av = dt.get('availability')
-                            if isinstance(av, bool):
-                                in_stock = av
-                            sku = sku or dt.get('id') or None
-                            # XXX: are these even right?
-                            #brand = dt.get('brand') or None # XXX: shit
-                            #name = dt.get('name') or None
-                            #price = dt.get('price') or None
-                            #category = dt.get('category') or None
-                            #variant = dt.get('variant') or None
-                        page = obj.get('page') or None
-                        if page:
-                            brand = brand or page.get('brand') or None
+                breadcrumbs = [x for x in
+                                [normstring(l.get_text())
+                                    for l in br.findAll('li')]
+                                        if x] or None
             except:
                 traceback.print_exc()
+
+        pc = soup.find('div', id='product-content')
+        if pc:
+            try:
+                p = pc.find('span', {'class': 'price-sales'})
+                if p:
+                    price = normstring(p.get_text())
+            except:
+                traceback.print_exc()
+
+        '''
+<select class="Color jsform-custom" id="product-color-select">
+
+<option class="emptyswatch" value="7845092216"
+data-href="http://www.narscosmetics.com/on/demandware.store/Sites-US-Site/default/Product-Variation?pid=999NACSLP0001&amp;dwvar_999NACSLP0001_color=7845092216"
+data-color="713B34">
+Bansar
+</option>
+        '''
+        try:
+            # this is legit, but narscosmetics has a different url per color
+            colors = [x for x in
+                        [normstring(o.get_text())
+                            for o in soup.select('select.Color option[data-color]')]
+                                if x] or None
+            c = soup.select('select.Color option[class="selected"]')
+            if c:
+                color = normstring(c[0].get_text())
+        except:
+            traceback.print_exc()
+
+        try:
+            t1 = soup.find('div', id='tab1')
+            #print 't1:', t1
+            if t1:
+                p = t1.find('p')
+                if p:
+                    descr = normstring(p.get_text())
+                u = t1.find('ul')
+                if u:
+                    features = [x for x in
+                                    [normstring(li.get_text())
+                                        for li in u.findAll('li')]
+                                            if x] or None
+        except:
+            traceback.print_exc()
+
+        if not sku:
+            u = URL(url)
+            if u.path:
+                m = re.search('/([0-9]{8,14})\.html$', url_canonical)
+                if m:
+                    sku = m.groups(0)[0]
+                    upc = sku # ref: http://www.upcindex.com/607845036371
+
+        try:
+            img_urls = [x for x in
+                            [urljoin(url_canonical, img.get('src'))
+                                for img in soup.select('div.product-primary-image img[src]')]
+                                    if x] or None
+            if img_urls:
+                img_url = img_urls[0]
+        except:
+            traceback.print_exc()
+
+        try:
+            breadcrumbs = [x for x in
+                            [normstring(li.get_text())
+                                for li in soup.select('ol.breadcrumb li')]
+                                    if x] or None
+            if breadcrumbs:
+                if breadcrumbs[0] == u'Home' and len(breadcrumbs) > 1:
+                    category = breadcrumbs[1]
+        except:
+            traceback.print_exc()
 
         return {
             'url_canonical': url_canonical,
             'brand': brand,
             'sku': sku,
             'upc': upc,
-            'upcs': upcs,
+            'asin': asin,
             'slug': slug,
             'category': category,
             'name': name,
-            'descr': descr,
             'in_stock': in_stock,
             'stock_level': stock_level,
+            'descr': descr,
             'features': features,
             'currency': currency,
             'price': price,
@@ -329,6 +348,7 @@ class ProductsMango(object):
             'sizes': sizes,
             'img_url': img_url,
             'img_urls': img_urls,
+            'upcs': upcs,
         }
 
     @classmethod
@@ -337,6 +357,7 @@ class ProductsMango(object):
         starttime = time.time()
 
         if False:
+            # nuthin'
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -369,9 +390,8 @@ class ProductsMango(object):
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
-                    or nth(sp.get('sku'), 0)
                     or nth(sp.get('productId'), 0)
-                    or nth(sp.get('productID'), 0)
+                    or nth(sp.get('productID'), 0) # this one is expected for narscosmetics.com
                     or custom.get('sku')
                     or None)
 
@@ -379,38 +399,31 @@ class ProductsMango(object):
 
         if prodid:
 
+            brand = (nth(sp.get('brand'), 0)
+                        or u'NARS')
+
             try:
                 spoffer = sp['offers'][0]['properties']
             except:
                 spoffer = {}
 
-            try:
-                spbrand = sp.get('brand')
-                if spbrand:
-                    spbrand = spbrand[0]
-                    if isinstance(spbrand, basestring):
-                        pass
-                    elif isinstance(spbrand, dict):
-                        spbrand = nth(spbrand['properties']['name'], 0)
-                if isinstance(spbrand, list):
-                    spbrand = u' '.join(spbrand)
-            except:
-                spbrand = None
+            descr = (custom.get('descr')
+                        or nth(sp.get('description'), 0)
+                        or og.get('description')
+                        or meta.get('description')
+                        or None)
+            descr = dehtmlify(normstring(descr))
 
-            brand = (custom.get('brand')
-                        or spbrand
-                        or og.get('product:brand')
-                        or og.get('brand')
-                        or 'J.Crew')
-
-            p = ProductMango(
+            p = ProductNarsCosmetics(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
                             or sp.get('url')
                             or url
                             or None),
-                upc=custom.get('upc') or None,
+                upc=(custom.get('upc')
+                            or og.get('upc')
+                            or None),
                 slug=custom.get('slug') or None,
                 merchant_name=(og.get('product:retailer_title')
                             or og.get('retailer_title')
@@ -419,6 +432,8 @@ class ProductsMango(object):
                 ean=(og.get('product:ean')
                             or og.get('ean')
                             or None),
+                asin=custom.get('asin') or None,
+                brand=brand,
                 currency=(og.get('product:price:currency')
                             or og.get('product:sale_price:currency')
                             or og.get('sale_price:currency')
@@ -428,11 +443,10 @@ class ProductsMango(object):
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
-                price=(og.get('product:original_price:amount')
+                price=(custom.get('price')
+                            or og.get('product:original_price:amount')
                             or og.get('price:amount')
-                            or nth(sp.get('price'), 0)
                             or nth(spoffer.get('price'), 0)
-                            or custom.get('price')
                             or None),
                 sale_price=(custom.get('sale_price')
                             or og.get('product:sale_price:amount')
@@ -442,25 +456,18 @@ class ProductsMango(object):
                             or custom.get('sale_price')
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=brand,
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or None),
-                name=(sp.get('name') # better than custom...
-                            or custom.get('name')
+                name=(custom.get('name')
+                            or nth(sp.get('name'), 0)
                             or og.get('title')
-                            or meta.get('title')
                             or None),
                 title=(custom.get('title')
                             or og.get('title')
                             or meta.get('title')
                             or None),
-                descr=(custom.get('descr')
-                            or nth(sp.get('description'), 0)
-                            or nth(spoffer.get('description'), 0)
-                            or og.get('description')
-                            or meta.get('description')
-                            or None),
+                descr=descr,
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
                             or og.get('availability')) in ('instock', 'in stock')))
@@ -477,16 +484,15 @@ class ProductsMango(object):
                             or og.get('color')
                             or nth(sp.get('color'), 0)
                             or None),
-                colors=(custom.get('colors')
-                            or None),
+                colors=custom.get('colors'),
                 size=custom.get('size') or None,
                 sizes=custom.get('sizes'),
                 img_url=(og.get('image')
                             or nth(sp.get('image'), 0)
                             or custom.get('img_url')
                             or None),
-                img_urls=(custom.get('img_urls')
-                            or sp.get('image')
+                img_urls=(sp.get('image')
+                            or custom.get('img_urls')
                             or None),
             )
             products.append(p)
@@ -510,21 +516,21 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsMango.from_html(url, html)
+    return ProductsNarsCosmetics.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'http://shop.mango.com/US/p0/men/clothing/coats/faux-fur-applique-quilted-parka/?id=53099007_56&n=1&s=prendas_he.abrigos_he&ident=0__0_1451795122136&ts=1451795122136&p=1&page=1'
-    filepath = 'test/shop.mango.com-US-p0-men-clothing-coats-faux-fur-applique-quilted-parka.gz'
+    url = 'http://www.narscosmetics.com/USA/schiap-nail-polish/0607845036371.html'
+    filepath = 'test/www.narscosmetics.com-USA-schiap-nail-polish-0607845036371.html.gz'
 
-    url = 'http://shop.mango.com/US/p0/women/sale/shoes/buckle-leather-ankle-boots/?id=53043578_99&n=1&s=rebajas_t5_she&ident=0__0_1451792240601&ts=1451792240601&p=2&page=1'
-    filepath = 'test/shop.mango.com-US-p0-women-sale-shoes-buckle-leather-ankle-boots.gz'
+    url = 'http://www.narscosmetics.com/USA/palais-royal-satin-lip-pencil/0607845092100.html'
+    filepath = 'test/www.narscosmetics.com-USA-palais-royal-satin-lip-pencil-0607845092100.html.gz'
 
     # test no-op
-    #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:

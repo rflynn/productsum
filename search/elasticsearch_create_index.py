@@ -50,10 +50,12 @@ schema = \
                         'pumps=>pump',
                         'spiked=>spike',
                         'spikes=>spike',
-			"‘=>'",
-			"’=>'",
-			'“=>"',
-			'”=>"',
+                        'flared=>flare',
+                        'flares=>flare',
+                        "‘=>'",
+                        "’=>'",
+                        '“=>"',
+                        '”=>"',
                     ]
                 },
                 'nfkc_normalizer': { # normalize unicode form
@@ -155,13 +157,13 @@ select
     url_host,
     url_canonical as url,
     url_canonical as url_raw,
-    coalesce(bt.brand_to, up.brand) as brand,
+    coalesce(bt.brand_to, up.brand, upna.name_brand[1][1]) as brand,
     up.brand                        as brand_orig,
-    coalesce(bt.brand_to, up.brand) as brand_raw,
+    coalesce(bt.brand_to, up.brand, upna.name_brand[1][1]) as brand_raw,
     -- identical copies of ${brand_foo}_ascii, they're normalized in elasticsearch
-    coalesce(bt.brand_to, up.brand) as brand_ascii,
+    coalesce(bt.brand_to, up.brand, upna.name_brand[1][1]) as brand_ascii,
     up.brand                        as brand_orig_ascii,
-    coalesce(bt.brand_to, up.brand) as brand_raw_ascii,
+    coalesce(bt.brand_to, up.brand, upna.name_brand[1][1]) as brand_raw_ascii,
     name,
     -- substr(descr, 0, 4096) as descr,
     in_stock,
@@ -175,8 +177,10 @@ select
     available_colors,
     img_urls
 from url_product up
+left join url_product_name_attr upna
+    on upna.url_product_id = up.id
 left join brand_translate bt
-    on bt.brand_from = up.brand
+    on bt.brand_from = coalesce(up.brand, upna.name_brand[1][1])
 -- limit 1000
 ''')
         for row in cursor:

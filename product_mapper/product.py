@@ -215,11 +215,13 @@ class Product(object):
                 print u"gtin8 '%s' does not match numeric pattern..." % (self.gtin8,)
             else:
                 if not self.gtin12 and not self.gtin13 and not self.gtin14:
-                    self.gtin12 = '000000' + self.gtin8
-                    self.gtin13 = '0000000' + self.gtin8
-                    self.gtin14 = '00000000' + self.gtin8
+                    self.gtin12 = '0000' + self.gtin8
+                    self.gtin13 = '00000' + self.gtin8
+                    self.gtin14 = '000000' + self.gtin8
 
     def fixup_prices_and_currency(self):
+        if self.price_str:
+            self.price_str = self.price_str.lstrip(u'\xc2') # unmangle unicode garbage
         cur, pmin, pmax = Product.parse_price(self.price_str)
         if not self.currency and cur:
             if cur == '$':
@@ -233,7 +235,9 @@ class Product(object):
             self.price_min = pmin
         if pmax:
             self.price_max = pmax
-        
+
+        if self.sale_price_str:
+            self.sale_price_str = self.sale_price_str.lstrip(u'\xc2')
         cur, pmin, pmax = Product.parse_price(self.sale_price_str)
         if not self.currency and cur:
             if cur == '$':

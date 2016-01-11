@@ -259,7 +259,6 @@ class ProductsSelfridges(object):
                 sku = sku or inp.get('wcid') or None
                 brand = brand or inp.get('productBrand') or None
                 title = title or inp.get('productTitle') or None
-                category = category or inp.get('wcid') or None
                 #print 'inp:',
                 #pprint(inp)
             except:

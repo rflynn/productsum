@@ -14,6 +14,7 @@ from boto3.dynamodb.conditions import Key, Attr
 from datetime import datetime
 import gc
 import multiprocessing
+import os
 import psycopg2
 import psycopg2.extensions
 import time
@@ -34,15 +35,21 @@ from belk import ProductsBelk
 from bergdorfgoodman import ProductsBergdorfGoodman
 from bloomingdales import ProductsBloomingdales
 from bluefly import ProductsBluefly
+from bluemercury import ProductsBlueMercury
+from chanel import ProductsChanel
+from christianlouboutin import ProductsChristianLouboutin
 from cvs import ProductsCVS
 from dermstore import ProductsDermstore
 from dillards import ProductsDillards
 from drugstorecom import ProductsDrugstoreCom
 from farfetch import ProductsFarfetch
 from fwrd import ProductsFwrd
+from harrods import ProductsHarrods
 from italist import ProductsItalist
 from jcrew import ProductsJCrew
+from jcpenney import ProductsJCPenney
 from jimmychoo import ProductsJimmyChoo
+from ln_cc import ProductsLN_CC
 from lordandtaylor import ProductsLordandTaylor
 from macys import ProductsMacys
 from mango import ProductsMango
@@ -50,6 +57,8 @@ from matchesfashion import ProductsMatchesFashion
 from maybelline import ProductsMaybelline
 from modaoperandi import ProductsModaoperandi
 from mytheresa import ProductsMyTheresa
+from narscosmetics import ProductsNarsCosmetics
+from nastygal import ProductsNastyGal
 from neimanmarcus import ProductsNeimanMarcus
 from netaporter import ProductsNetaPorter
 from nordstrom import ProductsNordstrom
@@ -69,6 +78,7 @@ from target import ProductsTarget
 from thecorner import ProductsTheCorner
 from theoutnet import ProductsTheOutNet
 from therealreal import ProductsTheRealReal
+from toryburch import ProductsToryBurch
 from tradesy import ProductsTradesy
 from ulta import ProductsUlta
 from walgreens import ProductsWalgreens
@@ -197,6 +207,7 @@ Host2Map = {
     'shop.nordstrom.com':   ProductsNordstrom,
     'shop.riteaid.com':     ProductsRiteaid,
     'us.jimmychoo.com':     ProductsJimmyChoo,
+    'us.christianlouboutin.com': ProductsChristianLouboutin,
     'www.6pm.com':          Products6pm,
     'www.barneys.com':      ProductsBarneys,
     'www.beauty.com':       ProductsBeautyCom,
@@ -206,21 +217,28 @@ Host2Map = {
     'www.bathandbodyworks.com': ProductsBathandBodyWorks,
     'www.bergdorfgoodman.com': ProductsBergdorfGoodman,
     'www1.bloomingdales.com':ProductsBloomingdales,
+    'www.bluemercury.com':  ProductsBlueMercury,
     'www.bluefly.com':      ProductsBluefly,
+    'www.chanel.com':       ProductsChanel,
     'www.cvs.com':          ProductsCVS,
     'www.dermstore.com':    ProductsDermstore,
     'www.dillards.com':     ProductsDillards,
     'www.drugstore.com':    ProductsDrugstoreCom,
     'www.farfetch.com':     ProductsFarfetch,
     'www.fwrd.com':         ProductsFwrd,
-    'www.jcrew.com':        ProductsJCrew,
+    'www.harrods.com':      ProductsHarrods,
     'www.italist.com':      ProductsItalist,
+    'www.jcpenney.com':     ProductsJCPenney,
+    'www.jcrew.com':        ProductsJCrew,
     'www.lordandtaylor.com': ProductsLordandTaylor,
+    'www.ln-cc.com':        ProductsLN_CC,
     'www1.macys.com':       ProductsMacys,
     'www.matchesfashion.com': ProductsMatchesFashion,
     'www.maybelline.com':   ProductsMaybelline,
     'www.modaoperandi.com': ProductsModaoperandi,
     'www.mytheresa.com':    ProductsMyTheresa,
+    'www.narscosmetics.com':ProductsNarsCosmetics,
+    'www.nastygal.com':     ProductsNastyGal,
     'www.neimanmarcus.com': ProductsNeimanMarcus,
     'www.net-a-porter.com': ProductsNetaPorter,
     'www.nyxcosmetics.com': ProductsNyxCosmetics,
@@ -238,6 +256,7 @@ Host2Map = {
     'www.thecorner.com':    ProductsTheCorner,
     'www.theoutnet.com':    ProductsTheOutNet,
     'www.therealreal.com':  ProductsTheRealReal,
+    'www.toryburch.com':    ProductsToryBurch,
     'www.tradesy.com':      ProductsTradesy,
     'www.ulta.com':         ProductsUlta,
     'www.walmart.com':      ProductsWalmart,
@@ -268,6 +287,14 @@ def handle_url(url, host, sha256, updated):
         traceback.print_exc()
         raise
 
+def reduce_proc_priority():
+    # workers are not time-sensitive, while spider processes are
+    # when running on machines with both, de-prioritized workers
+    try:
+        os.nice(1)
+    except Exception as e:
+        print e
+
 '''
 per-CPU(ish) worker that
     reads input
@@ -276,6 +303,7 @@ per-CPU(ish) worker that
 NOTE: doesn't peg a CPU due to S3 i/o
 '''
 def worker(q1, q2):
+    reduce_proc_priority()
     while True:
         params = q1.get(True)
         q2.put(handle_url(*params))
@@ -337,7 +365,7 @@ def map_products(url_host):
 
     # our worker processes don't peg the CPU due to i/o
     # so if we directly map 1:1 w/ CPU we waste a lot of resources
-    POOLSIZE = multiprocessing.cpu_count() * 2
+    POOLSIZE = multiprocessing.cpu_count() * 1
     pool = multiprocessing.Pool(POOLSIZE, worker, (q1, q2,))
 
     sent = 0
@@ -385,6 +413,8 @@ def map_products(url_host):
         print 'finishing up final %s...' % (sent - recv)
         handle_responses(q2, 0)
     except KeyboardInterrupt:
+        pass
+    finally:
         try:
             pool.terminate()
         except:

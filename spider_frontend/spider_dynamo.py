@@ -123,9 +123,12 @@ _Seeds = {
     'http://www.beautylish.com/': {
         'skip': {
             '/about/',
+            '/article/',
+            '/articles/',
             '/bag/',
-            '/jobs/',
+            '/f/',
             '/help/',
+            '/jobs/',
             '/photos/',
             '/press/',
             '/review/',
@@ -312,6 +315,8 @@ _Seeds = {
             '*;jsessionid=',
             '/minuteclinic/',
             '*/clinics/',
+            '/store-locator/',
+            '/stores/',
             # robots.txt
             '/account/',
             '/bizontent/navarro/',
@@ -364,6 +369,8 @@ _Seeds = {
     'http://www.dillards.com/': {
         'runjs': {},
         'skip': {
+            # custom
+            '/*/void(0)', # they weirdly link here, stop following these fucking links...
             '/c/',
             '/credit-services/',
             '/html/',
@@ -492,6 +499,17 @@ _Seeds = {
     },
     'http://www.jcpenney.com/': {
         'skip': {
+            # custom
+            '/dotcom/jsp/cart/',
+            '/jsp/',
+            '*/jsp/',
+            '/jsp/browse/',
+            '/jsp/checkout/',
+            '/*/customerservice/',
+            '/jsp/giftcard/',
+            '/jsp/global/',
+            '/Customers/',
+            # robots.txt
             '/products/',
             '/jsp/search',
             '/jsp/browse/pp/print/',
@@ -580,9 +598,38 @@ _Seeds = {
             # custom
             '/on/demandware.store/Sites-lancome_us-Site/default/Stores-Find',
             '/on/demandware.store/Sites-lancome_us-Site/default/CustomerService-ContactUsRealDialog',
+            '*Wishlist-Add',
             # robots.txt
             '/on/demandware.store/Sites-lancome_us-Site/default/Account-Show',
             '/on/demandware.store/Sites-lancome_us-Site/default/Cart-Show',
+        },
+    },
+    'http://www.ln-cc.com/': {
+        'skip': {
+            # custom
+            '/*Cart-Show',
+            '/*storelocator',
+            '/*/feed/',
+            '/*/send-to-friend',
+            '/*/customer-service/',
+            '/*/customer-care/',
+            '*/select-country?Country=',
+            # robots.txt
+            '/*CountryGateway-SwitchLocale*',
+            '/*prefn1*',
+            '/*prefv1*',
+            '/*SendToFriend-Start?pid*',
+            '/*SendToFriend-Start?source*',
+            '/*send-to-friend?pid*',
+            '/*send-to-friend?source*',
+            '/*Search-Show?q*',
+            '/*risultati-ricerca?q*',
+            '/*resulats-recherche?q*',
+            '/*resultados-busqueda?q*',
+            '/*suchergebnisse?q*',
+            '/*search-results?q*',
+            '/*Product-Variation?*',
+            '/*srule=*',
         },
     },
     'http://www.lordandtaylor.com/': {
@@ -609,6 +656,32 @@ _Seeds = {
     },
     'http://www.luisaviaroma.com/': {
         'runjs': {},
+    },
+    'http://www.maccosmetics.com/': {
+        'skip': {
+            # custom
+            '/account/',
+            '/checkout/',
+            '/culture/',
+            '/counterfeit-education',
+            '/customer_service/',
+            '/customer-service-faq',
+            '/employment',
+            '/giftcards',
+            '/egiftcards',
+            '/giving_back',
+            '/our-story',
+            '/privacy-policy',
+            '/mac-pro',
+            '/makeup-services/',
+            '/returns/',
+            '/shipping/',
+            '/stores/',
+            '/supplier-relations',
+            '/terms-conditions',
+            '/viva-glam-mac-aids-fund',
+            # robots.txt looks like some unmodified wordpress template
+        },
     },
     'http://madisonlosangeles.com/': {},
     'http://www.matchesfashion.com/': {
@@ -673,6 +746,52 @@ _Seeds = {
             '*/giftcard/',
             '*/mzcatalog/',
             '*/mywishlist/',
+        },
+    },
+    'http://www.narscosmetics.com/': {
+        'skip': {
+            # custom
+            '/*/null',
+            '/*/Wishlist-Add',
+            '/*/SendToFriend',
+            '/USA/Account',
+            '/USA/customer-care.html',
+            '/USA/Stores',
+            '/USA/Events.html',
+            '/USA/nars-pro.html',
+            '/USA/AskTheArtist',
+            '/USA/terms.html',
+            '/USA/privacy-policy.html',
+            '/on/demandware.store/Sites-US-Site/default/Locale-Page',
+            # robots.txt
+            '/default/Cart',
+            '/default/COBilling',
+            '/default/COCustomer',
+            '/default/COPlaceOrder',
+            '/default/COSamples',
+            '/default/COShipping',
+            '/default/COSummary',
+            '/default/Product-GetAvailability',
+            '/default/Product-GetSetItem',
+            '/default/Product-Productnav',
+            '/default/Resources-Load',
+            '/en_US/Cart',
+            '/en_US/COBilling',
+            '/en_US/COCustomer',
+            '/en_US/COPlaceOrder',
+            '/en_US/COSamples',
+            '/en_US/COShipping',
+            '/en_US/COSummary',
+            '/en_US/Product-GetAvailability',
+            '/en_US/Product-GetSetItem',
+            '/en_US/Product-Productnav',
+            '/en_US/Resources-Load',
+            '/EU/',
+            '/en_GB/',
+            '/en/',
+            '/on/demandware.store/Sites-EU-Site/',
+            '/on/demandware.store/Sites-UK-Site/',
+            '/*reviews',
         },
     },
     'http://www.nastygal.com/': {
@@ -817,7 +936,7 @@ _Seeds = {
             '/rewards',
             '/sephoratv/',
             '/stores/',
-            '?country_switch=',
+            '*?country_switch=',
             # robots.txt
             '/basket/',
             '/checkout/',
@@ -855,6 +974,7 @@ _Seeds = {
     'http://www.skinstore.com/': {
         'skip': {
             # custom
+            '/ContentPages/BazaarVoiceLogin.aspx',
             '/myAccount/',
             '/serviceCenter/',
             # robots.txt
@@ -883,12 +1003,14 @@ _Seeds = {
             '/workarea/',
         },
     },
-    'http://www.stuartweitzman.com/': {
+    'http://www.stuartweitzman.com/home/default.aspx': {
         'runjs': {},
         'skip': {
             # custom
             '/?ChangeCountry=',
+            '/careers/',
             '/home',
+            '/my-account/',
             '/shopping-bag',
             '/service/',
             # robots.txt
@@ -1093,7 +1215,31 @@ _Seeds = {
             '/users',
         },
     },
-    'http://www.toryburch.com/': {},
+    'http://www.toryburch.com/': {
+        'skip': {
+            # custom
+            '/about-us/',
+            '/account',
+            '/blog/',
+            '/ca-supply-chain-disclosure/',
+            '/content-privacy/',
+            '/giftcards/',
+            '/global/',
+            '/on/',
+            '/stores/',
+            # robots.txt
+            '/Login-Show/',
+            '/Customer-EditProfile/',
+            '/Customer-AddressBookList/',
+            '/PaymentInstruments-List/',
+            '/Order-Track/',
+            '/Wishlist-Show/',
+            '/E?mai?lFr?ien?d-S?tar?t/',
+            '/Search-*?',
+            '/Sites-ToryBurch_CF-Site/',
+            '/hidden-category/',
+        },
+    },
     'http://www.thecorner.com/us': {'ok':{'/us/'}},
     'http://www.snapdeal.com/': {
         'ok': {
@@ -1418,6 +1564,7 @@ _Seeds = {
     },
     'https://www.tradesy.com/': {
         # seems legit...
+        '*/tel:', # has a number of weird links ending in tel:
     },
     'http://us.rimmellondon.com/': {
         'ok': {
@@ -1463,6 +1610,71 @@ _Seeds = {
             '/?q=user/register/',
             '/?q=user/login/',
             '/?q=user/logout/',
+        },
+    },
+    'http://www.urbanoutfitters.com/': {
+        'crawl-delay': 60,
+        'skip': {
+            # custom
+            '/urban/help/',
+            '/urban/stores/',
+            '/urban/on/',
+            # robots.txt
+            '/urban/catalog/category.jsp?id=UOWW',
+            '/urban/arc/',
+            '/urban/checkout/',
+            '/urban/content/ApartmentEntertain.html',
+            '/urban/content/ApartmentFurnish.html',
+            '/urban/content/browsepage_content.html',
+            '/urban/content/Home.html',
+            '/urban/content/MensAccessories.html',
+            '/urban/content/MensApparel.html',
+            '/urban/content/MensShoes.html',
+            '/urban/content/splashspring_summer.html',
+            '/urban/content/WomensAccessories.html',
+            '/urban/content/WomensApparel.html',
+            '/urban/content/WomensShoes.html',
+            '/urban/catalog/category_content_cached.jsp',
+            '/urban/coremetrics/',
+            '/urban/emails/',
+            '/urban/html/damsel_sizechart.html',
+            '/urban/html/faq.html',
+            '/urban/html/Features.html',
+            '/urban/html/gift_cards.html',
+            '/urban/html/mail_list_info.html',
+            '/urban/html/MailOrderForm.html',
+            '/urban/html/mens_brands.html',
+            '/urban/html/OrderingAndPayment.html',
+            '/urban/html/pop_creditCardInfo.html',
+            '/urban/html/pop_daytime_phone.html',
+            '/urban/html/popup_giftoptions.html',
+            '/urban/html/popup_paymentoptions.html',
+            '/urban/html/popup_returnsexchanges.html',
+            '/urban/html/popup_shippinginfo.html',
+            '/urban/html/popup_sizechart.html',
+            '/urban/html/privacy_security.html',
+            '/urban/html/ReturnsAndExchanges.html',
+            '/urban/html/sale.html',
+            '/urban/html/ShippingInformation.html',
+            '/urban/html/sizechart_damsel.html',
+            '/urban/html/SpecialInformation.html',
+            '/urban/html/splash.html',
+            '/urban/html/TermsOfUse.html',
+            '/urban/html/viewgateway.html',
+            '/urban/html/WACC.html',
+            '/urban/html/wacc.html',
+            '/urban/html/womens_brands.html',
+            '/urban/popups/',
+            '/urban/signup/',
+            '/urban/ui/',
+            '/urban/user/',
+            '/uk/checkout.jsp',
+            '/fr/checkout.jsp',
+            '/de/checkout.jsp',
+            '/uk/user/*',
+            '/fr/user/*',
+            '/de/user/*',
+            '/*/pos/',
         },
     },
     'https://www.victoriassecret.com/': {},
@@ -1747,6 +1959,7 @@ assert not prefix_matches('/a', '/')
 assert prefix_matches('/foo/bar?baz', '/*bar')
 assert prefix_matches('/fr-fr/femmes', '/fr-fr/')
 assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
+assert prefix_matches('/trussardi?country_switch=ca&lang=en&redirect=homepage', '*?country_switch=')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:
@@ -1758,11 +1971,11 @@ def ok_to_spider(url, fqdn, settings):
     if settings:
         # enforce path prefix whitelist/blacklist
         if 'skip' in settings:
-            if any(prefix_matches(u.path + u.query, s) for s in settings['skip']):
+            if any(prefix_matches(u.path + ('?' + u.query if u.query else ''), s) for s in settings['skip']):
                 print 'skip', url, settings['skip']
                 return False
         if 'ok' in settings:
-            if not any(prefix_matches(u.path + u.query, s) for s in settings['ok']):
+            if not any(prefix_matches(u.path + ('?' + u.query if u.query else ''), s) for s in settings['ok']):
                 print 'not ok', url, settings['ok']
                 return False
     if '://www.ssense.com/fr-fr/' in url:

@@ -18,20 +18,28 @@ def translate(brands):
             aka = v.get('aka')
             if aka:
                 #pprint(aka)
-                for a in aka.keys():
-                    a = u(a)
-                    xl[a] = k
+                try:
+                    for a in aka.keys():
+                        a = u(a)
+                        xl[a] = k
+                except:
+                    pprint(aka)
+                    raise
             lines = v.get('line')
             if lines:
-                for kl, vl in lines.iteritems():
-                    kl = u(kl)
-                    xl[kl] = k
-                    if vl:
-                        aka = vl.get('aka')
-                        if aka:
-                            for a in aka.keys():
-                                a = u(a)
-                                xl[a] = k
+                try:
+                    for kl, vl in lines.iteritems():
+                        kl = u(kl)
+                        xl[kl] = k
+                        if vl:
+                            aka = vl.get('aka')
+                            if aka:
+                                for a in aka.keys():
+                                    a = u(a)
+                                    xl[a] = k
+                except:
+                    print lines
+                    raise
     return xl
 
 
