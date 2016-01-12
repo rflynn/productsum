@@ -672,7 +672,7 @@ function parse_qstr(qstr)
             var or = [];
             console.log(data);
             console.log(data.result);
-            console.log(data.result.q);
+            console.log('data.result.q:', data.result.q);
             var qstrlow = qstr.toLowerCase();
             var qi = 0;
             var seen_brand = false;
@@ -683,7 +683,10 @@ function parse_qstr(qstr)
                 var toks = item[1];
                 console.log('toks:', toks);
                 var qi2s = qstrlow.indexOf(toks[0], qi);
-                var qi2e = qstrlow.indexOf(toks[toks.length-1], toks[0].length) + toks[toks.length-1].length;
+                var qi2e = qi2s + toks[0].length;
+                if (toks.length > 1) {
+                    qi2e = qstrlow.indexOf(toks[toks.length-1], qi2s + toks[0].length) + toks[toks.length-1].length;
+                }
                 console.log('toks[0]:', toks[0], 'qi2s:', qi2s, 'qi2e:', qi2e);
                 var substr = qstr.substr(qi2s, qi2e - qi2s);
                 console.log('substr:', substr);
