@@ -460,7 +460,10 @@ function do_sparkline(scores)
 function display_price(p)
 {
 
-    var c = p.currency == 'EUR' ? '&euro;' : '$';
+    var c = (p.currency == 'USD' ? '$' :
+             p.currency == 'EUR' ? '&euro;' :
+             p.currency == 'GBP' ? '&#163;' :
+             '?');
 
     var d = p.price_min;
     if (d == Number(d).toFixed(0))
