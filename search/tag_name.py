@@ -51,7 +51,7 @@ class PriceParser(TokeParser):
     def __init__(self):
         self.tag = 'price'
     def consume(self, qtoks):
-        if qtoks[0] in (u'$', u'€', u'£', u'¥'):
+        if qtoks[0] in (u'$', u'€', u'£', u'¥') and len(qtoks) > 1:
             try:
                 if re.match(r'^(?:\d{1,6}|(?:\d{1,3},)?\d{3})(?:\.\d{2})?$', qtoks[1]):
                     return 2
@@ -64,7 +64,7 @@ class QuotedParser(TokeParser):
         self.tag = 'quoted'
     def consume(self, qtoks):
         try:
-            if qtoks[0] in (u"'", u'"'):
+            if qtoks[0] in (u"'", u'"') and len(qtoks) > 2:
                 if qtoks[1] == 's': # FIXME: ugh
                     return 0
                 try:
@@ -121,7 +121,7 @@ number ("fl" "oz" | "floz")
         self.tag = 'size'
     def consume(self, qtoks):
         try:
-            if qtoks[0] == 'size':
+            if qtoks[0] == 'size' and len(qtoks) > 1:
                 if qtoks[1] == 'newborn':
                     return 2
                 if is_number(qtoks[2]):
@@ -142,7 +142,7 @@ number ("fl" "oz" | "floz")
                         elif qtoks[cnt] == 't' and qtoks[cnt+1] == 'w':
                             return cnt + 2
                         return cnt
-            if is_number(qtoks[0]):
+            if is_number(qtoks[0]) and len(qtoks) > 1:
                 if qtoks[1] == 'ml':
                     return 2
                 elif qtoks[1] == 'g':
@@ -159,7 +159,7 @@ number ("fl" "oz" | "floz")
                     return 2
                 elif qtoks[1] == 'floz':
                     return 2
-                elif qtoks[1] == 'fl' and qtoks[2] == 'oz':
+                elif qtoks[1] == 'fl' and len(qtoks) > 2 and qtoks[2] == 'oz':
                     return 3
         except Exception as e:
             traceback.print_exc()
@@ -192,16 +192,16 @@ int "-"? ("count" | "ct")
                     return 2
                 elif qtoks[1] in {'count', 'ct'}:
                     return 2
-                elif qtoks[1] == '-' and qtoks[2] in ('count', 'ct'):
+                elif qtoks[1] == '-' and len(qtoks) > 2 and qtoks[2] in ('count', 'ct'):
                     return 3
             elif qtoks[0] == 'set' and qtoks[1] == 'of' and is_int(qtoks[2]):
                 return 3
-            elif qtoks[0] in {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and qtoks[2] in {'piece', 'pack', 'pk'}:
+            elif qtoks[0] in {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and len(qtoks) > 1 and qtoks[1] in {'piece', 'pack', 'pk'}:
                 return 2
-            elif qtoks[0] == 'assorted' and is_int(qtoks[1]):
-                if qtoks[2] == '-' and qtoks[3] == 'pack':
+            elif qtoks[0] == 'assorted' and len(qtoks) > 1 and is_int(qtoks[1]):
+                if len(qtoks) > 3 and qtoks[2] == '-' and qtoks[3] == 'pack':
                     return 4
-                elif qtoks[2] == 'pack':
+                elif len(qtoks) > 2 and qtoks[2] == 'pack':
                     return 3
         except Exception as e:
             traceback.print_exc()
