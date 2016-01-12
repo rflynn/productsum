@@ -8,6 +8,7 @@ from pprint import pprint, pformat
 import re
 import string
 from watchdog.observers import Observer
+import traceback
 
 
 def flatten(l):
@@ -21,33 +22,248 @@ def tokenize_words(s):
     assert isinstance(s, unicode)
     return re.findall(ur"(\d+(?:\.\d+)?|\w+)", s.lower(), re.UNICODE)
 
-def tags_load(filepath, tag):
-    try:
+class TokeParser(object):
+    def __init__(self, tag):
+         self.tag = tag
+    def consume(self, toks):
+        return 0
+
+class ReverseIndex(TokeParser):
+    def __init__(self, tag, filepath):
+        self.tag = tag
+        self.index = defaultdict(list)
         with codecs.open(filepath, encoding='utf-8') as f:
-            return [(tag, tokenize(line)) for line in f if line]
-    except Exception as e:
-        print e
-        raise
+            for line in f:
+                if line:
+                    toks = tokenize(line)
+                    if toks:
+                        if toks not in self.index[toks[0]]:
+                            self.index[toks[0]].append(toks)
+    def consume(self, qtoks):
+        match = []
+        for toks in self.index.get(qtoks[0]) or []:
+            if toks == qtoks[:len(toks)]:
+                if len(toks) > len(match):
+                    match = toks
+        return len(match)
 
-def reverse_index(l):
-    index = defaultdict(list)
-    for tag, tokens in l:
-        if (tag, tokens) not in index[tokens[0]]:
-            index[tokens[0]].append((tag, tokens))
-    return index
+class PriceParser(TokeParser):
+    def __init__(self):
+        self.tag = 'price'
+    def consume(self, qtoks):
+        if qtoks[0] in (u'$', u'€', u'£', u'¥'):
+            try:
+                if re.match(r'^(?:\d{1,6}|(?:\d{1,3},)?\d{3})(?:\.\d{2})?$', qtoks[1]):
+                    return 2
+            except:
+                pass
+        return 0
 
-def build_tag_reverse_index():
-    tags = [tags_load('./data/tag.%s.csv' % tag, tag)
-                for tag in ['brand',
-                            'color',
-                            'demographic',
-                            'material',
-                            'ngram2',
-                            'pattern',
-                            'product',
-                            'quantity',
-                            'size']]
-    return reverse_index(flatten(tags))
+class QuotedParser(TokeParser):
+    def __init__(self):
+        self.tag = 'quoted'
+    def consume(self, qtoks):
+        try:
+            if qtoks[0] in (u"'", u'"'):
+                if qtoks[1] == 's': # FIXME: ugh
+                    return 0
+                try:
+                    nextquote = qtoks.index(qtoks[0], 1)
+                except ValueError:
+                    return 0
+                return nextquote + 1
+        except Exception as e:
+            traceback.print_exc()
+        return 0
+
+def is_int(x):
+    try:
+        x = int(x)
+        return True
+    except ValueError:
+        return False
+
+def is_float(x):
+    try:
+        x = float(x)
+        return True
+    except ValueError:
+        return False
+
+def is_number(x):
+    return is_int(x) or is_float(x)
+
+def consume_fraction(toks):
+    if len(toks) < 3:
+        return 0
+    if is_int(toks[0]) and toks[1] == '/' and is_int(toks[2]):
+        return 3
+    return 0
+
+class SizeParser(TokeParser):
+    '''
+size:
+"size" "newborn"
+"size" number
+int fract? ("inches" | "inch" | '"')
+int? fract "qt"
+int? fract ("carat" | "ct") ("tw" | "t" "w")?
+number "ml"
+number "g"
+number "mm"
+number "liter"
+number ("inches" | "inch" | '"')
+number ("ounce" | "oz")
+number ("gallons" | "gallon")
+number ("fl" "oz" | "floz")
+    '''
+    def __init__(self):
+        self.tag = 'size'
+    def consume(self, qtoks):
+        try:
+            if qtoks[0] == 'size':
+                if qtoks[1] == 'newborn':
+                    return 2
+                if is_number(qtoks[2]):
+                    return 2
+            elif is_int(qtoks[0]):
+                fr = consume_fraction(qtoks[0:])
+                if fr:
+                    # int fract ...
+                    cnt = fr
+                    if qtoks[cnt] in ('inches','inch','"'):
+                        return cnt+1
+                    elif qtoks[cnt] == 'qt':
+                        return cnt+1
+                    elif qtoks[cnt] in ('carat', 'ct'):
+                        cnt += 1
+                        if qtoks[cnt] == 'tw':
+                            return cnt + 1
+                        elif qtoks[cnt] == 't' and qtoks[cnt+1] == 'w':
+                            return cnt + 2
+                        return cnt
+            if is_number(qtoks[0]):
+                if qtoks[1] == 'ml':
+                    return 2
+                elif qtoks[1] == 'g':
+                    return 2
+                elif qtoks[1] == 'mm':
+                    return 2
+                elif qtoks[1] == 'liter':
+                    return 2
+                elif qtoks[1] in ('inches', 'inch', '"'):
+                    return 2
+                elif qtoks[1] in ('ounce', 'oz'):
+                    return 2
+                elif qtoks[1] in ('gallons', 'gallon'):
+                    return 2
+                elif qtoks[1] == 'floz':
+                    return 2
+                elif qtoks[1] == 'fl' and qtoks[2] == 'oz':
+                    return 3
+        except Exception as e:
+            traceback.print_exc()
+        return 0
+
+class QuantityParser(TokeParser):
+    '''
+quantity:
+"x" int
+int "x"
+int "ea"
+int ("pc" | "piece")
+int "-"? ("count" | "ct")
+"set" "of" int
+("one"|"two"|"three"|"four"|"five"|"six"|"seven"|"eight"|"nine"|"ten"|"eleven"|"twelve") ("piece" | "pack" | "pk")
+"assorted"? int "-"? "pack"
+    '''
+    def __init__(self):
+        self.tag = 'quantity'
+    def consume(self, qtoks):
+        try:
+            if qtoks[0] == 'x' and is_int(qtoks[1]):
+                return 2
+            elif is_int(qtoks[0]) and len(qtoks) > 1:
+                if qtoks[1] == 'x':
+                    return 2
+                elif qtoks[1] == 'ea':
+                    return 2
+                elif qtoks[1] in {'piece', 'pc'}:
+                    return 2
+                elif qtoks[1] in {'count', 'ct'}:
+                    return 2
+                elif qtoks[1] == '-' and qtoks[2] in ('count', 'ct'):
+                    return 3
+            elif qtoks[0] == 'set' and qtoks[1] == 'of' and is_int(qtoks[2]):
+                return 3
+            elif qtoks[0] in {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and qtoks[2] in {'piece', 'pack', 'pk'}:
+                return 2
+            elif qtoks[0] == 'assorted' and is_int(qtoks[1]):
+                if qtoks[2] == '-' and qtoks[3] == 'pack':
+                    return 4
+                elif qtoks[2] == 'pack':
+                    return 3
+        except Exception as e:
+            traceback.print_exc()
+        return 0
+
+
+class Parser(object):
+
+    def __init__(self):
+        self.parsers = []
+        self._build_tag_reverse_index()
+        self.add_parser(PriceParser())
+        self.add_parser(QuotedParser())
+        self.add_parser(QuantityParser())
+        self.add_parser(SizeParser())
+
+    def add_parser(self, parser):
+        self.parsers.append(parser)
+
+    def _build_tag_reverse_index(self):
+        for tag in ['brand',
+                    'color',
+                    'demographic',
+                    'material',
+                    'ngram2',
+                    'pattern',
+                    'product',
+                    #'quantity',
+                    #'size'
+                    ]:
+            ri = ReverseIndex(tag, './data/tag.%s.csv' % tag)
+            self.add_parser(ri)
+
+    def match_list(self, qtoks):
+        matches = []
+        for i, tok in enumerate(qtoks or []):
+            tokmatches = []
+            tokl = qtoks[i:]
+            for p in self.parsers:
+                consumed = p.consume(tokl)
+                if consumed > 0:
+                    tokmatches.append((p.tag, tokl[:consumed]))
+            if not tokmatches:
+                tokmatches = [(None, [tok])]
+            matches.append((tok, tokmatches))
+        return matches
+
+class BrandObj(object):
+    def __init__(self):
+        pass
+
+class PriceObj(object):
+    def __init__(self):
+        pass
+
+class ProductObj(object):
+    def __init__(self):
+        pass
+
+class SeparatorObj(object):
+    def __init__(self):
+        pass
 
 # decide how well a [(tag, [token,...]),...] has performed
 # all tokens in the search appear in perm; if unmatched then tag is None
@@ -65,40 +281,6 @@ def score_match_perm(perm):
         num += perm[0][0] == 'brand'
     return float(num) / max(1, len(perm))
 
-def match_tree_flatten(mt, state=None, done=None):
-    if state is None:
-        state = []
-        done = []
-    for tag, child in mt:
-        if child:
-            match_tree_flatten(child, state + [tag], done)
-        else:
-            done.append(state + [tag])
-    return done
-
-def match_tree2(qtoks, ri):
-    return [
-        ((tag,p),
-         match_tree2(qtoks[len(p):], ri)
-                 if qtoks > p else None)
-             for tag, p in ri.get(qtoks[0], [])
-                 if qtoks[:len(p)] == p] + \
-         [((None, qtoks[:1]), # account for no match
-             match_tree2(qtoks[1:], ri)
-                if len(qtoks) > 1 else None)]
-
-def match_list(qtoks, ri):
-    return [(tok, [(tag, toks)
-                        for tag, toks in ri.get(tok, [])
-                            if toks == qtoks[i:i+len(toks)]] or [(None, [tok])])
-                for i, tok in enumerate(qtoks or [])]
-
-def match_list_iter(ml, idx=0):
-    if len(ml) > idx:
-        tok, matches = ml[idx]
-        for tag, toks in matches:
-            yield [(tag, toks)] + list(match_list_iter(ml, idx + len(toks)))
-
 def match_list_iter2(ml):
     for p in itertools.product(*[matches for tok, matches in ml]):
         a = []
@@ -108,59 +290,34 @@ def match_list_iter2(ml):
             i += len(p[i][1])
         yield a
 
-def match_best(q, ri):
+P = Parser()
+
+def match_best(q):
     if not q:
         return []
     #print repr(q)
     assert isinstance(q, unicode)
-    #qtoks = tokenize(q[:80]) # FIXME: chop for performance
     qtoks = tokenize(q)
     if not qtoks:
         return []
 
-    ml = match_list(qtoks, ri)
+    #ml = match_list(qtoks, ri)
+    ml = P.match_list(qtoks)
+
     #print 'match list: %s' % (pformat(ml, width=200))
-    mli = match_list_iter2(ml)
+    permutations = match_list_iter2(ml)
     #print 'match_list_iter: %s' % (pformat(mli, width=200),)
-
-    '''
-    mt = match_tree2(qtoks, ri)
-    #print 'match tree: %s' % (pformat(mt, width=200))
-    permutations = match_tree_flatten(mt)
-    print '%d permutations: %s' % (len(permutations), pformat(permutations, width=200))
-    print len(permutations)
-    '''
-
-    permutations = mli
 
     scoredperm = [(score_match_perm(perm), perm) for perm in permutations]
     #pprint(sorted(scoredperm, reverse=True)[:3], width=240)
     bestscore, bestperm = max(scoredperm) if scoredperm else (None, None)
     return bestperm
 
-ri = None
-
-def get_reverse_index(force=False):
-    global ri
-    if (not ri) or force:
-        print 'building reverse index (force=%s)...' % force
-        ri = build_tag_reverse_index()
-    return ri
-
 def tag_query(qstr):
-    price = None
-    m = re.search(ur'(([$€£¥])\s?(\d+(?:\.\d+)?))$', qstr, re.UNICODE)
-    if m:
-        raw, sign, amount = m.groups()
-        price = ('price', [sign + amount])
-        qstr = qstr[:-len(raw)].rstrip()
     tokens = tokenize(qstr)
     #print 'tokens:', tokens
-    ri = get_reverse_index()
-    bestperm = match_best(qstr, ri)
+    bestperm = match_best(qstr)
     bestperm = list(bestperm)
-    if price:
-        bestperm.append(price)
     return bestperm
 
 
@@ -229,8 +386,6 @@ class Handler(object):
         pass
 
 def init():
-    # initial ri
-    get_reverse_index()
     global observer
     observer = Observer()
     observer.schedule(Handler(), './data/', recursive=True)
@@ -241,7 +396,6 @@ def shutdown():
     observer.join()
 
 def run_tests():
-    ri = get_reverse_index()
     tests = [
         u'RED VALENTINO flower print sheer shirt',
         u'Ike Behar Check Dress Shirt, Brown/Blue',
@@ -274,6 +428,8 @@ def run_tests():
         u'Black Label Open-Front Cashmere Cardigan, Long-Sleeve Cashmere Sweater & Mid-Rise Matchstick Jeans',
         # XXX: FIXME: TOO SLOW....
         u'Le Vian Green Tourmaline (7/8 ct. t.w.), Peridot (7/8 ct. t.w.), Lemon Quartz (7/8 ct. t.w.) and Chocolate (1/3 ct. t.w.) and White Diamond (1/10 ct. t.w.) Ring in 14k Gold',
+        u"'A Novel Romance' Fluidline Eye Pencil",
+        u"$25.99 lol",
     ]
     for t in tests:
         print t.encode('utf8')
