@@ -17,12 +17,19 @@ unclear:
 * prices as hints
 * stuff that doesn't sort right/different orders
 
+NOTE: a number of the "sizes" in narscosmetics are actually colors/variants
+
 
 TODO:
 
 "tearjerker eye set"
     3+ matches for this...
 "#41 diffusing brush" == "diffusing brush #41"
+
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'NARS' order by up.name) to '/tmp/name-narscosmetics-variants.csv' csv;
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'M·A·C' order by up.name) to '/tmp/name-mac-variants.csv' csv;
 
 '''
 
@@ -85,9 +92,6 @@ def to_ascii(s):
 def levenshtein(a, b):
     return Levenshtein.distance(a, b)
 
-
-records = {}
-matchers = {}
 
 class ProductMatcher(object):
 
@@ -187,30 +191,57 @@ class ProductRecord(object):
                 self.matcher = ProductMatcher(self.name, self.name_tokens, self.colors_tokens)
                 
 
-    def closest_prefixes(self, records):
-        if self.name_tokens:
-            closest = defaultdict(list)
-            for r in records:
-                if r.name != self.name and r.name_tokens:
-                    closest[list_prefix_overlap(self.name_tokens, r.name_tokens)].append(r)
-            if closest:
-                bestscore = max(closest.keys())
-                return int(bestscore), closest[bestscore]
-        return 0, []
+def an_actual_size(s):
+    return s and s.lower() not in ('one size')
+
+def actual_sizes(a):
+    return [x for x in a if an_actual_size(x)] if a else None
+
+# networkx.write_dot doesn't actually work
+def actually_write_dot(G, filepath):
+    #print G.__class__
+    #print type(G)
+    with open(filepath, 'wb') as f:
+        f.write('digraph {\n')
+        for e in G.edges_iter():
+            u, v = e
+            #print e
+            #print dir(G)
+            attrs = G.get_edge_data(u, v)
+            writeattrs = (','.join('%s=%s' % (k, ('%.1f' % v) if isinstance(v, (int, float)) else '"%s"' % v)
+                            for k, v in attrs.iteritems()))
+            #print writeattrs
+            writeedge = ('"%s" -> "%s" [%s]' % (u, v, writeattrs)).encode('utf8')
+            #print writeedge
+            f.write(writeedge + '\n')
+        f.write('}\n')
 
 if __name__ == '__main__':
 
     import sys
 
-    with open('name-narscosmetics-variants.csv', 'rb') as f:
+    brand = 'narscosmetics'
+    #brand = 'mac'
+
+    if sys.argv and len(sys.argv) > 1:
+        brand = sys.argv[1]
+
+    print 'brand:', brand
+
+    records = {}
+    matchers = {}
+
+    with open('name-%s-variants.csv' % brand, 'rb') as f:
         rd = csv.reader(f)
         for row in rd:
             #print row
-            name, color, size, colors, sizes = row
+            name, color, size, colors, sizes_str = row
             c = parse_psql_array(colors)
-            #print ('%s, %s, %s' % (name, size, c)).encode('utf8')
+            sizes = actual_sizes(parse_psql_array(sizes_str))
+            #if sizes:
+            #    print ('%s, %s, %s' % (name, sizes, c)).encode('utf8')
             #print tokenize_words(name)
-            r = ProductRecord(brand='NARS', name=name, colors=c)
+            r = ProductRecord(brand=brand, name=name, colors=c)
             m = r.matcher
             if m:
                 matchers[m] = m
@@ -265,18 +296,47 @@ if __name__ == '__main__':
             print 'no matches:', r
             unmatched.append(r)
 
-    unmatched2 = []
+    unmatched2 = set()
 
+    # various desperate features to try and find some overlap where it clearly exists...
     for x in unmatched:
-        d, y = min((levenshtein(x.name, u.name), u) for u in unmatched if u != x)
-        if float(d) / min(len(x.name), len(y.name)) <= 0.5:
-            print d, x, y
-            G.add_edge(x.get_ascii_name(),
-                       y.get_ascii_name(),
-                       penwidth=str(float(d) / len(x.name) * 2),
-                       color='green')
-        else:
-            unmatched2.append(x)
+        #d, y = min((levenshtein(x.name, u.name), u) for u in unmatched if u != x)
+        #if float(d) / min(len(x.name), len(y.name)) <= 0.5:
+        matched = False
+        for y in unmatched:
+            if x != y:
+                xnt = set(x.name_tokens)
+                ynt = set(y.name_tokens)
+                if set(x.name_tokens) == set(y.name_tokens):
+                    # exact token match, order-independent
+                    matched = True
+                    d = min(len(x.name), len(y.name))
+                    print 'exact match, order-independent', d, x, y
+                    G.add_edge(x.get_ascii_name(),
+                               y.get_ascii_name(),
+                               penwidth=str(float(d) / len(x.name) * 2),
+                               color='green')
+                elif len(y.name_tokens) > 1 and set(x.name_tokens) > set(y.name_tokens):
+                    matched = True
+                    d = min(len(x.name), len(y.name))
+                    print 'token superset', d, x, y
+                    G.add_edge(x.get_ascii_name(),
+                               y.get_ascii_name(),
+                               penwidth=str(float(d) / len(x.name) * 2),
+                               color='purple')
+                elif min(len(xnt), len(ynt)) >= 2 and float(len(xnt & ynt)) / max(len(xnt), len(ynt)) >= 0.66:
+                    matched = True
+                    d = float(len(xnt & ynt)) / max(len(xnt), len(ynt))
+                    print 'set overlap', d, x, y
+                    G.add_edge(x.get_ascii_name(),
+                               y.get_ascii_name(),
+                               penwidth=str(float(d) / max(len(xnt), len(ynt)) * 2),
+                               color='orange')
+                else:
+                    if u'genifique' in x.name_tokens and u'genifique' in y.name_tokens:
+                        print 'unmatched2', x.name_tokens, y.name_tokens
+        if not matched:
+            unmatched2.add(x)
 
     for u in unmatched2:
         G.add_edge(u.get_ascii_name(),
@@ -285,25 +345,15 @@ if __name__ == '__main__':
                    color='gray')
 
 
-    '''
-    prefixes = Counter()
-    for k, r in records.iteritems():
-        score, closest = r.closest_prefixes(records.values())
-        if score and closest:
-            prefixes[tuple(r.name_tokens[:score])] += 1
-        if score > 1:
-            for cl in closest:
-                G.add_edge(r.get_ascii_name(), cl.get_ascii_name(), weight=score)
-
-    for i, (k, cnt) in enumerate(sorted(prefixes.iteritems(), key=lambda x: x[1], reverse=True)):
-        print ('%3d %3d %s' % (i, cnt, k)).encode('utf8')
-    '''
-
     # graph via graphviz
-    print 'nars.dot...'
-    nx.write_dot(G, 'nars.dot')
-    cmd = 'fdp -Tpng -Goutputorder=edgesfirst -o nars.png nars.dot 2>&1'
-    cmd = 'neato -Tpng -Goutputorder=edgesfirst -o nars.png nars.dot 2>&1'
+    print '%s.dot...' % brand
+    #nx.write_dot(G, '%s.dot' % brand)
+    actually_write_dot(G, brand + '.dot')
+
+    #sys.exit(1)
+
+    cmd = 'fdp -Tpng -Goutputorder=edgesfirst -o %s.png %s.dot 2>&1' % (brand, brand)
+    cmd = 'neato -Tpng -Glabel="%s" -Glabelloc=t -Glabelfontsize=32 -Goutputorder=edgesfirst -o %s.png %s.dot 2>&1' % (brand, brand, brand)
     print cmd
     import os
     os.system(cmd)
