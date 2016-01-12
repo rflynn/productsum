@@ -16,15 +16,26 @@ unclear:
 * how to accomodate colors/variants?
 * prices as hints
 * stuff that doesn't sort right/different orders
+
+
+TODO:
+
+"tearjerker eye set"
+    3+ matches for this...
+"#41 diffusing brush" == "diffusing brush #41"
+
 '''
 
 
 from collections import defaultdict, Counter
+import itertools
 from pprint import pprint, pformat
 import networkx as nx
 import re
 import unicodecsv as csv
 import unicodedata
+
+import Levenshtein
 
 from tag_name import tokenize_words
 
@@ -70,6 +81,9 @@ def is_subseq(l1, l2):
 
 def to_ascii(s):
     return unicodedata.normalize('NFKD', s).encode('ascii', 'ignore')
+
+def levenshtein(a, b):
+    return Levenshtein.distance(a, b)
 
 
 records = {}
@@ -235,6 +249,8 @@ if __name__ == '__main__':
 
     G = nx.DiGraph()
 
+    unmatched = []
+
     for name, r in records.iteritems():
         #print r, 'matches', 
         matches = do_match(r, matchers2)
@@ -243,13 +259,30 @@ if __name__ == '__main__':
                 G.add_edge(r.get_ascii_name(),
                            to_ascii(unicode(str(m), 'utf8'))[:128],
                            weight=pct,
-                           penwidth=str(round(pct * 5, 1)))
+                           penwidth=str(round(pct * 5, 1)),
+                           color='blue')
         else:
             print 'no matches:', r
-            G.add_edge(r.get_ascii_name(),
-                       r.get_ascii_name(),
-                       weight=1,
-                       penwidth='1')
+            unmatched.append(r)
+
+    unmatched2 = []
+
+    for x in unmatched:
+        d, y = min((levenshtein(x.name, u.name), u) for u in unmatched if u != x)
+        if float(d) / min(len(x.name), len(y.name)) <= 0.5:
+            print d, x, y
+            G.add_edge(x.get_ascii_name(),
+                       y.get_ascii_name(),
+                       penwidth=str(float(d) / len(x.name) * 2),
+                       color='green')
+        else:
+            unmatched2.append(x)
+
+    for u in unmatched2:
+        G.add_edge(u.get_ascii_name(),
+                   u.get_ascii_name(),
+                   penwidth=1,
+                   color='gray')
 
 
     '''
@@ -270,6 +303,7 @@ if __name__ == '__main__':
     print 'nars.dot...'
     nx.write_dot(G, 'nars.dot')
     cmd = 'fdp -Tpng -Goutputorder=edgesfirst -o nars.png nars.dot 2>&1'
+    cmd = 'neato -Tpng -Goutputorder=edgesfirst -o nars.png nars.dot 2>&1'
     print cmd
     import os
     os.system(cmd)
