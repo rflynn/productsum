@@ -264,6 +264,8 @@ class ProductsSelfridges(object):
             except:
                 traceback.print_exc()
 
+        # FIXME: this ends up as a mix of variants -- sizes and colors
+        # we need to tease these apart
         dko = soup.find('select', {'class': 'dk'})
         #print 'dko:', dko
         if dko:

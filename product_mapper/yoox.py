@@ -73,6 +73,12 @@ class ProductYoox(object):
         if self.price:
             self.price = re.sub('\s+', '', self.price)
 
+        if self.name:
+            # e.g. "online on YOOX - 56002272MH"
+            if 'online on yoox' in self.name.lower():
+                 self.name = self.name[self.name.lower().index('online on yoox'):].rstrip()
+
+
     def __repr__(self):
         return '''ProductYoox(
     prodid........%s

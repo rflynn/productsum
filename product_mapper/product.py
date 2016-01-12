@@ -169,7 +169,7 @@ class Product(object):
             self.title = normstring(dehtmlify(self.title))
 
         if self.descr:
-            self.descr= normstring(dehtmlify(self.descr))
+            self.descr = normstring(dehtmlify(self.descr)) or None
 
     def fixup_img_urls(self):
         # canonicalize; no protocol-less "//foo.bar/..."
