@@ -107,7 +107,7 @@ size:
 "size" number
 int fract? ("inches" | "inch" | '"')
 int? fract "qt"
-int? fract ("carat" | "ct") ("tw" | "t" "w")?
+int? "-"? fract ("carat" | "ct") ("tw" | "t" "w")?
 number "ml"
 number "g"
 number "mm"
@@ -124,14 +124,17 @@ number ("fl" "oz" | "floz")
             if qtoks[0] == 'size' and len(qtoks) > 1:
                 if qtoks[1] == 'newborn':
                     return 2
-                if is_number(qtoks[2]):
+                if is_number(qtoks[1]):
                     return 2
             elif is_int(qtoks[0]):
-                fr = consume_fraction(qtoks[0:])
+                start = 0
+                if len(qtoks) > 3 and qtoks[1] == '-':
+                    start = 2
+                fr = consume_fraction(qtoks[start:])
                 if fr:
                     # int fract ...
-                    cnt = fr
-                    if qtoks[cnt] in ('inches','inch','"'):
+                    cnt = start + fr
+                    if qtoks[cnt] in {'inches','inch','"'}:
                         return cnt+1
                     elif qtoks[cnt] == 'qt':
                         return cnt+1
@@ -151,15 +154,17 @@ number ("fl" "oz" | "floz")
                     return 2
                 elif qtoks[1] == 'liter':
                     return 2
-                elif qtoks[1] in ('inches', 'inch', '"'):
+                elif qtoks[1] in {'inches', 'inch', '"'}:
                     return 2
-                elif qtoks[1] in ('ounce', 'oz'):
+                elif qtoks[1] in {'ounce', 'oz'}:
                     return 2
-                elif qtoks[1] in ('gallons', 'gallon'):
+                elif qtoks[1] in {'gallons', 'gallon'}:
+                    return 2
+                elif qtoks[1] in {'qt', 'quart'}:
                     return 2
                 elif qtoks[1] == 'floz':
                     return 2
-                elif qtoks[1] == 'fl' and len(qtoks) > 2 and qtoks[2] == 'oz':
+                elif qtoks[1] in {'fl', 'fluid'} and len(qtoks) > 2 and qtoks[2] == 'oz':
                     return 3
         except Exception as e:
             traceback.print_exc()
@@ -188,7 +193,7 @@ int "-"? ("count" | "ct")
                     return 2
                 elif qtoks[1] == 'ea':
                     return 2
-                elif qtoks[1] in {'piece', 'pc'}:
+                elif qtoks[1] in {'piece', 'pieces', 'pc'}:
                     return 2
                 elif qtoks[1] in {'count', 'ct'}:
                     return 2
@@ -196,6 +201,10 @@ int "-"? ("count" | "ct")
                     return 3
             elif qtoks[0] == 'set' and qtoks[1] == 'of' and is_int(qtoks[2]):
                 return 3
+            elif len(qtoks) > 2 and qtoks[1] == '-' and qtoks[2] == 'pack':
+                return 3
+            elif len(qtoks) > 1 and qtoks[1] == 'pack':
+                return 2
             elif qtoks[0] in {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and len(qtoks) > 1 and qtoks[1] in {'piece', 'pack', 'pk'}:
                 return 2
             elif qtoks[0] == 'assorted' and len(qtoks) > 1 and is_int(qtoks[1]):

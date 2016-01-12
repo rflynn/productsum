@@ -17,7 +17,7 @@ def norm_frac(n, d):
     return str(float(n) / float(d))[1:]
 
 def val_inches(val):
-    # handle 
+    # handle
     if len(val) >= 3:
         if val[-2] == '/':
             val = val[:-3] + [norm_frac(val[-3], val[-1])]
@@ -121,7 +121,7 @@ def name_to_attrs(name):
         for tag, toks in tqbrand:
             if tag in ('brand', 'product', 'material','color','pattern'):
                 d[tag].append(toks)
-	
+
     d['size'] = size_attrs(d)
     d['quantity'] = qty_attrs(d) or None
     return dict(d)#, qty#, dict(size_unit)
@@ -313,8 +313,16 @@ def test():
         u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz',
     ]
     for name in names:
+        print name
         pprint(name_to_attrs(name), width=100)
 
 if __name__ == '__main__':
-    run()
+    import sys
+    if sys.argv and len(sys.argv) > 1:
+        if sys.argv[1] == 'run':
+            run()
+            sys.exit(0)
+    print 'running tests...'
+    print 'to run for real, run me with "run"'
+    test()
 
