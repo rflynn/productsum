@@ -301,6 +301,10 @@ def match_list_iter2(ml):
 
 P = Parser()
 
+def regen_parser():
+    global P
+    P = Parser()
+
 def match_best(q):
     if not q:
         return []
@@ -384,7 +388,7 @@ class Handler(object):
             if not event.is_directory:
                 if event.src_path.endswith('.csv'):
                     print 'reloading index... (%s)' % event.src_path
-                    get_reverse_index(True)
+                    regen_parser()
     def on_created(self, event):
         pass
     def on_modified(self, event):
