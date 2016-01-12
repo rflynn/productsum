@@ -500,6 +500,7 @@ _Seeds = {
     'http://www.jcpenney.com/': {
         'skip': {
             # custom
+            '*/_/N-', # urlencoded filter search results
             '/dotcom/jsp/cart/',
             '/jsp/',
             '*/jsp/',
@@ -894,6 +895,7 @@ _Seeds = {
         # ref: http://www.saksfifthavenue.com/main/ProductDetail.jsp?PRODUCT<>prd_id=845524446904973
         #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', url.path)),
         'skip': {
+            '*/_/N-', # urlencoded filter search results
             '/account/',
             '/main/bridal_landing.jsp',
             '/NoJavaScript.jsp',
@@ -1098,6 +1100,7 @@ _Seeds = {
             '/sb/*shoes',
         },
         'skip': { # robots.txt
+            '*/_/N-', # urlencoded filter search results
             '/Allons_voter*',
             '/admin*',
             '/AjaxSearchNavigationView',
@@ -1260,6 +1263,7 @@ _Seeds = {
     },
     'http://www.ulta.com/': {
         'skip': {
+            '*/_/N-', # urlencoded filter search results
             '*_dynSessConf=',
             '/browse/inc/addToFavorites.jsp',
             '/browse/inc/productDetail_crossSell.jsp',
