@@ -7452,7 +7452,9 @@ Hanes:
 FINE LINES:
 KLEINFELD:
     line:
-        KLEINFELD PINK:
+        Kleinfeld Pink:
+            aka:
+                KLEINFELD PINK:
 '1. STATE':
 Eau dItalie:
 De Lacy:
@@ -10362,7 +10364,6 @@ ESHVI:
     aka:
         Eshvi:
 '47 Brand':
-Kiss:
 Austin Cake Ball:
 DAFNI:
 Embody Clothing:
@@ -13643,7 +13644,6 @@ OMAR MOROTTI:
 Ombre Rose:
 OmniMount:
 Onagrine:
-ONE:
 ONE A:
 ONEBUTTON:
 ONE by Against Nudity:
@@ -13855,7 +13855,6 @@ REISENTHEL:
 Faded Glory:
 Honeybee Gardens:
 "Roundtree & Yorke Casuals":
-Holiday:
 "J.A.C.H.S. Manufacturing Co.":
 LRG:
 Swissco:
@@ -16591,7 +16590,6 @@ Okapi:
 Olgana Paris:
 Olivia Morris:
 OLO:
-One:
 ONE by:
 Oxylent:
 OYOBox:
@@ -16945,7 +16943,6 @@ FABBRICA MORICHETTI:
 "Fabric Hunted & Collected":
 FAFFOLE:
 Fantas Eyes:
-Fashion:
 FEFĒ:
 Feiyue Kids:
 FemmeCalm:
@@ -17202,7 +17199,6 @@ PGX:
 PICCIONE•PICCIONE:
 Pierre Bernard:
 Pine Bros.:
-Pink:
 Planet:
 PlantFusion:
 Platinum:
@@ -17255,7 +17251,6 @@ Selene Sport:
 Selli Gabriello:
 Sephora Favorites:
 Shen Min:
-SHINE:
 SHOPKINS:
 SHW SHANGHAI HENGBAO WATCH:
 SILVANO SASSETTI:
@@ -17269,6 +17264,7 @@ SMITH/GREY:
 "Smooth 'n Shine Polishing":
     aka:
         Smooth N Shine:
+        "Smooth 'N Shine":
 SO BE IT:
 SOFTLINE HOME FASHIONS:
 SOLACE LONDON:
@@ -19910,7 +19906,6 @@ Kinski:
 KITE:
 Kit Neale:
 Klamath Blue Green Algae:
-Kleinfeld Pink:
 K/LLER Collection:
 KNIGHT$ OF NEW YORK:
 KOCCA JEANS:
@@ -23706,7 +23701,8 @@ Thick-It:
 "Thomas Dean & Co.":
 "Thomas & Friends™":
 Thomas Pink:
-THOMAS PINK:
+    aka:
+        THOMAS PINK:
 THOMPSON London:
 Thorlo:
 THREE KINGS:
@@ -24389,3 +24385,10 @@ Thalia Sodi:
 Whitmor:
 Ring of Fire:
 Sketchers:
+Hello Kitty:
+AME:
+Pink Republic:
+Beautyrest:
+Fifth Sun:
+The Sensual Skin:
+The Creamy Glow:

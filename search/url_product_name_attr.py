@@ -116,18 +116,15 @@ def list_sublist_index(l1, l2):
     return ([i for i in xrange(len(l1) - len(l2) + 1)
                     if l1[i:i+len(l2)] == l2] or [-1])[0]
 
-def name_minus_brand(name, attrs):
-    # strip brand
-    br = attrs.get('brand')
-    if not br:
-        return name
-    brand = br[0][0]
-    #print 'brand:', brand
-    if name.startswith(brand):
-        endidx = name.index(brand) + len(brand)
-        return name[endidx:].lstrip()
-    else:
-        print name, 'doesnt start with', brand
+def name_minus_string_prefix(name, strlist):
+    if strlist:
+        substr = strlist[0][0]
+        print 'substr:', substr
+        if name.startswith(substr):
+            endidx = name.index(substr) + len(substr)
+            return name[endidx:].lstrip()
+        else:
+            print name, 'doesnt start with', substr
     return name
 
 def name_minus_tag(name, tokens):
@@ -146,12 +143,15 @@ def name_minus_tag(name, tokens):
         after = ' ' + after
     return (before + after) or None
 
-def name_canonical(name, attrs):
+def name_canonical(name, attrs, tq):
     # strip promo
+    print 'tq:', pformat(tq)
     name2 = name
     for tokens in attrs.get('promo', []):
         name2 = name_minus_tag(name2, tokens)
-    name2 = name_minus_brand(name2, attrs)
+    for tokens in attrs.get('demographic', []):
+        name2 = name_minus_string_prefix(name2, [tokens])
+    name2 = name_minus_string_prefix(name2, attrs.get('brand') or [])
     # strip size(s)
     for tokens in attrs.get('size', []):
         name2 = name_minus_tag(name2, tokens)
@@ -161,36 +161,38 @@ def name_canonical(name, attrs):
     return name2
 
 def name_to_attrs(name):
-    d = defaultdict(list)
+    attrs = defaultdict(list)
     if name:
         otq = tag_name.tag_query(name)
         tq = tag_name.to_original_case(otq, name)
         #print 'tq:', pformat(tq)
         for tag, toks in tq:
-            d[tag].append(toks)
+            attrs[tag].append(toks)
 
         # preserve brand exactly for later re-matching
         tqbrand = tag_name.to_original_substrings(otq, name)
-        if 'brand' in d:
-            del d['brand']
-        if 'product' in d:
-            del d['product']
-        if 'material' in d:
-            del d['material']
-        if 'color' in d:
-            del d['color']
-        if 'pattern' in d:
-            del d['pattern']
+        if 'brand' in attrs:
+            del attrs['brand']
+        if 'demographic' in attrs:
+            del attrs['demographic']
+        if 'product' in attrs:
+            del attrs['product']
+        if 'material' in attrs:
+            del attrs['material']
+        if 'color' in attrs:
+            del attrs['color']
+        if 'pattern' in attrs:
+            del attrs['pattern']
         for tag, toks in tqbrand:
-            if tag in ('brand', 'product', 'material','color','pattern'):
-                d[tag].append(toks)
+            if tag in ('brand', 'demographic', 'product', 'material', 'color', 'pattern'):
+                attrs[tag].append(toks)
 
-    d['name_canonical'] = name_canonical(name, d)
+    attrs['name_canonical'] = name_canonical(name, attrs, tq)
 
-    d['size'] = size_attrs(d)
-    d['quantity'] = qty_attrs(d) or None
+    attrs['size'] = size_attrs(attrs)
+    attrs['quantity'] = qty_attrs(attrs) or None
 
-    return dict(d)
+    return dict(attrs)
 
 def update(cursor, url_product_id, updated, name, attrs):
     try:
@@ -214,7 +216,8 @@ set
     name_size_liter    = %s,
     name_size_gallon   = %s,
     name_size_quart    = %s,
-    name_size_num      = %s
+    name_size_num      = %s,
+    demographic        = %s
 where
     url_product_id = %s
 '''
@@ -237,6 +240,7 @@ where
         attrs.get('size_gallon'),
         attrs.get('size_quart'),
         attrs.get('size_num'),
+        attrs.get('demographic'),
         url_product_id
       )
         cursor.execute(sql, args)
@@ -267,8 +271,10 @@ insert into url_product_name_attr (
     name_size_liter,
     name_size_gallon,
     name_size_quart,
-    name_size_num
+    name_size_num,
+    demographic
 ) values (
+    %s,
     %s,
     %s,
     %s,
@@ -309,7 +315,8 @@ insert into url_product_name_attr (
        attrs.get('size').get('liter'),
        attrs.get('size').get('gallon'),
        attrs.get('size').get('quart'),
-       attrs.get('size').get('num')))
+       attrs.get('size').get('num'),
+       attrs.get('demographic')))
     except:
         raise
 
@@ -378,8 +385,8 @@ def test():
         u'1 pc 2 pieces 3 x 4-pack 5 count set of 2 3 pack',
         u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz',
         u'Viscaya 7-Pc. Embroidered Comforter Sets',
-        u'CLOSEOUT! Lacoste Solid Stillwater Brushed Twill Comforter and Duvet Cover Sets',
         u'CLOSEOUT! Bar III Interlock White Quilt Collection',
+        u"Men's Star Wars Advance Tie T-Shirt by Fifth Sun",
     ]
     for name in names:
         print name
