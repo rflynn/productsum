@@ -99,13 +99,12 @@ class ProductBelk(object):
             self.features = [dehtmlify(f) for f in self.features]
 
         if self.name:
-            if self.name.endswith(" - Belk.com"):
-                self.name = self.name[:-len(" - Belk.com")]
+            if ' | belk' in self.name.lower():
+                self.name = self.name[:self.name.lower().index(' | belk')]
 
         if self.title:
-            if self.title.endswith(" - Belk.com"):
-                self.title = self.title[:-len(" - Belk.com")]
-
+            if ' | belk' in self.title.lower():
+                self.title = self.title[:self.title.lower().index(' | belk')]
 
         if self.upc:
             self.upc = str(self.upc)

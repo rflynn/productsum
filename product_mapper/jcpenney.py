@@ -401,8 +401,8 @@ The warm fleece of our Columbia zip-front jacket keeps you cozy and comfortable 
 
         starttime = time.time()
 
-        if False:
-            # nuthin'
+        if '/cat.jump' in url:
+            # not a product
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,

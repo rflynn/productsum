@@ -86,11 +86,17 @@ class ProductUlta(object):
 
         if self.name:
             if 'Ulta.com - ' in self.name:
-                self.name = xstrip(self.name[:self.name.index('Ulta.com - ')])
+                self.name = xstrip(self.name[:self.name.index('Ulta.com - ')]) or None
+            if self.name:
+                if self.name.lower().startswith('online only'):
+                    self.name = self.name[len('online only'):].lstrip() or None
 
         if self.title:
             if 'Ulta.com - ' in self.title:
-                self.title = xstrip(self.title[:self.title.index('Ulta.com - ')])
+                self.title = xstrip(self.title[:self.title.index('Ulta.com - ')]) or None
+            if self.title:
+                if self.title.lower().startswith('online only'):
+                    self.title = self.title[len('online only'):].lstrip() or None
 
     def __repr__(self):
         return ('''ProductUlta:

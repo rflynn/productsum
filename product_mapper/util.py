@@ -37,14 +37,21 @@ def xstrip(s):
 def normstring(s):
     if s is None:
         return None
-    s2 = xstrip(re.sub('\s+', ' ', u(s)))
-    if u'â€™' in s2:
+    s2 = xstrip(re.sub(ur'\s+', ' ', u(s))) # re.UNICODE -- XXX: somehow, this breaks whitespace substitution. why?!
+    if (u'â€™' in s2 # windows quotes
+        or u'Â®' in s2 # (R)
+        or u'â„¢' in s2 # TM
+        ):
         # fix common encoding errors
         try:
             s2 = s2.encode('cp1252').decode('utf8')
         except:
             pass
     return s2
+
+assert normstring(None) is None
+assert normstring(u'a  b') == u'a b'
+assert normstring(u'a \t\r\nb\r\n') == u'a b'
 
 def unquote(s):
     if s is None:

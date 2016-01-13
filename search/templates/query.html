@@ -208,7 +208,6 @@
 
         <label for="goodlist">Example Product Searches</label>
         <ol id="goodlist">
-            <li><a href="/?q=Viseart's Neutral Matte palette">Viseart's Neutral Matte palette</a>
             <li><a href="/?q=Shiseido Benefiance Lip Treatment, Future Solution Protective Cream">Shiseido Benefiance Lip Treatment, Future Solution Protective Cream</a>
             <li><a href="/?q=Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675">Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675</a>
             <li><a href="/?q=Clarisonic Cashmere Cleanse Facial Brush Head $30">Clarisonic Cashmere Cleanse Facial Brush Head $30</a>
@@ -243,6 +242,7 @@
             <li><a href="/?q=Life is good Go-To Hoodie $48">Life is good Go-To Hoodie $48</a>
             <li><a href="/?q=Christian Louboutin Follies Spikes Pumps $1295">Christian Louboutin Follies Spikes Pumps $1295</a> &mdash; sufficiently different product names, prices, photos, you name it...
             <li><a href="/?q=Menscience Eye Gel Mask $16">Menscience Eye Gel Mask $16</a> same product, different images
+            <li><a href="/?q=Viseart's Neutral Matte palette">Viseart's Neutral Matte palette</a>
         </ol>
 
         <label for="goodlist">Example URL &rarr; Product &rarr; Product Search</label>
@@ -460,7 +460,10 @@ function do_sparkline(scores)
 function display_price(p)
 {
 
-    var c = p.currency == 'EUR' ? '&euro;' : '$';
+    var c = (p.currency == 'USD' ? '$' :
+             p.currency == 'EUR' ? '&euro;' :
+             p.currency == 'GBP' ? '&#163;' :
+             '?');
 
     var d = p.price_min;
     if (d == Number(d).toFixed(0))
@@ -672,7 +675,7 @@ function parse_qstr(qstr)
             var or = [];
             console.log(data);
             console.log(data.result);
-            console.log(data.result.q);
+            console.log('data.result.q:', data.result.q);
             var qstrlow = qstr.toLowerCase();
             var qi = 0;
             var seen_brand = false;
@@ -683,7 +686,10 @@ function parse_qstr(qstr)
                 var toks = item[1];
                 console.log('toks:', toks);
                 var qi2s = qstrlow.indexOf(toks[0], qi);
-                var qi2e = qstrlow.indexOf(toks[toks.length-1], toks[0].length) + toks[toks.length-1].length;
+                var qi2e = qi2s + toks[0].length;
+                if (toks.length > 1) {
+                    qi2e = qstrlow.indexOf(toks[toks.length-1], qi2s + toks[0].length) + toks[toks.length-1].length;
+                }
                 console.log('toks[0]:', toks[0], 'qi2s:', qi2s, 'qi2e:', qi2e);
                 var substr = qstr.substr(qi2s, qi2e - qi2s);
                 console.log('substr:', substr);
@@ -710,7 +716,8 @@ function parse_qstr(qstr)
                             minimum_should_match: 1
                         }});
                 } else if (type_ === 'price') {
-                    var p = Number(toks[0].substr(1));
+                    var p = Number(toks[1]);
+                    console.log('price:', toks[0], '=', p);
                     must.push({
                         'range': {
                             'price_min':{
