@@ -145,7 +145,7 @@ def name_minus_tag(name, tokens):
 
 def name_canonical(name, attrs, tq):
     # strip promo
-    print 'tq:', pformat(tq)
+    #print 'tq:', pformat(tq)
     name2 = name
     for tokens in attrs.get('promo', []):
         name2 = name_minus_tag(name2, tokens)
