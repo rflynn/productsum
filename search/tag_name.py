@@ -238,6 +238,7 @@ class Parser(object):
                     'ngram2',
                     'pattern',
                     'product',
+                    'promo',
                     #'quantity',
                     #'size'
                     ]:
