@@ -188,7 +188,7 @@ def name_to_attrs(name):
             if tag in ('brand', 'demographic', 'product', 'material', 'color', 'pattern'):
                 attrs[tag].append(toks)
 
-    attrs['name_canonical'] = name_canonical(name, attrs, tq)
+        attrs['name_canonical'] = name_canonical(name, attrs, tq)
 
     attrs['size'] = size_attrs(attrs)
     attrs['quantity'] = qty_attrs(attrs) or None
