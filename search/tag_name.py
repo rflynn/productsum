@@ -205,7 +205,7 @@ int "-"? ("count" | "ct")
                 return 3
             elif len(qtoks) > 1 and qtoks[1] == 'pack':
                 return 2
-            elif qtoks[0] in {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and len(qtoks) > 1 and qtoks[1] in {'piece', 'pack', 'pk'}:
+            elif qtoks[0] in {'single', 'dual', 'triple', 'quad', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and len(qtoks) > 1 and qtoks[1] in {'piece', 'pack', 'pk'}:
                 return 2
             elif qtoks[0] == 'assorted' and len(qtoks) > 1 and is_int(qtoks[1]):
                 if len(qtoks) > 3 and qtoks[2] == '-' and qtoks[3] == 'pack':
