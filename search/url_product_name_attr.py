@@ -379,7 +379,7 @@ def test():
         u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz',
         u'Viscaya 7-Pc. Embroidered Comforter Sets',
         u'CLOSEOUT! Lacoste Solid Stillwater Brushed Twill Comforter and Duvet Cover Sets',
-        u"Men's Dolce & Gabbana by Dolce & Gabbana Eau de Toilette Spray doesnt start with Dolce & Gabbana",
+        u'CLOSEOUT! Bar III Interlock White Quilt Collection',
     ]
     for name in names:
         print name

@@ -602,11 +602,12 @@ Etro:
 NBD:
     line:
         X by NBD:
-ANNE KLEIN:
+Anne Klein:
     aka:
-        Anne Klein:
+        ANNE KLEIN:
     line:
         ANNE KLEIN PETITE:
+        AK Anne Klein:
 Marni:
     aka:
         MARNI:
@@ -665,9 +666,9 @@ Swarovski:
         Phillip Lim:
     line:
         3.1 Phillip Lim Accessories:
-LUCKY BRAND:
+Lucky Brand:
     aka:
-        Lucky Brand:
+        LUCKY BRAND:
     line:
         LUCKY BRAND PLUS:
         Lucky Brand Kids:
@@ -1178,6 +1179,7 @@ Steve Madden:
                 STEVEN BY STEVE MADDEN:
                 STEVEN by Steve Madden:
         Steve Madden Kids:
+        JaRule by Steve Madden:
 Wolford:
     aka:
         WOLFORD:
@@ -1423,6 +1425,9 @@ BRIONI:
 Carolina Herrera:
     aka:
         CAROLINA HERRERA:
+    line:
+        Carolina Herrera Night Collection:
+        CH by Carolina Herrera:
 RVCA:
 Trina Turk:
     aka:
@@ -2438,9 +2443,6 @@ Lipstick Queen:
 FRANCO SARTO:
     aka:
         Franco Sarto:
-Fresh:
-    aka:
-        'Fresh®':
 Rene Furterer:
 AGNONA:
     aka:
@@ -3030,6 +3032,8 @@ RAFAELLA:
         RAFAELLA PETITES:
         RAFAELLA PLUS:
 Liz Claiborne:
+    line:
+        Curve by Liz Claiborne:
 Dion Lee:
 Falke:
     aka:
@@ -4105,7 +4109,6 @@ Dermadoctor:
     aka:
         DERMAdoctor:
 Yikestwins LLC:
-Super:
 Goodwill:
 RISE:
 Helen Kaminski:
@@ -4423,6 +4426,8 @@ Marcelo Burlon:
         Marcelo Burlon County Of Milan:
         MARCELO BURLON:
 Paris Hilton:
+    line:
+        Paris by Paris Hilton:
 Organix:
 Crown Cap:
     aka:
@@ -5103,7 +5108,6 @@ KC Parker:
         KC PARKER:
 ABSORBA:
 Kaloo:
-ONLY:
 Amour:
 Islay:
 Cocoa Butter Formula:
@@ -6951,7 +6955,6 @@ Elisa B:
 Lee Cooper:
 Element:
 'SLATE & STONE':
-Stone:
 Haffke:
 Child of Wild:
 Moreau:
@@ -11490,6 +11493,9 @@ VivierSkin:
 INIKA:
 Lonely:
 "Nature's Bounty":
+    aka:
+        "Nature’s Bounty":
+        "Nature’s Bounty®":
 Acacia Swimwear:
     aka:
         ACACIA SWIMWEAR:
@@ -11596,6 +11602,8 @@ Conair:
         CONAIR-TRAVEL SMART:
         ConairPro Dog:
 SheaMoisture:
+    aka:
+        SheaMositure:
 Olympian Labs:
 Nordic Naturals:
 Carlson:
@@ -12452,10 +12460,14 @@ Bar III:
 BEARPAW:
     url: 'http://www.bearpaw.com/'
 Macys:
+    aka:
+        "Macy's":
+        "R.H. Macy & Co.":
     line:
         BCX: # macys
         Charter Club:
         Epic Threads:
+        Bronzarte:
 Giani Bernini:
 Altalana:
 "ROŸ ROGER'S":
@@ -12546,7 +12558,6 @@ Quattrocento Eyewear:
 RICHKIDS:
 Studio 35:
 Trend Lab:
-Trim:
 Beauty Without Cruelty:
 Cottweiler:
 Kiwi:
@@ -15216,7 +15227,6 @@ SINÉQUANONE:
 "SKIN&CO":
 "Smith & Vandiver":
 Snapper Rock:
-Soft:
 Softsoap:
 SOMETHING GOOD:
 SO NICE:
@@ -15726,7 +15736,10 @@ MARIA GRAZIA SEVERI:
 MARIAN:
 Marigot Collection:
 Marquis by Waterford:
-MASON JAR COOKIE COMPANY:
+Mason Jar Cookie Company:
+    aka:
+        The Mason Jar Cookie Company:
+        MASON JAR COOKIE COMPANY:
 Master Massage:
 "MASTER&MUSE x NETTIE KENT":
 Mattel:
@@ -16361,7 +16374,6 @@ Cor Silver:
 Countess Mara:
 Creative Labs:
 "[C] STUDIO":
-Curve:
 Cuties:
 D’ACQUASPARTA:
 Dacute:
@@ -16959,7 +16971,6 @@ FRS:
 FUDGE KITCHEN:
 Fun Factory:
 Funky Monkey:
-Fur:
 GANT:
 GARAGE NOUVEAU:
 GARRETT LEIGHT:
@@ -18165,7 +18176,6 @@ Ballin:
 Balmex:
 Barbara I Gongini:
 BARTS:
-BASE:
 Base 4:
 "BA&SH":
 Basically Me:
@@ -19163,7 +19173,6 @@ ABPOSITIVE:
 Absolutely Divine:
 Abyss:
 ACC EDITIONS:
-Accessories:
 Accessories 212:
 Accessory Power:
 ACCIAIO:
@@ -19294,7 +19303,6 @@ AVF:
 Axis Labs:
 Ayr:
 AZIAM:
-Baby:
 Baby Relax:
 Baby Safe:
 Baby Shusher:
@@ -19479,7 +19487,6 @@ CIPA by Kiton:
 CIRCOLO 1901:
 Claire Pettibone:
 "Clare V. M'Onograms":
-Classic:
 Classic Erotica:
 Classic Match:
 ClayBrite:
@@ -21422,7 +21429,6 @@ CARLTON:
 Carmelinas Shoes:
 Carmen Carmen Marc Valvo:
 Carmex:
-Carolina Herrera Night Collection:
 Carolina Williamson:
 Carolyn Hearn Designs:
 Carpenter:
@@ -21516,7 +21522,6 @@ CHORUX:
 Christian Kimber x Eidos:
 Christian V. Siriano:
 Christina Aquilera:
-CHRISTMAS:
 Christopher Kane Accessories:
 Christopher Kane Private Trunkshow:
 Christopher Shannon:
@@ -22908,7 +22913,6 @@ M2Malletier Handbags:
 M2M PRIVATE SALE:
 "Mack's":
 MACRÍ:
-"Macy's":
 MADAME CLODE:
 MADAME LA LA:
 MADAME RÊVE:
@@ -23734,7 +23738,6 @@ Tommy Bahama Denim:
 TOM SCOTT:
 Toms Of Maine:
 TOMY:
-Tone:
 TONGUETIED:
 TONY MORA:
 Tooshie:
@@ -24365,3 +24368,24 @@ The Aston Martin Collection by Grant Macdonald:
 Zinger:
 ERG:
 Itzy Ritzy:
+Glade:
+Eliot Danori:
+Mizco:
+Indigo Rein:
+Karen Scott:
+Nao by Lladro:
+Neuhaus:
+b.o.c:
+Rhona Sutton:
+    line:
+        Sutton by Rhona Sutton:
+Alight:
+"Quercetin & Oak":
+    aka:
+        Quercetin and Oak:
+Oh Yeah:
+Smarty Pants:
+Thalia Sodi:
+Whitmor:
+Ring of Fire:
+Sketchers:
