@@ -116,7 +116,7 @@ def list_sublist_index(l1, l2):
     return ([i for i in xrange(len(l1) - len(l2) + 1)
                     if l1[i:i+len(l2)] == l2] or [-1])[0]
 
-def name_minus_string_prefix(name, strlist):
+def name_minus_string_prefix(name, strlist, verbose=False):
     if strlist:
         substr = strlist[0][0]
         #print 'substr:', substr
@@ -124,7 +124,8 @@ def name_minus_string_prefix(name, strlist):
             endidx = name.index(substr) + len(substr)
             return name[endidx:].lstrip()
         else:
-            print name, 'doesnt start with', substr
+            if verbose:
+                print name, 'doesnt start with', substr
     return name
 
 def name_minus_tag(name, tokens):
@@ -151,7 +152,7 @@ def name_canonical(name, attrs, tq):
         name2 = name_minus_tag(name2, tokens)
     for tokens in attrs.get('demographic', []):
         name2 = name_minus_string_prefix(name2, [tokens])
-    name2 = name_minus_string_prefix(name2, attrs.get('brand') or [])
+    name2 = name_minus_string_prefix(name2, attrs.get('brand') or [], verbose=True)
     # strip size(s)
     for tokens in attrs.get('size', []):
         name2 = name_minus_tag(name2, tokens)
