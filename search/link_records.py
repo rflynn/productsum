@@ -192,7 +192,7 @@ class ProductRecord(object):
                 
 
 def an_actual_size(s):
-    return s and s.lower() not in ('one size')
+    return s and s.lower() not in {'', 'one size', 'onesize', 'no size', 'nosize'}
 
 def actual_sizes(a):
     return [x for x in a if an_actual_size(x)] if a else None
@@ -202,18 +202,16 @@ def actually_write_dot(G, filepath):
     #print G.__class__
     #print type(G)
     with open(filepath, 'wb') as f:
-        f.write('digraph {\n')
+        f.write('''
+graph {
+node[color=black,penwidth=0.25,fontname=arial,fontsize=9];
+''')
         for e in G.edges_iter():
             u, v = e
-            #print e
-            #print dir(G)
             attrs = G.get_edge_data(u, v)
             writeattrs = (','.join('%s=%s' % (k, ('%.1f' % v) if isinstance(v, (int, float)) else '"%s"' % v)
                             for k, v in attrs.iteritems()))
-            #print writeattrs
-            writeedge = ('"%s" -> "%s" [%s]' % (u, v, writeattrs)).encode('utf8')
-            #print writeedge
-            f.write(writeedge + '\n')
+            f.write(('"%s" -- "%s\n" [%s]' % (u, v, writeattrs)).encode('utf8'))
         f.write('}\n')
 
 if __name__ == '__main__':
@@ -330,11 +328,8 @@ if __name__ == '__main__':
                     print 'set overlap', d, x, y
                     G.add_edge(x.get_ascii_name(),
                                y.get_ascii_name(),
-                               penwidth=str(float(d) / max(len(xnt), len(ynt)) * 2),
+                               penwidth=str(float(d) / max(len(xnt), len(ynt)) * 3),
                                color='orange')
-                else:
-                    if u'genifique' in x.name_tokens and u'genifique' in y.name_tokens:
-                        print 'unmatched2', x.name_tokens, y.name_tokens
         if not matched:
             unmatched2.add(x)
 
@@ -354,6 +349,10 @@ if __name__ == '__main__':
 
     cmd = 'fdp -Tpng -Goutputorder=edgesfirst -o %s.png %s.dot 2>&1' % (brand, brand)
     cmd = 'neato -Tpng -Glabel="%s" -Glabelloc=t -Glabelfontsize=32 -Goutputorder=edgesfirst -o %s.png %s.dot 2>&1' % (brand, brand, brand)
+    cmd = 'sfdp -Tpng -Glabel="%s" -Glabelloc=t -Glabelfontsize=32 -Goverlap=prism -Goutputorder=edgesfirst -o %s.png %s.dot 2>&1' % (brand, brand, brand)
+    cmd = 'fdp -Tpng -Glabel="%s" -Glabelloc=t -Glabelfontsize=32 -o %s.png %s.dot 2>&1' % (brand, brand, brand)
+    cmd = 'neato -Tpng -Glabel="%s" -Glabelloc=t -Glabelfontsize=32 -o %s.png %s.dot 2>&1' % (brand, brand, brand)
+    cmd = 'sfdp -Tpng -Glabel="%s" -Glabelloc=t -Glabelfontsize=32 -o %s.png %s.dot 2>&1' % (brand, brand, brand)
     print cmd
     import os
     os.system(cmd)
