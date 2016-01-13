@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from collections import defaultdict
-from pprint import pprint
+from pprint import pprint, pformat
+import traceback
 
 from search import tag_name
 
@@ -35,9 +36,10 @@ assert val_inches(['..5']) is None
 def size_attrs(d):
     size_unit = defaultdict(list)
     for toks in d.get('size', []):
-        if toks[-2:] == ['fl','oz']:
+        #print 'toks:', toks
+        if toks[-2:] in [['fl','oz'],['fluid','oz']]:
             unit = 'fl_ounce'
-            val = float('.'.join(toks[:-2]))
+            val = xfloat('.'.join(toks[:-2]))
         else:
             if toks[0] == 'size' and len(toks) == 2:
                 unit, val = 'num', xfloat(toks[1])
@@ -48,7 +50,7 @@ def size_attrs(d):
                     val = val_inches(val)
                 elif unit in ('mm',):
                     unit = 'mm'
-                    val = float('.'.join(val))
+                    val = xfloat('.'.join(val))
                 else:
                     if unit in ('g',):
                         unit = 'gram'
@@ -63,22 +65,29 @@ def size_attrs(d):
                     elif unit in ('qt','qts','quarts'):
                         unit = 'quart'
                     val = xfloat(val[0])
-            #print unit, val
-            if unit and val is not None:
-                size_unit[unit].append(val)
+        #print unit, val
+        if unit and val is not None:
+            size_unit[unit].append(val)
     return dict(size_unit)
 
 Num_ = {
-    'one':   1,
-    'two':   2,
-    'three': 3,
-    'four':  4,
-    'five':  5,
-    'six':   6,
-    'seven': 7,
-    'eight': 8,
-    'nine':  9,
-    'ten':  10,
+    'one':     1,
+    'two':     2,
+    'three':   3,
+    'four':    4,
+    'five':    5,
+    'six':     6,
+    'seven':   7,
+    'eight':   8,
+    'nine':    9,
+    'ten':    10,
+    'eleven': 11,
+    'twelve': 12,
+
+    'single':  1,
+    'double':  2,
+    'triple':  3,
+    'quad':    4,
 }
 
 def to_num(x):
@@ -97,12 +106,61 @@ def qty_attrs(d):
                     qty.append(n)
         return qty
 
+def list_startswith(l1, l2):
+    return all(x == y for x, y in zip(l1, l2)[:len(l2)])
+
+def list_contains(l1, l2):
+    return any(l1[i:i+len(l2)] == l2 for i in xrange(len(l1) - len(l2) + 1))
+
+def list_sublist_index(l1, l2):
+    return ([i for i in xrange(len(l1) - len(l2) + 1)
+                    if l1[i:i+len(l2)] == l2] or [-1])[0]
+
+def name_minus_brand(name, attrs):
+    # strip brand
+    br = attrs.get('brand')
+    if not br:
+        return name
+    brand = br[0][0]
+    #print 'brand:', brand
+    if name.startswith(brand):
+        endidx = name.index(brand) + len(brand)
+        return name[endidx:].lstrip()
+    else:
+        print name_toks, 'doesnt start with', brandlow
+    return name
+
+def name_minus_tag(name, tokens):
+    #print tokens
+    name_tokens = tag_name.tokenize(name)
+    idx = list_sublist_index(name_tokens, [t.lower() for t in tokens])
+    if idx == -1:
+        print tokens, 'not in', name_tokens
+        return name
+    idx = name.index(tokens[0])
+    endidx = name.index(tokens[-1], idx) + len(tokens[-1])
+    before = name[:idx].rstrip(' -,(')
+    after = name[endidx:].lstrip(' -,.)')
+    #print 'before:', before, 'after:', after
+    if before and after:
+        after = ' ' + after
+    return (before + after) or None
+
+def name_canonical(name, attrs):
+    name1 = name_minus_brand(name, attrs)
+    name2 = name1
+    for tokens in attrs.get('size', []):
+        name2 = name_minus_tag(name2, tokens)
+    if 'price' in attrs:
+        name2 = name_minus_tag(name2, attrs.get('price')[0])
+    return name2
+
 def name_to_attrs(name):
     d = defaultdict(list)
-    if name and len(name) < 100: # XXX: FIXME: we're too slow
+    if name:
         otq = tag_name.tag_query(name)
         tq = tag_name.to_original_case(otq, name)
-        #pprint(tq)
+        #print 'tq:', pformat(tq)
         for tag, toks in tq:
             d[tag].append(toks)
 
@@ -122,9 +180,12 @@ def name_to_attrs(name):
             if tag in ('brand', 'product', 'material','color','pattern'):
                 d[tag].append(toks)
 
+    d['name_canonical'] = name_canonical(name, d)
+
     d['size'] = size_attrs(d)
     d['quantity'] = qty_attrs(d) or None
-    return dict(d)#, qty#, dict(size_unit)
+
+    return dict(d)
 
 def update(cursor, url_product_id, updated, name, attrs):
     try:
@@ -154,7 +215,7 @@ where
 '''
         args =(
         updated,
-        name,
+        attrs.get('name_canonical'),
         attrs.get('brand'),
         attrs.get('color'),
         attrs.get('material'),
@@ -227,7 +288,7 @@ insert into url_product_name_attr (
 ''',  (updated,
        updated,
        url_product_id,
-       name,
+       attrs.get('name_canonical'),
        attrs.get('brand'),
        attrs.get('color'),
        attrs.get('material'),
