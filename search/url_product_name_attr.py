@@ -139,20 +139,25 @@ def name_minus_tag(name, tokens):
         return name
     idx = name.index(tokens[0])
     endidx = name.index(tokens[-1], idx) + len(tokens[-1])
-    before = name[:idx].rstrip(" -,('")
-    after = name[endidx:].lstrip(' -,.)')
+    before = name[:idx].rstrip(" -,('!")
+    after = name[endidx:].lstrip(' -,.)!')
     #print 'before:', before, 'after:', after
     if before and after:
         after = ' ' + after
     return (before + after) or None
 
 def name_canonical(name, attrs):
-    name1 = name_minus_brand(name, attrs)
-    name2 = name1
+    # strip promo
+    name2 = name
+    for tokens in attrs.get('promo', []):
+        name2 = name_minus_tag(name2, tokens)
+    name2 = name_minus_brand(name2, attrs)
+    # strip size(s)
     for tokens in attrs.get('size', []):
         name2 = name_minus_tag(name2, tokens)
-    if 'price' in attrs:
-        name2 = name_minus_tag(name2, attrs.get('price')[0])
+    # strip price
+    for tokens in attrs.get('price', []):
+        name2 = name_minus_tag(name2, tokens)
     return name2
 
 def name_to_attrs(name):
@@ -373,6 +378,8 @@ def test():
         u'1 pc 2 pieces 3 x 4-pack 5 count set of 2 3 pack',
         u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz',
         u'Viscaya 7-Pc. Embroidered Comforter Sets',
+        u'CLOSEOUT! Lacoste Solid Stillwater Brushed Twill Comforter and Duvet Cover Sets',
+        u"Men's Dolce & Gabbana by Dolce & Gabbana Eau de Toilette Spray doesnt start with Dolce & Gabbana",
     ]
     for name in names:
         print name
