@@ -128,6 +128,20 @@ def name_minus_string_prefix(name, strlist, verbose=False):
                 print name, 'doesnt start with', substr
     return name
 
+def name_minus_string_prefix_or_suffix(name, strlist, verbose=False):
+    if strlist:
+        substr = strlist[0][0]
+        #print 'substr:', substr
+        if name.startswith(substr):
+            endidx = name.index(substr) + len(substr)
+            return name[endidx:].lstrip(" -,")
+        elif name.endswith(substr):
+            return name[:-len(substr)].rstrip(" '-,")
+        else:
+            if verbose:
+                print name, 'doesnt start/end with', substr
+    return name
+
 def name_minus_tag(name, tokens):
     #print tokens
     name_tokens = tag_name.tokenize(name)
@@ -138,7 +152,7 @@ def name_minus_tag(name, tokens):
     idx = name.index(tokens[0])
     endidx = name.index(tokens[-1], idx) + len(tokens[-1])
     before = name[:idx].rstrip(" -,('!")
-    after = name[endidx:].lstrip(' -,.)!')
+    after = name[endidx:].lstrip(" -,.)'!")
     #print 'before:', before, 'after:', after
     if before and after:
         after = ' ' + after
@@ -152,7 +166,7 @@ def name_canonical(name, attrs, tq):
         name2 = name_minus_tag(name2, tokens)
     for tokens in attrs.get('demographic', []):
         name2 = name_minus_string_prefix(name2, [tokens])
-    name2 = name_minus_string_prefix(name2, attrs.get('brand') or [], verbose=True)
+    name2 = name_minus_string_prefix_or_suffix(name2, attrs.get('brand') or [], verbose=True)
     # strip size(s)
     for tokens in attrs.get('size', []):
         name2 = name_minus_tag(name2, tokens)
@@ -388,6 +402,7 @@ def test():
         u'Viscaya 7-Pc. Embroidered Comforter Sets',
         u'CLOSEOUT! Bar III Interlock White Quilt Collection',
         u"Men's Star Wars Advance Tie T-Shirt by Fifth Sun",
+        u"Haaci V-Neck Hoodie - Miss Chievous",
     ]
     for name in names:
         print name

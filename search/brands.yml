@@ -2587,7 +2587,6 @@ Sisley Paris:
         SISLEY:
         sisleÿ:
         Sisleÿ:
-Skin:
 Southern Enterprises:
 Stance:
     aka:
@@ -3601,9 +3600,12 @@ Venettini:
     line:
         Venettini Kids:
 Sleepy Jones:
-Davidoff:
+Zino Davidoff:
     aka:
+        Davidoff:
         DAVIDOFF:
+    line:
+        Zino Davidoff by Zino Davidoff:
 David Donahue:
     aka:
         DAVID DONAHUE:
@@ -12247,6 +12249,8 @@ HIP HOP:
 Joan Rivers:
 Lauren Cecchi New York:
 Merona:
+    aka:
+        Merona™:
 Moda Spana:
 Nivea:
     aka:
@@ -12469,6 +12473,7 @@ Macys:
         Charter Club:
         Epic Threads:
         Bronzarte:
+        Emerald Sundae:
 Giani Bernini:
 Altalana:
 "ROŸ ROGER'S":
@@ -24111,6 +24116,9 @@ Washington Nationals:
 WeSC:
 Wisconsin Badgers:
 Mossimo:
+    aka:
+        Mossimo Supply Co.:
+        Mossimo Supply Co.™:
 Lily Star:
 RBX:
     url: 'https://www.rbxactive.com/'
@@ -24392,3 +24400,7 @@ Beautyrest:
 Fifth Sun:
 The Sensual Skin:
 The Creamy Glow:
+Material Girl:
+Jezebel:
+    aka:
+        Jezebel®:
