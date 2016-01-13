@@ -134,17 +134,18 @@ number ("fl" "oz" | "floz")
                 if fr:
                     # int fract ...
                     cnt = start + fr
-                    if qtoks[cnt] in {'inches','inch','"'}:
-                        return cnt+1
-                    elif qtoks[cnt] == 'qt':
-                        return cnt+1
-                    elif qtoks[cnt] in ('carat', 'ct'):
-                        cnt += 1
-                        if qtoks[cnt] == 'tw':
-                            return cnt + 1
-                        elif qtoks[cnt] == 't' and qtoks[cnt+1] == 'w':
-                            return cnt + 2
-                        return cnt
+                    if len(qtoks) > cnt:
+                        if qtoks[cnt] in {'inches','inch','"'}:
+                            return cnt+1
+                        elif qtoks[cnt] == 'qt':
+                            return cnt+1
+                        elif qtoks[cnt] in ('carat', 'ct'):
+                            cnt += 1
+                            if qtoks[cnt] == 'tw':
+                                return cnt + 1
+                            elif qtoks[cnt] == 't' and qtoks[cnt+1] == 'w':
+                                return cnt + 2
+                            return cnt
             if is_number(qtoks[0]) and len(qtoks) > 1:
                 if qtoks[1] == 'ml':
                     return 2
