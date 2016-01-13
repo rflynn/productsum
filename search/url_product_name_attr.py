@@ -119,7 +119,7 @@ def list_sublist_index(l1, l2):
 def name_minus_string_prefix(name, strlist):
     if strlist:
         substr = strlist[0][0]
-        print 'substr:', substr
+        #print 'substr:', substr
         if name.startswith(substr):
             endidx = name.index(substr) + len(substr)
             return name[endidx:].lstrip()
@@ -362,7 +362,7 @@ def run():
                 for row in rows:
                     url_product_id, updated, name = row
                     attrs = name_to_attrs(name)
-                    print ('name: %s -> %s' % (name, attrs.get('name_canonical'))).encode('utf8')
+                    #print ('name: %s -> %s' % (name, attrs.get('name_canonical'))).encode('utf8')
                     #print 'attrs=%s' % (str(attrs).encode('utf8'),)
                     cnt += 1
                     upsert(conn, write_cursor, url_product_id,
