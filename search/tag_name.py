@@ -199,7 +199,7 @@ int "-"? ("count" | "ct")
                     return 2
                 elif qtoks[1] == '-' and len(qtoks) > 2 and qtoks[2] in ('count', 'ct'):
                     return 3
-            elif qtoks[0] == 'set' and qtoks[1] == 'of' and is_int(qtoks[2]):
+            elif qtoks[0] == 'set' and len(qtoks) > 2 and qtoks[1] == 'of' and is_int(qtoks[2]):
                 return 3
             elif len(qtoks) > 2 and qtoks[1] == '-' and qtoks[2] == 'pack':
                 return 3

@@ -127,7 +127,7 @@ def name_minus_brand(name, attrs):
         endidx = name.index(brand) + len(brand)
         return name[endidx:].lstrip()
     else:
-        print name_toks, 'doesnt start with', brandlow
+        print name, 'doesnt start with', brand
     return name
 
 def name_minus_tag(name, tokens):
@@ -139,7 +139,7 @@ def name_minus_tag(name, tokens):
         return name
     idx = name.index(tokens[0])
     endidx = name.index(tokens[-1], idx) + len(tokens[-1])
-    before = name[:idx].rstrip(' -,(')
+    before = name[:idx].rstrip(" -,('")
     after = name[endidx:].lstrip(' -,.)')
     #print 'before:', before, 'after:', after
     if before and after:
@@ -349,8 +349,8 @@ def run():
                     break
                 for row in rows:
                     url_product_id, updated, name = row
-                    print 'name:', name.encode('utf8') if name else name
                     attrs = name_to_attrs(name)
+                    print ('name: %s -> %s' % (name, attrs.get('name_canonical'))).encode('utf8')
                     #print 'attrs=%s' % (str(attrs).encode('utf8'),)
                     cnt += 1
                     upsert(conn, write_cursor, url_product_id,
@@ -372,6 +372,7 @@ def test():
         u'Hot Tools 0.75 Inch - 1.25 Inch Tapered Curling Iron (2 piece)',
         u'1 pc 2 pieces 3 x 4-pack 5 count set of 2 3 pack',
         u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz',
+        u'Viscaya 7-Pc. Embroidered Comforter Sets',
     ]
     for name in names:
         print name
