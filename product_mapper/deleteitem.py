@@ -70,6 +70,29 @@ if __name__ == '__main__':
             print url
             print table.delete_item(Key={'url': url})
 
+    #deleteall('www.ulta.com', '/_/N-')
+    #deleteall('www.jcpenney.com', '/_/N-')
+    #deleteall('www.saksfifthavenue.com', '/_/N-')
+    #deleteall('www.target.com', '/_/N-')
+    #deleteall('www.cvs.com', '/_/N-')
+
+    #deleteall('www.jcpenney.com', '/jsp/')
+
+    #deleteall('www.tradesy.com', '/tel:')
+
+    #deleteall('www.ln-cc.com', '/send-to-friend')
+
+    #deleteall('www.skinstore.com', '/ContentPages/BazaarVoiceLogin.aspx')
+
+    #deleteall('www.narscosmetics.com', '/Wishlist-Add')
+    #deleteall('www.narscosmetics.com', '/SendToFriend-')
+    #deleteall('www.narscosmetics.com', '/null')
+
+    #deleteall('www.cvs.com', '/stores/cvs-pharmacy-locations/')
+    #deleteall('www.cvs.com', '/store-locator/')
+
+    #deleteall('www.bluemercury.com', '/quick-view.aspx')
+
     #deleteall('www.beautylish.com', '/review/')
 
     #deleteall('www.michaelkors.com', '/')
