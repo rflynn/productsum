@@ -122,7 +122,7 @@ def name_minus_string_prefix(name, strlist, verbose=False):
         #print 'substr:', substr
         if name.startswith(substr):
             endidx = name.index(substr) + len(substr)
-            return name[endidx:].lstrip()
+            return name[endidx:].lstrip(" '-,")
         else:
             if verbose:
                 print name, 'doesnt start with', substr
