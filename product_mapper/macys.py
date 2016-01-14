@@ -125,6 +125,14 @@ class ProductMacys(object):
         self.features = features
 
         if self.name:
+            if (self.name.lower().startswith('receive a complimentary ')
+                or self.name.lower().startswith('receive a free ')
+                or self.name.lower().startswith('choose a complimentary')):
+                # invalidate self
+                # FIXME: figure out how to do this...
+                #self.prodid = None
+                pass
+                return
             if self.name.upper().startswith('CLOSEOUT!'):
                 self.name = self.name[len('CLOSEOUT!'):].lstrip() or None
             if self.name:

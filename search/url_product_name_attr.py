@@ -54,6 +54,8 @@ def size_attrs(d):
                 else:
                     if unit in ('g',):
                         unit = 'gram'
+                    elif unit in ('ml',):
+                        unit = 'ml'
                     elif unit in ('oz','ounce','ounces'):
                         unit = 'ounce'
                     elif unit in ('l','liter','liters'):
@@ -231,6 +233,7 @@ set
     name_size_raw      = %s,
     name_size_gram     = %s,
     name_size_inch     = %s,
+    name_size_ml       = %s,
     name_size_mm       = %s,
     name_size_ounce    = %s,
     name_size_fl_ounce = %s,
@@ -254,6 +257,7 @@ where
         attrs.get('size_raw'),
         attrs.get('size_gram'),
         attrs.get('size_inch'),
+        attrs.get('size_ml'),
         attrs.get('size_mm'),
         attrs.get('size_ounce'),
         attrs.get('size_fl_ounce'),
@@ -286,6 +290,7 @@ insert into url_product_name_attr (
     name_size_raw,
     name_size_gram,
     name_size_inch,
+    name_size_ml,
     name_size_mm,
     name_size_ounce,
     name_size_fl_ounce,
@@ -295,6 +300,7 @@ insert into url_product_name_attr (
     name_size_num,
     demographic
 ) values (
+    %s,
     %s,
     %s,
     %s,
@@ -330,6 +336,7 @@ insert into url_product_name_attr (
        attrs.get('size').get('raw'),
        attrs.get('size').get('g'),
        attrs.get('size').get('inch'),
+       attrs.get('size').get('ml'),
        attrs.get('size').get('mm'),
        attrs.get('size').get('ounce'),
        attrs.get('size').get('fl_ounce'),
@@ -404,7 +411,7 @@ def test():
         (u'Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675', None),
         (u'Matis Paris Cleansing Cream - Creme Demaquillante (6.76 fl oz.) $44', None),
         (u'Brighton 1-1/4" - 1" Salina Taper Belt', None),
-        (u'4 g 2" 55 mm 4.2 oz 1.7 fl oz. 1.7 liter 2 gallons 4 qt size 6', None),
+        (u'100ml 4 g 2" 55 mm 4.2 oz 1.7 fl oz. 1.7 liter 2 gallons 4 qt size 6', None),
         (u'Hot Tools 0.75 Inch - 1.25 Inch Tapered Curling Iron (2 piece)', None),
         (u'1 pc 2 pieces 3 x 4-pack 5 count set of 2 3 pack', None),
         (u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz', None),

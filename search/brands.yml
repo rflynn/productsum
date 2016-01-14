@@ -4482,6 +4482,8 @@ Christofle:
 Vogue:
     aka:
         VOGUE:
+    line:
+        Teen Vogue:
         Vogue Eyewear:
 Mansur Gavriel:
 Eve Lom:
@@ -10655,7 +10657,6 @@ Gibson:
         GIBSON:
 Merchant Archive:
 UNIQUENESS:
-Single:
 Alo Yoga:
 'NO. 6':
 Bella J:
@@ -10941,7 +10942,6 @@ Caudalie:
         CAUDALÍE:
         Caudalie Paris:
         CAUDALIE:
-HIGH:
 Salvatore Piccolo:
 Peas and Queues:
 LUCKY LU Milano:
@@ -12445,7 +12445,9 @@ Antigua:
 Ariya Jeans:
     aka:
         Ariya:
-Avanti:
+Sango Avanti:
+    aka:
+        Avanti:
 Avondale:
 Babyliss:
     aka:
@@ -24404,3 +24406,5 @@ Material Girl:
 Jezebel:
     aka:
         Jezebel®:
+"Joe & Elle":
+Beautees:

@@ -1,6 +1,6 @@
 
 -- sumarize progress per merchant
-select merchant_slug, count(distinct merchant_sku) as dsku, count(merchant_sku) as sku, count(brand) as brand, count(distinct brand) as dbrand, count(distinct bt.brand_to) as dbrand2, count(img_url), max(up.updated), min(up.updated) from url_product up left join brand_translate bt on bt.brand_from = up.brand group by merchant_slug order by dsku desc;
+select merchant_slug, count(distinct merchant_sku) as dsku, count(merchant_sku) as sku, count(brand) as brand, count(distinct brand) as dbrand, count(distinct bt.brand_to) as dbrand2, count(img_url), max(up.updated) as maxupd, min(up.updated) as minupd from url_product up left join brand_translate bt on bt.brand_from = up.brand group by merchant_slug order by maxupd desc;
 
 -- most popular brands not translated
 select distinct brand, count(*) as cnt from url_product where brand not in (select brand_from from brand_translate) group by brand order by cnt desc;
@@ -9,10 +9,28 @@ select distinct brand, count(*) as cnt from url_product where brand not in (sele
 -- how to update brands
 -- $ manually edit search/data/brands.yml
 -- $ python brandload.py > /tmp/brands.csv
-delete from brand_translate;
+truncate table brand_translate;
 \copy brand_translate (brand_to, brand_from) from '/tmp/brands.csv' delimiter ',' csv;
 \copy (select brand_from from brand_translate) to '/tmp/tag.brand.csv' csv;
 -- $ mv /tmp/tag.brand.csv ./data/
+
+-- fetch per-brand csv for graphing
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'NARS' order by up.name) to '/tmp/name-narscosmetics-variants.csv' csv;
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'Lancôme' order by up.name) to '/tmp/name-lancome-variants.csv' csv;
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'L''Oréal' order by up.name) to '/tmp/name-loreal-variants.csv' csv;
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'Sisley Paris' order by up.name) to '/tmp/name-sisley-variants.csv' csv;
+
+select up.id, bt.brand_to, up.merchant_slug, up.name, up.category from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'M·A·C' order by up.name;
+
+-- Lancôme
+-- L'Oréal
+
+-- most popular brands
+select bt.brand_to, count(*) as cnt from url_product up join brand_translate bt on bt.brand_from = up.brand group by bt.brand_to order by cnt desc;
 
 
 \copy (select brand from (select brand, count(*) as cnt from url_product group by brand order by cnt desc) as x) to '/tmp/brands.csv' with csv;

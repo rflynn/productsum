@@ -115,6 +115,7 @@ create table url_product_name_attr (
 );
 
 alter table url_product_name_attr add column demographic text[];
+alter table url_product_name_attr add column name_size_ml float[];
 
 commit;
 

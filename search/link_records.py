@@ -205,13 +205,17 @@ def actually_write_dot(G, filepath):
         f.write('''
 graph {
 node[color=black,penwidth=0.25,fontname=arial,fontsize=9];
+edge[len=1];
 ''')
         for e in G.edges_iter():
             u, v = e
             attrs = G.get_edge_data(u, v)
             writeattrs = (','.join('%s=%s' % (k, ('%.1f' % v) if isinstance(v, (int, float)) else '"%s"' % v)
                             for k, v in attrs.iteritems()))
-            f.write(('"%s" -- "%s\n" [%s]' % (u, v, writeattrs)).encode('utf8'))
+            if u == v:
+                f.write(('"%s" [%s]\n' % (u, writeattrs)).encode('utf8'))
+            else:
+                f.write(('"%s" -- "%s" [%s]\n' % (u, v, writeattrs)).encode('utf8'))
         f.write('}\n')
 
 if __name__ == '__main__':
