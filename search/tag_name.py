@@ -187,7 +187,7 @@ int "-"? ("count" | "ct")
         self.tag = 'quantity'
     def consume(self, qtoks):
         try:
-            if qtoks[0] == 'x' and is_int(qtoks[1]):
+            if qtoks[0] == 'x' and len(qtoks) > 1 and is_int(qtoks[1]):
                 return 2
             elif is_int(qtoks[0]) and len(qtoks) > 1:
                 if qtoks[1] == 'x':

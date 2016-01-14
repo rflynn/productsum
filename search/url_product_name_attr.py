@@ -175,7 +175,7 @@ def name_canonical(name, attrs, tq):
         name2 = name_minus_tag(name2, tokens)
     return name2
 
-def name_to_attrs(name):
+def name_to_attrs(name, brand=None):
     attrs = defaultdict(list)
     if name:
         otq = tag_name.tag_query(name)
@@ -198,8 +198,14 @@ def name_to_attrs(name):
             del attrs['color']
         if 'pattern' in attrs:
             del attrs['pattern']
+
+        # brand supplied separately
+        if brand:
+            attrs['brand'].append([brand])
         for tag, toks in tqbrand:
-            if tag in ('brand', 'demographic', 'product', 'material', 'color', 'pattern'):
+            if tag in ('demographic', 'product', 'material', 'color', 'pattern'):
+                attrs[tag].append(toks)
+            elif tag == 'brand' and not brand:
                 attrs[tag].append(toks)
 
         attrs['name_canonical'] = name_canonical(name, attrs, tq)
@@ -356,14 +362,17 @@ def run():
     with conn.cursor('namedcursor2', withhold=True) as read_cursor, \
          conn.cursor() as write_cursor:
         read_cursor.execute('''
-            select id, updated, name
-            from url_product
-            where updated > coalesce(
-                                (select max(updated) as maxupd
-                                 from url_product_name_attr),
-                                timestamp '1970-01-01')
-            and merchant_slug in ('macys','target','beautycom') -- XXX: FIXME: remove, just for testing...
-            order by updated asc
+            select up.id as id,
+                   up.updated as updated,
+                   up.name as name,
+                   up.brand as brand
+            from url_product up
+            left join url_product_name_attr upna
+            on up.id = upna.url_product_id
+            where upna.url_product_id is null or
+            up.updated > coalesce(upna.updated, timestamp '1970-01-01')
+            -- and up.merchant_slug in ('macys','target','beautycom') -- XXX: FIXME: remove, just for testing...
+            -- order by up.updated asc
             ''')
         cnt = 0
         row = None
@@ -375,8 +384,8 @@ def run():
                 if not rows:
                     break
                 for row in rows:
-                    url_product_id, updated, name = row
-                    attrs = name_to_attrs(name)
+                    url_product_id, updated, name, brand = row
+                    attrs = name_to_attrs(name, brand=brand)
                     #print ('name: %s -> %s' % (name, attrs.get('name_canonical'))).encode('utf8')
                     #print 'attrs=%s' % (str(attrs).encode('utf8'),)
                     cnt += 1
@@ -392,21 +401,22 @@ def run():
 
 def test():
     names = [
-        u'Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675',
-        u'Matis Paris Cleansing Cream - Creme Demaquillante (6.76 fl oz.) $44',
-        u'Brighton 1-1/4" - 1" Salina Taper Belt',
-        u'4 g 2" 55 mm 4.2 oz 1.7 fl oz. 1.7 liter 2 gallons 4 qt size 6',
-        u'Hot Tools 0.75 Inch - 1.25 Inch Tapered Curling Iron (2 piece)',
-        u'1 pc 2 pieces 3 x 4-pack 5 count set of 2 3 pack',
-        u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz',
-        u'Viscaya 7-Pc. Embroidered Comforter Sets',
-        u'CLOSEOUT! Bar III Interlock White Quilt Collection',
-        u"Men's Star Wars Advance Tie T-Shirt by Fifth Sun",
-        u"Haaci V-Neck Hoodie - Miss Chievous",
+        (u'Christian Louboutin So Kate Patent 120mm Red Sole Pump, Shocking Pink $675', None),
+        (u'Matis Paris Cleansing Cream - Creme Demaquillante (6.76 fl oz.) $44', None),
+        (u'Brighton 1-1/4" - 1" Salina Taper Belt', None),
+        (u'4 g 2" 55 mm 4.2 oz 1.7 fl oz. 1.7 liter 2 gallons 4 qt size 6', None),
+        (u'Hot Tools 0.75 Inch - 1.25 Inch Tapered Curling Iron (2 piece)', None),
+        (u'1 pc 2 pieces 3 x 4-pack 5 count set of 2 3 pack', None),
+        (u'Sally Hansen Miracle Gel, Top Coat, 0.5 fluid oz', None),
+        (u'Viscaya 7-Pc. Embroidered Comforter Sets', None),
+        (u'CLOSEOUT! Bar III Interlock White Quilt Collection', None),
+        (u"Men's Star Wars Advance Tie T-Shirt by Fifth Sun", None),
+        (u"Haaci V-Neck Hoodie - Miss Chievous", None),
+        (u"Haaci V-Neck Hoodie", u'Miss Chevous'),
     ]
-    for name in names:
+    for name, brand in names:
         print name
-        pprint(name_to_attrs(name), width=100)
+        pprint(name_to_attrs(name, brand=brand), width=100)
 
 if __name__ == '__main__':
     import sys
