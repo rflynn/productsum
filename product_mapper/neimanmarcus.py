@@ -15,6 +15,7 @@ from pprint import pprint
 import re
 import requests
 import time
+import traceback
 from yurl import URL
 
 from htmlmetadata import HTMLMetadata
@@ -214,8 +215,13 @@ class ProductsNeimanMarcus(object):
             or utag.get(u'page_type') == u'Product Detail'):
             # ok, there's 1+ product. extract them...
 
-            name = (nth(sp.get('name'), 0)
-                or nth(utag.get(u'product_name'), 0)
+            spname = nth(sp.get('name'), 0)
+            if spname == 'http://www.neimanmarcus.com/':
+                # some pages just have wrong data...
+                spname = None
+
+            name = (custom.get('name')
+                or spname
                 or og.get('title')
                 or meta.get('title') or None)
 
@@ -232,7 +238,7 @@ class ProductsNeimanMarcus(object):
                     brand=nth(sp.get(u'brand'), 0) or custom.get('brand') or None,
                     name=name,
                     title=og.get('title') or meta.get('title') or None,
-                    descr=maybe_join(' ', sp.get('description')) or None,
+                    descr=maybe_join(' ', sp.get('description')) or custom.get('descr') or None,
                     features=custom.get('features') or None,
                     price=nth(utag.get('product_price'), 0),
                     currency=utag.get('order_currency_code') or None,
@@ -263,8 +269,13 @@ class ProductsNeimanMarcus(object):
     @staticmethod
     def get_custom(soup, og, url):
         # url
-        sku = None
         url_canonical = None
+        sku = None
+        brand = None
+        name = None
+        descr = None
+        features = None
+
         tag = soup.find('link', rel='canonical', href=True)
         if tag:
             url_canonical = tag.get('href')
@@ -272,27 +283,45 @@ class ProductsNeimanMarcus(object):
             url_canonical = og.get('url')
             if url_canonical and url_canonical.endswith('?ecid=NMSocialFacebookLike'):
                 url_canonical = url_canonical[:-len('?ecid=NMSocialFacebookLike')]
+
         u = URL(url)
         if u.path:
             # e.g. http://www.neimanmarcus.com/Viktor-Rolf-NM-Exclusive-BONBON-Perfume-Swarovski-174-Limited-Edition-50-mL/prod184570129/p.prod
             m = re.search(r'/(prod[0-9]{8,12})/p\.prod$', u.path)
             if m:
                 sku = sku or m.groups(0)[0]
+
+        tag = soup.find(itemprop='name')
+        if tag:
+            br = tag.find(itemprop='brand')
+            if br:
+                br.extract()
+                brand = normstring(br.get_text()) or None
+            name = normstring(tag.get_text()) or None
+
         # brand
-        brand = None
         tag = soup.find('span', {'class':'prodDesignerName'})
         if tag:
             brand = normstring(dehtmlify(tag.text))
         # features
-        features = None
         tag = soup.find('div', itemprop='description')
         if tag:
-            features = [t.text for t in tag.findAll('li') or []]
+            try:
+                features = [t.text for t in tag.findAll('li')] or None
+                if features:
+                    if not descr:
+                        descr = features.pop(0)
+                        features = features or None
+            except:
+                traceback.print_exc()
+
         data = {
             'sku': sku,
-            'brand': brand,
-            'features': features,
             'url_canonical': url_canonical,
+            'brand': brand,
+            'name': name,
+            'descr': descr,
+            'features': features,
         }
         return data
 
@@ -311,6 +340,10 @@ if __name__ == '__main__':
     # test page that doesn't define prodid in the utag, we need the url...
     url = 'http://www.neimanmarcus.com/Viktor-Rolf-NM-Exclusive-BONBON-Perfume-Swarovski-174-Limited-Edition-50-mL/prod184570129/p.prod'
     filepath = 'test/www.neimanmarcus.com-Viktor-Rolf-NM-Exclusive-BONBON-Perfume-Swarovski-174-Limited-Edition-50-mL-prod184570129-p.prod.gz'
+
+    # test bug where name='http://www.neimanmarcus.com/'
+    url = 'http://www.neimanmarcus.com/Diane-von-Furstenberg-Kenley-Seasonal-Print-Cashmere-Scarf-Black-White/prod184420712/p.prod'
+    filepath = 'test/www.neimanmarcus.com-Diane-von-Furstenberg-Kenley-Seasonal-Print-Cashmere-Scarf-Black-White-prod184420712-p.prod.gz'
 
     # ignore by url...
     #url = 'http://www.neimanmarcus.com/search.jsp?N=4294914706&_requestid=151757&Ntt=Psycho+Bunny'
