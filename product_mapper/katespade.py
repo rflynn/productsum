@@ -246,8 +246,9 @@ class ProductsKateSpade(object):
 
         # e.g. /716737717608.html
         # e.g. /EMALES.html
+        # e.g. /1369.html
         if not sku:
-            m = re.search('/([A-Z0-9]{5,12})\.html', url)
+            m = re.search('/([A-Z0-9]{4,12})\.html', url)
             if m:
                 sku = m.groups(0)[0]
 
