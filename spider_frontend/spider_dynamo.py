@@ -575,13 +575,14 @@ _Seeds = {
     'https://www.katespade.com/': {
         'skip': {
             # custom
+            '/blog/',
             '/customer-care/',
             '/gift-cards-1/',
             '/gwp/',
-            '/katespade-about-us/',
-            '/katespade-careers',
-            '/katespade-customer-service-shipping/',
-            '/katespade-customer-service-privacy-security/',
+            '/katespade-',
+            #'/katespade-about-us',
+            #'/katespade-careers',
+            #'/katespade-customer-service',
             '/shopping-bag',
             '/stores',
             # robots.txt
