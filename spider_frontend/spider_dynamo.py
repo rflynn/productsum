@@ -312,6 +312,7 @@ _Seeds = {
         'skip': {
             # custom
             '*/_/N-',
+            '*/N-', # endless search result permutations
             '/help/',
             '*;jsessionid=',
             '/minuteclinic/',
