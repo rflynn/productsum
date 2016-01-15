@@ -11,8 +11,25 @@ productsum.com
 7. DigitalOcean
 8. Docker?
 
+## Interesting Terms
+
+1. "dress shirt"
+2. "top coat"
+3. "black label"
 
 ## How To Do Stuff
+
+```sh
+mkdir src
+cd src
+sudo apt-get update -y
+sudo apt-get install -y git
+
+git clone https://github.com/rflynn/productsum.git
+
+cd productsum
+/bin/bash install.sh
+```
 
 ### Run a Spider
 
@@ -24,7 +41,7 @@ productsum.com
 ### Spider Archive -> products in SQL
 
 ```sh
-time AWS_ACCESS_KEY_ID=AKIAIJSFBGWDARVXQBSA AWS_SECRET_ACCESS_KEY=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 AWS_DEFAULT_REGION=us-east-1 python product2db.py www.foobar.com 2>&1
+while true; do time AWS_ACCESS_KEY_ID=AKIAIJSFBGWDARVXQBSA AWS_SECRET_ACCESS_KEY=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 AWS_DEFAULT_REGION=us-east-1 PYTHONPATH=. python product2db.py www.jcpenney.com www.ln-cc.com www.neimanmarcus.com www.narscosmetics.com www.toryburch.com www.sephora.com www.nastygal.com www1.bloomingdales.com www.skinstore.com shop.riteaid.com www.dillards.com www.belk.com www.revolveclothing.com www.bergdorfgoodman.com www.matchesfashion.com www.zappos.com www.tradesy.com www.bluefly.com www1.bloomingdales.com www1.macys.com www.yoox.com www.nordstrom.com www.stylebop.com www.net-a-porter.com www.therealreal.com www.cvs.com www.bathandbodyworks.com www.selfridges.com www.harrods.com  us.jimmychoo.com shop.mango.com us.christianlouboutin.com us.jimmychoo.com www.6pm.com www.jcrew.com www.ralphlauren.com www.walmart.com www.walgreens.com www.target.com; sleep 5; done
 ```
 
 ### Load Brands
@@ -58,6 +75,14 @@ mv /tmp/brandfrom.csv ./data/tag.brand.csv
 
 ```sh
 time PYTHONPATH=product_mapper/ python search/elasticsearch_create_index.py
+```
+
+### Map url_product.name -> url_product_name_attr
+
+```sh
+cd search
+source ../venv/bin/activate
+PYTHONPATH=.. python search/url_product_name_attr.py
 ```
 
 

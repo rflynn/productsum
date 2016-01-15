@@ -1949,9 +1949,14 @@ def prefix_matches(path, prefix):
         return path in ('', '/')
     if '*' in prefix:
         pattern = prefix
+        pattern = pattern.replace('*', '.*?')
+        # escape all regex special chars, except *
         pattern = pattern.replace('+', '[+]')
         pattern = pattern.replace('?', '[?]')
-        pattern = pattern.replace('*', '.*?')
+        pattern = pattern.replace('(', '[(]')
+        pattern = pattern.replace(')', '[)]')
+        pattern = pattern.replace('{', '[{]')
+        pattern = pattern.replace('}', '[}]')
         return bool(re.search(pattern, path))
     return (
         path.startswith(prefix)

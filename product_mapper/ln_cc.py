@@ -262,10 +262,11 @@ class ProductsLN_CC(object):
                     #pprint(obj)
 
                     name = obj.get('Product') or None
-                    try:
-                        sku = obj['ecommerce']['detail']['products'][0]['id']
-                    except:
-                        traceback.print_exc()
+                    if 'ecommerce' in obj and 'detail' in obj['ecommerce']:
+                        try:
+                            sku = obj['ecommerce']['detail']['products'][0]['id']
+                        except:
+                            traceback.print_exc()
             except:
                 traceback.print_exc()
 

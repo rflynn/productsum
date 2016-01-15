@@ -134,17 +134,18 @@ number ("fl" "oz" | "floz")
                 if fr:
                     # int fract ...
                     cnt = start + fr
-                    if qtoks[cnt] in {'inches','inch','"'}:
-                        return cnt+1
-                    elif qtoks[cnt] == 'qt':
-                        return cnt+1
-                    elif qtoks[cnt] in ('carat', 'ct'):
-                        cnt += 1
-                        if qtoks[cnt] == 'tw':
-                            return cnt + 1
-                        elif qtoks[cnt] == 't' and qtoks[cnt+1] == 'w':
-                            return cnt + 2
-                        return cnt
+                    if len(qtoks) > cnt:
+                        if qtoks[cnt] in {'inches','inch','"'}:
+                            return cnt+1
+                        elif qtoks[cnt] == 'qt':
+                            return cnt+1
+                        elif qtoks[cnt] in ('carat', 'ct'):
+                            cnt += 1
+                            if qtoks[cnt] == 'tw':
+                                return cnt + 1
+                            elif qtoks[cnt] == 't' and qtoks[cnt+1] == 'w':
+                                return cnt + 2
+                            return cnt
             if is_number(qtoks[0]) and len(qtoks) > 1:
                 if qtoks[1] == 'ml':
                     return 2
@@ -186,7 +187,7 @@ int "-"? ("count" | "ct")
         self.tag = 'quantity'
     def consume(self, qtoks):
         try:
-            if qtoks[0] == 'x' and is_int(qtoks[1]):
+            if qtoks[0] == 'x' and len(qtoks) > 1 and is_int(qtoks[1]):
                 return 2
             elif is_int(qtoks[0]) and len(qtoks) > 1:
                 if qtoks[1] == 'x':
@@ -199,13 +200,13 @@ int "-"? ("count" | "ct")
                     return 2
                 elif qtoks[1] == '-' and len(qtoks) > 2 and qtoks[2] in ('count', 'ct'):
                     return 3
-            elif qtoks[0] == 'set' and qtoks[1] == 'of' and is_int(qtoks[2]):
+            elif qtoks[0] == 'set' and len(qtoks) > 2 and qtoks[1] == 'of' and is_int(qtoks[2]):
                 return 3
             elif len(qtoks) > 2 and qtoks[1] == '-' and qtoks[2] == 'pack':
                 return 3
             elif len(qtoks) > 1 and qtoks[1] == 'pack':
                 return 2
-            elif qtoks[0] in {'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and len(qtoks) > 1 and qtoks[1] in {'piece', 'pack', 'pk'}:
+            elif qtoks[0] in {'single', 'dual', 'triple', 'quad', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'} and len(qtoks) > 1 and qtoks[1] in {'piece', 'pack', 'pk'}:
                 return 2
             elif qtoks[0] == 'assorted' and len(qtoks) > 1 and is_int(qtoks[1]):
                 if len(qtoks) > 3 and qtoks[2] == '-' and qtoks[3] == 'pack':
@@ -238,6 +239,7 @@ class Parser(object):
                     'ngram2',
                     'pattern',
                     'product',
+                    'promo',
                     #'quantity',
                     #'size'
                     ]:
