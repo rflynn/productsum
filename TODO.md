@@ -79,8 +79,27 @@ TODO:
             * barneys (e.g. 504143194)
             * fwrd (e.g. http://localhost:9998/?q=brand:(Charlotte%20Olympia)%20Aranea%20Suede%20Heels%20$895)
             * ssense /fr-fr/ products...
-    41. ... complete brand tagging
-    42. save/map/return brand line
+    41. ✔ complete brand tagging, phase one
+    42. ✔ add second layer in database
+        parse out tagged attributes into separate fields
+            brand
+    43. ✔ searching for 'Vitamin A' becomes 'Vita' ...
+    44. canonicalize url_product:
+            name
+                extract/remove:
+                    brand:
+                    size: "4.2 oz"
+                    price: "$42"
+                    other attributes: "online only"
+            color:
+                "NoColor" == "No Color"
+
+
+
+    44. define test using NARS products for input/output of record linkage
+    45. write code that passes the test
+
+
     43. define product hierarchy
             clothing
                 category (Shoes, etc.)
@@ -90,11 +109,11 @@ TODO:
                                 color
                                 size
                                 line-specific attributes
+                                flavor
                                 price
-    44. ... add second layer in database
-        parse out tagged attributes into separate fields
-            brand
-    45. research Lyst.com
+    44. when brand is extracted as prefix to product name, remove it from product name
+    45. work to fully parse/map product name into consistuent parts/regions
+    46. fix brand "A+" (e.g. http://www.target.com/p/women-s-a-isa-booties/-/A-18772273)
 
     ...
     ref: https://lucidworks.com/blog/2014/07/12/solution-for-multi-term-synonyms-in-lucenesolr-using-the-auto-phrasing-tokenfilter/

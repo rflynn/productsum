@@ -311,6 +311,8 @@ _Seeds = {
         #},
         'skip': {
             # custom
+            '*/_/N-',
+            '*/N-', # endless search result permutations
             '/help/',
             '*;jsessionid=',
             '/minuteclinic/',
@@ -370,13 +372,14 @@ _Seeds = {
         'runjs': {},
         'skip': {
             # custom
-            '/*/void(0)', # they weirdly link here, stop following these fucking links...
+            '/*void(0)', # they weirdly link here, stop following these fucking links...
             '/c/',
             '/credit-services/',
             '/html/',
             '/shop/en/dillards/faqs-notices-policies-us',
             '/webapp/wcs/stores/servlet/OrderItemDisplay', # cart
             '/webapp/wcs/stores/servlet/LogonForm',
+            '/webapp/wcs/stores/servlet/ReviewForm',
         },
     },
     'http://www.drugstore.com': {
@@ -573,13 +576,14 @@ _Seeds = {
     'https://www.katespade.com/': {
         'skip': {
             # custom
+            '/blog/',
             '/customer-care/',
             '/gift-cards-1/',
             '/gwp/',
-            '/katespade-about-us/',
-            '/katespade-careers',
-            '/katespade-customer-service-shipping/',
-            '/katespade-customer-service-privacy-security/',
+            '/katespade-',
+            #'/katespade-about-us',
+            #'/katespade-careers',
+            #'/katespade-customer-service',
             '/shopping-bag',
             '/stores',
             # robots.txt
@@ -1269,7 +1273,6 @@ _Seeds = {
             '/browse/inc/productDetail_crossSell.jsp',
             '/careers-at-ulta/', # useless
             '/image-server/',
-            '/ulta/a/Nails-ULTA-Collection/_/N-*?categoryId=cat350015&ciSelector=leaf/', # endless permutations of search results
             '/ulta/cart/',
             '/ulta/checkout/',
             '/ulta/common/productRecommendations.jsp',
@@ -1948,8 +1951,13 @@ def prefix_matches(path, prefix):
         return path in ('', '/')
     if '*' in prefix:
         pattern = prefix
+        # escape all regex special chars, except *
         pattern = pattern.replace('+', '[+]')
         pattern = pattern.replace('?', '[?]')
+        pattern = pattern.replace('(', '[(]')
+        pattern = pattern.replace(')', '[)]')
+        pattern = pattern.replace('{', '[{]')
+        pattern = pattern.replace('}', '[}]')
         pattern = pattern.replace('*', '.*?')
         return bool(re.search(pattern, path))
     return (
@@ -1964,6 +1972,7 @@ assert prefix_matches('/foo/bar?baz', '/*bar')
 assert prefix_matches('/fr-fr/femmes', '/fr-fr/')
 assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
 assert prefix_matches('/trussardi?country_switch=ca&lang=en&redirect=homepage', '*?country_switch=')
+assert prefix_matches('http://www.dillards.com/void(0)', '/*void(0)')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:

@@ -14,6 +14,39 @@ given a set of $url_product.name strings that belong to a given $brand...
 
 '''
 select up.id, bt.brand_to, up.merchant_slug, up.name, up.category, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'NARS' order by up.name;
+
+\copy (select up.name, up.color, up.size, up.available_colors, up.available_sizes from url_product up join brand_translate bt on bt.brand_from = up.brand where bt.brand_to = 'NARS' order by up.name) to '/tmp/name-narscosmetics-variants.csv' csv;
+'''
+
+'''
+ 1109255 | NARS     | narscosmetics   | Audacious Lipstick - Geraldine                                               | Makeup                             | {Angela,Anita,Anna,Annabella,Audrey,Barbara,Bette,Brigitte,Carmen,Catherine,Charlotte,Claudia,Deborah,Dominique,Fanny,Geraldine,Grace,Greta,Ingrid,Jane,Janet,Jeanne,Julie,Juliette,Kelly,Lana,Leslie,Liv,Marisa,Marlene,Michiyo,Natalie,Olivia,Raquel,Rita,Sandra,Silvia,Vanessa,Vera,Vivien}
+
+ 1109102 | NARS     | narscosmetics   | Blush - Nico                                                                 | Makeup                             | {"413 BLKR",Almerla,Amour,Angelika,"Deep Throat",Desire,"Dolce Vita","Exhibit A",Gaiety,Gilda,Gina,LibertÉ,Lovejoy,Luster,Madly,"Mata Hari",Nico,Oasis,Orgasm,Outlaw,Reckless,Seduction,"Sex Appeal",Sin,"Super Orgasm","Taj Mahal",Taos,Torrid,Tribulation,Unlawful,Zen}
+
+Core Product - underlying, universal item (e.g. "lipstick")
+Brand Product - brand's product around core product (e.g. "Audacious Lipstick")
+Product Variant - flavor/color variant of Brand Product (e.g. "Audacious Lipstick - Geraldine")
+
+the record we start with may have:
+    a specified variant:
+    a set of possible variants:
+
+NARS "#40 Eye Shadow Brush"
+BrandProduct(NARS, BrandProduct(#40 Eye Shadow, CoreProduct(Brush)))
+
+FooBrand 'A Novel Romance' Fluidline Eye Pencil
+BrandProduct(FooBrand, BrandProduct("'A Novel Romance'", 
+
+"All Day Luminous Powder Foundation Broad Spectrum SPF 24 - Siberia"
+(((All Day) (Luminous (Powder (Foundation)))) (Broad Spectrum) (SPF 24) - (Siberia))"
+   --- ---   --------  ------  ----------      ----- --------   --- --     -------
+   -------   --------  ------  ----------      --------------   ------     -------
+    ngram      adj      spec     core              ngram         ngram      token
+                          +-------+                adj/attr      attr      variant
+                +-------------+
+      +----------------+
+               +--------------------------------------+
+                                 +---------------------------------+
 '''
 
 from collections import defaultdict, Counter

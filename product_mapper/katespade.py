@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from ln_cc.com to zero or more products
+map a document archived from katespade.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -24,10 +24,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'ln_cc'
+MERCHANT_SLUG = 'katespade'
 
 
-class ProductLN_CC(object):
+class ProductKateSpade(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -82,6 +82,10 @@ class ProductLN_CC(object):
             self.name = u' '.join(self.name) or None
         self.name = dehtmlify(normstring(self.name))
 
+        if self.brand:
+            if self.brand == 'KATE':
+                self.brand = 'Kate Spade'
+
         # clean up "$brand $upper_name"
         if self.name:
             if self.brand:
@@ -93,11 +97,11 @@ class ProductLN_CC(object):
         self.title = dehtmlify(normstring(self.title))
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
-        if self.title:
-            if self.title.endswith(' | LN-CC'):
-                self.title = self.title[:-len(' | LN-CC')]
 
         self.descr = dehtmlify(normstring(self.descr))
+        if self.descr:
+            if self.descr.startswith('Color: '):
+                self.descr = self.descr[6:]
 
         if self.features:
             self.features = [dehtmlify(f) for f in self.features]
@@ -106,7 +110,7 @@ class ProductLN_CC(object):
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductLN_CC:
+        return ('''ProductKateSpade:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -205,7 +209,7 @@ class ProductLN_CC(object):
         )
 
 
-class ProductsLN_CC(object):
+class ProductsKateSpade(object):
 
     VERSION = 0
 
@@ -240,108 +244,106 @@ class ProductsLN_CC(object):
         except:
             url_canonical = url
 
-        br = soup.find('p', itemprop='breadcrumb')
+        # e.g. /716737717608.html
+        # e.g. /EMALES.html
+        # e.g. /1369.html
+        if not sku:
+            m = re.search('/([A-Z0-9]{4,12})\.html', url)
+            if m:
+                sku = m.groups(0)[0]
+
+        tag = soup.find('div', {'class': 'description-details'})
+        if tag:
+            try:
+                features = [x for x in
+                            [normstring(li.get_text())
+                                for li in tag.select('ul li')]
+                                    if x] or None
+            except:
+                traceback.print_exc()
+
+        tag = soup.find('div', {'class': 'product-variations', 'data-current': True})
+        if tag:
+            try:
+                dc = tag.get('data-current')
+                obj = json.loads(dc)
+                #print 'obj:'
+                #pprint(obj)
+            except:
+                traceback.print_exc()
+
+        tag = soup.find('ul', {'class': 'swatches'})
+        if tag:
+            try:
+                colors = sorted(x for x in
+                            [normstring(li.get_text())
+                                for li in tag.findAll('li')]
+                                    if x) or None
+            except:
+                traceback.print_exc()
+
+        '''
+<script language="javascript1.2" type="text/javascript">
+var cmBrand = "KATE";
+var cmPageType = "PDP";
+var cmDepartmentID = "411";
+var cmClassID = "08";
+var cmGroupID = "41";
+var cmClassDescription = "NOVELTY";
+var cmEditorsPick = "false";
+var cmHandInHand = "false";
+var cmIsGiftable = "false";
+var cmSeasonID = "A15";
+var cmProductID = "PXRU6254";
+var cmProductName = "go fly a kite kite clutch";
+var cmCategoryID = "ks-handbags-clutches";
+var pageID = "go fly a kite kite clutch (PXRU6254)";
+var cmDepartmentDescription = "KS HANDBAGS";
+var cmGroupDescription = "KS HANDBAG/SMALLGOOD";
+var cmOccasion = "";
+var cmAsSeenIn = "";
+// cmExploreAttributes
+var cmExploreAttributes = cmBrand+"-_-"+cmPageType+"-_-"+cmDepartmentID+"-_-"+cmClassID+"-_-"+cmGroupID+"-_-"+cmClassDescription+"-_-"+cmEditorsPick+"-_-"+cmHandInHand+"-_-" + cmAsSeenIn + "-_-"+cmIsGiftable+"-_-"+cmSeasonID;
+// cmCreateProductViewTag
+if(typeof cmCreateProductviewTag != 'undefined') {
+cmCreateProductviewTag(cmProductID, cmProductName, cmCategoryID, cmExploreAttributes);
+}
+</script>
+        '''
+        sc = soup.find('script', text=lambda t: t and 'var cmProductID' in t)
+        #print 'sc:', sc
+        if sc:
+            try:
+                vs = re.findall(r'var \w+\s*=\s*.*;', sc.text)
+                if vs:
+                    objtxt = "\n".join(vs) + """
+return {
+    'brand': typeof cmBrand === 'undefined' ? null : cmBrand,
+    'sku': typeof cmProductID === 'undefined' ? null : cmProductID,
+    'name': typeof cmProductName === 'undefined' ? null : cmProductName,
+    'category': typeof cmCategoryID === 'undefined' ? null : cmCategoryID
+};
+"""
+                    #print repr(objtxt)
+                    obj = execjs.exec_(objtxt)
+                    #pprint(obj)
+
+                    brand = brand or obj.get('brand') or None
+                    sku = sku or obj.get('sku') or None
+                    name = name or obj.get('name') or None
+                    category = category or obj.get('category') or None
+            except:
+                traceback.print_exc()
+
+        br = soup.find('ol', {'class': 'breadcrumb'})
         if br:
             try:
                 breadcrumbs = [x for x in
-                                [normstring(a.get_text())
-                                    for a in br.findAll('a')]
+                                [normstring(li.get_text())
+                                    for li in br.findAll('li')]
                                         if x] or None
             except:
                 traceback.print_exc()
-
-        sc = soup.find('script', text=lambda t: t and 'app.trackerData = {' in t)
-        if sc:
-            try:
-                m = re.search('app.trackerData = ({.*})', sc.text)
-                if m:
-                    objtxt = m.groups(0)[0]
-                    #print objtxt
-                    obj = json.loads(objtxt)
-                    #obj = execjs.exec_(objtxt + '; return options;')
-                    #pprint(obj)
-
-                    name = obj.get('Product') or None
-                    if 'ecommerce' in obj and 'detail' in obj['ecommerce']:
-                        try:
-                            sku = obj['ecommerce']['detail']['products'][0]['id']
-                        except:
-                            traceback.print_exc()
-            except:
-                traceback.print_exc()
-
-        if not sku:
-            u = URL(url)
-            if u.path:
-                # http://www.ln-cc.com/en/women/jackets-2/pre-ss16%3A-lanvin-single-breasted-coat/lan0223002col.html
-                m = re.search('/([a-z0-9]{8,32})\.html$', u.path)
-                if m:
-                    sku = m.groups(0)[0]
-
-        '''
-        <script type="text/json" class="js-gtm_product_variants_info">
-        '''
-        sc = soup.find('script', {'class': 'js-gtm_product_variants_info'})
-        if sc:
-            try:
-                objtxt = sc.text
-                #print objtxt
-                obj = json.loads(objtxt)
-                #obj = execjs.exec_(objtxt + '; return options;')
-                #pprint(obj)
-
-                o = obj[0]
-                sku = sku or o.get('productMasterID') or None
-                name = o.get('productName') or None
-                price = o.get('productPrice') or None
-                category = o.get('productType') or None
-            except:
-                traceback.print_exc()
-
-        d = soup.find('div', {'class': 'prod-short'})
-        if d:
-            try:
-                descr = normstring(d.get_text())
-            except:
-                traceback.print_exc()
-
-        try:
-            features = [x for x in
-                            [normstring(li.get_text()) for li in
-                                soup.select('div.b-product_long_description ul li')]
-                                    if x] or None
-        except:
-            traceback.print_exc()
-
-        '''
-        <ul class="js-swatches b-swatches_size">
-            <li class="b-swatches_size-item emptyswatch js-unselectable m-unselectable">
-                <a data-variantid="090900000143823" title="SIZE EU 35 is not available for this combination" class="js-swatchanchor b-swatches_size-link b-swatches-link_notifyme js-notifyme_link">
-                    EU 35
-                </a>
-                <span class="b-swatches-link_notifyme js-notifyme_link" data-variantid="090900000143823"></span>
-            </li>
-        '''
-        try:
-            sizes = [x for x in
-                        [normstring(a.get_text()) for a in
-                            soup.select('ul.js-swatches li a')]
-                                if x] or None
-        except:
-            traceback.print_exc()
-
-        '''
-        <ul class="js-thumbnails b-product_thumbnails-list">
-            <li class="js-thumbnail b-product_thumbnail b-product_thumbnail-selected">
-                <img class="js-img_product_thumbnail b-product_thumbnail-image"
-        '''
-        try:
-            img_urls = [x for x in
-                        [urljoin(url_canonical, img.get('src'))
-                            for img in soup.select('ul.js-thumbnails li img.js-img_product_thumbnail')]
-                                if x] or None
-        except:
-            traceback.print_exc()
 
         return {
             'url_canonical': url_canonical,
@@ -364,16 +366,22 @@ class ProductsLN_CC(object):
             'size': size,
             'sizes': sizes,
             'img_url': img_url,
-            'img_urls': img_urls,
         }
+
+    @classmethod
+    def url_may_be_product(cls, url):
+        u = URL(url)
+        return url and u and url.path and (
+            not url.path.startswith('/search')
+        )
 
     @classmethod
     def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
 
-        if False:
-            # nuthin'
+        if '/search?q=' in url:
+            # not a product
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -411,14 +419,13 @@ class ProductsLN_CC(object):
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
-                    or nth(sp.get('sku'), 0)
-                    or nth(sp.get('productID'), 0) # should exist in ln_cc
-                    or custom.get('sku') # should exist in ln_cc
+                    or nth(sp.get('sku'), 0) # should exist in katespade
+                    or custom.get('sku') # should exist in katespade
                     or None)
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -438,7 +445,7 @@ class ProductsLN_CC(object):
             except:
                 spbrand = None
 
-            p = ProductLN_CC(
+            p = ProductKateSpade(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -482,7 +489,7 @@ class ProductsLN_CC(object):
                             or og.get('product:brand')
                             or og.get('brand')
                             or spbrand
-                            or None),
+                            or 'Kate Spade'),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
                             or utag.get('bread_crumb')
@@ -526,9 +533,7 @@ class ProductsLN_CC(object):
                             or nth(sp.get('image'), 0)
                             or custom.get('img_url')
                             or None),
-                img_urls=(sp.get('image')
-                            or custom.get('img_urls')
-                            or None),
+                img_urls=sp.get('image'),
             )
             products.append(p)
 
@@ -551,22 +556,24 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsLN_CC.from_html(url, html)
+    return ProductsKateSpade.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'http://www.ln-cc.com/en_en/women/jackets-2/pre-ss16%3A-lanvin-single-breasted-coat/lan0223002col.html'
-    filepath = 'test/www.ln-cc.com-en_en-women-jackets-2-pre-ss16%3A-lanvin-single-breasted-coat-lan0223002col.html.gz'
+    url = 'https://www.katespade.com/products/go-fly-a-kite-kite-clutch/PXRU6254.html?cgid=ks-handbags-view-all&dwvar_PXRU6254_color=635#start=1&cgid=ks-handbags-view-all'
+    filepath = 'test/www.katespade.com-products-go-fly-a-kite-kite-clutch-PXRU6254.html.gz'
 
-    url = 'http://www.ln-cc.com/en_en/women/shoes-2/valentino-leather-studded-thong-sandal/val0219002blk.html'
-    filepath = 'test/www.ln-cc.com-en_en-women-shoes-2-valentino-leather-studded-thong-sandal-val0219002blk.html.gz'
+    url = 'https://www.katespade.com/products/cedar-street-maise/PXRU4471.html'
+    filepath = 'test/www.katespade.com-products-cedar-street-maise-PXRU4471.html.gz'
+
+    url = 'https://www.katespade.com/products/bayleigh-sunglasses/716737609002.html'
+    filepath = 'test/www.katespade.com-products-bayleigh-sunglasses-716737609002.html.gz'
 
     # test no-op
-    #url = 'http://www.shiseido.com/perfect-rouge/9990000000039,en_US,pd.html'
-    #filepath = 'test/www.shiseido.com-perfect-rouge-9990000000039,en_US,pd.html.gz'
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:

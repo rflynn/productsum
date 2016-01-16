@@ -58,6 +58,30 @@ def get_browser_firefox_invisible():
     browser = webdriver.Firefox()
     return browser
 
+_Chrome_Cachedir = '/tmp/chromecache/'
+_Chrome_Cachesize = str(64*1024*1024)
+
+def get_chrome_options():
+    try:
+        os.mkdir(_Chrome_Cachedir)
+    except Exception as e:
+        print e
+    # ref: http://stackoverflow.com/questions/15165593/set-chrome-prefs-with-python-binding-for-selenium-in-chromedriver
+    # ref: http://peter.sh/experiments/chromium-command-line-switches/
+    options = webdriver.ChromeOptions()
+    #options.add_argument('--allow-running-insecure-content')
+    #options.add_argument('--disable-web-security')
+
+    # persist/share disk cache across runs and instances to reduce downloads/speed things up
+    options.add_argument('--disk-cache-dir=' + _Chrome_Cachedir)
+    options.add_argument('--disk-cache-size=' + _Chrome_Cachesize)
+
+    #options.add_argument('--no-referrers')
+    #options.add_argument('--window-size=1003,719')
+    #options.add_argument('--proxy-server=localhost:8118')
+    #options.add_argument("'chrome.prefs': {'profile.managed_default_content_settings.images': 2}")
+    return options
+
 def get_browser_chrome():
     display = get_display()
     # runs on ubuntu but doesn't work...
@@ -65,7 +89,9 @@ def get_browser_chrome():
     #display.start()
     chromedriver = '/usr/lib/chromium-browser/chromedriver'
     os.environ['webdriver.chrome.driver'] = chromedriver
-    browser = webdriver.Chrome(chromedriver)
+    options = get_chrome_options()
+    browser = webdriver.Chrome(chromedriver,
+                               chrome_options=options)
     return browser
 
 def get_browser():

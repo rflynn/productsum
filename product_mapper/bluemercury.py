@@ -14,6 +14,7 @@ import re
 import time
 import traceback
 from urlparse import urljoin
+from yurl import URL
 
 from htmlmetadata import HTMLMetadata
 from og import OG
@@ -235,7 +236,7 @@ class ProductsBlueMercury(object):
         upcs = None
 
         try:
-            url_canonical = soup.find('link', rel='canonical').get('href')
+            url_canonical = urljoin(url, soup.find('link', rel='canonical').get('href'))
         except:
             url_canonical = url
 
@@ -246,6 +247,19 @@ class ProductsBlueMercury(object):
                                 [normstring(a.get_text())
                                     for a in br.findAll('a')]
                                         if x] or None
+            except:
+                traceback.print_exc()
+
+        if not sku:
+            # some pages have sku-able ids, but some don't
+            # just use the url slug...
+            try:
+                u = URL(url_canonical)
+                if u.path:
+                    # e.g. http://www.bluemercury.com/eye-brushes/estee-lauder-sculpting-shadow-brush
+                    m = re.search('^/[a-z-]{6,50}/([a-z0-9-]{8,64})$', u.path)
+                    if m:
+                        sku = m.groups(0)[0]
             except:
                 traceback.print_exc()
 
@@ -261,7 +275,7 @@ class ProductsBlueMercury(object):
                 obj = execjs.exec_(objtxt + '; return options;')
                 #pprint(obj)
 
-                sku = obj[0].get('id') or None
+                sku = sku or obj[0].get('id') or None
                 price = obj[0].get('bestprice') or None
                 mpn = obj[0].get('alternate_part_no') or None
                 upcs = [x for x in
@@ -510,6 +524,9 @@ if __name__ == '__main__':
 
     url = 'http://www.bluemercury.com/face-wash-and-cleansers/sk-ii-facial-treatment-essence'
     filepath = 'test/www.bluemercury.com-face-wash-and-cleansers-sk-ii-facial-treatment-essence.gz'
+
+    url = 'http://www.bluemercury.com/eye-brushes/estee-lauder-sculpting-shadow-brush'
+    filepath = 'www.bluemercury.com-eye-brushes-estee-lauder-sculpting-shadow-brush.gz'
 
     # test no-op
     #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
