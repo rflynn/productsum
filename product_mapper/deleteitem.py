@@ -68,13 +68,26 @@ if __name__ == '__main__':
         for item in seq:
             url = item['url']
             print url
-            print table.delete_item(Key={'url': url})
+            while True:
+                try:
+                    print table.delete_item(Key={'url': url})
+                    break
+                except botocore.exceptions.ClientError as e:
+                    print e
+                    time.sleep(10)
+
+
+    #deleteall('www.yoox.com', '/TellAFriend')
+
+    #deleteall('www.dillards.com', '/webapp/wcs/stores/servlet/ReviewForm')
+    #deleteall('www.dillards.com', 'void(0)')
 
     #deleteall('www.ulta.com', '/_/N-')
     #deleteall('www.jcpenney.com', '/_/N-')
     #deleteall('www.saksfifthavenue.com', '/_/N-')
     #deleteall('www.target.com', '/_/N-')
     #deleteall('www.cvs.com', '/_/N-')
+    #deleteall('www.cvs.com', '/N-')
 
     #deleteall('www.jcpenney.com', '/jsp/')
 

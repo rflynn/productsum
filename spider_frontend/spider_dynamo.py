@@ -379,6 +379,7 @@ _Seeds = {
             '/shop/en/dillards/faqs-notices-policies-us',
             '/webapp/wcs/stores/servlet/OrderItemDisplay', # cart
             '/webapp/wcs/stores/servlet/LogonForm',
+            '/webapp/wcs/stores/servlet/ReviewForm',
         },
     },
     'http://www.drugstore.com': {
@@ -523,6 +524,8 @@ _Seeds = {
         'runjs': {},
         'skip': {
             # custom
+            '/search/', # endless search result variatins
+            '/search2/', # endless search result variatins
             '/aboutus/',
             '/account/',
             '/checkout2/',
@@ -1418,7 +1421,12 @@ _Seeds = {
     'http://www.zappos.com/': {
         'skip': {
             '/favorites.do',
+            '/productNotifyMe.do',
             '/*.jpg', # wtf
+            '/*.mp4', # wtf
+            '/tellAFriend.do',
+            '/c/privacy-policy',
+            '/product/review/',
         }
     },
     'http://www1.bloomingdales.com/': {
@@ -1572,6 +1580,7 @@ _Seeds = {
     'https://www.tradesy.com/': {
         # seems legit...
         '*/tel:', # has a number of weird links ending in tel:
+        '/edit-item/',
     },
     'http://us.rimmellondon.com/': {
         'ok': {
@@ -1899,7 +1908,7 @@ def should_fetch_again(item):
             item.get('updated'), now - item.get('updated') if item.get('updated') else None,
             item.get('code'))
     # last fetch succeeded, but it's getting stale
-    is_stale = age > 28 * days
+    is_stale = age > 90 * days
     if is_stale:
         print 'is_stale now=%s updated=%s (%s) code=%s' % (
             now,
