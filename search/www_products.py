@@ -137,8 +137,9 @@ def parse():
 # http://0.0.0.0:9998/search/by/url?url=http://www.elle.com/fashion/trend-reports/g27402/biggest-fashion-trends-2015/?slide=1
 
 if __name__ == '__main__':
+    import os
     tag_name.init()
     app.run(host='0.0.0.0',
-            port=9998,
+            port=os.environ.get('HTTP_PORT') or 80,
             debug=True)
     tag_name.shutdown()

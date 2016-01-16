@@ -1412,6 +1412,7 @@ _Seeds = {
             '/ua/','/ae/','/uk/','/uz/','/it/','/ve/','/vn/',
             # ?
             '/cms/',
+            '/TellAFriend',
         }
     },
     'http://www.zappos.com/': {
