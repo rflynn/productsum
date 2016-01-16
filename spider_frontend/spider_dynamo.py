@@ -524,6 +524,8 @@ _Seeds = {
         'runjs': {},
         'skip': {
             # custom
+            '/search/', # endless search result variatins
+            '/search2/', # endless search result variatins
             '/aboutus/',
             '/account/',
             '/checkout2/',
@@ -1418,7 +1420,12 @@ _Seeds = {
     'http://www.zappos.com/': {
         'skip': {
             '/favorites.do',
+            '/productNotifyMe.do',
             '/*.jpg', # wtf
+            '/*.mp4', # wtf
+            '/tellAFriend.do',
+            '/c/privacy-policy',
+            '/product/review/',
         }
     },
     'http://www1.bloomingdales.com/': {
@@ -1572,6 +1579,7 @@ _Seeds = {
     'https://www.tradesy.com/': {
         # seems legit...
         '*/tel:', # has a number of weird links ending in tel:
+        '/edit-item/',
     },
     'http://us.rimmellondon.com/': {
         'ok': {
