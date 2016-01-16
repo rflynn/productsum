@@ -1907,7 +1907,7 @@ def should_fetch_again(item):
             item.get('updated'), now - item.get('updated') if item.get('updated') else None,
             item.get('code'))
     # last fetch succeeded, but it's getting stale
-    is_stale = age > 28 * days
+    is_stale = age > 90 * days
     if is_stale:
         print 'is_stale now=%s updated=%s (%s) code=%s' % (
             now,
