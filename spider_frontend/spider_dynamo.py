@@ -379,6 +379,7 @@ _Seeds = {
             '/shop/en/dillards/faqs-notices-policies-us',
             '/webapp/wcs/stores/servlet/OrderItemDisplay', # cart
             '/webapp/wcs/stores/servlet/LogonForm',
+            '/webapp/wcs/stores/servlet/ReviewForm',
         },
     },
     'http://www.drugstore.com': {
