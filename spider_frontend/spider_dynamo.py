@@ -385,6 +385,7 @@ _Seeds = {
     'http://www.drugstore.com': {
         'skip': {
             # my app-specific, might change in the future
+            '/morestores.asp',
             '/household-food-and-pets/',
             '/medicine-and-health/',
             '/walgreens-pharmacy/',
