@@ -287,7 +287,9 @@ class ProductsBlueMercury(object):
                 traceback.print_exc()
 
         try:
-            brand = normstring(soup.select('h1[itemprop="name"] span')[0].get_text())
+            sp = soup.select('h1[itemprop="name"] span')
+            if sp:
+                brand = normstring(sp[0].get_text())
         except:
             traceback.print_exc()
 
