@@ -37,6 +37,10 @@ def size_attrs(d):
     size_unit = defaultdict(list)
     for toks in d.get('size', []):
         #print 'toks:', toks
+        if len(toks) == 5 and toks[1] == '"' and toks[2] in {'x','X','by'} and toks[4] == '"':
+            print 'X inches x Y inches', toks
+            unit = 'inches'
+            val = [int(toks[0]), int(toks[3])]
         if toks[-2:] in [['fl','oz'],['fluid','oz']]:
             unit = 'fl_ounce'
             val = xfloat('.'.join(toks[:-2]))
@@ -420,6 +424,9 @@ def test():
         (u"Men's Star Wars Advance Tie T-Shirt by Fifth Sun", None),
         (u"Haaci V-Neck Hoodie - Miss Chievous", None),
         (u"Haaci V-Neck Hoodie", u'Miss Chevous'),
+        (u'Cashmere Throw, 50" x 70"', None),
+        (u'TORINO MADRID PILLOW 18"X18" TRICOLOR', None),
+        (u"Round Cocotte - 7Qt - Dark Blue", None),
     ]
     for name, brand in names:
         print name
