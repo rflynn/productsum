@@ -223,7 +223,7 @@ def update(cursor, url_product_id, updated, name, attrs):
 update url_product_name_attr
 set
     updated            = %s,
-    name               = %s,
+    url_product_name   = %s,
     name_brand         = %s,
     name_color         = %s,
     name_material      = %s,
@@ -269,7 +269,8 @@ where
         url_product_id
       )
         cursor.execute(sql, args)
-    except:
+    except Exception as e:
+        print e
         print cursor.mogrify(sql, args)
         raise
 
@@ -345,15 +346,15 @@ insert into url_product_name_attr (
        attrs.get('size').get('quart'),
        attrs.get('size').get('num'),
        attrs.get('demographic')))
-    except:
+    except Exception as e:
+        print e
         raise
 
 def upsert(conn, cursor, url_product_id, updated, name, attrs, cnt):
-    try:
-        insert(cursor, url_product_id, updated, name, attrs)
-    except:
+    with conn.cursor() as cursor:
         update(cursor, url_product_id, updated, name, attrs)
-    if cnt % 1000 == 0:
+        if cursor.rowcount == 0:
+            insert(cursor, url_product_id, updated, name, attrs)
         conn.commit()
 
 def run():
