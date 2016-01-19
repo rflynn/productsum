@@ -375,8 +375,8 @@ class ProductsJCrew(object):
         starttime = time.time()
 
         u = URL(url)
-        if u.path and (u.path.startswith('/search2/index.jsp?')
-                    or u.path.startswith('/search/searchNavigation.jsp?')):
+        if u.path and (u.path.startswith('/search2/')
+                    or u.path.startswith('/search/')):
             # definitely not a product...
             page = ProductMapResultPage(
                     version=cls.VERSION,
