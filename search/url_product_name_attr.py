@@ -48,7 +48,7 @@ def size_attrs(d):
             if toks[0] == 'size' and len(toks) == 2:
                 unit, val = 'num', xfloat(toks[1])
             else:
-                val, unit = toks[:-1], toks[-1]
+                val, unit = toks[:-1], toks[-1].lower()
                 if unit in ('in','inch','inches','"'):
                     unit = 'inch'
                     val = val_inches(val)
@@ -428,6 +428,7 @@ def test():
         (u'Cashmere Throw, 50" x 70"', None),
         (u'TORINO MADRID PILLOW 18"X18" TRICOLOR', None),
         (u"Round Cocotte - 7Qt - Dark Blue", None),
+        (u"Future Solution LX Total Protective Cream SPF 18, 50 mL", None),
     ]
     for name, brand in names:
         print name
