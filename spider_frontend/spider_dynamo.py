@@ -388,6 +388,7 @@ _Seeds = {
     'http://www.drugstore.com': {
         'skip': {
             # my app-specific, might change in the future
+            '/search/',
             '/templates/',
             '/morestores.asp',
             '/household-food-and-pets/',
@@ -531,6 +532,7 @@ _Seeds = {
             # custom
             '/search/', # endless search result variatins
             '/search2/', # endless search result variatins
+            '/swim/mixmatch/', # endles variations
             '/aboutus/',
             '/account/',
             '/checkout2/',
