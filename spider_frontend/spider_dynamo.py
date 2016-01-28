@@ -463,6 +463,8 @@ _Seeds = {
             '/register',
             '/user/',
             '/visiting-the-store',
+            '/Pages/Account/',
+            '/mt/www.harrods.com/',
             # robots.txt
             '/App_Browsers/',
             '/App_Code/',
@@ -505,6 +507,7 @@ _Seeds = {
         'skip': {
             # custom
             '*/_/N-', # urlencoded filter search results
+            '*/serviceAndWarrantyModal.jsp',
             '/dotcom/jsp/cart/',
             '/jsp/',
             '*/jsp/',
@@ -1228,6 +1231,8 @@ _Seeds = {
     'http://www.toryburch.com/': {
         'skip': {
             # custom
+            '/search/', # endless variations
+            '/blog-post/',
             '/about-us/',
             '/account',
             '/blog/',
@@ -1636,6 +1641,7 @@ _Seeds = {
             '/urban/help/',
             '/urban/stores/',
             '/urban/on/',
+            '*&country=', # e.g. http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=BRANDS&country=ca
             # robots.txt
             '/urban/catalog/category.jsp?id=UOWW',
             '/urban/arc/',
