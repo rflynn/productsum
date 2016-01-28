@@ -164,7 +164,8 @@ select
     coalesce(bt.brand_to, up.brand, upna.name_brand[1][1]) as brand_ascii,
     up.brand                        as brand_orig_ascii,
     coalesce(bt.brand_to, up.brand, upna.name_brand[1][1]) as brand_raw_ascii,
-    name,
+    -- favor upna name because it's more normalized
+    coalesce(upna.url_product_name, up.name) as name,
     -- substr(descr, 0, 4096) as descr,
     in_stock,
     stock_level,

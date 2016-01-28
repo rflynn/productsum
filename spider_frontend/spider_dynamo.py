@@ -82,6 +82,9 @@ _Seeds = {
     },
     'http://www.beauty.com/': {
         'skip': {
+            # custom
+            '/your-list/', # requires login
+            # robots.txt
             '/4213/edh',
             '/500.htm',
             '/affiliate/content.asp',
@@ -312,6 +315,7 @@ _Seeds = {
         'skip': {
             # custom
             '*/_/N-',
+            '*/N-', # endless search result permutations
             '/help/',
             '*;jsessionid=',
             '/minuteclinic/',
@@ -371,18 +375,22 @@ _Seeds = {
         'runjs': {},
         'skip': {
             # custom
-            '/*/void(0)', # they weirdly link here, stop following these fucking links...
+            '/*void(0)', # they weirdly link here, stop following these fucking links...
             '/c/',
             '/credit-services/',
             '/html/',
             '/shop/en/dillards/faqs-notices-policies-us',
             '/webapp/wcs/stores/servlet/OrderItemDisplay', # cart
             '/webapp/wcs/stores/servlet/LogonForm',
+            '/webapp/wcs/stores/servlet/ReviewForm',
         },
     },
     'http://www.drugstore.com': {
         'skip': {
             # my app-specific, might change in the future
+            '/search/',
+            '/templates/',
+            '/morestores.asp',
             '/household-food-and-pets/',
             '/medicine-and-health/',
             '/walgreens-pharmacy/',
@@ -460,6 +468,8 @@ _Seeds = {
             '/register',
             '/user/',
             '/visiting-the-store',
+            '/Pages/Account/',
+            '/mt/www.harrods.com/',
             # robots.txt
             '/App_Browsers/',
             '/App_Code/',
@@ -502,6 +512,7 @@ _Seeds = {
         'skip': {
             # custom
             '*/_/N-', # urlencoded filter search results
+            '*/serviceAndWarrantyModal.jsp',
             '/dotcom/jsp/cart/',
             '/jsp/',
             '*/jsp/',
@@ -522,6 +533,9 @@ _Seeds = {
         'runjs': {},
         'skip': {
             # custom
+            '/search/', # endless search result variatins
+            '/search2/', # endless search result variatins
+            '/swim/mixmatch/', # endles variations
             '/aboutus/',
             '/account/',
             '/checkout2/',
@@ -574,13 +588,14 @@ _Seeds = {
     'https://www.katespade.com/': {
         'skip': {
             # custom
+            '/blog/',
             '/customer-care/',
             '/gift-cards-1/',
             '/gwp/',
-            '/katespade-about-us/',
-            '/katespade-careers',
-            '/katespade-customer-service-shipping/',
-            '/katespade-customer-service-privacy-security/',
+            '/katespade-',
+            #'/katespade-about-us',
+            #'/katespade-careers',
+            #'/katespade-customer-service',
             '/shopping-bag',
             '/stores',
             # robots.txt
@@ -1226,6 +1241,8 @@ _Seeds = {
     'http://www.toryburch.com/': {
         'skip': {
             # custom
+            '/search/', # endless variations
+            '/blog-post/',
             '/about-us/',
             '/account',
             '/blog/',
@@ -1414,12 +1431,18 @@ _Seeds = {
             '/ua/','/ae/','/uk/','/uz/','/it/','/ve/','/vn/',
             # ?
             '/cms/',
+            '/TellAFriend',
         }
     },
     'http://www.zappos.com/': {
         'skip': {
             '/favorites.do',
+            '/productNotifyMe.do',
             '/*.jpg', # wtf
+            '/*.mp4', # wtf
+            '/tellAFriend.do',
+            '/c/privacy-policy',
+            '/product/review/',
         }
     },
     'http://www1.bloomingdales.com/': {
@@ -1573,6 +1596,7 @@ _Seeds = {
     'https://www.tradesy.com/': {
         # seems legit...
         '*/tel:', # has a number of weird links ending in tel:
+        '/edit-item/',
     },
     'http://us.rimmellondon.com/': {
         'ok': {
@@ -1627,6 +1651,7 @@ _Seeds = {
             '/urban/help/',
             '/urban/stores/',
             '/urban/on/',
+            '*&country=', # e.g. http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=BRANDS&country=ca
             # robots.txt
             '/urban/catalog/category.jsp?id=UOWW',
             '/urban/arc/',
@@ -1900,7 +1925,7 @@ def should_fetch_again(item):
             item.get('updated'), now - item.get('updated') if item.get('updated') else None,
             item.get('code'))
     # last fetch succeeded, but it's getting stale
-    is_stale = age > 28 * days
+    is_stale = age > 90 * days
     if is_stale:
         print 'is_stale now=%s updated=%s (%s) code=%s' % (
             now,
@@ -1952,8 +1977,13 @@ def prefix_matches(path, prefix):
         return path in ('', '/')
     if '*' in prefix:
         pattern = prefix
+        # escape all regex special chars, except *
         pattern = pattern.replace('+', '[+]')
         pattern = pattern.replace('?', '[?]')
+        pattern = pattern.replace('(', '[(]')
+        pattern = pattern.replace(')', '[)]')
+        pattern = pattern.replace('{', '[{]')
+        pattern = pattern.replace('}', '[}]')
         pattern = pattern.replace('*', '.*?')
         return bool(re.search(pattern, path))
     return (
@@ -1968,6 +1998,7 @@ assert prefix_matches('/foo/bar?baz', '/*bar')
 assert prefix_matches('/fr-fr/femmes', '/fr-fr/')
 assert prefix_matches('/en-de/accessories.html?designer=3852%7C3887', '*?designer=*%7C')
 assert prefix_matches('/trussardi?country_switch=ca&lang=en&redirect=homepage', '*?country_switch=')
+assert prefix_matches('http://www.dillards.com/void(0)', '/*void(0)')
 
 def ok_to_spider(url, fqdn, settings):
     if len(url) > 2048:

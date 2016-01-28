@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-map a document archived from jcrew.com to zero or more products
+map a document archived from katespade.com to zero or more products
 '''
 
 from bs4 import BeautifulSoup
@@ -24,10 +24,10 @@ from tealium import Tealium
 from util import nth, normstring, dehtmlify, xboolstr, u
 
 
-MERCHANT_SLUG = 'jcrew'
+MERCHANT_SLUG = 'katespade'
 
 
-class ProductJCrew(object):
+class ProductKateSpade(object):
     VERSION = 0
     def __init__(self, id=None, url=None, merchant_name=None, slug=None,
                  merchant_sku=None, upc=None, isbn=None, ean=None,
@@ -49,8 +49,8 @@ class ProductJCrew(object):
         self.isbn = isbn
         self.ean = ean
         self.currency = currency
-        self.sale_price = sale_price
-        self.price = u(price)
+        self.sale_price = normstring(sale_price)
+        self.price = normstring(price)
         self.brand = brand
         self.category = category
         self.breadcrumb = breadcrumb
@@ -72,59 +72,45 @@ class ProductJCrew(object):
         if self.id is not None:
             self.id = str(self.id) # ensure we're a string, some signals produce numeric
         assert self.id != 'None'
-
-        if self.id:
-            if self.id.lower().startswith('sku: #'):
-                self.id = self.id[6:]
-
+        if self.price:
+            self.price = normstring(self.price).replace(' ', '')
         if isinstance(self.brand, list):
             self.brand = u' '.join(self.brand) or None
         self.brand = dehtmlify(normstring(self.brand))
 
-        if self.brand:
-            # e.g. "/hush-puppies"
-            if self.brand.startswith('/'):
-                self.brand = self.brand[1:].replace('-', ' ').title()
-
         if isinstance(self.name, list):
             self.name = u' '.join(self.name) or None
-        self.name = dehtmlify(normstring(self.name)) or None
+        self.name = dehtmlify(normstring(self.name))
+
+        if self.brand:
+            if self.brand == 'KATE':
+                self.brand = 'Kate Spade'
+
+        # clean up "$brand $upper_name"
+        if self.name:
+            if self.brand:
+                if self.name.upper().startswith(self.brand.upper()):
+                    self.name = self.name[len(self.brand):].lstrip()
+            if self.name.upper() == self.name:
+                self.name = self.name.title()
+
         self.title = dehtmlify(normstring(self.title))
         if isinstance(self.descr, list):
             self.descr = u' '.join(self.descr) or None
+
         self.descr = dehtmlify(normstring(self.descr))
+        if self.descr:
+            if self.descr.startswith('Color: '):
+                self.descr = self.descr[6:]
+
         if self.features:
-            if isinstance(self.features, basestring):
-                self.features = [self.features]
             self.features = [dehtmlify(f) for f in self.features]
-
-        if self.name:
-            if self.name.endswith(" | J.Crew"):
-                self.name = self.name[:-len(" | J.Crew")]
-            if self.name.endswith("J.Crew"):
-                self.name = self.name[:-len("J.Crew")]
-            self.name = self.name.strip(" -") or None
-
-        if self.title:
-            if self.title.endswith(" | J.Crew"):
-                self.title = self.title[:-len(" | J.Crew")]
-            if self.title.endswith("J.Crew"):
-                self.title = self.title[:-len("J.Crew")]
-            self.title = self.title.strip(" -") or None
-
-        if self.price is not None:
-            try:
-                n = float(self.price)
-                if n == 0:
-                    self.price = None # some prices are fucked...
-            except:
-                pass
 
         if self.upc:
             self.upc = str(self.upc)
 
     def __repr__(self):
-        return ('''ProductJCrew:
+        return ('''ProductKateSpade:
     id............... %s
     url.............. %s
     merchant_name.... %s
@@ -223,7 +209,7 @@ class ProductJCrew(object):
         )
 
 
-class ProductsJCrew(object):
+class ProductsKateSpade(object):
 
     VERSION = 0
 
@@ -250,97 +236,112 @@ class ProductsJCrew(object):
         size = None
         sizes = None
         img_url = None
-        img_urls = None
         upc = None
         upcs = None
 
         try:
-            canonical = soup.find('link', rel='canonical').get('href')
-            if canonical:
-                url_canonical = urljoin(url, canonical)
+            url_canonical = urljoin(url, soup.find('link', rel='canonical').get('href'))
         except:
             url_canonical = url
 
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
-            try:
-                price = normstring(fp.get_text()) or None
-            except:
-                traceback.print_exc()
-
-        '''
-        lpAddVars('page','ProductID','E2854');
-        lpAddVars('page','ProductValue','130.00');
-        lpAddVars('page','ProductValueLocal','130.00');
-        '''
-        sc = soup.find('script', text=lambda t: t and 'lpAddVars(' in t)
-        if sc:
-            lp = {k: v for k, v in
-                    re.findall(r"lpAddVars\('[^']+','([^']+)','([^']+)'\);", sc.text)}
-            #pprint(lp)
-            sku = sku or lp.get('ProductId') or None
-            price = price or lp.get('ProductValue') or None
-            currency = currency or lp.get('Currency') or None
-
+        # e.g. /716737717608.html
+        # e.g. /EMALES.html
+        # e.g. /1369.html
         if not sku:
-            m = re.search(r'/([A-Z][0-9]{3,5})\.jsp$', url)
+            m = re.search('/([A-Z0-9]{4,12})\.html', url)
             if m:
                 sku = m.groups(0)[0]
 
-        if not sku:
-            dp = soup.find(attrs={'data-productcode': True})
-            if dp:
-                sku = dp.get('data-productcode') or None
-
-        if not sku:
-            #<span class="item-num">item A9184</span>
-            itemnum = soup.find('span', {'class': 'item-num'})
-            if itemnum:
-                try:
-                    txt = normstring(itemnum.get_text())
-                    if txt and re.match('item \w{4,6}', txt):
-                        sku = txt[5:]
-                except:
-                    traceback.print_exc()
-
-        fp = soup.find('div', {'class': 'full-price'})
-        if fp:
+        tag = soup.find('div', {'class': 'description-details'})
+        if tag:
             try:
-                price = normstring(fp.get_text()) or None
+                features = [x for x in
+                            [normstring(li.get_text())
+                                for li in tag.select('ul li')]
+                                    if x] or None
             except:
                 traceback.print_exc()
 
-        pb = soup.select('div#prodDtlBody p')
-        if pb:
+        tag = soup.find('div', {'class': 'product-variations', 'data-current': True})
+        if tag:
             try:
-                descr = normstring(pb[0].get_text()) or None
+                dc = tag.get('data-current')
+                obj = json.loads(dc)
+                #print 'obj:'
+                #pprint(obj)
+            except:
+                traceback.print_exc()
+
+        tag = soup.find('ul', {'class': 'swatches'})
+        if tag:
+            try:
+                colors = sorted(x for x in
+                            [normstring(li.get_text())
+                                for li in tag.findAll('li')]
+                                    if x) or None
             except:
                 traceback.print_exc()
 
         '''
-        <ul class="tech-details">
-            <li>Suede upper.</li>
-            <li>Faux-fur lining.</li>
-            <li>Rubber sole.</li>
-            <li>Import.</li>
-        </ul>
+<script language="javascript1.2" type="text/javascript">
+var cmBrand = "KATE";
+var cmPageType = "PDP";
+var cmDepartmentID = "411";
+var cmClassID = "08";
+var cmGroupID = "41";
+var cmClassDescription = "NOVELTY";
+var cmEditorsPick = "false";
+var cmHandInHand = "false";
+var cmIsGiftable = "false";
+var cmSeasonID = "A15";
+var cmProductID = "PXRU6254";
+var cmProductName = "go fly a kite kite clutch";
+var cmCategoryID = "ks-handbags-clutches";
+var pageID = "go fly a kite kite clutch (PXRU6254)";
+var cmDepartmentDescription = "KS HANDBAGS";
+var cmGroupDescription = "KS HANDBAG/SMALLGOOD";
+var cmOccasion = "";
+var cmAsSeenIn = "";
+// cmExploreAttributes
+var cmExploreAttributes = cmBrand+"-_-"+cmPageType+"-_-"+cmDepartmentID+"-_-"+cmClassID+"-_-"+cmGroupID+"-_-"+cmClassDescription+"-_-"+cmEditorsPick+"-_-"+cmHandInHand+"-_-" + cmAsSeenIn + "-_-"+cmIsGiftable+"-_-"+cmSeasonID;
+// cmCreateProductViewTag
+if(typeof cmCreateProductviewTag != 'undefined') {
+cmCreateProductviewTag(cmProductID, cmProductName, cmCategoryID, cmExploreAttributes);
+}
+</script>
         '''
-        td = soup.find('ul', {'class': 'tech-details'})
-        #print 'td:', td
-        if td:
+        sc = soup.find('script', text=lambda t: t and 'var cmProductID' in t)
+        #print 'sc:', sc
+        if sc:
             try:
-                features = [normstring(li.get_text())
-                                for li in td.findAll('li')] or None
+                vs = re.findall(r'var \w+\s*=\s*.*;', sc.text)
+                if vs:
+                    objtxt = "\n".join(vs) + """
+return {
+    'brand': typeof cmBrand === 'undefined' ? null : cmBrand,
+    'sku': typeof cmProductID === 'undefined' ? null : cmProductID,
+    'name': typeof cmProductName === 'undefined' ? null : cmProductName,
+    'category': typeof cmCategoryID === 'undefined' ? null : cmCategoryID
+};
+"""
+                    #print repr(objtxt)
+                    obj = execjs.exec_(objtxt)
+                    #pprint(obj)
+
+                    brand = brand or obj.get('brand') or None
+                    sku = sku or obj.get('sku') or None
+                    name = name or obj.get('name') or None
+                    category = category or obj.get('category') or None
             except:
                 traceback.print_exc()
 
-        # product-detail-img
-        pdi = soup.find('div', {'class': 'product-detail-img'})
-        if pdi:
+        br = soup.find('ol', {'class': 'breadcrumb'})
+        if br:
             try:
-                img_urls = [urljoin(url_canonical, x) for x in
-                            [i.get('src') for i in pdi.findAll('img', src=True)]
-                                if x] or None
+                breadcrumbs = [x for x in
+                                [normstring(li.get_text())
+                                    for li in br.findAll('li')]
+                                        if x] or None
             except:
                 traceback.print_exc()
 
@@ -349,7 +350,6 @@ class ProductsJCrew(object):
             'brand': brand,
             'sku': sku,
             'upc': upc,
-            'upcs': upcs,
             'slug': slug,
             'category': category,
             'name': name,
@@ -366,18 +366,22 @@ class ProductsJCrew(object):
             'size': size,
             'sizes': sizes,
             'img_url': img_url,
-            'img_urls': img_urls,
         }
+
+    @classmethod
+    def url_may_be_product(cls, url):
+        u = URL(url)
+        return url and u and url.path and (
+            not url.path.startswith('/search')
+        )
 
     @classmethod
     def from_html(cls, url, html, updated=None):
 
         starttime = time.time()
 
-        u = URL(url)
-        if u.path and (u.path.startswith('/search2/')
-                    or u.path.startswith('/search/')):
-            # definitely not a product...
+        if '/search?q=' in url:
+            # not a product
             page = ProductMapResultPage(
                     version=cls.VERSION,
                     merchant_slug=MERCHANT_SLUG,
@@ -396,6 +400,7 @@ class ProductsJCrew(object):
         sp = SchemaOrg.get_schema_product(html)
         og = OG.get_og(soup)
         custom = cls.get_custom(soup, url, og)
+        utag = Tealium.get_utag_data(soup)
 
         sp = sp[0] if sp else {}
 
@@ -403,22 +408,24 @@ class ProductsJCrew(object):
             'meta': meta,
             'sp':   SchemaOrg.to_json(sp),
             'og':   og,
+            'utag': utag,
             'custom': custom,
         }
         #pprint(signals)
 
+        # TODO: tokenize and attempt to parse url itself for hints on brand and product
+        # use everything at our disposal
+
         prodid = (og.get('product:mfr_part_no')
                     or og.get('mfr_part_no')
                     or og.get('product_id')
-                    or nth(sp.get('sku'), 0)
-                    or nth(sp.get('productId'), 0)
-                    or nth(sp.get('productID'), 0)
-                    or custom.get('sku')
+                    or nth(sp.get('sku'), 0) # should exist in katespade
+                    or custom.get('sku') # should exist in katespade
                     or None)
 
         products = []
 
-        if prodid:
+        if prodid and og.get('type') == 'product':
 
             try:
                 spoffer = sp['offers'][0]['properties']
@@ -438,13 +445,7 @@ class ProductsJCrew(object):
             except:
                 spbrand = None
 
-            brand = (custom.get('brand')
-                        or spbrand
-                        or og.get('product:brand')
-                        or og.get('brand')
-                        or 'J.Crew')
-
-            p = ProductJCrew(
+            p = ProductKateSpade(
                 id=prodid,
                 url=(custom.get('url_canonical')
                             or og.get('url')
@@ -466,14 +467,15 @@ class ProductsJCrew(object):
                             or og.get('price:currency')
                             or og.get('currency')
                             or og.get('currency:currency')
+                            or nth(utag.get('order_currency_code'), 0)
                             or nth(spoffer.get('priceCurrency'), 0)
                             or custom.get('currency')
                             or None),
-                price=(og.get('product:original_price:amount')
+                price=(custom.get('price')
+                            or og.get('product:original_price:amount')
                             or og.get('price:amount')
-                            or nth(sp.get('price'), 0)
                             or nth(spoffer.get('price'), 0)
-                            or custom.get('price')
+                            or nth(utag.get('product_price'), 0)
                             or None),
                 sale_price=(custom.get('sale_price')
                             or og.get('product:sale_price:amount')
@@ -483,31 +485,37 @@ class ProductsJCrew(object):
                             or custom.get('sale_price')
                             or nth(spoffer.get('price'), 0)
                             or None),
-                brand=brand,
+                brand=(custom.get('brand')
+                            or og.get('product:brand')
+                            or og.get('brand')
+                            or spbrand
+                            or 'Kate Spade'),
                 category=custom.get('category') or None,
                 breadcrumb=(custom.get('breadcrumbs')
+                            or utag.get('bread_crumb')
                             or None),
-                name=(custom.get('name')
-                            or sp.get('name')
+                name=(sp.get('name')
+                            or custom.get('name')
                             or og.get('title')
-                            or meta.get('title')
+                            or nth(utag.get('product_name'), 0)
                             or None),
                 title=(custom.get('title')
                             or og.get('title')
                             or meta.get('title')
                             or None),
                 descr=(custom.get('descr')
-                            or nth(sp.get('description'), 0)
-                            or nth(spoffer.get('description'), 0)
+                            or sp.get('description') # much better than og
                             or og.get('description')
                             or meta.get('description')
                             or None),
                 in_stock=((spoffer.get('availability') == [u'http://schema.org/InStock'])
                             or (((og.get('product:availability')
-                            or og.get('availability')) in ('instock', 'in stock')))
+                            or og.get('availability')) in ('instock', 'in stock'))
+                            or xboolstr(nth(utag.get('product_available'), 0)))
                             or custom.get('in_stock')
                             or None),
-                stock_level=(custom.get('stock_level')
+                stock_level=(nth(utag.get('stock_level'), 0)
+                            or custom.get('stock_level')
                             or None),
                 material=(og.get('product:material')
                             or og.get('material')
@@ -525,9 +533,7 @@ class ProductsJCrew(object):
                             or nth(sp.get('image'), 0)
                             or custom.get('img_url')
                             or None),
-                img_urls=(custom.get('img_urls')
-                            or sp.get('image')
-                            or None),
+                img_urls=sp.get('image'),
             )
             products.append(p)
 
@@ -550,24 +556,24 @@ def do_file(url, filepath):
     print 'filepath:', filepath
     with gzip.open(filepath) as f:
         html = f.read()
-    return ProductsJCrew.from_html(url, html)
+    return ProductsKateSpade.from_html(url, html)
 
 
 if __name__ == '__main__':
 
     import sys
 
-    url = 'https://www.jcrew.com/womens_category/shoes/boots/PRDOVR~E2854/E2854.jsp?color_name=tan'
-    filepath = 'test/www.jcrew.com-womens_category-shoes-boots-PRDOVR~E2854-E2854.jsp.gz'
+    url = 'https://www.katespade.com/products/go-fly-a-kite-kite-clutch/PXRU6254.html?cgid=ks-handbags-view-all&dwvar_PXRU6254_color=635#start=1&cgid=ks-handbags-view-all'
+    filepath = 'test/www.katespade.com-products-go-fly-a-kite-kite-clutch-PXRU6254.html.gz'
 
-    url = 'https://www.jcrew.com/mens_feature/TheSuitShop/PRDOVR~A9184/99103983136/A9184.jsp'
-    filepath = 'test/www.jcrew.com-mens_feature-TheSuitShop-PRDOVR~A9184-99103983136-A9184.jsp.gz'
+    url = 'https://www.katespade.com/products/cedar-street-maise/PXRU4471.html'
+    filepath = 'test/www.katespade.com-products-cedar-street-maise-PXRU4471.html.gz'
 
-    url = 'https://www.jcrew.com/womens_category/sweaters/cardigans/PRDOVR~E4862/E4862.jsp'
-    filepath = 'test/www.jcrew.com-womens_category-sweaters-cardigans-PRDOVR~E4862-E4862.jsp.gz'
+    url = 'https://www.katespade.com/products/bayleigh-sunglasses/716737609002.html'
+    filepath = 'test/www.katespade.com-products-bayleigh-sunglasses-716737609002.html.gz'
 
     # test no-op
-    #filepath = 'test/www.mytheresa.com-en-de-leather-wallet-468258.html.gz'
+    #filepath = 'test/www.yoox.com-us-44814772VC-item.gz'
 
     if len(sys.argv) > 1:
         for filepath in sys.argv[1:]:
