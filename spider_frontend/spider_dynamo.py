@@ -82,6 +82,9 @@ _Seeds = {
     },
     'http://www.beauty.com/': {
         'skip': {
+            # custom
+            '/your-list/', # requires login
+            # robots.txt
             '/4213/edh',
             '/500.htm',
             '/affiliate/content.asp',
@@ -385,6 +388,7 @@ _Seeds = {
     'http://www.drugstore.com': {
         'skip': {
             # my app-specific, might change in the future
+            '/templates/',
             '/morestores.asp',
             '/household-food-and-pets/',
             '/medicine-and-health/',
