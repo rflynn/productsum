@@ -82,6 +82,9 @@ _Seeds = {
     },
     'http://www.beauty.com/': {
         'skip': {
+            # custom
+            '/your-list/', # requires login
+            # robots.txt
             '/4213/edh',
             '/500.htm',
             '/affiliate/content.asp',
@@ -385,6 +388,8 @@ _Seeds = {
     'http://www.drugstore.com': {
         'skip': {
             # my app-specific, might change in the future
+            '/search/',
+            '/templates/',
             '/morestores.asp',
             '/household-food-and-pets/',
             '/medicine-and-health/',
@@ -463,6 +468,8 @@ _Seeds = {
             '/register',
             '/user/',
             '/visiting-the-store',
+            '/Pages/Account/',
+            '/mt/www.harrods.com/',
             # robots.txt
             '/App_Browsers/',
             '/App_Code/',
@@ -505,6 +512,7 @@ _Seeds = {
         'skip': {
             # custom
             '*/_/N-', # urlencoded filter search results
+            '*/serviceAndWarrantyModal.jsp',
             '/dotcom/jsp/cart/',
             '/jsp/',
             '*/jsp/',
@@ -527,6 +535,7 @@ _Seeds = {
             # custom
             '/search/', # endless search result variatins
             '/search2/', # endless search result variatins
+            '/swim/mixmatch/', # endles variations
             '/aboutus/',
             '/account/',
             '/checkout2/',
@@ -1228,6 +1237,8 @@ _Seeds = {
     'http://www.toryburch.com/': {
         'skip': {
             # custom
+            '/search/', # endless variations
+            '/blog-post/',
             '/about-us/',
             '/account',
             '/blog/',
@@ -1636,6 +1647,7 @@ _Seeds = {
             '/urban/help/',
             '/urban/stores/',
             '/urban/on/',
+            '*&country=', # e.g. http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=BRANDS&country=ca
             # robots.txt
             '/urban/catalog/category.jsp?id=UOWW',
             '/urban/arc/',
