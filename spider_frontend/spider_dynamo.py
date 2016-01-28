@@ -897,7 +897,9 @@ _Seeds = {
         #'favor': lambda url: bool(re.match('/main/ProductDetail.jsp[?]PRODUCT<>prd_id=\d+$', url.path)),
         'skip': {
             '*/_/N-', # urlencoded filter search results
+            '/saksstyle',
             '/account/',
+            '/editorial/',
             '/main/bridal_landing.jsp',
             '/NoJavaScript.jsp',
             '/search/',
@@ -916,6 +918,8 @@ _Seeds = {
             '/*WishList',
             '/*OrderCalculate',
             '/*gift-card',
+            '*/content/store/',
+            '/US/en/webapp/wcs/stores/servlet/FhBrowse?',
             # robots.txt
             '/webapp/wcs/stores/servlet/OrderItemAdd',
             '/webapp/wcs/stores/servlet/OrderItemDisplay',
