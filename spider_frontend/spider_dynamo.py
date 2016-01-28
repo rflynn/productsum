@@ -835,6 +835,7 @@ _Seeds = {
             '/checkout/',
             '/service/',
             '/stores/',
+            '/search.jsp',
         }
     },
     'http://www.net-a-porter.com/': {
@@ -867,6 +868,7 @@ _Seeds = {
         'skip': {
             # custom
             '/helpdesk/',
+            '/contentPopup/',
             # robots.txt
             '/cart/',
             '/cartHandler/',
