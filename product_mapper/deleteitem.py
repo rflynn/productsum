@@ -77,6 +77,15 @@ if __name__ == '__main__':
                     time.sleep(10)
 
 
+    deleteall('www.ralphlauren.com', '/contentPopup/')
+
+    #deleteall('www.selfridges.com', '/US/en/content/store/')
+
+    #deleteall('www.drugstore.com', '/morestores.asp')
+
+    #deleteall('www.jcrew.com', '/search/')
+    #deleteall('www.jcrew.com', '/search2/')
+
     #deleteall('www.yoox.com', '/TellAFriend')
 
     #deleteall('www.dillards.com', '/webapp/wcs/stores/servlet/ReviewForm')
