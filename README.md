@@ -31,6 +31,101 @@ cd productsum
 /bin/bash install.sh
 ```
 
+### DynamoDB
+
+#### Table details
+```
+                       Table name  link
+            Primary partition key  url (String)
+                 Primary sort key  -
+                     Table status  Active
+                    Creation date  November 29, 2015 at 12:56:24 AM UTC-5
+  Provisioned read capacity units  1
+ Provisioned write capacity units  1
+               Last decrease time  June 6, 2016 at 7:09:57 PM UTC-4
+               Last increase time  January 18, 2016 at 3:06:28 AM UTC-5
+          Storage size (in bytes)  42.81 GB
+                       Item count  17,792,113
+                           Region  US East (N. Virginia)
+       Amazon Resource Name (ARN)  arn:aws:dynamodb:us-east-1:678643648931:table/link
+```
+
+#### Index
+```
+Name .............. host-index3
+Status ............ Active
+Type .............. GSI
+Partition key ..... host (String)
+Sort key .......... updated (Number)
+Attributes ........ url, host, updated, body
+Read capacity ..... 1
+Write capacity .... 1
+Size .............. 3,046,811,143
+Item count ........ 17,792,113
+```
+
+### Set up ElasticSearch
+
+```
+https://console.aws.amazon.com/es/home?region=us-east-1
+
+My Elasticsearch domains
+Domain  Elasticsearch version   Searchable documents    Cluster health  Free storage space  Minimum free storage space  Configuration state
+es0     1.5                     2,238,935               Yellow          5.71 GB             5.71 GB                     Active
+```
+
+Access policy:
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "es:*",
+      "Resource": "arn:aws:es:us-east-1:678643648931:domain/es0/*"
+    }
+  ]
+}
+```
+
+#### Indicies
+
+```
+Product
+
+Count ......... 2238933
+Size in bytes ....... 1.53 GB
+Query total ...../... 0
+Mappings
+    product
+        available_colors    string
+        brand               string
+        brand_ascii         string
+        brand_orig          string
+        brand_orig_ascii    string
+        brand_raw           string
+        brand_raw_ascii     string
+        color               string
+        currency            string
+        img_urls            string
+        in_stock            boolean
+        merchant_sku        string
+        merchant_slug       string
+        name                string
+        price_max           float
+        price_min           float
+        sale_price_max      float
+        sale_price_min      float
+        stock_level         long
+        updated             long
+        url                 string
+        url_host            string
+        url_raw             string
+```
+
 ### Run a Spider
 
 ```sh
