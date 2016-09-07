@@ -3,11 +3,21 @@
 set -v
 set -e
 
+osver="$(lsb_release -d | sed -e's/^Description:\t//')"
+
 sudo apt-get update
 
 # libs
-sudo apt-get install -y postgresql-9.3
-sudo apt-get install -y postgresql-server-dev-9.3 # psycopg2
+if [[ $osver = "Ubuntu 14."* ]]; then
+    sudo apt-get install -y postgresql-9.3
+    sudo apt-get install -y postgresql-server-dev-9.3 # psycopg2
+elif [[ $osver = "Ubuntu 16."* ]]; then
+    sudo apt-get install -y postgresql-9.5
+    sudo apt-get install -y postgresql-server-dev-9.5 # psycopg2
+else
+    echo "unhandled osver $osver"
+    exit 1
+fi
 
 # we need the postgresql packages, but we don't want the server
 # XXX: there *has* to be a smarter way of doing this...
