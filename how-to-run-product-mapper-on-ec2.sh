@@ -5,7 +5,7 @@ screen -RR -D
 mkdir src && cd src
 sudo apt-get install -y git
 git clone https://github.com/rflynn/productsum.git && cd productsum
-test -d vent && source venv/bin/activate
+test -d venv && source venv/bin/activate
 /bin/bash install.sh
 source venv/bin/activate
 cd product_mapper
